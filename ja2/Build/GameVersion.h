@@ -1,20 +1,21 @@
-#ifndef _GAME_VERSION_H_
-#define _GAME_VERSION_H_
-
-#include "SGP/Types.h"
-
+// #ifndef _GAME_VERSION_H_
+// #define _GAME_VERSION_H_
 //
-//	Keeps track of the game version
+// #include "SGP/Types.h"
 //
-
-extern const char g_version_label[];
-extern const char g_version_number[16];
-
+// //
+// //	Keeps track of the game version
+// //
 //
-//		Keeps track of the saved game version.  Increment the saved game
-// version whenever 	you will invalidate the saved game file
+// extern const char g_version_label[];
+// extern const char g_version_number[16];
 //
-
-extern const UINT32 guiSavedGameVersion;
-
-#endif
+// //
+// //		Keeps track of the saved game version.  Increment the saved game
+// // version whenever 	you will invalidate the saved game file
+// //
+//
+// extern const UINT32 guiSavedGameVersion;
+//
+// #endif
+//

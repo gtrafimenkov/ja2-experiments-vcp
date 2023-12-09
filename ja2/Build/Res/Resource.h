@@ -1,1 +1,2 @@
-#define IDI_ICON1 113
+// #define IDI_ICON1 113
+//
