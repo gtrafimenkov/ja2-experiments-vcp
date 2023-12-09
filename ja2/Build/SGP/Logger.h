@@ -1,5 +1,5 @@
-// #pragma once
-//
+#pragma once
+
 // /** Debug information logger. */
 //
 // /************************************************************
@@ -16,25 +16,25 @@
 //
 // /** Current log level. */
 // #define LOG_LEVEL (LOGLEVEL_INFO)
-//
-// #if LOG_LEVEL >= LOGLEVEL_ERROR
-// #define LOG_ERROR printf
-// #else
-// #define LOG_ERROR /* empty function name */
-// #endif
-//
+
+#if LOG_LEVEL >= LOGLEVEL_ERROR
+#define LOG_ERROR printf
+#else
+#define LOG_ERROR /* empty function name */
+#endif
+
 // #if LOG_LEVEL >= LOGLEVEL_WARNING
 // #define LOG_WARNING printf
 // #else
 // #define LOG_WARNING /* empty function name */
 // #endif
-//
-// #if LOG_LEVEL >= LOGLEVEL_INFO
-// #define LOG_INFO printf
-// #else
-// #define LOG_INFO /* empty function name */
-// #endif
-//
+
+#if LOG_LEVEL >= LOGLEVEL_INFO
+#define LOG_INFO printf
+#else
+#define LOG_INFO /* empty function name */
+#endif
+
 // #if LOG_LEVEL >= LOGLEVEL_DEBUG
 // #define LOG_DEBUG printf
 // #else

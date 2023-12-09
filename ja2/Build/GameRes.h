@@ -1,22 +1,22 @@
-// #pragma once
-//
-// /* Game resources */
-//
+#pragma once
+
+/* Game resources */
+
 // #include "SGP/IEncodingCorrector.h"
 // #include "SGP/Types.h"
-//
-// /** List of supported game versions (localizations). */
-// enum GameVersion {
-//   GV_DUTCH,
-//   GV_ENGLISH,
-//   GV_FRENCH,
-//   GV_GERMAN,
-//   GV_ITALIAN,
-//   GV_POLISH,
-//   GV_RUSSIAN,
-//   GV_RUSSIAN_GOLD,
-// };
-//
+
+/** List of supported game versions (localizations). */
+enum GameVersion {
+  // GV_DUTCH,
+  GV_ENGLISH,
+  // GV_FRENCH,
+  // GV_GERMAN,
+  // GV_ITALIAN,
+  // GV_POLISH,
+  // GV_RUSSIAN,
+  // GV_RUSSIAN_GOLD,
+};
+
 // enum MultiLanguageGraphic {
 //   MLG_AIMSYMBOL,
 //   MLG_BOBBYNAME,
@@ -55,10 +55,10 @@
 // };
 //
 // char const *GetMLGFilename(MultiLanguageGraphic);
-//
-// /** Choose game version. */
-// void setGameVersion(GameVersion ver);
-//
+
+/** Choose game version. */
+void setGameVersion(GameVersion ver);
+
 // /** Initialize game resources for the current version. */
 // void InitGameResources(void);
 //

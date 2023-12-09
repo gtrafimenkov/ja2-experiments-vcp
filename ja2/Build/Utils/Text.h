@@ -1,6 +1,6 @@
-// #ifndef __TEXT_H
-// #define __TEXT_H
-//
+#ifndef __TEXT_H
+#define __TEXT_H
+
 // #include "SGP/Types.h"
 // #include "Tactical/ItemTypes.h"
 //
@@ -10,409 +10,409 @@
 // extern void LoadAllExternalText(void);
 // extern const wchar_t *GetWeightUnitString(void);
 // extern FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight);
-//
-// #define AmmoCaliber_SIZE 17
-// #define BobbyRayAmmoCaliber_SIZE 16
-// #define WeaponType_SIZE 9
-// #define TeamTurnString_SIZE 5
-// #define Message_SIZE 59
-// #define pTownNames_SIZE 13
-// #define g_towns_locative_SIZE 13
-// #define sTimeStrings_SIZE 6
-// #define pAssignmentStrings_SIZE 35
-// #define pMilitiaString_SIZE 3
-// #define pMilitiaButtonString_SIZE 2
-// #define pConditionStrings_SIZE 9
-// #define pEpcMenuStrings_SIZE 5
-// #define pLongAssignmentStrings_SIZE 35
-// #define pContractStrings_SIZE 7
-// #define pPOWStrings_SIZE 2
-// #define pInvPanelTitleStrings_SIZE 3
-// #define pShortAttributeStrings_SIZE 10
-// #define pUpperLeftMapScreenStrings_SIZE 4
-// #define pTrainingStrings_SIZE 4
-// #define pAssignMenuStrings_SIZE 7
-// #define pRemoveMercStrings_SIZE 2
-// #define pAttributeMenuStrings_SIZE 10
-// #define pTrainingMenuStrings_SIZE 5
-// #define pSquadMenuStrings_SIZE 21
-// #define pPersonnelScreenStrings_SIZE 14
-// #define gzMercSkillText_SIZE 17
-// #define pTacticalPopupButtonStrings_SIZE 19
-// #define pDoorTrapStrings_SIZE 5
-// #define pMapScreenMouseRegionHelpText_SIZE 6
-// #define pNoiseVolStr_SIZE 4
-// #define pNoiseTypeStr_SIZE 12
-// #define pDirectionStr_SIZE 8
-// #define pLandTypeStrings_SIZE 40
-// #define gpStrategicString_SIZE 69
-// #define sKeyDescriptionStrings_SIZE 2
-// #define gWeaponStatsDesc_SIZE 7
-// #define gzMoneyAmounts_SIZE 6
-// #define pVehicleStrings_SIZE 6
-// #define zVehicleName_SIZE 6
-// #define const_SIZE 137
-// #define pExitingSectorHelpText_SIZE 14
-// #define pRepairStrings_SIZE 4
-// #define sPreStatBuildString_SIZE 6
-// #define sStatGainStrings_SIZE 11
-// #define pHelicopterEtaStrings_SIZE 10
-// #define gsTimeStrings_SIZE 4
-// #define sFacilitiesStrings_SIZE 7
-// #define pMapPopUpInventoryText_SIZE 2
-// #define pwTownInfoStrings_SIZE 7
-// #define pwMineStrings_SIZE 14
-// #define pwMiscSectorStrings_SIZE 7
-// #define pMapInventoryErrorString_SIZE 5
-// #define pMapInventoryStrings_SIZE 2
-// #define pMovementMenuStrings_SIZE 4
-// #define pUpdateMercStrings_SIZE 6
-// #define pMapScreenBorderButtonHelpText_SIZE 6
-// #define pMapScreenBottomFastHelp_SIZE 8
-// #define pSenderNameList_SIZE 51
-// #define pDeleteMailStrings_SIZE 2
-// #define pEmailHeaders_SIZE 3
-// #define pFinanceSummary_SIZE 12
-// #define pFinanceHeaders_SIZE 7
-// #define pTransactionText_SIZE 28
-// #define pSkyriderText_SIZE 3
-// #define pMoralStrings_SIZE 6
-// #define pMapScreenStatusStrings_SIZE 5
-// #define pMapScreenPrevNextCharButtonHelpText_SIZE 2
-// #define pShortVehicleStrings_SIZE 6
-// #define pVehicleStrings_SIZE 6
-// #define pTrashItemText_SIZE 2
-// #define pMapErrorString_SIZE 50
-// #define pMapPlotStrings_SIZE 5
-// #define pBullseyeStrings_SIZE 5
-// #define pMiscMapScreenMouseRegionHelpText_SIZE 3
-// #define pImpPopUpStrings_SIZE 7
-// #define pImpButtonText_SIZE 26
-// #define pExtraIMPStrings_SIZE 4
-// #define pFilesSenderList_SIZE 7
-// #define pHistoryHeaders_SIZE 5
-// #define pHistoryStrings_SIZE 78
-// #define pLaptopIcons_SIZE 8
-// #define pBookMarkStrings_SIZE 8
-// #define pDownloadString_SIZE 2
-// #define gsAtmStartButtonText_SIZE 3
-// #define pWebPagesTitles_SIZE 35
-// #define pShowBookmarkString_SIZE 2
-// #define pLaptopTitles_SIZE 5
-// #define pPersonnelDepartedStateStrings_SIZE 5
-// #define pPersonelTeamStrings_SIZE 8
-// #define pPersonnelCurrentTeamStatsStrings_SIZE 3
-// #define pPersonnelTeamStatsStrings_SIZE 11
-// #define pMapVertIndex_SIZE 17
-// #define pMapHortIndex_SIZE 17
-// #define pMapDepthIndex_SIZE 4
-// #define pUpdatePanelButtons_SIZE 2
-// #define LargeTacticalStr_SIZE 4
-// #define InsContractText_SIZE 4
-// #define InsInfoText_SIZE 2
-// #define MercAccountText_SIZE 9
-// #define MercInfo_SIZE 11
-// #define MercNoAccountText_SIZE 3
-// #define MercHomePageText_SIZE 5
-// #define sFuneralString_SIZE 12
-// #define sFloristText_SIZE 14
-// #define sOrderFormText_SIZE 22
-// #define sFloristGalleryText_SIZE 5
-// #define sFloristCards_SIZE 2
-// #define BobbyROrderFormText_SIZE 26
-// #define BobbyRText_SIZE 26
-// #define BobbyRaysFrontText_SIZE 9
-// #define AimSortText_SIZE 5
-// #define AimPolicyText_SIZE 6
-// #define AimMemberText_SIZE 4
-// #define CharacterInfo_SIZE 12
-// #define VideoConfercingText_SIZE 15
-// #define AimPopUpText_SIZE 9
-// #define AimHistoryText_SIZE 5
-// #define AimFiText_SIZE 14
-// #define AimAlumniText_SIZE 5
-// #define AimScreenText_SIZE 8
-// #define AimBottomMenuText_SIZE 6
-// #define SKI_SIZE 14
-// #define SkiMessageBoxText_SIZE 7
-// #define zOptionsText_SIZE 9
-//
-// #define zSaveLoadText_SIZE 21
-//
-// #define zMarksMapScreenText_SIZE 23
-// #define pMilitiaConfirmStrings_SIZE 10
-// #define gpDemoString_SIZE 41
-// #define gpDemoIntroString_SIZE 6
-// #define gzMoneyWithdrawMessageText_SIZE 2
-// #define zOptionsToggleText_SIZE 20
-// #define gzGIOScreenText_SIZE 16
-// #define pDeliveryLocationStrings_SIZE 17
-// #define pPausedGameText_SIZE 3
-//
-// #define pMessageStrings_SIZE 68
-//
-// #define pDoctorWarningString_SIZE 2
-// #define pMilitiaButtonsHelpText_SIZE 4
-// #define gzLaptopHelpText_SIZE 16
-// #define gzNonPersistantPBIText_SIZE 10
-// #define gzMiscString_SIZE 5
-// #define pNewNoiseStr_SIZE 11
-// #define wMapScreenSortButtonHelpText_SIZE 6
-// #define BrokenLinkText_SIZE 2
-// #define gzBobbyRShipmentText_SIZE 4
-// #define gzCreditNames_SIZE 15
-// #define gzCreditNameTitle_SIZE 15
-// #define gzCreditNameFunny_SIZE 15
-// #define sRepairsDoneString_SIZE 4
-// #define zGioDifConfirmText_SIZE 3
-// #define gzLateLocalizedString_SIZE 58
-// #define zOptionsScreenHelpText_SIZE 20
-// #define ItemPickupHelpPopup_SIZE 5
-// #define TacticalStr_SIZE 137
-// #define zDealerStrings_SIZE 4
-// #define zTalkMenuStrings_SIZE 6
-// #define gMoneyStatsDesc_SIZE 8
-// #define zHealthStr_SIZE 7
-// #define SKI_Text_SIZE 14
-// #define str_stat_list_SIZE 11
-// #define str_aim_sort_list_SIZE 8
-// #define zNewTacticalMessages_SIZE 6
-//
-// // Weapon Name and Description size
-// #define SIZE_ITEM_NAME 80
-// #define SIZE_SHORT_ITEM_NAME 80
-// #define SIZE_ITEM_INFO 240
-// #define SIZE_ITEM_PROS 160
-// #define SIZE_ITEM_CONS 160
-//
-// typedef const wchar_t *StrPointer;
-//
-// struct LanguageRes {
-//   const StrPointer *AmmoCaliber;
-//   const StrPointer *BobbyRayAmmoCaliber;
-//   const StrPointer *WeaponType;
-//
-//   const StrPointer *Message;
-//   const StrPointer *TeamTurnString;
-//   const StrPointer *pAssignMenuStrings;
-//   const StrPointer *pTrainingStrings;
-//   const StrPointer *pTrainingMenuStrings;
-//   const StrPointer *pAttributeMenuStrings;
-//   const StrPointer *pVehicleStrings;
-//   const StrPointer *pShortAttributeStrings;
-//   const StrPointer *pContractStrings;
-//   const StrPointer *pAssignmentStrings;
-//   const StrPointer *pConditionStrings;
-//   const StrPointer *pTownNames;
-//   const StrPointer *g_towns_locative;
-//   const StrPointer *pPersonnelScreenStrings;
-//   const StrPointer *pUpperLeftMapScreenStrings;
-//   const StrPointer *pTacticalPopupButtonStrings;
-//   const StrPointer *pSquadMenuStrings;
-//   const StrPointer *pDoorTrapStrings;
-//   const StrPointer *pLongAssignmentStrings;
-//   const StrPointer *pMapScreenMouseRegionHelpText;
-//   const StrPointer *pNoiseVolStr;
-//   const StrPointer *pNoiseTypeStr;
-//   const StrPointer *pDirectionStr;
-//   const StrPointer *pRemoveMercStrings;
-//   const StrPointer *sTimeStrings;
-//   const StrPointer *pLandTypeStrings;
-//   const StrPointer *pInvPanelTitleStrings;
-//   const StrPointer *pPOWStrings;
-//   const StrPointer *pMilitiaString;
-//   const StrPointer *pMilitiaButtonString;
-//   const StrPointer *pEpcMenuStrings;
-//   const StrPointer *pRepairStrings;
-//   const StrPointer *sPreStatBuildString;
-//   const StrPointer *sStatGainStrings;
-//   const StrPointer *pHelicopterEtaStrings;
-//   const StrPointer sMapLevelString;
-//   const StrPointer gsLoyalString;
-//   const StrPointer gsUndergroundString;
-//   const StrPointer *gsTimeStrings;
-//   const StrPointer *sFacilitiesStrings;
-//   const StrPointer *pMapPopUpInventoryText;
-//   const StrPointer *pwTownInfoStrings;
-//   const StrPointer *pwMineStrings;
-//   const StrPointer *pwMiscSectorStrings;
-//   const StrPointer *pMapInventoryErrorString;
-//   const StrPointer *pMapInventoryStrings;
-//   const StrPointer *pMovementMenuStrings;
-//   const StrPointer *pUpdateMercStrings;
-//   const StrPointer *pMapScreenBorderButtonHelpText;
-//   const StrPointer *pMapScreenBottomFastHelp;
-//   const StrPointer pMapScreenBottomText;
-//   const StrPointer pMercDeadString;
-//   const StrPointer *pSenderNameList;
-//   const StrPointer pNewMailStrings;
-//   const StrPointer *pDeleteMailStrings;
-//   const StrPointer *pEmailHeaders;
-//   const StrPointer pEmailTitleText;
-//   const StrPointer pFinanceTitle;
-//   const StrPointer *pFinanceSummary;
-//   const StrPointer *pFinanceHeaders;
-//   const StrPointer *pTransactionText;
-//   const StrPointer *pMoralStrings;
-//   const StrPointer *pSkyriderText;
-//   const StrPointer str_left_equipment;
-//   const StrPointer *pMapScreenStatusStrings;
-//   const StrPointer *pMapScreenPrevNextCharButtonHelpText;
-//   const StrPointer pEtaString;
-//   const StrPointer *pShortVehicleStrings;
-//   const StrPointer *pTrashItemText;
-//   const StrPointer *pMapErrorString;
-//   const StrPointer *pMapPlotStrings;
-//   const StrPointer *pBullseyeStrings;
-//   const StrPointer *pMiscMapScreenMouseRegionHelpText;
-//   const StrPointer str_he_leaves_where_drop_equipment;
-//   const StrPointer str_she_leaves_where_drop_equipment;
-//   const StrPointer str_he_leaves_drops_equipment;
-//   const StrPointer str_she_leaves_drops_equipment;
-//   const StrPointer *pImpPopUpStrings;
-//   const StrPointer *pImpButtonText;
-//   const StrPointer *pExtraIMPStrings;
-//   const StrPointer pFilesTitle;
-//   const StrPointer *pFilesSenderList;
-//   const StrPointer pHistoryLocations;
-//   const StrPointer *pHistoryStrings;
-//   const StrPointer *pHistoryHeaders;
-//   const StrPointer pHistoryTitle;
-//   const StrPointer *pShowBookmarkString;
-//   const StrPointer *pWebPagesTitles;
-//   const StrPointer pWebTitle;
-//   const StrPointer pPersonnelString;
-//   const StrPointer pErrorStrings;
-//   const StrPointer *pDownloadString;
-//   const StrPointer *pBookMarkStrings;
-//   const StrPointer *pLaptopIcons;
-//   const StrPointer *gsAtmStartButtonText;
-//   const StrPointer *pPersonnelTeamStatsStrings;
-//   const StrPointer *pPersonnelCurrentTeamStatsStrings;
-//   const StrPointer *pPersonelTeamStrings;
-//   const StrPointer *pPersonnelDepartedStateStrings;
-//   const StrPointer *pMapHortIndex;
-//   const StrPointer *pMapVertIndex;
-//   const StrPointer *pMapDepthIndex;
-//   const StrPointer *pLaptopTitles;
-//   const StrPointer pDayStrings;
-//   const StrPointer *pMilitiaConfirmStrings;
-//   const StrPointer *pDeliveryLocationStrings;
-//   const StrPointer pSkillAtZeroWarning;
-//   const StrPointer pIMPBeginScreenStrings;
-//   const StrPointer pIMPFinishButtonText;
-//   const StrPointer pIMPFinishStrings;
-//   const StrPointer pIMPVoicesStrings;
-//   const StrPointer pPersTitleText;
-//   const StrPointer *pPausedGameText;
-//   const StrPointer *zOptionsToggleText;
-//   const StrPointer *zOptionsScreenHelpText;
-//   const StrPointer *pDoctorWarningString;
-//   const StrPointer *pMilitiaButtonsHelpText;
-//   const StrPointer pMapScreenJustStartedHelpText;
-//   const StrPointer pLandMarkInSectorString;
-//   const StrPointer *gzMercSkillText;
-//   const StrPointer *gzNonPersistantPBIText;
-//   const StrPointer *gzMiscString;
-//   const StrPointer *wMapScreenSortButtonHelpText;
-//   const StrPointer *pNewNoiseStr;
-//   const StrPointer *gzLateLocalizedString;
-//   const StrPointer pAntiHackerString;
-//   const StrPointer *pMessageStrings;
-//   const StrPointer *ItemPickupHelpPopup;
-//   const StrPointer *TacticalStr;
-//   const StrPointer *LargeTacticalStr;
-//   const StrPointer zDialogActions;
-//   const StrPointer *zDealerStrings;
-//   const StrPointer *zTalkMenuStrings;
-//   const StrPointer *gzMoneyAmounts;
-//   const StrPointer gzProsLabel;
-//   const StrPointer gzConsLabel;
-//   const StrPointer *gMoneyStatsDesc;
-//   const StrPointer *gWeaponStatsDesc;
-//   const StrPointer *sKeyDescriptionStrings;
-//   const StrPointer *zHealthStr;
-//   const StrPointer *zVehicleName;
-//   const StrPointer *pExitingSectorHelpText;
-//   const StrPointer *InsContractText;
-//   const StrPointer *InsInfoText;
-//   const StrPointer *MercAccountText;
-//   const StrPointer *MercInfo;
-//   const StrPointer *MercNoAccountText;
-//   const StrPointer *MercHomePageText;
-//   const StrPointer *sFuneralString;
-//   const StrPointer *sFloristText;
-//   const StrPointer *sOrderFormText;
-//   const StrPointer *sFloristGalleryText;
-//   const StrPointer *sFloristCards;
-//   const StrPointer *BobbyROrderFormText;
-//   const StrPointer *BobbyRText;
-//   const StrPointer str_bobbyr_guns_num_guns_that_use_ammo;
-//   const StrPointer *BobbyRaysFrontText;
-//   const StrPointer *AimSortText;
-//   const StrPointer str_aim_sort_price;
-//   const StrPointer str_aim_sort_experience;
-//   const StrPointer str_aim_sort_marksmanship;
-//   const StrPointer str_aim_sort_medical;
-//   const StrPointer str_aim_sort_explosives;
-//   const StrPointer str_aim_sort_mechanical;
-//   const StrPointer str_aim_sort_ascending;
-//   const StrPointer str_aim_sort_descending;
-//   const StrPointer *AimPolicyText;
-//   const StrPointer *AimMemberText;
-//   const StrPointer *CharacterInfo;
-//   const StrPointer *VideoConfercingText;
-//   const StrPointer *AimPopUpText;
-//   const StrPointer AimLinkText;
-//   const StrPointer *AimHistoryText;
-//   const StrPointer *AimFiText;
-//   const StrPointer *AimAlumniText;
-//   const StrPointer *AimScreenText;
-//   const StrPointer *AimBottomMenuText;
-//   const StrPointer *zMarksMapScreenText;
-//   const StrPointer *gpStrategicString;
-//   const StrPointer gpGameClockString;
-//   const StrPointer *SKI_Text;
-//   const StrPointer *SkiMessageBoxText;
-//   const StrPointer *zSaveLoadText;
-//   const StrPointer *zOptionsText;
-//   const StrPointer *gzGIOScreenText;
-//   const StrPointer gzHelpScreenText;
-//   const StrPointer *gzLaptopHelpText;
-//   const StrPointer *gzMoneyWithdrawMessageText;
-//   const StrPointer gzCopyrightText;
-//   const StrPointer *BrokenLinkText;
-//   const StrPointer *gzBobbyRShipmentText;
-//   const StrPointer *zGioDifConfirmText;
-//   const StrPointer *gzCreditNames;
-//   const StrPointer *gzCreditNameTitle;
-//   const StrPointer *gzCreditNameFunny;
-//   const StrPointer pContractButtonString;
-//   const StrPointer gzIntroScreen;
-//   const StrPointer *pUpdatePanelButtons;
-//   const StrPointer *sRepairsDoneString;
-//   const StrPointer str_ceramic_plates_smashed;
-//   const StrPointer str_arrival_rerouted;
-//
-//   const StrPointer str_stat_health;
-//   const StrPointer str_stat_agility;
-//   const StrPointer str_stat_dexterity;
-//   const StrPointer str_stat_strength;
-//   const StrPointer str_stat_leadership;
-//   const StrPointer str_stat_wisdom;
-//   const StrPointer str_stat_exp_level;
-//   const StrPointer str_stat_marksmanship;
-//   const StrPointer str_stat_mechanical;
-//   const StrPointer str_stat_explosive;
-//   const StrPointer str_stat_medical;
-//
-//   const StrPointer *str_stat_list;
-//   const StrPointer *str_aim_sort_list;
-//
-//   const StrPointer *zNewTacticalMessages;
-//   const StrPointer str_iron_man_mode_warning;
-// };
-//
+
+#define AmmoCaliber_SIZE 17
+#define BobbyRayAmmoCaliber_SIZE 16
+#define WeaponType_SIZE 9
+#define TeamTurnString_SIZE 5
+#define Message_SIZE 59
+#define pTownNames_SIZE 13
+#define g_towns_locative_SIZE 13
+#define sTimeStrings_SIZE 6
+#define pAssignmentStrings_SIZE 35
+#define pMilitiaString_SIZE 3
+#define pMilitiaButtonString_SIZE 2
+#define pConditionStrings_SIZE 9
+#define pEpcMenuStrings_SIZE 5
+#define pLongAssignmentStrings_SIZE 35
+#define pContractStrings_SIZE 7
+#define pPOWStrings_SIZE 2
+#define pInvPanelTitleStrings_SIZE 3
+#define pShortAttributeStrings_SIZE 10
+#define pUpperLeftMapScreenStrings_SIZE 4
+#define pTrainingStrings_SIZE 4
+#define pAssignMenuStrings_SIZE 7
+#define pRemoveMercStrings_SIZE 2
+#define pAttributeMenuStrings_SIZE 10
+#define pTrainingMenuStrings_SIZE 5
+#define pSquadMenuStrings_SIZE 21
+#define pPersonnelScreenStrings_SIZE 14
+#define gzMercSkillText_SIZE 17
+#define pTacticalPopupButtonStrings_SIZE 19
+#define pDoorTrapStrings_SIZE 5
+#define pMapScreenMouseRegionHelpText_SIZE 6
+#define pNoiseVolStr_SIZE 4
+#define pNoiseTypeStr_SIZE 12
+#define pDirectionStr_SIZE 8
+#define pLandTypeStrings_SIZE 40
+#define gpStrategicString_SIZE 69
+#define sKeyDescriptionStrings_SIZE 2
+#define gWeaponStatsDesc_SIZE 7
+#define gzMoneyAmounts_SIZE 6
+#define pVehicleStrings_SIZE 6
+#define zVehicleName_SIZE 6
+#define const_SIZE 137
+#define pExitingSectorHelpText_SIZE 14
+#define pRepairStrings_SIZE 4
+#define sPreStatBuildString_SIZE 6
+#define sStatGainStrings_SIZE 11
+#define pHelicopterEtaStrings_SIZE 10
+#define gsTimeStrings_SIZE 4
+#define sFacilitiesStrings_SIZE 7
+#define pMapPopUpInventoryText_SIZE 2
+#define pwTownInfoStrings_SIZE 7
+#define pwMineStrings_SIZE 14
+#define pwMiscSectorStrings_SIZE 7
+#define pMapInventoryErrorString_SIZE 5
+#define pMapInventoryStrings_SIZE 2
+#define pMovementMenuStrings_SIZE 4
+#define pUpdateMercStrings_SIZE 6
+#define pMapScreenBorderButtonHelpText_SIZE 6
+#define pMapScreenBottomFastHelp_SIZE 8
+#define pSenderNameList_SIZE 51
+#define pDeleteMailStrings_SIZE 2
+#define pEmailHeaders_SIZE 3
+#define pFinanceSummary_SIZE 12
+#define pFinanceHeaders_SIZE 7
+#define pTransactionText_SIZE 28
+#define pSkyriderText_SIZE 3
+#define pMoralStrings_SIZE 6
+#define pMapScreenStatusStrings_SIZE 5
+#define pMapScreenPrevNextCharButtonHelpText_SIZE 2
+#define pShortVehicleStrings_SIZE 6
+#define pVehicleStrings_SIZE 6
+#define pTrashItemText_SIZE 2
+#define pMapErrorString_SIZE 50
+#define pMapPlotStrings_SIZE 5
+#define pBullseyeStrings_SIZE 5
+#define pMiscMapScreenMouseRegionHelpText_SIZE 3
+#define pImpPopUpStrings_SIZE 7
+#define pImpButtonText_SIZE 26
+#define pExtraIMPStrings_SIZE 4
+#define pFilesSenderList_SIZE 7
+#define pHistoryHeaders_SIZE 5
+#define pHistoryStrings_SIZE 78
+#define pLaptopIcons_SIZE 8
+#define pBookMarkStrings_SIZE 8
+#define pDownloadString_SIZE 2
+#define gsAtmStartButtonText_SIZE 3
+#define pWebPagesTitles_SIZE 35
+#define pShowBookmarkString_SIZE 2
+#define pLaptopTitles_SIZE 5
+#define pPersonnelDepartedStateStrings_SIZE 5
+#define pPersonelTeamStrings_SIZE 8
+#define pPersonnelCurrentTeamStatsStrings_SIZE 3
+#define pPersonnelTeamStatsStrings_SIZE 11
+#define pMapVertIndex_SIZE 17
+#define pMapHortIndex_SIZE 17
+#define pMapDepthIndex_SIZE 4
+#define pUpdatePanelButtons_SIZE 2
+#define LargeTacticalStr_SIZE 4
+#define InsContractText_SIZE 4
+#define InsInfoText_SIZE 2
+#define MercAccountText_SIZE 9
+#define MercInfo_SIZE 11
+#define MercNoAccountText_SIZE 3
+#define MercHomePageText_SIZE 5
+#define sFuneralString_SIZE 12
+#define sFloristText_SIZE 14
+#define sOrderFormText_SIZE 22
+#define sFloristGalleryText_SIZE 5
+#define sFloristCards_SIZE 2
+#define BobbyROrderFormText_SIZE 26
+#define BobbyRText_SIZE 26
+#define BobbyRaysFrontText_SIZE 9
+#define AimSortText_SIZE 5
+#define AimPolicyText_SIZE 6
+#define AimMemberText_SIZE 4
+#define CharacterInfo_SIZE 12
+#define VideoConfercingText_SIZE 15
+#define AimPopUpText_SIZE 9
+#define AimHistoryText_SIZE 5
+#define AimFiText_SIZE 14
+#define AimAlumniText_SIZE 5
+#define AimScreenText_SIZE 8
+#define AimBottomMenuText_SIZE 6
+#define SKI_SIZE 14
+#define SkiMessageBoxText_SIZE 7
+#define zOptionsText_SIZE 9
+
+#define zSaveLoadText_SIZE 21
+
+#define zMarksMapScreenText_SIZE 23
+#define pMilitiaConfirmStrings_SIZE 10
+#define gpDemoString_SIZE 41
+#define gpDemoIntroString_SIZE 6
+#define gzMoneyWithdrawMessageText_SIZE 2
+#define zOptionsToggleText_SIZE 20
+#define gzGIOScreenText_SIZE 16
+#define pDeliveryLocationStrings_SIZE 17
+#define pPausedGameText_SIZE 3
+
+#define pMessageStrings_SIZE 68
+
+#define pDoctorWarningString_SIZE 2
+#define pMilitiaButtonsHelpText_SIZE 4
+#define gzLaptopHelpText_SIZE 16
+#define gzNonPersistantPBIText_SIZE 10
+#define gzMiscString_SIZE 5
+#define pNewNoiseStr_SIZE 11
+#define wMapScreenSortButtonHelpText_SIZE 6
+#define BrokenLinkText_SIZE 2
+#define gzBobbyRShipmentText_SIZE 4
+#define gzCreditNames_SIZE 15
+#define gzCreditNameTitle_SIZE 15
+#define gzCreditNameFunny_SIZE 15
+#define sRepairsDoneString_SIZE 4
+#define zGioDifConfirmText_SIZE 3
+#define gzLateLocalizedString_SIZE 58
+#define zOptionsScreenHelpText_SIZE 20
+#define ItemPickupHelpPopup_SIZE 5
+#define TacticalStr_SIZE 137
+#define zDealerStrings_SIZE 4
+#define zTalkMenuStrings_SIZE 6
+#define gMoneyStatsDesc_SIZE 8
+#define zHealthStr_SIZE 7
+#define SKI_Text_SIZE 14
+#define str_stat_list_SIZE 11
+#define str_aim_sort_list_SIZE 8
+#define zNewTacticalMessages_SIZE 6
+
+// Weapon Name and Description size
+#define SIZE_ITEM_NAME 80
+#define SIZE_SHORT_ITEM_NAME 80
+#define SIZE_ITEM_INFO 240
+#define SIZE_ITEM_PROS 160
+#define SIZE_ITEM_CONS 160
+
+typedef const wchar_t *StrPointer;
+
+struct LanguageRes {
+  const StrPointer *AmmoCaliber;
+  const StrPointer *BobbyRayAmmoCaliber;
+  const StrPointer *WeaponType;
+
+  const StrPointer *Message;
+  const StrPointer *TeamTurnString;
+  const StrPointer *pAssignMenuStrings;
+  const StrPointer *pTrainingStrings;
+  const StrPointer *pTrainingMenuStrings;
+  const StrPointer *pAttributeMenuStrings;
+  const StrPointer *pVehicleStrings;
+  const StrPointer *pShortAttributeStrings;
+  const StrPointer *pContractStrings;
+  const StrPointer *pAssignmentStrings;
+  const StrPointer *pConditionStrings;
+  const StrPointer *pTownNames;
+  const StrPointer *g_towns_locative;
+  const StrPointer *pPersonnelScreenStrings;
+  const StrPointer *pUpperLeftMapScreenStrings;
+  const StrPointer *pTacticalPopupButtonStrings;
+  const StrPointer *pSquadMenuStrings;
+  const StrPointer *pDoorTrapStrings;
+  const StrPointer *pLongAssignmentStrings;
+  const StrPointer *pMapScreenMouseRegionHelpText;
+  const StrPointer *pNoiseVolStr;
+  const StrPointer *pNoiseTypeStr;
+  const StrPointer *pDirectionStr;
+  const StrPointer *pRemoveMercStrings;
+  const StrPointer *sTimeStrings;
+  const StrPointer *pLandTypeStrings;
+  const StrPointer *pInvPanelTitleStrings;
+  const StrPointer *pPOWStrings;
+  const StrPointer *pMilitiaString;
+  const StrPointer *pMilitiaButtonString;
+  const StrPointer *pEpcMenuStrings;
+  const StrPointer *pRepairStrings;
+  const StrPointer *sPreStatBuildString;
+  const StrPointer *sStatGainStrings;
+  const StrPointer *pHelicopterEtaStrings;
+  const StrPointer sMapLevelString;
+  const StrPointer gsLoyalString;
+  const StrPointer gsUndergroundString;
+  const StrPointer *gsTimeStrings;
+  const StrPointer *sFacilitiesStrings;
+  const StrPointer *pMapPopUpInventoryText;
+  const StrPointer *pwTownInfoStrings;
+  const StrPointer *pwMineStrings;
+  const StrPointer *pwMiscSectorStrings;
+  const StrPointer *pMapInventoryErrorString;
+  const StrPointer *pMapInventoryStrings;
+  const StrPointer *pMovementMenuStrings;
+  const StrPointer *pUpdateMercStrings;
+  const StrPointer *pMapScreenBorderButtonHelpText;
+  const StrPointer *pMapScreenBottomFastHelp;
+  const StrPointer pMapScreenBottomText;
+  const StrPointer pMercDeadString;
+  const StrPointer *pSenderNameList;
+  const StrPointer pNewMailStrings;
+  const StrPointer *pDeleteMailStrings;
+  const StrPointer *pEmailHeaders;
+  const StrPointer pEmailTitleText;
+  const StrPointer pFinanceTitle;
+  const StrPointer *pFinanceSummary;
+  const StrPointer *pFinanceHeaders;
+  const StrPointer *pTransactionText;
+  const StrPointer *pMoralStrings;
+  const StrPointer *pSkyriderText;
+  const StrPointer str_left_equipment;
+  const StrPointer *pMapScreenStatusStrings;
+  const StrPointer *pMapScreenPrevNextCharButtonHelpText;
+  const StrPointer pEtaString;
+  const StrPointer *pShortVehicleStrings;
+  const StrPointer *pTrashItemText;
+  const StrPointer *pMapErrorString;
+  const StrPointer *pMapPlotStrings;
+  const StrPointer *pBullseyeStrings;
+  const StrPointer *pMiscMapScreenMouseRegionHelpText;
+  const StrPointer str_he_leaves_where_drop_equipment;
+  const StrPointer str_she_leaves_where_drop_equipment;
+  const StrPointer str_he_leaves_drops_equipment;
+  const StrPointer str_she_leaves_drops_equipment;
+  const StrPointer *pImpPopUpStrings;
+  const StrPointer *pImpButtonText;
+  const StrPointer *pExtraIMPStrings;
+  const StrPointer pFilesTitle;
+  const StrPointer *pFilesSenderList;
+  const StrPointer pHistoryLocations;
+  const StrPointer *pHistoryStrings;
+  const StrPointer *pHistoryHeaders;
+  const StrPointer pHistoryTitle;
+  const StrPointer *pShowBookmarkString;
+  const StrPointer *pWebPagesTitles;
+  const StrPointer pWebTitle;
+  const StrPointer pPersonnelString;
+  const StrPointer pErrorStrings;
+  const StrPointer *pDownloadString;
+  const StrPointer *pBookMarkStrings;
+  const StrPointer *pLaptopIcons;
+  const StrPointer *gsAtmStartButtonText;
+  const StrPointer *pPersonnelTeamStatsStrings;
+  const StrPointer *pPersonnelCurrentTeamStatsStrings;
+  const StrPointer *pPersonelTeamStrings;
+  const StrPointer *pPersonnelDepartedStateStrings;
+  const StrPointer *pMapHortIndex;
+  const StrPointer *pMapVertIndex;
+  const StrPointer *pMapDepthIndex;
+  const StrPointer *pLaptopTitles;
+  const StrPointer pDayStrings;
+  const StrPointer *pMilitiaConfirmStrings;
+  const StrPointer *pDeliveryLocationStrings;
+  const StrPointer pSkillAtZeroWarning;
+  const StrPointer pIMPBeginScreenStrings;
+  const StrPointer pIMPFinishButtonText;
+  const StrPointer pIMPFinishStrings;
+  const StrPointer pIMPVoicesStrings;
+  const StrPointer pPersTitleText;
+  const StrPointer *pPausedGameText;
+  const StrPointer *zOptionsToggleText;
+  const StrPointer *zOptionsScreenHelpText;
+  const StrPointer *pDoctorWarningString;
+  const StrPointer *pMilitiaButtonsHelpText;
+  const StrPointer pMapScreenJustStartedHelpText;
+  const StrPointer pLandMarkInSectorString;
+  const StrPointer *gzMercSkillText;
+  const StrPointer *gzNonPersistantPBIText;
+  const StrPointer *gzMiscString;
+  const StrPointer *wMapScreenSortButtonHelpText;
+  const StrPointer *pNewNoiseStr;
+  const StrPointer *gzLateLocalizedString;
+  const StrPointer pAntiHackerString;
+  const StrPointer *pMessageStrings;
+  const StrPointer *ItemPickupHelpPopup;
+  const StrPointer *TacticalStr;
+  const StrPointer *LargeTacticalStr;
+  const StrPointer zDialogActions;
+  const StrPointer *zDealerStrings;
+  const StrPointer *zTalkMenuStrings;
+  const StrPointer *gzMoneyAmounts;
+  const StrPointer gzProsLabel;
+  const StrPointer gzConsLabel;
+  const StrPointer *gMoneyStatsDesc;
+  const StrPointer *gWeaponStatsDesc;
+  const StrPointer *sKeyDescriptionStrings;
+  const StrPointer *zHealthStr;
+  const StrPointer *zVehicleName;
+  const StrPointer *pExitingSectorHelpText;
+  const StrPointer *InsContractText;
+  const StrPointer *InsInfoText;
+  const StrPointer *MercAccountText;
+  const StrPointer *MercInfo;
+  const StrPointer *MercNoAccountText;
+  const StrPointer *MercHomePageText;
+  const StrPointer *sFuneralString;
+  const StrPointer *sFloristText;
+  const StrPointer *sOrderFormText;
+  const StrPointer *sFloristGalleryText;
+  const StrPointer *sFloristCards;
+  const StrPointer *BobbyROrderFormText;
+  const StrPointer *BobbyRText;
+  const StrPointer str_bobbyr_guns_num_guns_that_use_ammo;
+  const StrPointer *BobbyRaysFrontText;
+  const StrPointer *AimSortText;
+  const StrPointer str_aim_sort_price;
+  const StrPointer str_aim_sort_experience;
+  const StrPointer str_aim_sort_marksmanship;
+  const StrPointer str_aim_sort_medical;
+  const StrPointer str_aim_sort_explosives;
+  const StrPointer str_aim_sort_mechanical;
+  const StrPointer str_aim_sort_ascending;
+  const StrPointer str_aim_sort_descending;
+  const StrPointer *AimPolicyText;
+  const StrPointer *AimMemberText;
+  const StrPointer *CharacterInfo;
+  const StrPointer *VideoConfercingText;
+  const StrPointer *AimPopUpText;
+  const StrPointer AimLinkText;
+  const StrPointer *AimHistoryText;
+  const StrPointer *AimFiText;
+  const StrPointer *AimAlumniText;
+  const StrPointer *AimScreenText;
+  const StrPointer *AimBottomMenuText;
+  const StrPointer *zMarksMapScreenText;
+  const StrPointer *gpStrategicString;
+  const StrPointer gpGameClockString;
+  const StrPointer *SKI_Text;
+  const StrPointer *SkiMessageBoxText;
+  const StrPointer *zSaveLoadText;
+  const StrPointer *zOptionsText;
+  const StrPointer *gzGIOScreenText;
+  const StrPointer gzHelpScreenText;
+  const StrPointer *gzLaptopHelpText;
+  const StrPointer *gzMoneyWithdrawMessageText;
+  const StrPointer gzCopyrightText;
+  const StrPointer *BrokenLinkText;
+  const StrPointer *gzBobbyRShipmentText;
+  const StrPointer *zGioDifConfirmText;
+  const StrPointer *gzCreditNames;
+  const StrPointer *gzCreditNameTitle;
+  const StrPointer *gzCreditNameFunny;
+  const StrPointer pContractButtonString;
+  const StrPointer gzIntroScreen;
+  const StrPointer *pUpdatePanelButtons;
+  const StrPointer *sRepairsDoneString;
+  const StrPointer str_ceramic_plates_smashed;
+  const StrPointer str_arrival_rerouted;
+
+  const StrPointer str_stat_health;
+  const StrPointer str_stat_agility;
+  const StrPointer str_stat_dexterity;
+  const StrPointer str_stat_strength;
+  const StrPointer str_stat_leadership;
+  const StrPointer str_stat_wisdom;
+  const StrPointer str_stat_exp_level;
+  const StrPointer str_stat_marksmanship;
+  const StrPointer str_stat_mechanical;
+  const StrPointer str_stat_explosive;
+  const StrPointer str_stat_medical;
+
+  const StrPointer *str_stat_list;
+  const StrPointer *str_aim_sort_list;
+
+  const StrPointer *zNewTacticalMessages;
+  const StrPointer str_iron_man_mode_warning;
+};
+
 // /** Current language resources. */
 // extern const LanguageRes *g_langRes;
 //
@@ -1634,6 +1634,6 @@
 //   TCTL_MSG__IRON_MAN_CANT_SAVE_NOW,
 //   TCTL_MSG__CANNOT_SAVE_DURING_COMBAT,
 // };
-//
-// #endif
-//
+
+#endif
+

@@ -1,13 +1,13 @@
-// #include "SGP/FileMan.h"
+#include "SGP/FileMan.h"
 //
 // #include <algorithm>
 // #include <errno.h>
 // #include <fcntl.h>
-// #include <filesystem>
+#include <filesystem>
 // #include <iostream>
 // #include <stdexcept>
 // #include <stdlib.h>
-// #include <string>
+#include <string>
 // #include <sys/stat.h>
 // #include <sys/types.h>
 //
@@ -719,10 +719,10 @@
 //   }
 //   return paths;
 // }
-//
-// /** Get parent path (e.g. directory path from the full path). */
-// std::string FileMan::getParentPath(const std::string &_path, bool absolute) {
-//   std::filesystem::path p(_path);
-//   return p.parent_path().string();
-// }
-//
+
+/** Get parent path (e.g. directory path from the full path). */
+std::string FileMan::getParentPath(const std::string &_path, bool absolute) {
+  std::filesystem::path p(_path);
+  return p.parent_path().string();
+}
+

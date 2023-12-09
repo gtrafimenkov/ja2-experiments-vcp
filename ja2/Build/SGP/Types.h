@@ -1,6 +1,6 @@
-// #ifndef __TYPES_
-// #define __TYPES_
-//
+#ifndef __TYPES_
+#define __TYPES_
+
 // #include <SDL_video.h>
 // #include <stdint.h>
 // #include <stdlib.h>
@@ -17,10 +17,10 @@
 // #else
 // #define FIXME (void)0;
 // #endif
-//
-// #define lengthof(a) (sizeof(a) / sizeof(a[0]))
-// #define endof(a) ((a) + lengthof(a))
-//
+
+#define lengthof(a) (sizeof(a) / sizeof(a[0]))
+#define endof(a) ((a) + lengthof(a))
+
 // #define MAX(a, b) __max(a, b)
 // #define MIN(a, b) __min(a, b)
 //
@@ -50,24 +50,24 @@
 // typedef double DOUBLE;
 // // strings
 // typedef char CHAR8;
-//
-// // other
-// typedef unsigned char BOOLEAN;
+
+// other
+typedef unsigned char BOOLEAN;
 // typedef void *PTR;
 // typedef UINT8 BYTE;
 // typedef CHAR8 STRING512[512];
 //
 // #define SGPFILENAME_LEN 100
 // typedef CHAR8 SGPFILENAME[SGPFILENAME_LEN];
-//
-// #ifndef TRUE
-// #define TRUE 1
-// #endif
-//
-// #ifndef FALSE
-// #define FALSE 0
-// #endif
-//
+
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 // #define BAD_INDEX -1
 //
 // #define PI 3.1415926
@@ -147,6 +147,5 @@
 // #else
 // #define ENUM_BITSET(type)
 // #endif
-//
-// #endif
-//
+
+#endif

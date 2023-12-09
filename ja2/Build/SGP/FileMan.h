@@ -1,7 +1,7 @@
-// #ifndef FILEMAN_H
-// #define FILEMAN_H
-//
-// #include <string>
+#ifndef FILEMAN_H
+#define FILEMAN_H
+
+#include <string>
 // #include <vector>
 //
 // #include "SGP/AutoObj.h"
@@ -83,16 +83,16 @@
 // UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(void);
 //
 // typedef SGP::AutoObj<SGPFile, FileClose> AutoSGPFile;
-//
-// /***
-//  * New file manager.
-//  *
-//  * This class provides clean interface for file operations. */
-// class FileMan {
-//  public:
-//   /** Get parent path (e.g. directory path from the full path). */
-//   static std::string getParentPath(const std::string &path, bool absolute);
-//
+
+/***
+ * New file manager.
+ *
+ * This class provides clean interface for file operations. */
+class FileMan {
+ public:
+  /** Get parent path (e.g. directory path from the full path). */
+  static std::string getParentPath(const std::string &path, bool absolute);
+
 //   /** Open file for writing.
 //    * If file is missing it will be created.
 //    * If file exists, it's content will be removed. */
@@ -153,12 +153,12 @@
 //
 //   /** Join two path components. */
 //   static std::string joinPaths(const std::string &first, const std::string &second);
-//
-//  private:
-//   /** Private constructor to avoid instantiation. */
-//   FileMan(){};
-// };
-//
+
+ private:
+  /** Private constructor to avoid instantiation. */
+  FileMan(){};
+};
+
 // /**
 //  * Find all files with the given extension in the given directory.
 //  * @param dirPath Path to the directory
@@ -179,6 +179,5 @@
 //  * @param sortResults When True, sort found paths.
 //  * @return List of paths (dir + filename). */
 // std::vector<std::string> FindAllFilesInDir(const std::string &dirPath, bool sortResults = false);
-//
-// #endif
-//
+
+#endif

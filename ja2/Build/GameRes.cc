@@ -1,3 +1,5 @@
+#include "GameRes.h"
+
 // #include <locale.h>
 // #include <stdexcept>
 //
@@ -7,28 +9,28 @@
 // #include "SGP/LibraryDataBase.h"
 // #include "SGP/Logger.h"
 // #include "SGP/StrUtils.h"
-// #include "SGP/TranslationTable.h"
+#include "SGP/TranslationTable.h"
 // #include "Utils/MultiLanguageGraphicUtils.h"
-// #include "Utils/Text.h"
+#include "Utils/Text.h"
 //
 // extern LanguageRes g_LanguageResDutch;
-// extern LanguageRes g_LanguageResEnglish;
+extern LanguageRes g_LanguageResEnglish;
 // extern LanguageRes g_LanguageResFrench;
 // extern LanguageRes g_LanguageResGerman;
 // extern LanguageRes g_LanguageResItalian;
 // extern LanguageRes g_LanguageResPolish;
 // extern LanguageRes g_LanguageResRussian;
 // extern LanguageRes g_LanguageResRussianGold;
-//
-// /** Game version. */
-// static GameVersion s_gameVersion = GV_ENGLISH;
-//
+
+/** Game version. */
+static GameVersion s_gameVersion = GV_ENGLISH;
+
 // /** Current language resources. */
 // const LanguageRes *g_langRes = &g_LanguageResEnglish;
-//
-// /** Character->Glyph translation table for the current language. */
-// unsigned char const *TranslationTable = g_en_TranslationTable->m_table;
-//
+
+/** Character->Glyph translation table for the current language. */
+unsigned char const *TranslationTable = g_en_TranslationTable->m_table;
+
 // wchar_t getZeroGlyphChar() {
 //   if (s_gameVersion == GV_RUSSIAN) {
 //     return L' ';
@@ -36,49 +38,49 @@
 //     return L'A';
 //   }
 // }
-//
-// /** Set language resources. */
-// static void setResources(const LanguageRes *langRes, const CTranslationTable *translationTable) {
-//   g_langRes = langRes;
-//   TranslationTable = translationTable->m_table;
-// }
-//
-// /** Choose game version. */
-// void setGameVersion(GameVersion ver) {
-//   s_gameVersion = ver;
-//   switch (s_gameVersion) {
-//     case GV_DUTCH:
-//       setResources(&g_LanguageResDutch, g_en_TranslationTable);
-//       break;
-//     case GV_ENGLISH:
-//       setResources(&g_LanguageResEnglish, g_en_TranslationTable);
-//       break;
-//     case GV_FRENCH:
-//       setResources(&g_LanguageResFrench, g_fr_TranslationTable);
-//       break;
-//     case GV_GERMAN:
-//       setResources(&g_LanguageResGerman, g_en_TranslationTable);
-//       break;
-//     case GV_ITALIAN:
-//       setResources(&g_LanguageResItalian, g_en_TranslationTable);
-//       break;
-//     case GV_POLISH:
-//       setResources(&g_LanguageResPolish, g_en_TranslationTable);
-//       break;
-//     case GV_RUSSIAN:
-//       setResources(&g_LanguageResRussian, g_rus_TranslationTable);
-//       break;
-//     case GV_RUSSIAN_GOLD:
-//       setResources(&g_LanguageResRussianGold, g_rusGold_TranslationTable);
-//       break;
-//     default: {
-//       LOG_WARNING("Unknown version. Using ENGLISH by defaul\n");
-//       s_gameVersion = GV_ENGLISH;
-//       setResources(&g_LanguageResEnglish, g_en_TranslationTable);
-//     }
-//   }
-// }
-//
+
+/** Set language resources. */
+static void setResources(const LanguageRes *langRes, const CTranslationTable *translationTable) {
+  // g_langRes = langRes;
+  TranslationTable = translationTable->m_table;
+}
+
+/** Choose game version. */
+void setGameVersion(GameVersion ver) {
+  s_gameVersion = ver;
+  switch (s_gameVersion) {
+    // case GV_DUTCH:
+    //   setResources(&g_LanguageResDutch, g_en_TranslationTable);
+    //   break;
+    case GV_ENGLISH:
+      setResources(&g_LanguageResEnglish, g_en_TranslationTable);
+      break;
+    // case GV_FRENCH:
+    //   setResources(&g_LanguageResFrench, g_fr_TranslationTable);
+    //   break;
+    // case GV_GERMAN:
+    //   setResources(&g_LanguageResGerman, g_en_TranslationTable);
+    //   break;
+    // case GV_ITALIAN:
+    //   setResources(&g_LanguageResItalian, g_en_TranslationTable);
+    //   break;
+    // case GV_POLISH:
+    //   setResources(&g_LanguageResPolish, g_en_TranslationTable);
+    //   break;
+    // case GV_RUSSIAN:
+    //   setResources(&g_LanguageResRussian, g_rus_TranslationTable);
+    //   break;
+    // case GV_RUSSIAN_GOLD:
+    //   setResources(&g_LanguageResRussianGold, g_rusGold_TranslationTable);
+    //   break;
+    // default: {
+    //   LOG_WARNING("Unknown version. Using ENGLISH by defaul\n");
+    //   s_gameVersion = GV_ENGLISH;
+    //   setResources(&g_LanguageResEnglish, g_en_TranslationTable);
+    // }
+  }
+}
+
 // /** Check if this is English version of the game. */
 // bool isEnglishVersion() { return s_gameVersion == GV_ENGLISH; }
 //
