@@ -6,9 +6,9 @@
 // #include "SGP/Debug.h"
 // #include "SGP/FileMan.h"
 // #include "SGP/ImpTGA.h"
-// #include "SGP/MemMan.h"
+#include "SGP/MemMan.h"
 // #include "SGP/PCX.h"
-// #include "SGP/STCI.h"
+#include "SGP/STCI.h"
 // #include "SGP/Types.h"
 // #include "SGP/VObject.h"
 // #include "SGP/WCheck.h"
@@ -153,22 +153,22 @@ SGPImage *CreateImage(const char *const filename, const UINT16 fContents) {
 //
 //   return FALSE;
 // }
-//
-// UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette) {
-//   Assert(pPalette != NULL);
-//
-//   UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
-//
-//   for (UINT32 cnt = 0; cnt < 256; cnt++) {
-//     UINT8 const r = pPalette[cnt].r;
-//     UINT8 const g = pPalette[cnt].g;
-//     UINT8 const b = pPalette[cnt].b;
-//     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
-//   }
-//
-//   return p16BPPPalette;
-// }
-//
+
+UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette) {
+  Assert(pPalette != NULL);
+
+  UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
+
+  for (UINT32 cnt = 0; cnt < 256; cnt++) {
+    UINT8 const r = pPalette[cnt].r;
+    UINT8 const g = pPalette[cnt].g;
+    UINT8 const b = pPalette[cnt].b;
+    p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
+  }
+
+  return p16BPPPalette;
+}
+
 // /**********************************************************************************************
 //  Create16BPPPaletteShaded
 //

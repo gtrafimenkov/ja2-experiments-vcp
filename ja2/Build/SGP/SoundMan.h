@@ -1,14 +1,14 @@
-// #ifndef __SOUNDMAN_
-// #define __SOUNDMAN_
-//
-// #include "SGP/Types.h"
-//
+#ifndef __SOUNDMAN_
+#define __SOUNDMAN_
+
+#include "SGP/Types.h"
+
 // #define MAXVOLUME 127
 //
 // // Sound error values (they're all the same)
 // #define NO_SAMPLE 0xffffffff
-// #define SOUND_ERROR 0xffffffff
-//
+#define SOUND_ERROR 0xffffffff
+
 // // Zeros out the structs for the system info, and initializes the cache.
 // void InitializeSoundManager(void);
 //
@@ -48,14 +48,14 @@
 //  *          SOUND_ERROR is returned. */
 // UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
 //                        UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances);
-//
-// /* Can be polled in tight loops where sound buffers might starve due to heavy
-//  * hardware use, etc. Streams DO NOT normally need to be serviced manually, but
-//  * in some cases (heavy file loading) it might be desirable.
-//  * If you are using the end of sample callbacks, you must call this function
-//  * periodically to check the sample's status. */
-// void SoundServiceStreams(void);
-//
+
+/* Can be polled in tight loops where sound buffers might starve due to heavy
+ * hardware use, etc. Streams DO NOT normally need to be serviced manually, but
+ * in some cases (heavy file loading) it might be desirable.
+ * If you are using the end of sample callbacks, you must call this function
+ * periodically to check the sample's status. */
+void SoundServiceStreams(void);
+
 // /* This function should be polled by the application if random samples are
 //  * used. The time marks on each are checked and if it is time to spawn a new
 //  * instance of the sound, the number already in existance are checked, and if
@@ -105,6 +105,6 @@
 //
 // // Allows or disallows the startup of the sound hardware.
 // void SoundEnableSound(BOOLEAN fEnable);
-//
-// #endif
-//
+
+#endif
+

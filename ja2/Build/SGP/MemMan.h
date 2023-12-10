@@ -15,7 +15,7 @@
 // // Release build version
 // #include <stdlib.h>
 #define MemAlloc(size) XMalloc((size))
-// #define MemFree(ptr) free((ptr))
+#define MemFree(ptr) free((ptr))
 // #define MemRealloc(ptr, size) XRealloc((ptr), (size))
 void *XMalloc(size_t size);
 // void *XRealloc(void *ptr, size_t size);

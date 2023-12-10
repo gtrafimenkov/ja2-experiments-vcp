@@ -23,8 +23,8 @@
 //
 // // Defines for image charactoristics
 // #define IMAGE_TRLECOMPRESSED 0x0002
-// #define IMAGE_PALETTE 0x0004
-// #define IMAGE_BITMAPDATA 0x0008
+#define IMAGE_PALETTE 0x0004
+#define IMAGE_BITMAPDATA 0x0008
 // #define IMAGE_APPDATA 0x0010
 #define IMAGE_ALLIMAGEDATA 0x000C
 // #define IMAGE_ALLDATA 0x001C
@@ -113,7 +113,7 @@ SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
 // // Used to create a 16BPP Palette from an 8 bit palette, found in himage.c
 // UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
 //                                  UINT32 bscale, BOOLEAN mono);
-// UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette);
+UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette);
 // UINT16 Get16BPPColor(UINT32 RGBValue);
 // UINT32 GetRGBColor(UINT16 Value16BPP);
 //

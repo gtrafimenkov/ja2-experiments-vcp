@@ -3,10 +3,10 @@
 
 #include <string>
 // #include <vector>
-//
-// #include "SGP/AutoObj.h"
-// #include "SGP/Types.h"
-//
+
+#include "SGP/AutoObj.h"
+#include "SGP/Types.h"
+
 // #ifdef _WIN32
 // #define WIN32_LEAN_AND_MEAN
 // #include <windows.h>
@@ -29,10 +29,10 @@
 // /* Delete the file at path. Returns true iff deleting the file succeeded or
 //  * the file did not exist in the first place. */
 // void FileDelete(char const *path);
-//
-// void FileClose(HWFILE);
-//
-// void FileRead(HWFILE, void *pDest, size_t uiBytesToRead);
+
+void FileClose(HWFILE);
+
+void FileRead(HWFILE, void *pDest, size_t uiBytesToRead);
 // void FileWrite(HWFILE, void const *pDest, size_t uiBytesToWrite);
 //
 // template <typename T, typename U>
@@ -43,9 +43,9 @@
 //
 // void FileSeek(HWFILE, INT32 distance, FileSeekMode);
 // INT32 FileGetPos(HWFILE);
-//
-// UINT32 FileGetSize(HWFILE);
-//
+
+UINT32 FileGetSize(HWFILE);
+
 // /* Removes ALL FILES in the specified directory, but leaves the directory alone.
 //  * Does not affect any subdirectories! */
 // void EraseDirectory(char const *pcDirectory);
@@ -81,8 +81,8 @@
 // // Gets the amount of free space on the hard drive that the main executeablt is
 // // runnning from
 // UINT32 GetFreeSpaceOnHardDriveWhereGameIsRunningFrom(void);
-//
-// typedef SGP::AutoObj<SGPFile, FileClose> AutoSGPFile;
+
+typedef SGP::AutoObj<SGPFile, FileClose> AutoSGPFile;
 
 /***
  * New file manager.

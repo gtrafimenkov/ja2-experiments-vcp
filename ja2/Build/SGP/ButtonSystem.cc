@@ -4,7 +4,7 @@
 // #include <stdexcept>
 //
 // #include "SGP/ButtonSoundControl.h"
-// #include "SGP/Debug.h"
+#include "SGP/Debug.h"
 // #include "SGP/Font.h"
 // #include "SGP/HImage.h"
 // #include "SGP/Input.h"
@@ -32,14 +32,14 @@
 #define MAX_BUTTON_ICONS 40
 
 // #define GUI_BTN_NONE 0
-// #define GUI_BTN_DUPLICATE_VOBJ 1
-//
-// #define FOR_EACH_BUTTON(iter)              \
-//   FOR_EACH(GUI_BUTTON *, iter, ButtonList) \
-//   if (!*iter)                              \
-//     continue;                              \
-//   else
-//
+#define GUI_BTN_DUPLICATE_VOBJ 1
+
+#define FOR_EACH_BUTTON(iter)              \
+  FOR_EACH(GUI_BUTTON *, iter, ButtonList) \
+  if (!*iter)                              \
+    continue;                              \
+  else
+
 // #ifdef BUTTONSYSTEM_DEBUGGING
 //
 // // Called immediately before assigning the button to the button list.
@@ -96,9 +96,9 @@ struct BUTTON_PICS {
 static BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
 
 // SGPVSurface *ButtonDestBuffer;
-//
-// GUI_BUTTON *ButtonList[MAX_BUTTONS];
-//
+
+GUI_BUTTON *ButtonList[MAX_BUTTONS];
+
 // const ButtonDimensions *GetDimensionsOfButtonPic(const BUTTON_PICS *const pics) {
 //   return &pics->max;
 // }
@@ -201,41 +201,41 @@ static HVOBJECT GenericButtonIcons[MAX_BUTTON_ICONS];
 //                                   INT32 const on_normal) {
 //   return UseLoadedButtonImage(img, -1, off_normal, -1, on_normal, -1);
 // }
-//
-// void UnloadButtonImage(BUTTON_PICS *const pics) {
-// #if defined BUTTONSYSTEM_DEBUGGING
-//   AssertMsg(pics->vobj != NULL,
-//             "Attempting to UnloadButtonImage that has a "
-//             "null vobj (already deleted).");
-// #endif
-//   if (pics->vobj == NULL) return;
-//
-//   // If this is a duplicated button image, then don't trash the vobject
-//   if (!(pics->fFlags & GUI_BTN_DUPLICATE_VOBJ)) {
-//     /* Deleting a non-duplicate, so see if any dups present. if so, then convert
-//      * one of them to an original!
-//      */
-//     FOR_EACH(BUTTON_PICS, other, ButtonPictures) {
-//       if (other == pics) continue;
-//       if (other->vobj != pics->vobj) continue;
-//       if (!(other->fFlags & GUI_BTN_DUPLICATE_VOBJ)) continue;
-//
-//       /* If we got here, then we got a duplicate object of the one we want to
-//        * delete, so convert it to an original!
-//        */
-//       other->fFlags &= ~GUI_BTN_DUPLICATE_VOBJ;
-//
-//       // Now remove this button, but not its vobject
-//       goto remove_pic;
-//     }
-//
-//     DeleteVideoObject(pics->vobj);
-//   }
-//
-// remove_pic:
-//   pics->vobj = NULL;
-// }
-//
+
+void UnloadButtonImage(BUTTON_PICS *const pics) {
+#if defined BUTTONSYSTEM_DEBUGGING
+  AssertMsg(pics->vobj != NULL,
+            "Attempting to UnloadButtonImage that has a "
+            "null vobj (already deleted).");
+#endif
+  if (pics->vobj == NULL) return;
+
+  // If this is a duplicated button image, then don't trash the vobject
+  if (!(pics->fFlags & GUI_BTN_DUPLICATE_VOBJ)) {
+    /* Deleting a non-duplicate, so see if any dups present. if so, then convert
+     * one of them to an original!
+     */
+    FOR_EACH(BUTTON_PICS, other, ButtonPictures) {
+      if (other == pics) continue;
+      if (other->vobj != pics->vobj) continue;
+      if (!(other->fFlags & GUI_BTN_DUPLICATE_VOBJ)) continue;
+
+      /* If we got here, then we got a duplicate object of the one we want to
+       * delete, so convert it to an original!
+       */
+      other->fFlags &= ~GUI_BTN_DUPLICATE_VOBJ;
+
+      // Now remove this button, but not its vobject
+      goto remove_pic;
+    }
+
+    DeleteVideoObject(pics->vobj);
+  }
+
+remove_pic:
+  pics->vobj = NULL;
+}
+
 // void EnableButton(GUIButtonRef const b) {
 //   CHECKV(b != NULL);  // XXX HACK000C
 //   b->uiFlags |= BUTTON_ENABLED | BUTTON_DIRTY;
@@ -318,58 +318,58 @@ static void InitializeButtonImageManager(void) {
 //   // Return the slot number
 //   return ImgSlot;
 // }
-//
-// void UnloadGenericButtonIcon(INT16 GenImg) {
-//   AssertMsg(0 <= GenImg && GenImg < MAX_BUTTON_ICONS,
-//             String("Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg));
-//
-// #if defined BUTTONSYSTEM_DEBUGGING
-//   AssertMsg(GenericButtonIcons[GenImg],
-//             "Attempting to UnloadGenericButtonIcon "
-//             "that has no icon (already deleted).");
-// #endif
-//   if (!GenericButtonIcons[GenImg]) return;
-//   // If an icon is present in the slot, remove it.
-//   DeleteVideoObject(GenericButtonIcons[GenImg]);
-//   GenericButtonIcons[GenImg] = NULL;
-// }
-//
-// // Cleans up, and shuts down the button image manager sub-system.
-// static void ShutdownButtonImageManager(void) {
-//   // Remove all QuickButton images
-//   FOR_EACH(BUTTON_PICS, i, ButtonPictures) {
-//     if (i->vobj != NULL) UnloadButtonImage(i);
-//   }
-//
-//   // Remove all GenericButton images
-//   if (GenericButtonOffNormal != NULL) {
-//     DeleteVideoObject(GenericButtonOffNormal);
-//     GenericButtonOffNormal = NULL;
-//   }
-//
-//   if (GenericButtonOffHilite != NULL) {
-//     DeleteVideoObject(GenericButtonOffHilite);
-//     GenericButtonOffHilite = NULL;
-//   }
-//
-//   if (GenericButtonOnNormal != NULL) {
-//     DeleteVideoObject(GenericButtonOnNormal);
-//     GenericButtonOnNormal = NULL;
-//   }
-//
-//   if (GenericButtonOnHilite != NULL) {
-//     DeleteVideoObject(GenericButtonOnHilite);
-//     GenericButtonOnHilite = NULL;
-//   }
-//
-//   GenericButtonFillColors = 0;
-//
-//   // Remove all button icons
-//   for (int x = 0; x < MAX_BUTTON_ICONS; ++x) {
-//     if (GenericButtonIcons[x] != NULL) UnloadGenericButtonIcon(x);
-//   }
-// }
-//
+
+void UnloadGenericButtonIcon(INT16 GenImg) {
+  AssertMsg(0 <= GenImg && GenImg < MAX_BUTTON_ICONS,
+            String("Attempting to UnloadGenericButtonIcon with out of range index %d.", GenImg));
+
+#if defined BUTTONSYSTEM_DEBUGGING
+  AssertMsg(GenericButtonIcons[GenImg],
+            "Attempting to UnloadGenericButtonIcon "
+            "that has no icon (already deleted).");
+#endif
+  if (!GenericButtonIcons[GenImg]) return;
+  // If an icon is present in the slot, remove it.
+  DeleteVideoObject(GenericButtonIcons[GenImg]);
+  GenericButtonIcons[GenImg] = NULL;
+}
+
+// Cleans up, and shuts down the button image manager sub-system.
+static void ShutdownButtonImageManager(void) {
+  // Remove all QuickButton images
+  FOR_EACH(BUTTON_PICS, i, ButtonPictures) {
+    if (i->vobj != NULL) UnloadButtonImage(i);
+  }
+
+  // Remove all GenericButton images
+  if (GenericButtonOffNormal != NULL) {
+    DeleteVideoObject(GenericButtonOffNormal);
+    GenericButtonOffNormal = NULL;
+  }
+
+  if (GenericButtonOffHilite != NULL) {
+    DeleteVideoObject(GenericButtonOffHilite);
+    GenericButtonOffHilite = NULL;
+  }
+
+  if (GenericButtonOnNormal != NULL) {
+    DeleteVideoObject(GenericButtonOnNormal);
+    GenericButtonOnNormal = NULL;
+  }
+
+  if (GenericButtonOnHilite != NULL) {
+    DeleteVideoObject(GenericButtonOnHilite);
+    GenericButtonOnHilite = NULL;
+  }
+
+  GenericButtonFillColors = 0;
+
+  // Remove all button icons
+  for (int x = 0; x < MAX_BUTTON_ICONS; ++x) {
+    if (GenericButtonIcons[x] != NULL) UnloadGenericButtonIcon(x);
+  }
+}
+
 // void InitButtonSystem(void) {
 //   ButtonDestBuffer = FRAME_BUFFER;
 //

@@ -175,26 +175,26 @@ static DatabaseManagerHeaderStruct gFileDataBase;
 // } catch (...) {
 //   return 0;
 // }
-//
-// BOOLEAN LoadDataFromLibrary(LibraryFile *const f, void *const pData, const UINT32 uiBytesToRead) {
-//   if (f->pFileHeader == NULL) return FALSE;
-//
-//   UINT32 const uiOffsetInLibrary = f->pFileHeader->uiFileOffset;
-//   UINT32 const uiLength = f->pFileHeader->uiFileLength;
-//   FILE *const hLibraryFile = f->lib->hLibraryHandle;
-//   UINT32 const uiCurPos = f->uiFilePosInFile;
-//
-//   fseek(hLibraryFile, uiOffsetInLibrary + uiCurPos, SEEK_SET);
-//
-//   // if we are trying to read more data than the size of the file, return an
-//   // error
-//   if (uiBytesToRead + uiCurPos > uiLength) return FALSE;
-//
-//   if (fread(pData, uiBytesToRead, 1, hLibraryFile) != 1) return FALSE;
-//
-//   f->uiFilePosInFile += uiBytesToRead;
-//   return TRUE;
-// }
+
+BOOLEAN LoadDataFromLibrary(LibraryFile *const f, void *const pData, const UINT32 uiBytesToRead) {
+  if (f->pFileHeader == NULL) return FALSE;
+
+  UINT32 const uiOffsetInLibrary = f->pFileHeader->uiFileOffset;
+  UINT32 const uiLength = f->pFileHeader->uiFileLength;
+  FILE *const hLibraryFile = f->lib->hLibraryHandle;
+  UINT32 const uiCurPos = f->uiFilePosInFile;
+
+  fseek(hLibraryFile, uiOffsetInLibrary + uiCurPos, SEEK_SET);
+
+  // if we are trying to read more data than the size of the file, return an
+  // error
+  if (uiBytesToRead + uiCurPos > uiLength) return FALSE;
+
+  if (fread(pData, uiBytesToRead, 1, hLibraryFile) != 1) return FALSE;
+
+  f->uiFilePosInFile += uiBytesToRead;
+  return TRUE;
+}
 
 static const FileHeaderStruct *GetFileHeaderFromLibrary(const LibraryHeaderStruct *lib,
                                                         const char *filename);

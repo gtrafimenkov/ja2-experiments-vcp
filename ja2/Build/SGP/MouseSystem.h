@@ -1,40 +1,40 @@
-// // *****************************************************************************
-// //
-// // Filename :	MouseSystem.h
-// //
-// // Purpose :	Defines and typedefs for the "mousesystem" mouse region handler
-// //
-// // Modification history :
-// //
-// //		30jan97:Bret	-> Creation
-// //
-// // *****************************************************************************
+// *****************************************************************************
 //
-// #ifndef _MOUSE_SYSTEM_H_
-// #define _MOUSE_SYSTEM_H_
+// Filename :	MouseSystem.h
 //
+// Purpose :	Defines and typedefs for the "mousesystem" mouse region handler
+//
+// Modification history :
+//
+//		30jan97:Bret	-> Creation
+//
+// *****************************************************************************
+
+#ifndef _MOUSE_SYSTEM_H_
+#define _MOUSE_SYSTEM_H_
+
 // #include "JA2Types.h"
-// #include "SGP/Types.h"
-//
+#include "SGP/Types.h"
+
 // #define _JA2_RENDER_DIRTY  // Undef this if not using the JA2 Dirty Rectangle
 //                            // System.
 //
 // // Mouse Region Flags
 // #define MSYS_NO_FLAGS 0x00000000
 // #define MSYS_MOUSE_IN_AREA 0x00000001
-// #define MSYS_REGION_EXISTS 0x00000010
+#define MSYS_REGION_EXISTS 0x00000010
 // #define MSYS_REGION_ENABLED 0x00000040
 // #define MSYS_FASTHELP 0x00000080
 // #define MSYS_GOT_BACKGROUND 0x00000100
 // #define MSYS_HAS_BACKRECT 0x00000200
 // #define MSYS_FASTHELP_RESET 0x00000400
 // #define MSYS_ALLOW_DISABLED_FASTHELP 0x00000800
-//
-// struct MOUSE_REGION;
-//
+
+struct MOUSE_REGION;
+
 // typedef void (*MOUSE_CALLBACK)(MOUSE_REGION *, INT32);
-//
-// struct MOUSE_REGION {
+
+struct MOUSE_REGION {
 //   void ChangeCursor(UINT16 crsr);
 //
 //   void Enable() { uiFlags |= MSYS_REGION_ENABLED; }
@@ -56,8 +56,8 @@
 //   INT16 W() const { return RegionBottomRightX - RegionTopLeftX; }
 //   INT16 H() const { return RegionBottomRightY - RegionTopLeftY; }
 //
-//   INT8 PriorityLevel;    // Region's Priority, set by system and/or caller
-//   UINT32 uiFlags;        // Region's state flags
+  INT8 PriorityLevel;    // Region's Priority, set by system and/or caller
+  UINT32 uiFlags;        // Region's state flags
 //   INT16 RegionTopLeftX;  // Screen area affected by this region (absolute
 //                          // coordinates)
 //   INT16 RegionTopLeftY;
@@ -82,23 +82,23 @@
 //
 //   // Fast help vars.
 //   INT16 FastHelpTimer;    // Countdown timer for FastHelp text
-//   wchar_t *FastHelpText;  // Text string for the FastHelp (describes buttons if
-//                           // left there a while)
+  wchar_t *FastHelpText;  // Text string for the FastHelp (describes buttons if
+                          // left there a while)
 //   BACKGROUND_SAVE *FastHelpRect;
-//
-//   MOUSE_REGION *next;  // List maintenance, do NOT touch these entries
-//   MOUSE_REGION *prev;
-// };
-//
+
+  MOUSE_REGION *next;  // List maintenance, do NOT touch these entries
+  MOUSE_REGION *prev;
+};
+
 // // Mouse region priorities
 // #define MSYS_PRIORITY_LOWEST 0
 // #define MSYS_PRIORITY_LOW 15
 // #define MSYS_PRIORITY_NORMAL 31
 // #define MSYS_PRIORITY_HIGH 63
 // #define MSYS_PRIORITY_HIGHEST 127
-//
-// // Mouse system defines used during updates
-// #define MSYS_NO_ACTION 0
+
+// Mouse system defines used during updates
+#define MSYS_NO_ACTION 0
 // #define MSYS_DO_MOVE 1
 // #define MSYS_DO_LBUTTON_DWN 2
 // #define MSYS_DO_LBUTTON_UP 4
@@ -154,7 +154,7 @@
 //
 // // External
 // void MSYS_Init(void);
-// void MSYS_Shutdown(void);
+void MSYS_Shutdown(void);
 // void MSYS_DefineRegion(MOUSE_REGION *region, UINT16 tlx, UINT16 tly, UINT16 brx, UINT16 bry,
 //                        INT8 priority, UINT16 crsr, MOUSE_CALLBACK movecallback,
 //                        MOUSE_CALLBACK buttoncallback);
@@ -206,6 +206,6 @@
 //   using MOUSE_REGION::SetUserPtr;
 //   using MOUSE_REGION::uiFlags;
 // };
-//
-// #endif
-//
+
+#endif
+

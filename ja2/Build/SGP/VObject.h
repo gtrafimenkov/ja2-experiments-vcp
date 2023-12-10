@@ -21,21 +21,21 @@
 // // compatiblity ) From RGB to COLORVAL
 // #define FROMRGB(r, g, b) \
 //   ((UINT32)(((UINT8)(r) | ((UINT16)(g) << 8)) | (((UINT32)(UINT8)(b)) << 16)))
-//
-// // This structure is a video object.
-// // The video object contains different data based on it's type, compressed or
-// // not
-// class SGPVObject {
-//  public:
-//   SGPVObject(SGPImage const *);
-//   ~SGPVObject();
-//
+
+// This structure is a video object.
+// The video object contains different data based on it's type, compressed or
+// not
+class SGPVObject {
+ public:
+  SGPVObject(SGPImage const *);
+  ~SGPVObject();
+
 //   UINT8 BPP() const { return bit_depth_; }
 //
 //   SGPPaletteEntry const *Palette() const { return palette_; }
-//
-//   UINT16 const *Palette16() const { return palette16_; }
-//
+
+  UINT16 const *Palette16() const { return palette16_; }
+
 //   UINT16 const *CurrentShade() const { return current_shade_; }
 //
 //   // Set the current object shade table
@@ -46,25 +46,25 @@
 //   ETRLEObject const &SubregionProperties(size_t idx) const;
 //
 //   UINT8 const *PixData(ETRLEObject const &) const;
-//
-//   /* Given a ETRLE image index, retrieves the value of the pixel located at
-//    * the given image coordinates. The value returned is an 8-bit palette index
-//    */
-//   UINT8 GetETRLEPixelValue(UINT16 usETLREIndex, UINT16 usX, UINT16 usY) const;
-//
+
+  /* Given a ETRLE image index, retrieves the value of the pixel located at
+   * the given image coordinates. The value returned is an 8-bit palette index
+   */
+  UINT8 GetETRLEPixelValue(UINT16 usETLREIndex, UINT16 usX, UINT16 usY) const;
+
 //   // Deletes the 16-bit palette tables
 //   void DestroyPalettes();
 //
 //   void ShareShadetables(SGPVObject *);
-//
-//   enum Flags { NONE = 0, SHADETABLE_SHARED = 1U << 0 };
-//
+
+  enum Flags { NONE = 0, SHADETABLE_SHARED = 1U << 0 };
+
 //  private:
 //   Flags flags_;                           // Special flags
 //   UINT32 pix_data_size_;                  // ETRLE data size
 //   SGP::Buffer<SGPPaletteEntry> palette_;  // 8BPP Palette
-//   UINT16 *palette16_;                     // A 16BPP palette used for 8->16 blits
-//
+  UINT16 *palette16_;                     // A 16BPP palette used for 8->16 blits
+
 //   UINT8 *pix_data_;            // ETRLE pixel data
 //   ETRLEObject *etrle_object_;  // Object offset data etc
 //  public:
@@ -81,9 +81,9 @@
 //
 //  public:
 //   SGPVObject *next_;
-// };
-// ENUM_BITSET(SGPVObject::Flags)
-//
+};
+ENUM_BITSET(SGPVObject::Flags)
+
 // // Creates a list to contain video objects
 // void InitializeVideoObjectManager(void);
 //
@@ -96,9 +96,9 @@ SGPVObject *AddStandardVideoObjectFromFile(const char *ImageFile);
 // #define AddVideoObjectFromHImage(a) AddStandardVideoObjectFromHImage(a)
 #define AddVideoObjectFromFile(a) AddStandardVideoObjectFromFile(a)
 
-// // Removes a video object
-// static inline void DeleteVideoObject(SGPVObject *const vo) { delete vo; }
-//
+// Removes a video object
+static inline void DeleteVideoObject(SGPVObject *const vo) { delete vo; }
+
 // // Blits a video object to another video object
 // void BltVideoObject(SGPVSurface *dst, SGPVObject const *src, UINT16 usRegionIndex, INT32 iDestX,
 //                     INT32 iDestY);

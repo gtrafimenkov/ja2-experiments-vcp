@@ -1,18 +1,18 @@
+
+//=================================================================================================
+//	MouseSystem.c
 //
-// //=================================================================================================
-// //	MouseSystem.c
-// //
-// //	Routines for handling prioritized mouse regions. The system as setup
-// // below allows the use of 	callback functions for each region, as well as
-// // allowing a different cursor to be defined for 	each region.
-// //
-// //	Written by Bret Rowdon, Jan 30 '97
-// //  Re-Written by Kris Morness, since...
-// //
-// //=================================================================================================
+//	Routines for handling prioritized mouse regions. The system as setup
+// below allows the use of 	callback functions for each region, as well as
+// allowing a different cursor to be defined for 	each region.
 //
-// #include "SGP/MouseSystem.h"
+//	Written by Bret Rowdon, Jan 30 '97
+//  Re-Written by Kris Morness, since...
 //
+//=================================================================================================
+
+#include "SGP/MouseSystem.h"
+
 // #include <stdexcept>
 //
 // #include "JAScreens.h"
@@ -24,7 +24,7 @@
 // #include "SGP/HImage.h"
 // #include "SGP/Input.h"
 // #include "SGP/Line.h"
-// #include "SGP/MemMan.h"
+#include "SGP/MemMan.h"
 // #include "SGP/Timer.h"
 // #include "SGP/Types.h"
 // #include "SGP/VObject.h"
@@ -45,54 +45,54 @@
 // static MOUSE_REGION *gpRegionLastLButtonDown = NULL;
 // static MOUSE_REGION *gpRegionLastLButtonUp = NULL;
 // static UINT32 guiRegionLastLButtonDownTime = 0;
-//
-// INT16 MSYS_CurrentMX = 0;
-// INT16 MSYS_CurrentMY = 0;
-// static INT16 MSYS_CurrentButtons = 0;
-// static INT16 MSYS_Action = 0;
-//
-// static BOOLEAN MSYS_SystemInitialized = FALSE;
-//
-// static MOUSE_REGION *g_clicked_region;
-//
-// static MOUSE_REGION *MSYS_RegList = NULL;
-//
-// static MOUSE_REGION *MSYS_PrevRegion = 0;
-// static MOUSE_REGION *MSYS_CurrRegion = NULL;
-//
+
+INT16 MSYS_CurrentMX = 0;
+INT16 MSYS_CurrentMY = 0;
+static INT16 MSYS_CurrentButtons = 0;
+static INT16 MSYS_Action = 0;
+
+static BOOLEAN MSYS_SystemInitialized = FALSE;
+
+static MOUSE_REGION *g_clicked_region;
+
+static MOUSE_REGION *MSYS_RegList = NULL;
+
+static MOUSE_REGION *MSYS_PrevRegion = 0;
+static MOUSE_REGION *MSYS_CurrRegion = NULL;
+
 // static const INT16 gsFastHelpDelay = 600;  // In timer ticks
+
+static BOOLEAN gfRefreshUpdate = FALSE;
+
+static void MSYS_TrashRegList(void);
+
+//======================================================================================================
+//	MSYS_Init
 //
-// static BOOLEAN gfRefreshUpdate = FALSE;
+//	Initialize the mouse system.
 //
-// static void MSYS_TrashRegList(void);
+void MSYS_Init(void) {
+  MSYS_TrashRegList();
+
+  MSYS_CurrentMX = 0;
+  MSYS_CurrentMY = 0;
+  MSYS_CurrentButtons = 0;
+  MSYS_Action = MSYS_NO_ACTION;
+
+  MSYS_PrevRegion = NULL;
+  MSYS_SystemInitialized = TRUE;
+}
+
+//======================================================================================================
+//	MSYS_Shutdown
 //
-// //======================================================================================================
-// //	MSYS_Init
-// //
-// //	Initialize the mouse system.
-// //
-// void MSYS_Init(void) {
-//   MSYS_TrashRegList();
+//	De-inits the "mousesystem" mouse region handling code.
 //
-//   MSYS_CurrentMX = 0;
-//   MSYS_CurrentMY = 0;
-//   MSYS_CurrentButtons = 0;
-//   MSYS_Action = MSYS_NO_ACTION;
-//
-//   MSYS_PrevRegion = NULL;
-//   MSYS_SystemInitialized = TRUE;
-// }
-//
-// //======================================================================================================
-// //	MSYS_Shutdown
-// //
-// //	De-inits the "mousesystem" mouse region handling code.
-// //
-// void MSYS_Shutdown(void) {
-//   MSYS_SystemInitialized = FALSE;
-//   MSYS_TrashRegList();
-// }
-//
+void MSYS_Shutdown(void) {
+  MSYS_SystemInitialized = FALSE;
+  MSYS_TrashRegList();
+}
+
 // static void MSYS_UpdateMouseRegion(void);
 //
 // void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord) {
@@ -168,55 +168,55 @@
 //   MSYS_Action = action;
 //   if (action != MSYS_NO_ACTION) MSYS_UpdateMouseRegion();
 // }
+
+//======================================================================================================
+//	MSYS_TrashRegList
 //
-// //======================================================================================================
-// //	MSYS_TrashRegList
-// //
-// //	Deletes the entire region list.
-// //
-// static void MSYS_TrashRegList(void) {
-//   while (MSYS_RegList) {
-//     if (MSYS_RegList->uiFlags & MSYS_REGION_EXISTS) {
-//       MSYS_RemoveRegion(MSYS_RegList);
-//     } else {
-//       MSYS_RegList = MSYS_RegList->next;
-//     }
-//   }
-// }
+//	Deletes the entire region list.
 //
-// static void MSYS_DeleteRegionFromList(MOUSE_REGION *);
-//
-// /* Add a region struct to the current list. The list is sorted by priority
-//  * levels. If two entries have the same priority level, then the latest to enter
-//  * the list gets the higher priority. */
-// static void MSYS_AddRegionToList(MOUSE_REGION *const r) {
-//   /* If region seems to already be in list, delete it so we can re-insert the
-//    * region. */
-//   MSYS_DeleteRegionFromList(r);
-//
-//   MOUSE_REGION *i = MSYS_RegList;
-//   if (!i) {  // Empty list, so add it straight up.
-//     MSYS_RegList = r;
-//   } else {
-//     // Walk down list until we find place to insert (or at end of list)
-//     for (; i->next; i = i->next) {
-//       if (i->PriorityLevel <= r->PriorityLevel) break;
-//     }
-//
-//     if (i->PriorityLevel > r->PriorityLevel) {  // Add after node
-//       r->prev = i;
-//       r->next = i->next;
-//       if (r->next) r->next->prev = r;
-//       i->next = r;
-//     } else {  // Add before node
-//       r->prev = i->prev;
-//       r->next = i;
-//       *(r->prev ? &r->prev->next : &MSYS_RegList) = r;
-//       i->prev = r;
-//     }
-//   }
-// }
-//
+static void MSYS_TrashRegList(void) {
+  while (MSYS_RegList) {
+    if (MSYS_RegList->uiFlags & MSYS_REGION_EXISTS) {
+      MSYS_RemoveRegion(MSYS_RegList);
+    } else {
+      MSYS_RegList = MSYS_RegList->next;
+    }
+  }
+}
+
+static void MSYS_DeleteRegionFromList(MOUSE_REGION *);
+
+/* Add a region struct to the current list. The list is sorted by priority
+ * levels. If two entries have the same priority level, then the latest to enter
+ * the list gets the higher priority. */
+static void MSYS_AddRegionToList(MOUSE_REGION *const r) {
+  /* If region seems to already be in list, delete it so we can re-insert the
+   * region. */
+  MSYS_DeleteRegionFromList(r);
+
+  MOUSE_REGION *i = MSYS_RegList;
+  if (!i) {  // Empty list, so add it straight up.
+    MSYS_RegList = r;
+  } else {
+    // Walk down list until we find place to insert (or at end of list)
+    for (; i->next; i = i->next) {
+      if (i->PriorityLevel <= r->PriorityLevel) break;
+    }
+
+    if (i->PriorityLevel > r->PriorityLevel) {  // Add after node
+      r->prev = i;
+      r->next = i->next;
+      if (r->next) r->next->prev = r;
+      i->next = r;
+    } else {  // Add before node
+      r->prev = i->prev;
+      r->next = i;
+      *(r->prev ? &r->prev->next : &MSYS_RegList) = r;
+      i->prev = r;
+    }
+  }
+}
+
 // // Removes a region from the current list.
 // static void MSYS_DeleteRegionFromList(MOUSE_REGION *const r) {
 //   MOUSE_REGION *const prev = r->prev;
@@ -483,38 +483,38 @@
 //     MSYS_SetCurrentCursor(crsr);
 //   }
 // }
-//
-// void MSYS_RemoveRegion(MOUSE_REGION *const r) {
-// #ifdef MOUSESYSTEM_DEBUGGING
-//   AssertMsg(r, "Attempting to remove a NULL region.");
-// #endif
-//   if (!r) return;
-// #ifdef MOUSESYSTEM_DEBUGGING
-//   AssertMsg(r->uiFlags & MSYS_REGION_EXISTS, "Attempting to remove an already removed region.");
-// #endif
-//
-// #ifdef _JA2_RENDER_DIRTY
-//   if (r->uiFlags & MSYS_HAS_BACKRECT) {
-//     FreeBackgroundRectPending(r->FastHelpRect);
-//     r->uiFlags &= ~MSYS_HAS_BACKRECT;
-//   }
-// #endif
-//
-//   if (r->FastHelpText) {
-//     MemFree(r->FastHelpText);
-//     r->FastHelpText = 0;
-//   }
-//
-//   MSYS_DeleteRegionFromList(r);
-//
-//   if (MSYS_PrevRegion == r) MSYS_PrevRegion = 0;
-//   if (MSYS_CurrRegion == r) MSYS_CurrRegion = 0;
-//   if (g_clicked_region == r) g_clicked_region = 0;
-//
-//   gfRefreshUpdate = TRUE;
-//   memset(r, 0, sizeof(*r));
-// }
-//
+
+void MSYS_RemoveRegion(MOUSE_REGION *const r) {
+#ifdef MOUSESYSTEM_DEBUGGING
+  AssertMsg(r, "Attempting to remove a NULL region.");
+#endif
+  if (!r) return;
+#ifdef MOUSESYSTEM_DEBUGGING
+  AssertMsg(r->uiFlags & MSYS_REGION_EXISTS, "Attempting to remove an already removed region.");
+#endif
+
+#ifdef _JA2_RENDER_DIRTY
+  if (r->uiFlags & MSYS_HAS_BACKRECT) {
+    FreeBackgroundRectPending(r->FastHelpRect);
+    r->uiFlags &= ~MSYS_HAS_BACKRECT;
+  }
+#endif
+
+  if (r->FastHelpText) {
+    MemFree(r->FastHelpText);
+    r->FastHelpText = 0;
+  }
+
+  MSYS_DeleteRegionFromList(r);
+
+  if (MSYS_PrevRegion == r) MSYS_PrevRegion = 0;
+  if (MSYS_CurrRegion == r) MSYS_CurrRegion = 0;
+  if (g_clicked_region == r) g_clicked_region = 0;
+
+  gfRefreshUpdate = TRUE;
+  memset(r, 0, sizeof(*r));
+}
+
 // //=================================================================================================
 // //	MSYS_SetCurrentCursor
 // //

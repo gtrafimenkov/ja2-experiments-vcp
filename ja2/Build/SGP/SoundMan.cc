@@ -1,16 +1,16 @@
-// /*********************************************************************************
-//  * SGP Digital Sound Module
-//  *
-//  *		This module handles the playing of digital samples, preloaded or
-//  *streamed.
-//  *
-//  * Derek Beland, May 28, 1997
-//  *********************************************************************************/
-//
-// #include "SGP/SoundMan.h"
-//
+/*********************************************************************************
+ * SGP Digital Sound Module
+ *
+ *		This module handles the playing of digital samples, preloaded or
+ *streamed.
+ *
+ * Derek Beland, May 28, 1997
+ *********************************************************************************/
+
+#include "SGP/SoundMan.h"
+
 // #include <SDL.h>
-// #include <assert.h>
+#include <assert.h>
 //
 // #include "SGP/Buffer.h"
 // #include "SGP/Debug.h"
@@ -20,29 +20,29 @@
 //
 // // Uncomment this to disable the startup of sound hardware
 // //#define SOUND_DISABLE
-//
-// #ifdef WITH_SOUND_DEBUG
-// #define SNDDBG(fmt, ...) (void)fprintf(stderr, ">>>> SND: " fmt, __VA_ARGS__)
-// #else
-// #define SNDDBG(fmt, ...) (void)0
-// #endif
-//
-// /*
-//  * from\to FREE PLAY STOP DEAD
-//  *    FREE       M
-//  *    PLAY  2         M    C
-//  *    STOP  2              C
-//  *    DEAD  M         1
-//  *
-//  * M = Regular state transition done by main thread
-//  * C = Regular state transition done by sound callback
-//  * 1 = Unimportant race, dead channel can be marked stopped by main thread
-//  *     Gets marked as dead again in the next sound callback run
-//  * 2 = Only when stopping all sounds, sound callback is deactivated when this
-//  *     happens
-//  */
-// enum { CHANNEL_FREE, CHANNEL_PLAY, CHANNEL_STOP, CHANNEL_DEAD };
-//
+
+#ifdef WITH_SOUND_DEBUG
+#define SNDDBG(fmt, ...) (void)fprintf(stderr, ">>>> SND: " fmt, __VA_ARGS__)
+#else
+#define SNDDBG(fmt, ...) (void)0
+#endif
+
+/*
+ * from\to FREE PLAY STOP DEAD
+ *    FREE       M
+ *    PLAY  2         M    C
+ *    STOP  2              C
+ *    DEAD  M         1
+ *
+ * M = Regular state transition done by main thread
+ * C = Regular state transition done by sound callback
+ * 1 = Unimportant race, dead channel can be marked stopped by main thread
+ *     Gets marked as dead again in the next sound callback run
+ * 2 = Only when stopping all sounds, sound callback is deactivated when this
+ *     happens
+ */
+enum { CHANNEL_FREE, CHANNEL_PLAY, CHANNEL_STOP, CHANNEL_DEAD };
+
 // // Sample status flags
 // enum {
 //   SAMPLE_ALLOCATED = 1U << 0,
@@ -53,66 +53,66 @@
 // };
 //
 // #define SOUND_MAX_CACHED 128  // number of cache slots
-//
-// #define SOUND_MAX_CHANNELS 16  // number of mixer channels
-//
+
+#define SOUND_MAX_CHANNELS 16  // number of mixer channels
+
 // #define SOUND_DEFAULT_MEMORY (16 * 1024 * 1024)  // default memory limit
 // #define SOUND_DEFAULT_THRESH (2 * 1024 * 1024)   // size for sample to be double-buffered
 // #define SOUND_DEFAULT_STREAM (64 * 1024)         // double-buffered buffer size
-//
-// // Struct definition for sample slots in the cache
-// // Holds the regular sample data, as well as the data for the random samples
-// struct SAMPLETAG {
-//   CHAR8 pName[128];  // Path to sample data
-//   UINT32 n_samples;
-//   UINT32 uiFlags;  // Status flags
-//   UINT32 uiSpeed;  // Playback frequency
-//   PTR pData;       // pointer to sample data memory
-//   UINT32 uiCacheHits;
-//
-//   // Random sound data
-//   UINT32 uiTimeNext;
-//   UINT32 uiTimeMin;
-//   UINT32 uiTimeMax;
-//   UINT32 uiVolMin;
-//   UINT32 uiVolMax;
-//   UINT32 uiPanMin;
-//   UINT32 uiPanMax;
-//   UINT32 uiInstances;
-//   UINT32 uiMaxInstances;
-// };
-//
-// // Structure definition for slots in the sound output
-// // These are used for both the cached and double-buffered streams
-// struct SOUNDTAG {
-//   volatile UINT State;
-//   SAMPLETAG *pSample;
-//   UINT32 uiSoundID;
-//   void (*EOSCallback)(void *);
-//   void *pCallbackData;
-//   UINT32 uiTimeStamp;
-//   HWFILE hFile;
-//   UINT32 uiFadeVolume;
-//   UINT32 uiFadeRate;
-//   UINT32 uiFadeTime;
-//   UINT32 pos;
-//   UINT32 Loops;
-//   UINT32 Pan;
-// };
-//
+
+// Struct definition for sample slots in the cache
+// Holds the regular sample data, as well as the data for the random samples
+struct SAMPLETAG {
+  CHAR8 pName[128];  // Path to sample data
+  UINT32 n_samples;
+  UINT32 uiFlags;  // Status flags
+  UINT32 uiSpeed;  // Playback frequency
+  PTR pData;       // pointer to sample data memory
+  UINT32 uiCacheHits;
+
+  // Random sound data
+  UINT32 uiTimeNext;
+  UINT32 uiTimeMin;
+  UINT32 uiTimeMax;
+  UINT32 uiVolMin;
+  UINT32 uiVolMax;
+  UINT32 uiPanMin;
+  UINT32 uiPanMax;
+  UINT32 uiInstances;
+  UINT32 uiMaxInstances;
+};
+
+// Structure definition for slots in the sound output
+// These are used for both the cached and double-buffered streams
+struct SOUNDTAG {
+  volatile UINT State;
+  SAMPLETAG *pSample;
+  UINT32 uiSoundID;
+  void (*EOSCallback)(void *);
+  void *pCallbackData;
+  UINT32 uiTimeStamp;
+  HWFILE hFile;
+  UINT32 uiFadeVolume;
+  UINT32 uiFadeRate;
+  UINT32 uiFadeTime;
+  UINT32 pos;
+  UINT32 Loops;
+  UINT32 Pan;
+};
+
 // static const UINT32 guiSoundDefaultVolume = MAXVOLUME;
 // static const UINT32 guiSoundMemoryLimit = SOUND_DEFAULT_MEMORY;  // Maximum memory used for sounds
 // static UINT32 guiSoundMemoryUsed = 0;                            // Memory currently in use
 // static const UINT32 guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;  // Double-buffered threshold
-//
-// static BOOLEAN fSoundSystemInit = FALSE;  // Startup called
+
+static BOOLEAN fSoundSystemInit = FALSE;  // Startup called
 // static BOOLEAN gfEnableStartup = TRUE;    // Allow hardware to start up
 //
 // // Sample cache list for files loaded
 // static SAMPLETAG pSampleList[SOUND_MAX_CACHED];
-// // Sound channel list for output channels
-// static SOUNDTAG pSoundList[SOUND_MAX_CHANNELS];
-//
+// Sound channel list for output channels
+static SOUNDTAG pSoundList[SOUND_MAX_CHANNELS];
+
 // void SoundEnableSound(BOOLEAN fEnable) { gfEnableStartup = fEnable; }
 //
 // static void SoundInitCache(void);
@@ -398,25 +398,25 @@
 //     }
 //   }
 // }
-//
-// void SoundServiceStreams(void) {
-//   if (!fSoundSystemInit) return;
-//
-//   for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
-//     SOUNDTAG *Sound = &pSoundList[i];
-//     if (Sound->State == CHANNEL_DEAD) {
-//       SNDDBG("DEAD channel %u file \"%s\" (refcount %u)\n", i, Sound->pSample->pName,
-//              Sound->pSample->uiInstances);
-//       if (Sound->EOSCallback != NULL) Sound->EOSCallback(Sound->pCallbackData);
-//       assert(Sound->pSample->uiInstances != 0);
-//       Sound->pSample->uiInstances--;
-//       Sound->pSample = NULL;
-//       Sound->uiSoundID = SOUND_ERROR;
-//       Sound->State = CHANNEL_FREE;
-//     }
-//   }
-// }
-//
+
+void SoundServiceStreams(void) {
+  if (!fSoundSystemInit) return;
+
+  for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
+    SOUNDTAG *Sound = &pSoundList[i];
+    if (Sound->State == CHANNEL_DEAD) {
+      SNDDBG("DEAD channel %u file \"%s\" (refcount %u)\n", i, Sound->pSample->pName,
+             Sound->pSample->uiInstances);
+      if (Sound->EOSCallback != NULL) Sound->EOSCallback(Sound->pCallbackData);
+      assert(Sound->pSample->uiInstances != 0);
+      Sound->pSample->uiInstances--;
+      Sound->pSample = NULL;
+      Sound->uiSoundID = SOUND_ERROR;
+      Sound->State = CHANNEL_FREE;
+    }
+  }
+}
+
 // UINT32 SoundGetPosition(UINT32 uiSoundID) {
 //   if (!fSoundSystemInit) return 0;
 //

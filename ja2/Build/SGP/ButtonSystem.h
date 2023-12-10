@@ -31,18 +31,18 @@
 // #define BUTTON_NO_DUPLICATE 0x80000000  // Exclude button from duplicate check
 //
 // extern SGPVSurface *ButtonDestBuffer;
-//
-// struct GUI_BUTTON;
-//
-// // GUI_BUTTON callback function type
-// typedef void (*GUI_CALLBACK)(GUI_BUTTON *, INT32);
-//
-// // GUI_BUTTON structure definitions.
-// struct GUI_BUTTON {
-//   GUI_BUTTON(UINT32 flags, INT16 left, INT16 top, INT16 width, INT16 height, INT8 priority,
-//              GUI_CALLBACK click, GUI_CALLBACK move);
-//   ~GUI_BUTTON();
-//
+
+struct GUI_BUTTON;
+
+// GUI_BUTTON callback function type
+typedef void (*GUI_CALLBACK)(GUI_BUTTON *, INT32);
+
+// GUI_BUTTON structure definitions.
+struct GUI_BUTTON {
+  GUI_BUTTON(UINT32 flags, INT16 left, INT16 top, INT16 width, INT16 height, INT8 priority,
+             GUI_CALLBACK click, GUI_CALLBACK move);
+  ~GUI_BUTTON();
+
 //   bool Clicked() const { return uiFlags & BUTTON_CLICKED_ON; }
 //
 //   bool Enabled() const { return uiFlags & BUTTON_ENABLED; }
@@ -157,8 +157,8 @@
 //   UINT8 ubToggleButtonActivated;
 //
 //   UINT8 ubSoundSchemeID;
-// };
-//
+};
+
 // extern GUI_BUTTON *ButtonList[MAX_BUTTONS];  // Button System's Main Button List
 //
 // class GUIButtonRef {
@@ -199,10 +199,10 @@ void ShutdownButtonSystem(void);
 //
 // // Loads an image file for use as a button icon.
 // INT16 LoadGenericButtonIcon(const char *filename);
-//
-// // Removes a button icon graphic from the system
-// void UnloadGenericButtonIcon(INT16 GenImg);
-//
+
+// Removes a button icon graphic from the system
+void UnloadGenericButtonIcon(INT16 GenImg);
+
 // // Load images for use with QuickButtons.
 // BUTTON_PICS *LoadButtonImage(const char *filename, INT32 Grayed, INT32 OffNormal, INT32 OffHilite,
 //                              INT32 OnNormal, INT32 OnHilite);
@@ -214,10 +214,10 @@ void ShutdownButtonSystem(void);
 // BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *LoadedImg, INT32 Grayed, INT32 OffNormal,
 //                                   INT32 OffHilite, INT32 OnNormal, INT32 OnHilite);
 // BUTTON_PICS *UseLoadedButtonImage(BUTTON_PICS *img, INT32 off_normal, INT32 on_normal);
-//
-// // Removes a QuickButton image from the system.
-// void UnloadButtonImage(BUTTON_PICS *);
-//
+
+// Removes a QuickButton image from the system.
+void UnloadButtonImage(BUTTON_PICS *);
+
 // // Enables an already created button.
 // void EnableButton(GUIButtonRef);
 //

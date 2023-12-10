@@ -10,7 +10,7 @@
 // #include "Init.h"  // XXX should not be used in SGP
 // #include "Intro.h"
 // #include "JA2Splash.h"
-// #include "SGP/ButtonSystem.h"
+#include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/Exceptions.h"
 #include "SGP/FileMan.h"
@@ -19,7 +19,7 @@
 #include "SGP/Logger.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/Random.h"
-// #include "SGP/SoundMan.h"
+#include "SGP/SoundMan.h"
 #include "SGP/Timer.h"
 #include "SGP/Types.h"
 // #include "SGP/VObject.h"

@@ -268,18 +268,18 @@ HWFILE FileMan::openForReadingSmart(const char *filename, bool useSmartLookup) {
 // extern UINT32 uiTotalFileReadTime;
 // extern UINT32 uiTotalFileReadCalls;
 // #endif
-//
-// void FileRead(HWFILE const f, void *const pDest, size_t const uiBytesToRead) {
-//   BOOLEAN ret;
-//   if (f->flags & SGPFILE_REAL) {
-//     ret = fread(pDest, uiBytesToRead, 1, f->u.file) == 1;
-//   } else {
-//     ret = LoadDataFromLibrary(&f->u.lib, pDest, (UINT32)uiBytesToRead);
-//   }
-//
-//   if (!ret) throw std::runtime_error("Reading from file failed");
-// }
-//
+
+void FileRead(HWFILE const f, void *const pDest, size_t const uiBytesToRead) {
+  BOOLEAN ret;
+  if (f->flags & SGPFILE_REAL) {
+    ret = fread(pDest, uiBytesToRead, 1, f->u.file) == 1;
+  } else {
+    ret = LoadDataFromLibrary(&f->u.lib, pDest, (UINT32)uiBytesToRead);
+  }
+
+  if (!ret) throw std::runtime_error("Reading from file failed");
+}
+
 // void FileWrite(HWFILE const f, void const *const pDest, size_t const uiBytesToWrite) {
 //   if (!(f->flags & SGPFILE_REAL)) throw std::logic_error("Tried to write to library file");
 //   if (fwrite(pDest, uiBytesToWrite, 1, f->u.file) != 1)
@@ -312,19 +312,19 @@ HWFILE FileMan::openForReadingSmart(const char *filename, bool useSmartLookup) {
 // INT32 FileGetPos(const HWFILE f) {
 //   return f->flags & SGPFILE_REAL ? (INT32)ftell(f->u.file) : f->u.lib.uiFilePosInFile;
 // }
-//
-// UINT32 FileGetSize(const HWFILE f) {
-//   if (f->flags & SGPFILE_REAL) {
-//     struct stat sb;
-//     if (fstat(fileno(f->u.file), &sb) != 0) {
-//       throw std::runtime_error("Getting file size failed");
-//     }
-//     return (UINT32)sb.st_size;
-//   } else {
-//     return f->u.lib.pFileHeader->uiFileLength;
-//   }
-// }
-//
+
+UINT32 FileGetSize(const HWFILE f) {
+  if (f->flags & SGPFILE_REAL) {
+    struct stat sb;
+    if (fstat(fileno(f->u.file), &sb) != 0) {
+      throw std::runtime_error("Getting file size failed");
+    }
+    return (UINT32)sb.st_size;
+  } else {
+    return f->u.lib.pFileHeader->uiFileLength;
+  }
+}
+
 // static void SetFileManCurrentDirectory(char const *const pcDirectory) {
 // #if 1  // XXX TODO
 //   if (chdir(pcDirectory) != 0)
