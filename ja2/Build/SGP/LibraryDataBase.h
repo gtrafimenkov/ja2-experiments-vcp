@@ -53,8 +53,8 @@ BOOLEAN OpenFileFromLibrary(const char *filename, LibraryFile *);
 // /* Close an individual file that is contained in the library */
 // void CloseLibraryFile(LibraryFile *);
 BOOLEAN LoadDataFromLibrary(LibraryFile *, void *pData, UINT32 uiBytesToRead);
-// BOOLEAN LibraryFileSeek(LibraryFile *, INT32 distance, FileSeekMode);
-//
+BOOLEAN LibraryFileSeek(LibraryFile *, INT32 distance, FileSeekMode);
+
 // #if 0
 // BOOLEAN GetLibraryFileTime(LibraryFile const*, SGP_FILETIME* pLastWriteTime);
 // #endif

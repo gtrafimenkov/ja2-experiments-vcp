@@ -99,16 +99,16 @@ struct MOUSE_REGION {
 
 // Mouse system defines used during updates
 #define MSYS_NO_ACTION 0
-// #define MSYS_DO_MOVE 1
-// #define MSYS_DO_LBUTTON_DWN 2
-// #define MSYS_DO_LBUTTON_UP 4
-// #define MSYS_DO_RBUTTON_DWN 8
-// #define MSYS_DO_RBUTTON_UP 16
-// #define MSYS_DO_LBUTTON_REPEAT 32
-// #define MSYS_DO_RBUTTON_REPEAT 64
-// #define MSYS_DO_WHEEL_UP 0x0080
-// #define MSYS_DO_WHEEL_DOWN 0x0100
-//
+#define MSYS_DO_MOVE 1
+#define MSYS_DO_LBUTTON_DWN 2
+#define MSYS_DO_LBUTTON_UP 4
+#define MSYS_DO_RBUTTON_DWN 8
+#define MSYS_DO_RBUTTON_UP 16
+#define MSYS_DO_LBUTTON_REPEAT 32
+#define MSYS_DO_RBUTTON_REPEAT 64
+#define MSYS_DO_WHEEL_UP 0x0080
+#define MSYS_DO_WHEEL_DOWN 0x0100
+
 // #define MSYS_DO_BUTTONS                                                                  \
 //   (MSYS_DO_LBUTTON_DWN | MSYS_DO_LBUTTON_UP | MSYS_DO_RBUTTON_DWN | MSYS_DO_RBUTTON_UP | \
 //    MSYS_DO_RBUTTON_REPEAT | MSYS_DO_LBUTTON_REPEAT | MSYS_DO_WHEEL_UP | MSYS_DO_WHEEL_DOWN)
@@ -172,10 +172,10 @@ void MSYS_Shutdown(void);
 //
 // // Now also used by Wizardry -- DB
 // void RenderFastHelp(void);
-//
-// // Hook to the SGP's mouse handler
-// void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord);
-//
+
+// Hook to the SGP's mouse handler
+void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord);
+
 // class MouseRegion : private MOUSE_REGION {
 //  public:
 //   MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h, INT8 const priority,

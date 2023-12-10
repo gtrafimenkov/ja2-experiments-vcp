@@ -94,9 +94,9 @@ struct SGPImage {
   UINT16 usNumberOfObjects;
 };
 
-// #define SGPGetRValue(rgb) ((BYTE)(rgb))
-// #define SGPGetBValue(rgb) ((BYTE)((rgb) >> 16))
-// #define SGPGetGValue(rgb) ((BYTE)(((UINT16)(rgb)) >> 8))
+#define SGPGetRValue(rgb) ((BYTE)(rgb))
+#define SGPGetBValue(rgb) ((BYTE)((rgb) >> 16))
+#define SGPGetGValue(rgb) ((BYTE)(((UINT16)(rgb)) >> 8))
 
 SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
 
@@ -114,16 +114,16 @@ SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
 // UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
 //                                  UINT32 bscale, BOOLEAN mono);
 UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette);
-// UINT16 Get16BPPColor(UINT32 RGBValue);
+UINT16 Get16BPPColor(UINT32 RGBValue);
 // UINT32 GetRGBColor(UINT16 Value16BPP);
-//
-// extern UINT16 gusRedMask;
-// extern UINT16 gusGreenMask;
-// extern UINT16 gusBlueMask;
-// extern INT16 gusRedShift;
-// extern INT16 gusBlueShift;
-// extern INT16 gusGreenShift;
-//
+
+extern UINT16 gusRedMask;
+extern UINT16 gusGreenMask;
+extern UINT16 gusBlueMask;
+extern INT16 gusRedShift;
+extern INT16 gusBlueShift;
+extern INT16 gusGreenShift;
+
 // // used to convert 565 RGB data into different bit-formats
 // void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
 // void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);

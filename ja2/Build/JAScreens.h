@@ -1,9 +1,9 @@
-// #ifndef __JASCREENS_H_
-// #define __JASCREENS_H_
-//
-// #include "SGP/Types.h"
-// #include "ScreenIDs.h"
-//
+#ifndef __JASCREENS_H_
+#define __JASCREENS_H_
+
+#include "SGP/Types.h"
+#include "ScreenIDs.h"
+
 // ScreenID ErrorScreenHandle(void);
 //
 // ScreenID InitScreenHandle(void);
@@ -18,10 +18,10 @@
 // void DisplayFrameRate(void);
 //
 // void HandleTitleScreenAnimation(void);
-//
-// // External Globals
-// extern ScreenID guiCurrentScreen;
-//
+
+// External Globals
+extern ScreenID guiCurrentScreen;
+
 // typedef void (*RENDER_HOOK)(void);
 //
 // void SetRenderHook(RENDER_HOOK pRenderOverride);
@@ -31,6 +31,6 @@
 //
 // extern BOOLEAN gfExitDebugScreen;
 // extern INT8 gCurDebugPage;
-//
-// #endif
-//
+
+#endif
+

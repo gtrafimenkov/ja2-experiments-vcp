@@ -178,12 +178,12 @@
 //   Assert(gpVObjectHead == NULL);
 //   gpVObjectHead = NULL;
 // }
-//
-// void ShutdownVideoObjectManager(void) {
-//   while (gpVObjectHead) {
-//     delete gpVObjectHead;
-//   }
-// }
+
+void ShutdownVideoObjectManager(void) {
+  while (gpVObjectHead) {
+    delete gpVObjectHead;
+  }
+}
 
 SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *const img) { return new SGPVObject(img); }
 

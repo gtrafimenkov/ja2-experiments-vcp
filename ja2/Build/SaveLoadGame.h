@@ -1,12 +1,12 @@
-// #ifndef _SAVE_LOAD_GAME_H_
-// #define _SAVE_LOAD_GAME_H_
-//
+#ifndef _SAVE_LOAD_GAME_H_
+#define _SAVE_LOAD_GAME_H_
+
 // #include "GameSettings.h"
 // #include "ScreenIDs.h"
 //
 // #define BYTESINMEGABYTE 1048576  // 1024*1024
-// #define REQUIRED_FREE_SPACE (20 * BYTESINMEGABYTE)
-//
+#define REQUIRED_FREE_SPACE (20 * BYTESINMEGABYTE)
+
 // #define SIZE_OF_SAVE_GAME_DESC 128
 //
 // #define GAME_VERSION_LENGTH 16
@@ -94,6 +94,6 @@
 // extern UINT32 guiJA2EncryptionSet;
 //
 // extern BOOLEAN gfUseConsecutiveQuickSaveSlots;
-//
-// #endif
-//
+
+#endif
+

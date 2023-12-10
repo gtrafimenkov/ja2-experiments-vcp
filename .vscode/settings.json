@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "new": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "stdexcept": "cpp"
     }
 }

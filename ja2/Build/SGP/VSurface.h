@@ -1,25 +1,25 @@
-// #ifndef VSURFACE_H
-// #define VSURFACE_H
-//
-// #include <SDL.h>
-//
+#ifndef VSURFACE_H
+#define VSURFACE_H
+
+#include <SDL.h>
+
 // #include "SGP/AutoObj.h"
 // #include "SGP/AutoPtr.h"
 // #include "SGP/Buffer.h"
 // #include "SGP/Types.h"
-//
-// #define BACKBUFFER g_back_buffer
-// #define FRAME_BUFFER g_frame_buffer
-// #define MOUSE_BUFFER g_mouse_buffer
-//
-// class SGPVSurface;
-// class SGPVSurfaceAuto;
-// class SGPVSurface;
-//
-// extern SGPVSurface *g_back_buffer;
-// extern SGPVSurfaceAuto *g_frame_buffer;
-// extern SGPVSurfaceAuto *g_mouse_buffer;
-//
+
+#define BACKBUFFER g_back_buffer
+#define FRAME_BUFFER g_frame_buffer
+#define MOUSE_BUFFER g_mouse_buffer
+
+class SGPVSurface;
+class SGPVSurfaceAuto;
+class SGPVSurface;
+
+extern SGPVSurface *g_back_buffer;
+extern SGPVSurfaceAuto *g_frame_buffer;
+extern SGPVSurfaceAuto *g_mouse_buffer;
+
 // /** Utility wrapper around SDL_Surface. */
 // class SGPVSurface {
 //  public:
@@ -140,6 +140,6 @@
 //
 // /** Fill video surface with another one with stretch. */
 // void FillVideoSurfaceWithStretch(SGPVSurface *const dst, SGPVSurface *const src);
-//
-// #endif
-//
+
+#endif
+

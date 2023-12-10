@@ -18,7 +18,7 @@
 // #define BUTTON_TOGGLE 0x00000000
 // #define BUTTON_QUICK 0x00000000
 // #define BUTTON_ENABLED 0x00000001
-// #define BUTTON_CLICKED_ON 0x00000002
+#define BUTTON_CLICKED_ON 0x00000002
 // #define BUTTON_GENERIC 0x00000020
 // #define BUTTON_HOT_SPOT 0x00000040
 // #define BUTTON_SELFDELETE_IMAGE 0x00000080
@@ -91,15 +91,15 @@ struct GUI_BUTTON {
 //   void SetCursor(UINT16 const cursor) { Area.ChangeCursor(cursor); }
 //
 //   void DrawCheckBoxOnOff(BOOLEAN on);
-//
-//   // Coordinates where button is on the screen
-//   INT16 X() const { return Area.RegionTopLeftX; }
-//   INT16 Y() const { return Area.RegionTopLeftY; }
-//   INT16 W() const { return Area.RegionBottomRightX - Area.RegionTopLeftX; }
-//   INT16 H() const { return Area.RegionBottomRightY - Area.RegionTopLeftY; }
-//   INT16 BottomRightX() const { return Area.RegionBottomRightX; }
-//   INT16 BottomRightY() const { return Area.RegionBottomRightY; }
-//
+
+  // Coordinates where button is on the screen
+  INT16 X() const { return Area.RegionTopLeftX; }
+  INT16 Y() const { return Area.RegionTopLeftY; }
+  INT16 W() const { return Area.RegionBottomRightX - Area.RegionTopLeftX; }
+  INT16 H() const { return Area.RegionBottomRightY - Area.RegionTopLeftY; }
+  INT16 BottomRightX() const { return Area.RegionBottomRightX; }
+  INT16 BottomRightY() const { return Area.RegionBottomRightY; }
+
 //   INT16 MouseX() const { return Area.MouseXPos; }
 //   INT16 MouseY() const { return Area.MouseYPos; }
 //   INT16 RelativeX() const { return Area.RelativeXPos; }
@@ -119,7 +119,7 @@ struct GUI_BUTTON {
 //   MouseRegion Area;            // Mouse System's mouse region to use for this button
 //   GUI_CALLBACK ClickCallback;  // Button Callback when button is clicked
 //   GUI_CALLBACK MoveCallback;   // Button Callback when mouse moved on this region
-//   UINT32 uiFlags;              // Button state flags etc.( 32-bit )
+  UINT32 uiFlags;              // Button state flags etc.( 32-bit )
 //   UINT32 uiOldFlags;           // Old flags from previous render loop
 //   union                        // Place holder for user data etc.
 //   {
@@ -302,8 +302,8 @@ struct ButtonDimensions {
 // const ButtonDimensions *GetDimensionsOfButtonPic(const BUTTON_PICS *);
 //
 // UINT16 GetGenericButtonFillColor(void);
-//
-// void ReleaseAnchorMode(void);
+
+void ReleaseAnchorMode(void);
 
 #endif
 

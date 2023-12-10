@@ -1,7 +1,7 @@
 #ifndef __DEBUG_MANAGER_
 #define __DEBUG_MANAGER_
 
-// #include "SGP/TopicIDs.h"
+#include "SGP/TopicIDs.h"
 #include "SGP/Types.h"
 
 // #define DEBUG_PRINT_FPS (0) /**< Flag telling to print FPS (Frames per second) counter. */

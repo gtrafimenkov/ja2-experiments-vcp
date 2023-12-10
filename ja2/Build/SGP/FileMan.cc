@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
-// #include <sys/stat.h>
+#include <sys/stat.h>
 // #include <sys/types.h>
 
 // #include "Directories.h"
@@ -285,30 +285,30 @@ void FileRead(HWFILE const f, void *const pDest, size_t const uiBytesToRead) {
 //   if (fwrite(pDest, uiBytesToWrite, 1, f->u.file) != 1)
 //     throw std::runtime_error("Writing to file failed");
 // }
-//
-// void FileSeek(HWFILE const f, INT32 distance, FileSeekMode const how) {
-//   bool success;
-//   if (f->flags & SGPFILE_REAL) {
-//     int whence;
-//     switch (how) {
-//       case FILE_SEEK_FROM_START:
-//         whence = SEEK_SET;
-//         break;
-//       case FILE_SEEK_FROM_END:
-//         whence = SEEK_END;
-//         break;
-//       default:
-//         whence = SEEK_CUR;
-//         break;
-//     }
-//
-//     success = fseek(f->u.file, distance, whence) == 0;
-//   } else {
-//     success = LibraryFileSeek(&f->u.lib, distance, how);
-//   }
-//   if (!success) throw std::runtime_error("Seek in file failed");
-// }
-//
+
+void FileSeek(HWFILE const f, INT32 distance, FileSeekMode const how) {
+  bool success;
+  if (f->flags & SGPFILE_REAL) {
+    int whence;
+    switch (how) {
+      case FILE_SEEK_FROM_START:
+        whence = SEEK_SET;
+        break;
+      case FILE_SEEK_FROM_END:
+        whence = SEEK_END;
+        break;
+      default:
+        whence = SEEK_CUR;
+        break;
+    }
+
+    success = fseek(f->u.file, distance, whence) == 0;
+  } else {
+    success = LibraryFileSeek(&f->u.lib, distance, how);
+  }
+  if (!success) throw std::runtime_error("Seek in file failed");
+}
+
 // INT32 FileGetPos(const HWFILE f) {
 //   return f->flags & SGPFILE_REAL ? (INT32)ftell(f->u.file) : f->u.lib.uiFilePosInFile;
 // }

@@ -3,8 +3,8 @@
 #include <SDL.h>
 #include <exception>
 // #include <new>
-//
-// #include "GameLoop.h"
+
+#include "GameLoop.h"
 #include "GameRes.h"
 #include "GameState.h"
 // #include "Init.h"  // XXX should not be used in SGP
@@ -17,14 +17,15 @@
 // #include "SGP/Font.h"
 #include "SGP/Input.h"
 #include "SGP/Logger.h"
-// #include "SGP/MemMan.h"
+#include "SGP/MemMan.h"
+#include "SGP/MouseSystem.h"
 // #include "SGP/Random.h"
 #include "SGP/SoundMan.h"
 #include "SGP/Timer.h"
 #include "SGP/Types.h"
-// #include "SGP/VObject.h"
+#include "SGP/VObject.h"
 // #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
+#include "SGP/Video.h"
 // #include "SaveLoadGame.h"  // XXX should not be used in SGP
 #include "gtest/gtest.h"
 #include "slog/slog.h"

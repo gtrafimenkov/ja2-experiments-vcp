@@ -8,9 +8,9 @@
 
 #include "SGP/Types.h"
 
-// void InitializeMemoryManager(void);
-// void ShutdownMemoryManager(void);
-//
+void InitializeMemoryManager(void);
+void ShutdownMemoryManager(void);
+
 // // Creates and adds a video object to list
 // // Release build version
 // #include <stdlib.h>
@@ -36,7 +36,7 @@ static inline void *MallocZ(const size_t n) {
 
 #define MALLOC(type) (type *)MemAlloc(sizeof(type))
 // #define MALLOCE(type, member, n) (type *)MemAlloc(sizeof(type) + sizeof(*((type *)0)->member) * (n))
-// #define MALLOCN(type, count) (type *)MemAlloc(sizeof(type) * (count))
+#define MALLOCN(type, count) (type *)MemAlloc(sizeof(type) * (count))
 // #define MALLOCNZ(type, count) (type *)MallocZ(sizeof(type) * (count))
 #define MALLOCZ(type) (type *)MallocZ(sizeof(type))
 

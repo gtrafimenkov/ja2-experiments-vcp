@@ -7,13 +7,13 @@
 #include "SGP/Debug.h"
 // #include "SGP/Font.h"
 // #include "SGP/HImage.h"
-// #include "SGP/Input.h"
+#include "SGP/Input.h"
 // #include "SGP/MemMan.h"
 #include "SGP/Types.h"
 #include "SGP/VObject.h"
 // #include "SGP/VObjectBlitters.h"
 // #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
+#include "SGP/Video.h"
 // #include "SGP/WCheck.h"
 // #include "Utils/WordWrap.h"
 //
@@ -66,17 +66,17 @@
 // }
 //
 // #endif
-//
-// /* Kris:
-//  * These are the variables used for the anchoring of a particular button.  When
-//  * you click on a button, it get's anchored, until you release the mouse button.
-//  * When you move around, you don't want to select other buttons, even when you
-//  * release it.  This follows the Windows 95 convention.
-//  */
-// static GUI_BUTTON *gpAnchoredButton;
+
+/* Kris:
+ * These are the variables used for the anchoring of a particular button.  When
+ * you click on a button, it get's anchored, until you release the mouse button.
+ * When you move around, you don't want to select other buttons, even when you
+ * release it.  This follows the Windows 95 convention.
+ */
+static GUI_BUTTON *gpAnchoredButton;
 // static GUI_BUTTON *gpPrevAnchoredButton;
-// static BOOLEAN gfAnchoredState;
-//
+static BOOLEAN gfAnchoredState;
+
 // static INT8 gbDisabledButtonStyle;
 //
 // BOOLEAN gfRenderHilights = TRUE;
@@ -1423,25 +1423,25 @@ void ShutdownButtonSystem(void) {
 //     InvalidateRegion(btn->X(), btn->Y(), btn->BottomRightX(), btn->BottomRightY());
 //   }
 // }
-//
-// void ReleaseAnchorMode(void) {
-//   GUI_BUTTON *const b = gpAnchoredButton;
-//   if (!b) return;
-//
-//   if (gusMouseXPos < b->X() || b->BottomRightX() < gusMouseXPos || gusMouseYPos < b->Y() ||
-//       b->BottomRightY() < gusMouseYPos) {
-//     // released outside button area, so restore previous button state.
-//     if (gfAnchoredState) {
-//       b->uiFlags |= BUTTON_CLICKED_ON;
-//     } else {
-//       b->uiFlags &= ~BUTTON_CLICKED_ON;
-//     }
-//     InvalidateRegion(b->X(), b->Y(), b->BottomRightX(), b->BottomRightY());
-//   }
-//   gpPrevAnchoredButton = b;
-//   gpAnchoredButton = 0;
-// }
-//
+
+void ReleaseAnchorMode(void) {
+  GUI_BUTTON *const b = gpAnchoredButton;
+  if (!b) return;
+
+  if (gusMouseXPos < b->X() || b->BottomRightX() < gusMouseXPos || gusMouseYPos < b->Y() ||
+      b->BottomRightY() < gusMouseYPos) {
+    // released outside button area, so restore previous button state.
+    if (gfAnchoredState) {
+      b->uiFlags |= BUTTON_CLICKED_ON;
+    } else {
+      b->uiFlags &= ~BUTTON_CLICKED_ON;
+    }
+    InvalidateRegion(b->X(), b->Y(), b->BottomRightX(), b->BottomRightY());
+  }
+  gpPrevAnchoredButton = b;
+  gpAnchoredButton = 0;
+}
+
 // void GUI_BUTTON::Hide() {
 //   Area.Disable();
 //   uiFlags |= BUTTON_DIRTY;

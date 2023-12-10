@@ -16,11 +16,11 @@
 //   UINT8 ubNumberOfZChanges;  // number of strips (after the first)
 //   INT8 *pbZChange;           // change to the Z value in each strip (after the first)
 // };
-//
-// // This definition mimics what is found in WINDOWS.H ( for Direct Draw
-// // compatiblity ) From RGB to COLORVAL
-// #define FROMRGB(r, g, b) \
-//   ((UINT32)(((UINT8)(r) | ((UINT16)(g) << 8)) | (((UINT32)(UINT8)(b)) << 16)))
+
+// This definition mimics what is found in WINDOWS.H ( for Direct Draw
+// compatiblity ) From RGB to COLORVAL
+#define FROMRGB(r, g, b) \
+  ((UINT32)(((UINT8)(r) | ((UINT16)(g) << 8)) | (((UINT32)(UINT8)(b)) << 16)))
 
 // This structure is a video object.
 // The video object contains different data based on it's type, compressed or
@@ -86,9 +86,9 @@ ENUM_BITSET(SGPVObject::Flags)
 
 // // Creates a list to contain video objects
 // void InitializeVideoObjectManager(void);
-//
-// // Deletes any video object placed into list
-// void ShutdownVideoObjectManager(void);
+
+// Deletes any video object placed into list
+void ShutdownVideoObjectManager(void);
 
 // Creates and adds a video object to list
 // SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *);

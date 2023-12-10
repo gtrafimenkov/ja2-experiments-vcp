@@ -13,7 +13,7 @@
 //
 // BOOLEAN
 // gfKeyState[SDL_SCANCODE_TO_KEYCODE(SDL_NUM_SCANCODES)];  // TRUE = Pressed, FALSE = Not Pressed
-// static BOOLEAN fCursorWasClipped = FALSE;
+static BOOLEAN fCursorWasClipped = FALSE;
 // static SGPRect gCursorClipRect;
 
 // These data structure are used to track the mouse while polling
@@ -74,30 +74,30 @@ void SetSafeMousePosition(int x, int y) {
   gusMouseYPos = y;
 }
 
-// BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
-//   // Is there an event to dequeue
-//   if (gusQueueCount > 0) {
-//     // Check if it has the masks!
-//     if (gEventQueue[gusHeadIndex].usEvent & uiMaskFlags) {
-//       return DequeueEvent(Event);
-//     }
-//   }
-//
-//   return FALSE;
-// }
-//
-// static void HandleSingleClicksAndButtonRepeats(void);
-//
-// BOOLEAN DequeueEvent(InputAtom *Event) {
-//   HandleSingleClicksAndButtonRepeats();
-//
-//   if (gusQueueCount == 0) return FALSE;
-//
-//   *Event = gEventQueue[gusHeadIndex];
-//   gusHeadIndex = (gusHeadIndex + 1) % lengthof(gEventQueue);
-//   gusQueueCount--;
-//   return TRUE;
-// }
+BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
+  // Is there an event to dequeue
+  if (gusQueueCount > 0) {
+    // Check if it has the masks!
+    if (gEventQueue[gusHeadIndex].usEvent & uiMaskFlags) {
+      return DequeueEvent(Event);
+    }
+  }
+
+  return FALSE;
+}
+
+static void HandleSingleClicksAndButtonRepeats(void);
+
+BOOLEAN DequeueEvent(InputAtom *Event) {
+  HandleSingleClicksAndButtonRepeats();
+
+  if (gusQueueCount == 0) return FALSE;
+
+  *Event = gEventQueue[gusHeadIndex];
+  gusHeadIndex = (gusHeadIndex + 1) % lengthof(gEventQueue);
+  gusQueueCount--;
+  return TRUE;
+}
 
 static void UpdateMousePos(const SDL_MouseButtonEvent *BtnEv) {
   SetSafeMousePosition(BtnEv->x, BtnEv->y);
@@ -355,15 +355,15 @@ void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
 // #endif
 //   fCursorWasClipped = TRUE;
 // }
-//
-// void FreeMouseCursor(void) {
-// #if 1  // XXX TODO0000
-// #else
-//   ClipCursor(NULL);
-// #endif
-//   fCursorWasClipped = FALSE;
-// }
-//
+
+void FreeMouseCursor(void) {
+#if 1  // XXX TODO0000
+#else
+  ClipCursor(NULL);
+#endif
+  fCursorWasClipped = FALSE;
+}
+
 // void RestoreCursorClipRect(void) {
 // #if 1  // XXX TODO0000
 //   UNIMPLEMENTED
@@ -427,28 +427,28 @@ void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
 //   }
 // #endif
 // }
-//
-// static void HandleSingleClicksAndButtonRepeats(void) {
-//   UINT32 uiTimer = GetClock();
-//
-//   // Is there a LEFT mouse button repeat
-//   if (gfLeftButtonState) {
-//     if ((guiLeftButtonRepeatTimer > 0) && (guiLeftButtonRepeatTimer <= uiTimer)) {
-//       QueueMouseEvent(LEFT_BUTTON_REPEAT);
-//       guiLeftButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;
-//     }
-//   } else {
-//     guiLeftButtonRepeatTimer = 0;
-//   }
-//
-//   // Is there a RIGHT mouse button repeat
-//   if (gfRightButtonState) {
-//     if ((guiRightButtonRepeatTimer > 0) && (guiRightButtonRepeatTimer <= uiTimer)) {
-//       QueueMouseEvent(RIGHT_BUTTON_REPEAT);
-//       guiRightButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;
-//     }
-//   } else {
-//     guiRightButtonRepeatTimer = 0;
-//   }
-// }
-//
+
+static void HandleSingleClicksAndButtonRepeats(void) {
+  UINT32 uiTimer = GetClock();
+
+  // Is there a LEFT mouse button repeat
+  if (gfLeftButtonState) {
+    if ((guiLeftButtonRepeatTimer > 0) && (guiLeftButtonRepeatTimer <= uiTimer)) {
+      QueueMouseEvent(LEFT_BUTTON_REPEAT);
+      guiLeftButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;
+    }
+  } else {
+    guiLeftButtonRepeatTimer = 0;
+  }
+
+  // Is there a RIGHT mouse button repeat
+  if (gfRightButtonState) {
+    if ((guiRightButtonRepeatTimer > 0) && (guiRightButtonRepeatTimer <= uiTimer)) {
+      QueueMouseEvent(RIGHT_BUTTON_REPEAT);
+      guiRightButtonRepeatTimer = uiTimer + BUTTON_REPEAT_TIME;
+    }
+  } else {
+    guiRightButtonRepeatTimer = 0;
+  }
+}
+

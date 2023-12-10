@@ -134,14 +134,14 @@ static SOUNDTAG pSoundList[SOUND_MAX_CHANNELS];
 //
 // static void SoundEmptyCache(void);
 // static void SoundShutdownHardware(void);
-//
-// void ShutdownSoundManager(void) {
-//   SoundStopAll();
-//   SoundEmptyCache();
-//   SoundShutdownHardware();
-//   fSoundSystemInit = FALSE;
-// }
-//
+
+void ShutdownSoundManager(void) {
+  SoundStopAll();
+  SoundEmptyCache();
+  SoundShutdownHardware();
+  fSoundSystemInit = FALSE;
+}
+
 // static SOUNDTAG *SoundGetFreeChannel(void);
 // static SAMPLETAG *SoundLoadSample(const char *pFilename);
 // static BOOLEAN SoundPlayStreamed(const char *pFilename);

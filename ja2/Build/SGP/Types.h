@@ -54,7 +54,7 @@ typedef char CHAR8;
 // other
 typedef unsigned char BOOLEAN;
 typedef void *PTR;
-// typedef UINT8 BYTE;
+typedef UINT8 BYTE;
 // typedef CHAR8 STRING512[512];
 //
 // #define SGPFILENAME_LEN 100
@@ -128,9 +128,9 @@ class SGPVObject;
 typedef SGPVObject *HVOBJECT;
 typedef SGPVObject *Font;
 
-// class SGPVSurface;
-//
-// struct BUTTON_PICS;
+class SGPVSurface;
+
+struct BUTTON_PICS;
 
 struct SGPFile;
 typedef SGPFile *HWFILE;

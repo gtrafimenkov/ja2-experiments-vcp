@@ -22,7 +22,7 @@
 // #include "SGP/Debug.h"
 // #include "SGP/Font.h"
 // #include "SGP/HImage.h"
-// #include "SGP/Input.h"
+#include "SGP/Input.h"
 // #include "SGP/Line.h"
 #include "SGP/MemMan.h"
 // #include "SGP/Timer.h"
@@ -94,80 +94,80 @@ void MSYS_Shutdown(void) {
 }
 
 // static void MSYS_UpdateMouseRegion(void);
-//
-// void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord) {
-//   // If the mouse system isn't initialized, get out o' here
-//   if (!MSYS_SystemInitialized) return;
-//
-//   INT16 action = MSYS_NO_ACTION;
-//   switch (Type) {
-//     case LEFT_BUTTON_DOWN:
-//       action |= MSYS_DO_LBUTTON_DWN;
-//       goto update_buttons;
-//
-//     case LEFT_BUTTON_UP:
-//       /* Kris:
-//        * Used only if applicable.  This is used for that special button that is
-//        * locked with the mouse press -- just like windows.  When you release the
-//        * button, the previous state of the button is restored if you released
-//        * the mouse outside of it's boundaries.  If you release inside of the
-//        * button, the action is selected -- but later in the code.
-//        * NOTE:  It has to be here, because the mouse can be released anywhere
-//        *        regardless of regions, buttons, etc. */
-//       ReleaseAnchorMode();
-//       action |= MSYS_DO_LBUTTON_UP;
-//       goto update_buttons;
-//
-//     case RIGHT_BUTTON_DOWN:
-//       action |= MSYS_DO_RBUTTON_DWN;
-//       goto update_buttons;
-//     case RIGHT_BUTTON_UP:
-//       action |= MSYS_DO_RBUTTON_UP;
-//       goto update_buttons;
-//
-//     update_buttons:
-//       MSYS_CurrentButtons &= ~(MSYS_LEFT_BUTTON | MSYS_RIGHT_BUTTON);
-//       MSYS_CurrentButtons |= (_LeftButtonDown ? MSYS_LEFT_BUTTON : 0);
-//       MSYS_CurrentButtons |= (_RightButtonDown ? MSYS_RIGHT_BUTTON : 0);
-//       break;
-//
-//     // ATE: Checks here for mouse button repeats.....
-//     // Call mouse region with new reason
-//     case LEFT_BUTTON_REPEAT:
-//       action |= MSYS_DO_LBUTTON_REPEAT;
-//       break;
-//     case RIGHT_BUTTON_REPEAT:
-//       action |= MSYS_DO_RBUTTON_REPEAT;
-//       break;
-//
-//     case MOUSE_WHEEL_UP:
-//       action |= MSYS_DO_WHEEL_UP;
-//       break;
-//     case MOUSE_WHEEL_DOWN:
-//       action |= MSYS_DO_WHEEL_DOWN;
-//       break;
-//
-//     case MOUSE_POS:
-//       if (gfRefreshUpdate) {
-//         gfRefreshUpdate = FALSE;
-//         goto force_move;
-//       }
-//       break;
-//
-//     default:
-//       return; /* Not a mouse message, ignore it */
-//   }
-//
-//   if (Xcoord != MSYS_CurrentMX || Ycoord != MSYS_CurrentMY) {
-//   force_move:
-//     action |= MSYS_DO_MOVE;
-//     MSYS_CurrentMX = Xcoord;
-//     MSYS_CurrentMY = Ycoord;
-//   }
-//
-//   MSYS_Action = action;
-//   if (action != MSYS_NO_ACTION) MSYS_UpdateMouseRegion();
-// }
+
+void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord) {
+  // If the mouse system isn't initialized, get out o' here
+  if (!MSYS_SystemInitialized) return;
+
+  INT16 action = MSYS_NO_ACTION;
+  switch (Type) {
+    case LEFT_BUTTON_DOWN:
+      action |= MSYS_DO_LBUTTON_DWN;
+      goto update_buttons;
+
+    case LEFT_BUTTON_UP:
+      /* Kris:
+       * Used only if applicable.  This is used for that special button that is
+       * locked with the mouse press -- just like windows.  When you release the
+       * button, the previous state of the button is restored if you released
+       * the mouse outside of it's boundaries.  If you release inside of the
+       * button, the action is selected -- but later in the code.
+       * NOTE:  It has to be here, because the mouse can be released anywhere
+       *        regardless of regions, buttons, etc. */
+      ReleaseAnchorMode();
+      action |= MSYS_DO_LBUTTON_UP;
+      goto update_buttons;
+
+    case RIGHT_BUTTON_DOWN:
+      action |= MSYS_DO_RBUTTON_DWN;
+      goto update_buttons;
+    case RIGHT_BUTTON_UP:
+      action |= MSYS_DO_RBUTTON_UP;
+      goto update_buttons;
+
+    update_buttons:
+      MSYS_CurrentButtons &= ~(MSYS_LEFT_BUTTON | MSYS_RIGHT_BUTTON);
+      MSYS_CurrentButtons |= (_LeftButtonDown ? MSYS_LEFT_BUTTON : 0);
+      MSYS_CurrentButtons |= (_RightButtonDown ? MSYS_RIGHT_BUTTON : 0);
+      break;
+
+    // ATE: Checks here for mouse button repeats.....
+    // Call mouse region with new reason
+    case LEFT_BUTTON_REPEAT:
+      action |= MSYS_DO_LBUTTON_REPEAT;
+      break;
+    case RIGHT_BUTTON_REPEAT:
+      action |= MSYS_DO_RBUTTON_REPEAT;
+      break;
+
+    case MOUSE_WHEEL_UP:
+      action |= MSYS_DO_WHEEL_UP;
+      break;
+    case MOUSE_WHEEL_DOWN:
+      action |= MSYS_DO_WHEEL_DOWN;
+      break;
+
+    case MOUSE_POS:
+      if (gfRefreshUpdate) {
+        gfRefreshUpdate = FALSE;
+        goto force_move;
+      }
+      break;
+
+    default:
+      return; /* Not a mouse message, ignore it */
+  }
+
+  if (Xcoord != MSYS_CurrentMX || Ycoord != MSYS_CurrentMY) {
+  force_move:
+    action |= MSYS_DO_MOVE;
+    MSYS_CurrentMX = Xcoord;
+    MSYS_CurrentMY = Ycoord;
+  }
+
+  MSYS_Action = action;
+  if (action != MSYS_NO_ACTION) MSYS_UpdateMouseRegion();
+}
 
 //======================================================================================================
 //	MSYS_TrashRegList

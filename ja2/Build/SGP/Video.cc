@@ -1,7 +1,7 @@
-// #define NOMINMAX
-//
-// #include "SGP/Video.h"
-//
+#define NOMINMAX
+
+#include "SGP/Video.h"
+
 // #include <algorithm>
 // #include <ctime>
 // #include <errno.h>
@@ -10,19 +10,19 @@
 // #include <stdexcept>
 //
 // #include "FadeScreen.h"
-// #include "Local.h"
-// #include "SGP/Debug.h"
+#include "Local.h"
+#include "SGP/Debug.h"
 // #include "SGP/FileMan.h"
 // #include "SGP/Font.h"
 // #include "SGP/HImage.h"
-// #include "SGP/Input.h"
+#include "SGP/Input.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/PlatformIO.h"
 // #include "SGP/PlatformSDL.h"
 // #include "SGP/Timer.h"
 // #include "SGP/Types.h"
 // #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
+#include "SGP/VSurface.h"
 // #include "TileEngine/RenderDirty.h"
 // #include "TileEngine/RenderWorld.h"
 // #include "Utils/TimerControl.h"
@@ -32,13 +32,13 @@
 //
 // #define MAX_CURSOR_WIDTH 64
 // #define MAX_CURSOR_HEIGHT 64
-//
-// #define MAX_DIRTY_REGIONS 128
-//
-// #define VIDEO_OFF 0x00
-// #define VIDEO_ON 0x01
-// #define VIDEO_SUSPENDED 0x04
-//
+
+#define MAX_DIRTY_REGIONS 128
+
+#define VIDEO_OFF 0x00
+#define VIDEO_ON 0x01
+#define VIDEO_SUSPENDED 0x04
+
 // #define MAX_NUM_FRAMES 25
 //
 // #define RED_MASK 0xF800
@@ -62,13 +62,13 @@
 //
 // // Refresh thread based variables
 // static UINT32 guiFrameBufferState;   // BUFFER_READY, BUFFER_DIRTY
-// static UINT32 guiVideoManagerState;  // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED
-//
-// // Dirty rectangle management variables
-// static SDL_Rect DirtyRegions[MAX_DIRTY_REGIONS];
-// static UINT32 guiDirtyRegionCount;
-// static BOOLEAN gfForceFullScreenRefresh;
-//
+static UINT32 guiVideoManagerState;  // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED
+
+// Dirty rectangle management variables
+static SDL_Rect DirtyRegions[MAX_DIRTY_REGIONS];
+static UINT32 guiDirtyRegionCount;
+static BOOLEAN gfForceFullScreenRefresh;
+
 // static SDL_Rect DirtyRegionsEx[MAX_DIRTY_REGIONS];
 // static UINT32 guiDirtyRegionExCount;
 //
@@ -86,8 +86,8 @@
 // static Uint32 g_window_flags = 0;
 //
 // static void RecreateBackBuffer();
-// static void DeletePrimaryVideoSurfaces(void);
-//
+static void DeletePrimaryVideoSurfaces(void);
+
 // void VideoSetFullScreen(const BOOLEAN enable) {
 //   if (enable) {
 //     g_window_flags |= SDL_WINDOW_FULLSCREEN;
@@ -166,21 +166,21 @@
 //   // This function must be called to setup RGB information
 //   GetRGBDistribution();
 // }
-//
-// void ShutdownVideoManager(void) {
-//   DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Shutting down the video manager");
-//
-//   /* Toggle the state of the video manager to indicate to the refresh thread
-//    * that it needs to shut itself down */
-//
-//   SDL_QuitSubSystem(SDL_INIT_VIDEO);
-//
-//   guiVideoManagerState = VIDEO_OFF;
-//
-//   // ATE: Release mouse cursor!
-//   FreeMouseCursor();
-// }
-//
+
+void ShutdownVideoManager(void) {
+  DebugMsg(TOPIC_VIDEO, DBG_LEVEL_0, "Shutting down the video manager");
+
+  /* Toggle the state of the video manager to indicate to the refresh thread
+   * that it needs to shut itself down */
+
+  SDL_QuitSubSystem(SDL_INIT_VIDEO);
+
+  guiVideoManagerState = VIDEO_OFF;
+
+  // ATE: Release mouse cursor!
+  FreeMouseCursor();
+}
+
 // void SuspendVideoManager(void) { guiVideoManagerState = VIDEO_SUSPENDED; }
 //
 // BOOLEAN RestoreVideoManager(void) {
@@ -202,41 +202,41 @@
 //   }
 // #endif
 // }
-//
-// void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
-//   if (gfForceFullScreenRefresh) {
-//     // There's no point in going on since we are forcing a full screen refresh
-//     return;
-//   }
-//
-//   if (guiDirtyRegionCount < MAX_DIRTY_REGIONS) {
-//     // Well we haven't broken the MAX_DIRTY_REGIONS limit yet, so we register
-//     // the new region
-//
-//     // DO SOME PREMIMARY CHECKS FOR VALID RECTS
-//     if (iLeft < 0) iLeft = 0;
-//     if (iTop < 0) iTop = 0;
-//
-//     if (iRight > SCREEN_WIDTH) iRight = SCREEN_WIDTH;
-//     if (iBottom > SCREEN_HEIGHT) iBottom = SCREEN_HEIGHT;
-//
-//     if (iRight - iLeft <= 0) return;
-//     if (iBottom - iTop <= 0) return;
-//
-//     DirtyRegions[guiDirtyRegionCount].x = iLeft;
-//     DirtyRegions[guiDirtyRegionCount].y = iTop;
-//     DirtyRegions[guiDirtyRegionCount].w = iRight - iLeft;
-//     DirtyRegions[guiDirtyRegionCount].h = iBottom - iTop;
-//     guiDirtyRegionCount++;
-//   } else {
-//     // The MAX_DIRTY_REGIONS limit has been exceeded. Therefore we arbitrarely
-//     // invalidate the entire screen and force a full screen refresh
-//     guiDirtyRegionExCount = 0;
-//     guiDirtyRegionCount = 0;
-//     gfForceFullScreenRefresh = TRUE;
-//   }
-// }
-//
+
+void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
+  if (gfForceFullScreenRefresh) {
+    // There's no point in going on since we are forcing a full screen refresh
+    return;
+  }
+
+  if (guiDirtyRegionCount < MAX_DIRTY_REGIONS) {
+    // Well we haven't broken the MAX_DIRTY_REGIONS limit yet, so we register
+    // the new region
+
+    // DO SOME PREMIMARY CHECKS FOR VALID RECTS
+    if (iLeft < 0) iLeft = 0;
+    if (iTop < 0) iTop = 0;
+
+    if (iRight > SCREEN_WIDTH) iRight = SCREEN_WIDTH;
+    if (iBottom > SCREEN_HEIGHT) iBottom = SCREEN_HEIGHT;
+
+    if (iRight - iLeft <= 0) return;
+    if (iBottom - iTop <= 0) return;
+
+    DirtyRegions[guiDirtyRegionCount].x = iLeft;
+    DirtyRegions[guiDirtyRegionCount].y = iTop;
+    DirtyRegions[guiDirtyRegionCount].w = iRight - iLeft;
+    DirtyRegions[guiDirtyRegionCount].h = iBottom - iTop;
+    guiDirtyRegionCount++;
+  } else {
+    // The MAX_DIRTY_REGIONS limit has been exceeded. Therefore we arbitrarely
+    // invalidate the entire screen and force a full screen refresh
+    guiDirtyRegionExCount = 0;
+    guiDirtyRegionCount = 0;
+    gfForceFullScreenRefresh = TRUE;
+  }
+}
+
 // static void AddRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom);
 //
 // void InvalidateRegionEx(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
@@ -721,20 +721,20 @@
 //   g_mouse_buffer = new SGPVSurfaceAuto(MouseCursor);
 //   g_frame_buffer = new SGPVSurfaceAuto(FrameBuffer);
 // }
-//
-// static void DeletePrimaryVideoSurfaces(void) {
-//   delete g_back_buffer;
-//   g_back_buffer = NULL;
-//
-//   delete g_frame_buffer;
-//   g_frame_buffer = NULL;
-//
-//   delete g_mouse_buffer;
-//   g_mouse_buffer = NULL;
-// }
-//
-// SGPVSurface *gpVSurfaceHead = 0;
-//
+
+static void DeletePrimaryVideoSurfaces(void) {
+  delete g_back_buffer;
+  g_back_buffer = NULL;
+
+  delete g_frame_buffer;
+  g_frame_buffer = NULL;
+
+  delete g_mouse_buffer;
+  g_mouse_buffer = NULL;
+}
+
+SGPVSurface *gpVSurfaceHead = 0;
+
 // void InitializeVideoSurfaceManager(void) {
 //   // Shouldn't be calling this if the video surface manager already exists.
 //   // Call shutdown first...
@@ -744,15 +744,14 @@
 //   // Create primary and backbuffer from globals
 //   SetPrimaryVideoSurfaces();
 // }
-//
-// void ShutdownVideoSurfaceManager(void) {
-//   DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, "Shutting down the Video Surface manager");
-//
-//   // Delete primary viedeo surfaces
-//   DeletePrimaryVideoSurfaces();
-//
-//   while (gpVSurfaceHead) {
-//     delete gpVSurfaceHead;
-//   }
-// }
-//
+
+void ShutdownVideoSurfaceManager(void) {
+  DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_0, "Shutting down the Video Surface manager");
+
+  // Delete primary viedeo surfaces
+  DeletePrimaryVideoSurfaces();
+
+  while (gpVSurfaceHead) {
+    delete gpVSurfaceHead;
+  }
+}

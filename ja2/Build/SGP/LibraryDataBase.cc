@@ -280,26 +280,26 @@ BOOLEAN OpenFileFromLibrary(const char *const pName, LibraryFile *const f) {
 }
 
 // void CloseLibraryFile(LibraryFile *const f) { --f->lib->iNumFilesOpen; }
-//
-// BOOLEAN LibraryFileSeek(LibraryFile *const f, INT32 distance, const FileSeekMode how) {
-//   UINT32 pos;
-//   switch (how) {
-//     case FILE_SEEK_FROM_START:
-//       pos = 0;
-//       break;
-//     case FILE_SEEK_FROM_END:
-//       pos = f->pFileHeader->uiFileLength;
-//       break;
-//     case FILE_SEEK_FROM_CURRENT:
-//       pos = f->uiFilePosInFile;
-//       break;
-//     default:
-//       return FALSE;
-//   }
-//   f->uiFilePosInFile = pos + distance;
-//   return TRUE;
-// }
-//
+
+BOOLEAN LibraryFileSeek(LibraryFile *const f, INT32 distance, const FileSeekMode how) {
+  UINT32 pos;
+  switch (how) {
+    case FILE_SEEK_FROM_START:
+      pos = 0;
+      break;
+    case FILE_SEEK_FROM_END:
+      pos = f->pFileHeader->uiFileLength;
+      break;
+    case FILE_SEEK_FROM_CURRENT:
+      pos = f->uiFilePosInFile;
+      break;
+    default:
+      return FALSE;
+  }
+  f->uiFilePosInFile = pos + distance;
+  return TRUE;
+}
+
 // static BOOLEAN CloseLibrary(INT16 sLibraryID) {
 //   UINT32 uiLoop1;
 //

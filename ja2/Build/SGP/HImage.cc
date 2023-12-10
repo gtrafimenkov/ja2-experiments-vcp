@@ -3,27 +3,27 @@
 #include <stdexcept>
 #include <string.h>
 
-// #include "SGP/Debug.h"
+#include "SGP/Debug.h"
 // #include "SGP/FileMan.h"
-// #include "SGP/ImpTGA.h"
+#include "SGP/ImpTGA.h"
 #include "SGP/MemMan.h"
-// #include "SGP/PCX.h"
+#include "SGP/PCX.h"
 #include "SGP/STCI.h"
 // #include "SGP/Types.h"
-// #include "SGP/VObject.h"
+#include "SGP/VObject.h"
 // #include "SGP/WCheck.h"
 //
 // // This is the color substituted to keep a 24bpp -> 16bpp color
 // // from going transparent (0x0000) -- DB
 //
 // #define BLACK_SUBSTITUTE 0x0001
-//
-// UINT16 gusRedMask = 0;
-// UINT16 gusGreenMask = 0;
-// UINT16 gusBlueMask = 0;
-// INT16 gusRedShift = 0;
-// INT16 gusBlueShift = 0;
-// INT16 gusGreenShift = 0;
+
+UINT16 gusRedMask = 0;
+UINT16 gusGreenMask = 0;
+UINT16 gusBlueMask = 0;
+INT16 gusRedShift = 0;
+INT16 gusBlueShift = 0;
+INT16 gusGreenShift = 0;
 
 SGPImage *CreateImage(const char *const filename, const UINT16 fContents) {
   // depending on extension of filename, use different image readers
@@ -224,27 +224,27 @@ UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette) {
 //   }
 //   return p16BPPPalette;
 // }
-//
-// // Convert from RGB to 16 bit value
-// UINT16 Get16BPPColor(UINT32 RGBValue) {
-//   UINT8 r = SGPGetRValue(RGBValue);
-//   UINT8 g = SGPGetGValue(RGBValue);
-//   UINT8 b = SGPGetBValue(RGBValue);
-//
-//   UINT16 r16 = (gusRedShift < 0 ? r >> -gusRedShift : r << gusRedShift);
-//   UINT16 g16 = (gusGreenShift < 0 ? g >> -gusGreenShift : g << gusGreenShift);
-//   UINT16 b16 = (gusBlueShift < 0 ? b >> -gusBlueShift : b << gusBlueShift);
-//
-//   UINT16 usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
-//
-//   // if our color worked out to absolute black, and the original wasn't
-//   // absolute black, convert it to a VERY dark grey to avoid transparency
-//   // problems
-//   if (usColor == 0 && RGBValue != 0) usColor = BLACK_SUBSTITUTE;
-//
-//   return usColor;
-// }
-//
+
+// Convert from RGB to 16 bit value
+UINT16 Get16BPPColor(UINT32 RGBValue) {
+  UINT8 r = SGPGetRValue(RGBValue);
+  UINT8 g = SGPGetGValue(RGBValue);
+  UINT8 b = SGPGetBValue(RGBValue);
+
+  UINT16 r16 = (gusRedShift < 0 ? r >> -gusRedShift : r << gusRedShift);
+  UINT16 g16 = (gusGreenShift < 0 ? g >> -gusGreenShift : g << gusGreenShift);
+  UINT16 b16 = (gusBlueShift < 0 ? b >> -gusBlueShift : b << gusBlueShift);
+
+  UINT16 usColor = (r16 & gusRedMask) | (g16 & gusGreenMask) | (b16 & gusBlueMask);
+
+  // if our color worked out to absolute black, and the original wasn't
+  // absolute black, convert it to a VERY dark grey to avoid transparency
+  // problems
+  if (usColor == 0 && RGBValue != 0) usColor = BLACK_SUBSTITUTE;
+
+  return usColor;
+}
+
 // // Convert from 16 BPP to RGBvalue
 // UINT32 GetRGBColor(UINT16 Value16BPP) {
 //   UINT32 r16 = Value16BPP & gusRedMask;

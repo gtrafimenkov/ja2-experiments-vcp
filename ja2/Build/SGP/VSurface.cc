@@ -1,15 +1,15 @@
-// #include "SGP/VSurface.h"
-//
-// #include <stdexcept>
-//
+#include "SGP/VSurface.h"
+
+#include <stdexcept>
+
 // #include "SGP/Debug.h"
 // #include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/SGP.h"
 // #include "SGP/Shading.h"
 // #include "SGP/VObjectBlitters.h"
-// #include "SGP/Video.h"
-//
+#include "SGP/Video.h"
+
 // extern SGPVSurface *gpVSurfaceHead;
 //
 // SGPVSurface::SGPVSurface(UINT16 const w, UINT16 const h, UINT8 const bpp)
@@ -129,11 +129,11 @@
 // }
 //
 // static void DeletePrimaryVideoSurfaces(void);
-//
-// SGPVSurface *g_back_buffer;
-// SGPVSurfaceAuto *g_frame_buffer;
-// SGPVSurfaceAuto *g_mouse_buffer;
-//
+
+SGPVSurface *g_back_buffer;
+SGPVSurfaceAuto *g_frame_buffer;
+SGPVSurfaceAuto *g_mouse_buffer;
+
 // #undef AddVideoSurface
 // #undef AddVideoSurfaceFromFile
 //

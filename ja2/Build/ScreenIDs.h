@@ -1,7 +1,7 @@
-// #ifndef __SCREEN_IDS
-// #define __SCREEN_IDS
-//
-// enum ScreenID {
+#ifndef __SCREEN_IDS
+#define __SCREEN_IDS
+
+enum ScreenID {
 //   EDIT_SCREEN,
 //   ERROR_SCREEN = 3,
 //   INIT_SCREEN,
@@ -15,7 +15,7 @@
 //   MAPUTILITY_SCREEN,
 //   FADE_SCREEN,
 //   MSG_BOX_SCREEN,
-//   MAINMENU_SCREEN,
+  MAINMENU_SCREEN,
 //   AUTORESOLVE_SCREEN,
 //   SAVE_LOAD_SCREEN,
 //   OPTIONS_SCREEN,
@@ -33,7 +33,6 @@
 //   MAX_SCREENS,
 //
 //   NO_PENDING_SCREEN = 0xFFFF
-// };
-//
-// #endif
-//
+};
+
+#endif

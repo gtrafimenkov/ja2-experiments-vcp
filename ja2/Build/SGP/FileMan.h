@@ -13,9 +13,9 @@
 // #else
 // #include <glob.h>
 // #endif
-//
-// enum FileSeekMode { FILE_SEEK_FROM_START, FILE_SEEK_FROM_END, FILE_SEEK_FROM_CURRENT };
-//
+
+enum FileSeekMode { FILE_SEEK_FROM_START, FILE_SEEK_FROM_END, FILE_SEEK_FROM_CURRENT };
+
 // struct SGP_FILETIME {
 //   UINT32 Lo;
 //   UINT32 Hi;
@@ -41,7 +41,7 @@ void FileRead(HWFILE, void *pDest, size_t uiBytesToRead);
 //   if (n != 0) FileWrite(f, data, sizeof(*data) * n);
 // }
 //
-// void FileSeek(HWFILE, INT32 distance, FileSeekMode);
+void FileSeek(HWFILE, INT32 distance, FileSeekMode);
 // INT32 FileGetPos(HWFILE);
 
 UINT32 FileGetSize(HWFILE);

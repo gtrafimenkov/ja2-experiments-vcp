@@ -11,11 +11,11 @@
 
 // // Zeros out the structs for the system info, and initializes the cache.
 // void InitializeSoundManager(void);
-//
-// /* Silences all currently playing sound, deallocates any memory allocated, and
-//  * releases the sound hardware. */
-// void ShutdownSoundManager(void);
-//
+
+/* Silences all currently playing sound, deallocates any memory allocated, and
+ * releases the sound hardware. */
+void ShutdownSoundManager(void);
+
 // UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
 //                            void (*end_callback)(void *), void *data);
 //
