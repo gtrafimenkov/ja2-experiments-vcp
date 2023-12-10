@@ -112,10 +112,10 @@ class FileMan {
 //    * ------------------------------------------------------------ */
 //
 //   static const std::string &getExeFolderPath();
-//
-//   /** Get path to the 'Data' directory of the game. */
-//   static const std::string &getDataDirPath();
-//
+
+  /** Get path to the 'Data' directory of the game. */
+  static const std::string &getDataDirPath();
+
 //   /** Get path to the 'Data/Tilecache' directory of the game. */
 //   static const std::string &getTilecacheDirPath();
 //
@@ -144,15 +144,15 @@ class FileMan {
 //    * If directory already exists, do nothing.
 //    * If failed to create, raise an exception. */
 //   static void createDir(char const *path);
-//
-//   /** Join two path components. */
-//   static std::string joinPaths(const char *first, const char *second);
-//
-//   /** Join two path components. */
-//   static std::string joinPaths(const std::string &first, const char *second);
-//
-//   /** Join two path components. */
-//   static std::string joinPaths(const std::string &first, const std::string &second);
+
+  /** Join two path components. */
+  static std::string joinPaths(const char *first, const char *second);
+
+  /** Join two path components. */
+  static std::string joinPaths(const std::string &first, const char *second);
+
+  /** Join two path components. */
+  static std::string joinPaths(const std::string &first, const std::string &second);
 
  private:
   /** Private constructor to avoid instantiation. */

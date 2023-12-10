@@ -1,21 +1,21 @@
-// #pragma once
-//
-// /* Platform and compiler-specifics */
-//
-// /**************************************************************
-//  * File system case-sensitivity
-//  *************************************************************/
-//
-// #ifdef _WIN32
-// #define CASE_SENSITIVE_FS 0
-// #define PATH_SEPARATOR '\\'
-// #define PATH_SEPARATOR_STR "\\"
-// #else
-// #define CASE_SENSITIVE_FS 1
-// #define PATH_SEPARATOR '/'
-// #define PATH_SEPARATOR_STR "/"
-// #endif
-//
+#pragma once
+
+/* Platform and compiler-specifics */
+
+/**************************************************************
+ * File system case-sensitivity
+ *************************************************************/
+
+#ifdef _WIN32
+#define CASE_SENSITIVE_FS 0
+#define PATH_SEPARATOR '\\'
+#define PATH_SEPARATOR_STR "\\"
+#else
+#define CASE_SENSITIVE_FS 1
+#define PATH_SEPARATOR '/'
+#define PATH_SEPARATOR_STR "/"
+#endif
+
 // /* #if CASE_SENSITIVE_FS */
 // /* #include <dirent.h> */
 // /* #endif */

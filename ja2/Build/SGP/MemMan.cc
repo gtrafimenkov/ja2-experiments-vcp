@@ -1,14 +1,14 @@
-// //	Purpose :	function definitions for the memory manager
-// //
-// // Modification history :
-// //
-// //		11sep96:HJH	- Creation
-// //    29may97:ARM - Fix & improve MemDebugCounter handling, logging of
-// //                    MemAlloc/MemFree, and reporting of any errors
-// #include "SGP/MemMan.h"
+//	Purpose :	function definitions for the memory manager
 //
+// Modification history :
+//
+//		11sep96:HJH	- Creation
+//    29may97:ARM - Fix & improve MemDebugCounter handling, logging of
+//                    MemAlloc/MemFree, and reporting of any errors
+#include "SGP/MemMan.h"
+
 // #include <new>  // std::bad_alloc
-// #include <stdexcept>
+#include <stdexcept>
 // #include <stdlib.h>
 //
 // #include "MessageBoxScreen.h"
@@ -86,13 +86,13 @@
 //
 //   fMemManagerInit = FALSE;
 // }
-//
-// void *XMalloc(size_t const size) {
-//   void *const p = malloc(size);
-//   if (!p) throw std::bad_alloc();
-//   return p;
-// }
-//
+
+void *XMalloc(size_t const size) {
+  void *const p = malloc(size);
+  if (!p) throw std::bad_alloc();
+  return p;
+}
+
 // void *XRealloc(void *const ptr, size_t const size) {
 //   void *const p = realloc(ptr, size);
 //   if (!p) throw std::bad_alloc();

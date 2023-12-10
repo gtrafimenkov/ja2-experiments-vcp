@@ -1,10 +1,10 @@
 #ifndef __TYPES_
 #define __TYPES_
 
-// #include <SDL_video.h>
-// #include <stdint.h>
-// #include <stdlib.h>
-//
+#include <SDL_video.h>
+#include <stdint.h>
+#include <stdlib.h>
+
 // #include "SGP/Platform.h"
 // #include "SGP/SGPStrings.h"
 //

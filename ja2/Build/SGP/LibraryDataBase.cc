@@ -1,19 +1,20 @@
-// #include "SGP/LibraryDataBase.h"
-//
+#include "SGP/LibraryDataBase.h"
+
 // #include <cstdlib>
 // #include <stdexcept>
-//
+#include <string.h>
+
 // #include "Directories.h"
 // #include "SGP/Debug.h"
 // #include "SGP/Exceptions.h"
 // #include "SGP/FileMan.h"
 // #include "SGP/Logger.h"
 // #include "SGP/MemMan.h"
-// #include "SGP/StrUtils.h"
-// #include "SGP/Types.h"
-//
-// #define FILENAME_SIZE 256
-//
+#include "SGP/StrUtils.h"
+#include "SGP/Types.h"
+
+#define FILENAME_SIZE 256
+
 // #define FILE_OK 0x00
 // #define FILE_DELETED 0xFF
 // #define FILE_OLD 0x01
@@ -40,14 +41,14 @@
 //   SGP_FILETIME sFileTime;
 //   UINT16 usReserved2;
 // };
-//
-// struct DatabaseManagerHeaderStruct {
-//   LibraryHeaderStruct *pLibraries;
-//   UINT16 usNumberOfLibraries;
-// };
-//
-// static DatabaseManagerHeaderStruct gFileDataBase;
-//
+
+struct DatabaseManagerHeaderStruct {
+  LibraryHeaderStruct *pLibraries;
+  UINT16 usNumberOfLibraries;
+};
+
+static DatabaseManagerHeaderStruct gFileDataBase;
+
 // static BOOLEAN InitializeLibrary(const char *pLibraryName, LibraryHeaderStruct *pLibHeader);
 //
 // static void ThrowExcOnLibLoadFailure(const char *pLibraryName) {
@@ -194,90 +195,90 @@
 //   f->uiFilePosInFile += uiBytesToRead;
 //   return TRUE;
 // }
-//
-// static const FileHeaderStruct *GetFileHeaderFromLibrary(const LibraryHeaderStruct *lib,
-//                                                         const char *filename);
-// static LibraryHeaderStruct *GetLibraryFromFileName(char const *filename);
-//
+
+static const FileHeaderStruct *GetFileHeaderFromLibrary(const LibraryHeaderStruct *lib,
+                                                        const char *filename);
+static LibraryHeaderStruct *GetLibraryFromFileName(char const *filename);
+
 // bool CheckIfFileExistInLibrary(char const *const filename) {
 //   LibraryHeaderStruct const *const lib = GetLibraryFromFileName(filename);
 //   return lib && GetFileHeaderFromLibrary(lib, filename);
 // }
-//
-// static BOOLEAN IsLibraryOpened(INT16 sLibraryID);
-//
-// /* Find out if the file CAN be in a library.  It determines if the library that
-//  * the file MAY be in is open.  E.g. file is  Laptop/Test.sti, if the Laptop/
-//  * library is open, it returns true */
-// static LibraryHeaderStruct *GetLibraryFromFileName(char const *const filename) {
-//   // Loop through all the libraries to check which library the file is in
-//   LibraryHeaderStruct *best_match = 0;
-//   for (INT16 i = 0; i != gFileDataBase.usNumberOfLibraries; ++i) {
-//     if (!IsLibraryOpened(i)) continue;
-//
-//     LibraryHeaderStruct *const lib = &gFileDataBase.pLibraries[i];
-//     char const *const lib_path = lib->sLibraryPath;
-//     if (lib_path[0] == '\0') {  // The library is for the default path
-//       if (strchr(filename, '/')) continue;
-//       // There is no directory in the file name
-//       return lib;
-//     } else {  // Compare the library name to the file name that is passed in
-//       size_t const lib_path_len = strlen(lib_path);
-//       if (strncasecmp(lib_path, filename, lib_path_len) != 0) continue;
-//       // The directory paths are the same to the length of the lib's path
-//       if (best_match && strlen(best_match->sLibraryPath) >= lib_path_len) continue;
-//       // We've never matched or this match's path is longer than the previous
-//       // match (meaning it's more exact)
-//       best_match = lib;
-//     }
-//   }
-//   return best_match;
-// }
-//
-// static int CompareFileNames(const void *key, const void *member);
-//
-// static const char *g_current_lib_path;
-//
-// /* Performsperforms a binary search of the library.  It adds the libraries path
-//  * to the file in the library and then string compared that to the name that we
-//  * are searching for. */
-// static const FileHeaderStruct *GetFileHeaderFromLibrary(const LibraryHeaderStruct *const lib,
-//                                                         const char *const filename) {
-//   g_current_lib_path = lib->sLibraryPath;
-//   return (const FileHeaderStruct *)bsearch(filename, lib->pFileHeader, lib->usNumberOfEntries,
-//                                            sizeof(*lib->pFileHeader), CompareFileNames);
-// }
-//
-// static int CompareFileNames(const void *key, const void *member) {
-//   const char *const sSearchKey = (const char *)key;
-//   const FileHeaderStruct *const TempFileHeader = (const FileHeaderStruct *)member;
-//   char sFileNameWithPath[FILENAME_SIZE];
-//
-//   sprintf(sFileNameWithPath, "%s%s", g_current_lib_path, TempFileHeader->pFileName);
-//
-//   return strcasecmp(sSearchKey, sFileNameWithPath);
-// }
-//
-// /* This function will see if a file is in a library.  If it is, the file will be
-//  * opened and a file handle will be created for it. */
-// BOOLEAN OpenFileFromLibrary(const char *const pName, LibraryFile *const f) {
-//   // Check if the file can be contained from an open library ( the path to the
-//   // file a library path )
-//   LibraryHeaderStruct *const lib = GetLibraryFromFileName(pName);
-//   if (!lib) return FALSE;
-//
-//   // if the file is in a library, get the file
-//   const FileHeaderStruct *const pFileHeader = GetFileHeaderFromLibrary(lib, pName);
-//   if (pFileHeader == NULL) return FALSE;
-//
-//   // increment the number of open files
-//   lib->iNumFilesOpen++;
-//
-//   f->lib = lib;
-//   f->pFileHeader = pFileHeader;
-//   return TRUE;
-// }
-//
+
+static BOOLEAN IsLibraryOpened(INT16 sLibraryID);
+
+/* Find out if the file CAN be in a library.  It determines if the library that
+ * the file MAY be in is open.  E.g. file is  Laptop/Test.sti, if the Laptop/
+ * library is open, it returns true */
+static LibraryHeaderStruct *GetLibraryFromFileName(char const *const filename) {
+  // Loop through all the libraries to check which library the file is in
+  LibraryHeaderStruct *best_match = 0;
+  for (INT16 i = 0; i != gFileDataBase.usNumberOfLibraries; ++i) {
+    if (!IsLibraryOpened(i)) continue;
+
+    LibraryHeaderStruct *const lib = &gFileDataBase.pLibraries[i];
+    char const *const lib_path = lib->sLibraryPath;
+    if (lib_path[0] == '\0') {  // The library is for the default path
+      if (strchr(filename, '/')) continue;
+      // There is no directory in the file name
+      return lib;
+    } else {  // Compare the library name to the file name that is passed in
+      size_t const lib_path_len = strlen(lib_path);
+      if (strncasecmp(lib_path, filename, lib_path_len) != 0) continue;
+      // The directory paths are the same to the length of the lib's path
+      if (best_match && strlen(best_match->sLibraryPath) >= lib_path_len) continue;
+      // We've never matched or this match's path is longer than the previous
+      // match (meaning it's more exact)
+      best_match = lib;
+    }
+  }
+  return best_match;
+}
+
+static int CompareFileNames(const void *key, const void *member);
+
+static const char *g_current_lib_path;
+
+/* Performsperforms a binary search of the library.  It adds the libraries path
+ * to the file in the library and then string compared that to the name that we
+ * are searching for. */
+static const FileHeaderStruct *GetFileHeaderFromLibrary(const LibraryHeaderStruct *const lib,
+                                                        const char *const filename) {
+  g_current_lib_path = lib->sLibraryPath;
+  return (const FileHeaderStruct *)bsearch(filename, lib->pFileHeader, lib->usNumberOfEntries,
+                                           sizeof(*lib->pFileHeader), CompareFileNames);
+}
+
+static int CompareFileNames(const void *key, const void *member) {
+  const char *const sSearchKey = (const char *)key;
+  const FileHeaderStruct *const TempFileHeader = (const FileHeaderStruct *)member;
+  char sFileNameWithPath[FILENAME_SIZE];
+
+  sprintf(sFileNameWithPath, "%s%s", g_current_lib_path, TempFileHeader->pFileName);
+
+  return strcasecmp(sSearchKey, sFileNameWithPath);
+}
+
+/* This function will see if a file is in a library.  If it is, the file will be
+ * opened and a file handle will be created for it. */
+BOOLEAN OpenFileFromLibrary(const char *const pName, LibraryFile *const f) {
+  // Check if the file can be contained from an open library ( the path to the
+  // file a library path )
+  LibraryHeaderStruct *const lib = GetLibraryFromFileName(pName);
+  if (!lib) return FALSE;
+
+  // if the file is in a library, get the file
+  const FileHeaderStruct *const pFileHeader = GetFileHeaderFromLibrary(lib, pName);
+  if (pFileHeader == NULL) return FALSE;
+
+  // increment the number of open files
+  lib->iNumFilesOpen++;
+
+  f->lib = lib;
+  f->pFileHeader = pFileHeader;
+  return TRUE;
+}
+
 // void CloseLibraryFile(LibraryFile *const f) { --f->lib->iNumFilesOpen; }
 //
 // BOOLEAN LibraryFileSeek(LibraryFile *const f, INT32 distance, const FileSeekMode how) {
@@ -344,12 +345,12 @@
 //
 //   return (TRUE);
 // }
-//
-// static BOOLEAN IsLibraryOpened(INT16 const sLibraryID) {
-//   return sLibraryID < gFileDataBase.usNumberOfLibraries &&
-//          gFileDataBase.pLibraries[sLibraryID].hLibraryHandle != NULL;
-// }
-//
+
+static BOOLEAN IsLibraryOpened(INT16 const sLibraryID) {
+  return sLibraryID < gFileDataBase.usNumberOfLibraries &&
+         gFileDataBase.pLibraries[sLibraryID].hLibraryHandle != NULL;
+}
+
 // static int CompareDirEntryFileNames(const void *key, const void *member);
 //
 // #if 1  // XXX TODO UNIMPLEMENTED

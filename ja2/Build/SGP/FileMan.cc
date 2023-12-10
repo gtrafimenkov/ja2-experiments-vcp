@@ -2,19 +2,20 @@
 //
 // #include <algorithm>
 // #include <errno.h>
-// #include <fcntl.h>
+#include <fcntl.h>
 #include <filesystem>
 // #include <iostream>
 // #include <stdexcept>
-// #include <stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string>
 // #include <sys/stat.h>
 // #include <sys/types.h>
-//
+
 // #include "Directories.h"
-// #include "SGP/LibraryDataBase.h"
+#include "SGP/LibraryDataBase.h"
 // #include "SGP/Logger.h"
-// #include "SGP/MemMan.h"
+#include "SGP/MemMan.h"
 // #include "SGP/PODObj.h"
 #include "SGP/Types.h"
 
@@ -23,25 +24,26 @@
 // #else
 // #include <pwd.h>
 // #endif
-//
-// #include "SGP/PlatformIO.h"
-//
-// #if CASE_SENSITIVE_FS
-// #include <dirent.h>
-// #endif
-//
+
+#include "SGP/Platform.h"
+#include "SGP/PlatformIO.h"
+
+#if CASE_SENSITIVE_FS
+#include <dirent.h>
+#endif
+
 // #define BASEDATADIR "data"
 // #define LOCAL_CURRENT_DIR "tmp"
-//
-// enum SGPFileFlags { SGPFILE_NONE = 0U, SGPFILE_REAL = 1U << 0 };
-//
-// struct SGPFile {
-//   SGPFileFlags flags;
-//   union {
-//     FILE *file;
-//     LibraryFile lib;
-//   } u;
-// };
+
+enum SGPFileFlags { SGPFILE_NONE = 0U, SGPFILE_REAL = 1U << 0 };
+
+struct SGPFile {
+  SGPFileFlags flags;
+  union {
+    FILE *file;
+    LibraryFile lib;
+  } u;
+};
 
 enum FileOpenFlags {
   FILE_ACCESS_READ = 1U << 0,
@@ -51,32 +53,32 @@ enum FileOpenFlags {
 };
 ENUM_BITSET(FileOpenFlags)
 
-// static std::string s_dataDir;
+static std::string s_dataDir;
 // static std::string s_tileDir;
 // static std::string s_mapsDir;
 //
 // static void findDataDirs(const char *exeFolder);
 // static void SetFileManCurrentDirectory(char const *const pcDirectory);
-//
-// /** Convert file descriptor to HWFile.
-//  * Raise runtime_error if not possible. */
-// static HWFILE getSGPFileFromFD(int fd, const char *filename, const char *fmode);
-//
-// #if CASE_SENSITIVE_FS
-// /**
-//  * Find an object (file or subdirectory) in the given directory in
-//  * case-independent manner.
-//  * @return true when found, return the found name using foundName. */
-// static bool findObjectCaseInsensitive(const char *directory, const char *name, bool lookForFiles,
-//                                       bool lookForSubdirs, std::string &foundName);
-// #endif
-//
-// /** Get file open modes from our enumeration.
-//  * Abort program if conversion is not found.
-//  * @return file mode for fopen call and posix mode using parameter 'posixMode'
-//  */
-// static const char *GetFileOpenModes(FileOpenFlags flags, int *posixMode);
-//
+
+/** Convert file descriptor to HWFile.
+ * Raise runtime_error if not possible. */
+static HWFILE getSGPFileFromFD(int fd, const char *filename, const char *fmode);
+
+#if CASE_SENSITIVE_FS
+/**
+ * Find an object (file or subdirectory) in the given directory in
+ * case-independent manner.
+ * @return true when found, return the found name using foundName. */
+static bool findObjectCaseInsensitive(const char *directory, const char *name, bool lookForFiles,
+                                      bool lookForSubdirs, std::string &foundName);
+#endif
+
+/** Get file open modes from our enumeration.
+ * Abort program if conversion is not found.
+ * @return file mode for fopen call and posix mode using parameter 'posixMode'
+ */
+static const char *GetFileOpenModes(FileOpenFlags flags, int *posixMode);
+
 // static std::string s_exeFolderPath;
 //
 // void InitializeFileManager(const char *exeFolder) {
@@ -119,28 +121,28 @@ ENUM_BITSET(FileOpenFlags)
 //   fclose(file);
 //   return true;
 // }
-//
-// /**
-//  * Open file in the Data directory.
-//  *
-//  * Return file descriptor or -1 if file is not found. */
-// static int OpenFileInDataDirFD(const char *filename, int mode) {
-//   std::string path = FileMan::joinPaths(FileMan::getDataDirPath(), filename);
-//   int d = open(path.c_str(), mode);
-//   if (d < 0) {
-// #if CASE_SENSITIVE_FS
-//     // on case-sensitive file system need to try to find another name
-//     std::string newFileName;
-//     if (findObjectCaseInsensitive(FileMan::getDataDirPath().c_str(), filename, true, false,
-//                                   newFileName)) {
-//       path = FileMan::joinPaths(FileMan::getDataDirPath(), newFileName);
-//       d = open(path.c_str(), mode);
-//     }
-// #endif
-//   }
-//   return d;
-// }
-//
+
+/**
+ * Open file in the Data directory.
+ *
+ * Return file descriptor or -1 if file is not found. */
+static int OpenFileInDataDirFD(const char *filename, int mode) {
+  std::string path = FileMan::joinPaths(FileMan::getDataDirPath(), filename);
+  int d = open(path.c_str(), mode);
+  if (d < 0) {
+#if CASE_SENSITIVE_FS
+    // on case-sensitive file system need to try to find another name
+    std::string newFileName;
+    if (findObjectCaseInsensitive(FileMan::getDataDirPath().c_str(), filename, true, false,
+                                  newFileName)) {
+      path = FileMan::joinPaths(FileMan::getDataDirPath(), newFileName);
+      d = open(path.c_str(), mode);
+    }
+#endif
+  }
+  return d;
+}
+
 // void FileDelete(char const *const path) {
 //   if (unlink(path) == 0) return;
 //
@@ -164,43 +166,43 @@ ENUM_BITSET(FileOpenFlags)
 //
 //   throw std::runtime_error("Deleting file failed");
 // }
-//
-// /** Get file open modes from our enumeration.
-//  * Abort program if conversion is not found.
-//  * @return file mode for fopen call and posix mode using parameter 'posixMode'
-//  */
-// static const char *GetFileOpenModes(FileOpenFlags flags, int *posixMode) {
-//   const char *cMode = NULL;
-//
-// #ifndef _WIN32
-//   *posixMode = 0;
-// #else
-//   *posixMode = O_BINARY;
-// #endif
-//
-//   switch (flags & (FILE_ACCESS_READWRITE | FILE_ACCESS_APPEND)) {
-//     case FILE_ACCESS_READ:
-//       cMode = "rb";
-//       *posixMode |= O_RDONLY;
-//       break;
-//     case FILE_ACCESS_WRITE:
-//       cMode = "wb";
-//       *posixMode |= O_WRONLY;
-//       break;
-//     case FILE_ACCESS_READWRITE:
-//       cMode = "r+b";
-//       *posixMode |= O_RDWR;
-//       break;
-//     case FILE_ACCESS_APPEND:
-//       cMode = "ab";
-//       *posixMode |= O_WRONLY | O_APPEND;
-//       break;
-//
-//     default:
-//       abort();
-//   }
-//   return cMode;
-// }
+
+/** Get file open modes from our enumeration.
+ * Abort program if conversion is not found.
+ * @return file mode for fopen call and posix mode using parameter 'posixMode'
+ */
+static const char *GetFileOpenModes(FileOpenFlags flags, int *posixMode) {
+  const char *cMode = NULL;
+
+#ifndef _WIN32
+  *posixMode = 0;
+#else
+  *posixMode = O_BINARY;
+#endif
+
+  switch (flags & (FILE_ACCESS_READWRITE | FILE_ACCESS_APPEND)) {
+    case FILE_ACCESS_READ:
+      cMode = "rb";
+      *posixMode |= O_RDONLY;
+      break;
+    case FILE_ACCESS_WRITE:
+      cMode = "wb";
+      *posixMode |= O_WRONLY;
+      break;
+    case FILE_ACCESS_READWRITE:
+      cMode = "r+b";
+      *posixMode |= O_RDWR;
+      break;
+    case FILE_ACCESS_APPEND:
+      cMode = "ab";
+      *posixMode |= O_WRONLY | O_APPEND;
+      break;
+
+    default:
+      abort();
+  }
+  return cMode;
+}
 
 /** Open file for reading only.
  * When using the smart lookup:
@@ -476,86 +478,86 @@ HWFILE FileMan::openForReadingSmart(const char *filename, bool useSmartLookup) {
 //   return uiBytesPerSector * uiNumberOfFreeClusters * uiSectorsPerCluster;
 // #endif
 // }
-//
-// /** Join two path components. */
-// std::string FileMan::joinPaths(const std::string &first, const char *second) {
-//   std::string result = first;
-//   if ((result.length() == 0) || (result[result.length() - 1] != PATH_SEPARATOR)) {
-//     if (second[0] != PATH_SEPARATOR) {
-//       result += PATH_SEPARATOR;
-//     }
-//   }
-//   result += second;
-//   return result;
-// }
-//
-// /** Join two path components. */
-// std::string FileMan::joinPaths(const std::string &first, const std::string &second) {
-//   return joinPaths(first, second.c_str());
-// }
-//
-// /** Join two path components. */
-// std::string FileMan::joinPaths(const char *first, const char *second) {
-//   return joinPaths(std::string(first), second);
-// }
-//
-// #if CASE_SENSITIVE_FS
-//
-// /**
-//  * Find an object (file or subdirectory) in the given directory in
-//  * case-independent manner.
-//  * @return true when found, return the found name using foundName. */
-// static bool findObjectCaseInsensitive(const char *directory, const char *name, bool lookForFiles,
-//                                       bool lookForSubdirs, std::string &foundName) {
-//   bool result = false;
-//
-//   // if name contains directories, than we have to find actual case-sensitive
-//   // name of the directory and only then look for a file
-//   const char *splitter = strstr(name, "/");
-//   int dirNameLen = (int)(splitter - name);
-//   if (splitter && (dirNameLen > 0) && splitter[1] != 0) {
-//     // we have directory in the name
-//     // let's find its correct name first
-//     char newDirectory[128];
-//     std::string actualSubdirName;
-//     strncpy(newDirectory, name, sizeof(newDirectory));
-//     newDirectory[dirNameLen] = 0;
-//
-//     if (findObjectCaseInsensitive(directory, newDirectory, false, true, actualSubdirName)) {
-//       // found subdirectory; let's continue the full search
-//       std::string pathInSubdir;
-//       std::string newDirectory = FileMan::joinPaths(directory, actualSubdirName.c_str());
-//       if (findObjectCaseInsensitive(newDirectory.c_str(), splitter + 1, lookForFiles,
-//                                     lookForSubdirs, pathInSubdir)) {
-//         // found name in subdir
-//         foundName = FileMan::joinPaths(actualSubdirName, pathInSubdir);
-//         result = true;
-//       }
-//     }
-//   } else {
-//     // name contains only file, no directories
-//     DIR *d;
-//     struct dirent *entry;
-//     uint8_t objectTypes = (lookForFiles ? DT_REG : 0) | (lookForSubdirs ? DT_DIR : 0);
-//
-//     d = opendir(directory);
-//     if (d) {
-//       while ((entry = readdir(d)) != NULL) {
-//         if ((entry->d_type & objectTypes) && !strcasecmp(name, entry->d_name)) {
-//           foundName = entry->d_name;
-//           result = true;
-//         }
-//       }
-//       closedir(d);
-//     }
-//   }
-//
-//   // LOG_INFO("XXXXX Looking for %s/[ %s ] : %s\n", directory, name, result ?
-//   // "success" : "failure");
-//   return result;
-// }
-// #endif
-//
+
+/** Join two path components. */
+std::string FileMan::joinPaths(const std::string &first, const char *second) {
+  std::string result = first;
+  if ((result.length() == 0) || (result[result.length() - 1] != PATH_SEPARATOR)) {
+    if (second[0] != PATH_SEPARATOR) {
+      result += PATH_SEPARATOR;
+    }
+  }
+  result += second;
+  return result;
+}
+
+/** Join two path components. */
+std::string FileMan::joinPaths(const std::string &first, const std::string &second) {
+  return joinPaths(first, second.c_str());
+}
+
+/** Join two path components. */
+std::string FileMan::joinPaths(const char *first, const char *second) {
+  return joinPaths(std::string(first), second);
+}
+
+#if CASE_SENSITIVE_FS
+
+/**
+ * Find an object (file or subdirectory) in the given directory in
+ * case-independent manner.
+ * @return true when found, return the found name using foundName. */
+static bool findObjectCaseInsensitive(const char *directory, const char *name, bool lookForFiles,
+                                      bool lookForSubdirs, std::string &foundName) {
+  bool result = false;
+
+  // if name contains directories, than we have to find actual case-sensitive
+  // name of the directory and only then look for a file
+  const char *splitter = strstr(name, "/");
+  int dirNameLen = (int)(splitter - name);
+  if (splitter && (dirNameLen > 0) && splitter[1] != 0) {
+    // we have directory in the name
+    // let's find its correct name first
+    char newDirectory[128];
+    std::string actualSubdirName;
+    strncpy(newDirectory, name, sizeof(newDirectory));
+    newDirectory[dirNameLen] = 0;
+
+    if (findObjectCaseInsensitive(directory, newDirectory, false, true, actualSubdirName)) {
+      // found subdirectory; let's continue the full search
+      std::string pathInSubdir;
+      std::string newDirectory = FileMan::joinPaths(directory, actualSubdirName.c_str());
+      if (findObjectCaseInsensitive(newDirectory.c_str(), splitter + 1, lookForFiles,
+                                    lookForSubdirs, pathInSubdir)) {
+        // found name in subdir
+        foundName = FileMan::joinPaths(actualSubdirName, pathInSubdir);
+        result = true;
+      }
+    }
+  } else {
+    // name contains only file, no directories
+    DIR *d;
+    struct dirent *entry;
+    uint8_t objectTypes = (lookForFiles ? DT_REG : 0) | (lookForSubdirs ? DT_DIR : 0);
+
+    d = opendir(directory);
+    if (d) {
+      while ((entry = readdir(d)) != NULL) {
+        if ((entry->d_type & objectTypes) && !strcasecmp(name, entry->d_name)) {
+          foundName = entry->d_name;
+          result = true;
+        }
+      }
+      closedir(d);
+    }
+  }
+
+  // LOG_INFO("XXXXX Looking for %s/[ %s ] : %s\n", directory, name, result ?
+  // "success" : "failure");
+  return result;
+}
+#endif
+
 // /**
 //  * Find actual paths to directories 'Data' and 'Data/Tilecache', 'Data/Maps'
 //  * On case-sensitive filesystems that might be tricky: if such directories
@@ -584,38 +586,38 @@ HWFILE FileMan::openForReadingSmart(const char *filename, bool useSmartLookup) {
 //   }
 // #endif
 // }
-//
-// /** Get path to the 'Data' directory of the game. */
-// const std::string &FileMan::getDataDirPath() { return s_dataDir; }
-//
+
+/** Get path to the 'Data' directory of the game. */
+const std::string &FileMan::getDataDirPath() { return s_dataDir; }
+
 // /** Get path to the 'Data/Tilecache' directory of the game. */
 // const std::string &FileMan::getTilecacheDirPath() { return s_tileDir; }
 //
 // /** Get path to the 'Data/Maps' directory of the game. */
 // const std::string &FileMan::getMapsDirPath() { return s_mapsDir; }
-//
-// /** Convert file descriptor to HWFile.
-//  * Raise runtime_error if not possible. */
-// static HWFILE getSGPFileFromFD(int fd, const char *filename, const char *fmode) {
-//   if (fd < 0) {
-//     char buf[128];
-//     snprintf(buf, sizeof(buf), "Opening file '%s' failed", filename);
-//     throw std::runtime_error(buf);
-//   }
-//
-//   FILE *const f = fdopen(fd, fmode);
-//   if (!f) {
-//     char buf[128];
-//     snprintf(buf, sizeof(buf), "Opening file '%s' failed", filename);
-//     throw std::runtime_error(buf);
-//   }
-//
-//   SGPFile *file = MALLOCZ(SGPFile);
-//   file->flags = SGPFILE_REAL;
-//   file->u.file = f;
-//   return file;
-// }
-//
+
+/** Convert file descriptor to HWFile.
+ * Raise runtime_error if not possible. */
+static HWFILE getSGPFileFromFD(int fd, const char *filename, const char *fmode) {
+  if (fd < 0) {
+    char buf[128];
+    snprintf(buf, sizeof(buf), "Opening file '%s' failed", filename);
+    throw std::runtime_error(buf);
+  }
+
+  FILE *const f = fdopen(fd, fmode);
+  if (!f) {
+    char buf[128];
+    snprintf(buf, sizeof(buf), "Opening file '%s' failed", filename);
+    throw std::runtime_error(buf);
+  }
+
+  SGPFile *file = MALLOCZ(SGPFile);
+  file->flags = SGPFILE_REAL;
+  file->u.file = f;
+  return file;
+}
+
 // /** Open file for writing.
 //  * If file is missing it will be created.
 //  * If file exists, it's content will be removed. */
