@@ -11,16 +11,16 @@
 // #include "Intro.h"
 // #include "JA2Splash.h"
 // #include "SGP/ButtonSystem.h"
-// #include "SGP/Debug.h"
+#include "SGP/Debug.h"
 #include "SGP/Exceptions.h"
 #include "SGP/FileMan.h"
 // #include "SGP/Font.h"
-// #include "SGP/Input.h"
+#include "SGP/Input.h"
 #include "SGP/Logger.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/Random.h"
 // #include "SGP/SoundMan.h"
-// #include "SGP/Timer.h"
+#include "SGP/Timer.h"
 #include "SGP/Types.h"
 // #include "SGP/VObject.h"
 // #include "SGP/VSurface.h"
@@ -28,7 +28,7 @@
 // #include "SaveLoadGame.h"  // XXX should not be used in SGP
 #include "gtest/gtest.h"
 #include "slog/slog.h"
-//
+
 // #if defined _WIN32
 // #define WIN32_LEAN_AND_MEAN
 // #include <windows.h>
@@ -39,41 +39,41 @@
 // #include "Utils/MultiLanguageGraphicUtils.h"
 //
 // extern BOOLEAN gfPauseDueToPlayerGamePause;
-//
-// /**
-//  * Number of milliseconds for one game cycle.
-//  * 25 ms gives approx. 40 cycles per second (and 40 frames per second, since the
-//  * screen is updated on every cycle). */
-// #define MS_PER_GAME_CYCLE (25)
+
+/**
+ * Number of milliseconds for one game cycle.
+ * 25 ms gives approx. 40 cycles per second (and 40 frames per second, since the
+ * screen is updated on every cycle). */
+#define MS_PER_GAME_CYCLE (25)
 
 static BOOLEAN gfGameInitialized = FALSE;
 
-// /** Deinitialize the game an exit. */
-// static void deinitGameAndExit() {
-//   FastDebugMsg("Exiting Game");
-//
-//   SoundServiceStreams();
-//
+/** Deinitialize the game an exit. */
+static void deinitGameAndExit() {
+  FastDebugMsg("Exiting Game");
+
+  SoundServiceStreams();
+
 //   if (gfGameInitialized) {
 //     ShutdownGame();
 //   }
-//
-//   ShutdownButtonSystem();
-//   MSYS_Shutdown();
-//
-//   ShutdownSoundManager();
-//
-//   ShutdownVideoSurfaceManager();
-//   ShutdownVideoObjectManager();
-//   ShutdownVideoManager();
-//
-//   ShutdownMemoryManager();  // must go last, for MemDebugCounter to work right...
-//
-//   SDL_Quit();
-//
-//   exit(0);
-// }
-//
+
+  ShutdownButtonSystem();
+  MSYS_Shutdown();
+
+  ShutdownSoundManager();
+
+  ShutdownVideoSurfaceManager();
+  ShutdownVideoObjectManager();
+  ShutdownVideoManager();
+
+  ShutdownMemoryManager();  // must go last, for MemDebugCounter to work right...
+
+  SDL_Quit();
+
+  exit(0);
+}
+
 // /** Request game exit.
 //  * Call this function if you want to exit the game. */
 // void requestGameExit() {
@@ -83,65 +83,65 @@ static BOOLEAN gfGameInitialized = FALSE;
 // }
 
 static void MainLoop() {
-//   BOOLEAN s_doGameCycles = TRUE;
-//
-//   while (true) {
-//     // cycle until SDL_Quit is received
-//
-//     SDL_Event event;
-//     if (SDL_PollEvent(&event)) {
-//       switch (event.type) {
-//         case SDL_APP_WILLENTERBACKGROUND:
-//           s_doGameCycles = false;
-//           break;
-//
-//         case SDL_APP_WILLENTERFOREGROUND:
-//           s_doGameCycles = true;
-//           break;
-//
-//         case SDL_KEYDOWN:
-//           KeyDown(&event.key.keysym);
-//           break;
-//         case SDL_KEYUP:
-//           KeyUp(&event.key.keysym);
-//           break;
-//         case SDL_TEXTINPUT:
-//           TextInput(&event.text);
-//           break;
-//
-//         case SDL_MOUSEBUTTONDOWN:
-//           MouseButtonDown(&event.button);
-//           break;
-//         case SDL_MOUSEBUTTONUP:
-//           MouseButtonUp(&event.button);
-//           break;
-//
-//         case SDL_MOUSEMOTION:
-//           SetSafeMousePosition(event.motion.x, event.motion.y);
-//           break;
-//
-//         case SDL_MOUSEWHEEL:
-//           MouseWheelScroll(&event.wheel);
-//           break;
-//
-//         case SDL_QUIT:
-//           deinitGameAndExit();
-//           break;
-//       }
-//     } else {
-//       if (s_doGameCycles) {
-//         UINT32 gameCycleMS = GetClock();
-//         GameLoop();
-//         gameCycleMS = GetClock() - gameCycleMS;
-//
-//         if (gameCycleMS < MS_PER_GAME_CYCLE) {
-//           SDL_Delay(MS_PER_GAME_CYCLE - gameCycleMS);
-//         }
-//       } else {
-//         SDL_WaitEvent(NULL);
-//       }
-//     }
-//   }
+  BOOLEAN s_doGameCycles = TRUE;
+
+  while (true) {
+    // cycle until SDL_Quit is received
+
+    SDL_Event event;
+    if (SDL_PollEvent(&event)) {
+      switch (event.type) {
+        case SDL_APP_WILLENTERBACKGROUND:
+          s_doGameCycles = false;
+          break;
+
+        case SDL_APP_WILLENTERFOREGROUND:
+          s_doGameCycles = true;
+          break;
+
+        // case SDL_KEYDOWN:
+        //   KeyDown(&event.key.keysym);
+        //   break;
+        // case SDL_KEYUP:
+        //   KeyUp(&event.key.keysym);
+        //   break;
+        // case SDL_TEXTINPUT:
+        //   TextInput(&event.text);
+        //   break;
+
+        case SDL_MOUSEBUTTONDOWN:
+          MouseButtonDown(&event.button);
+          break;
+        case SDL_MOUSEBUTTONUP:
+          MouseButtonUp(&event.button);
+          break;
+
+        case SDL_MOUSEMOTION:
+          SetSafeMousePosition(event.motion.x, event.motion.y);
+          break;
+
+        // case SDL_MOUSEWHEEL:
+        //   MouseWheelScroll(&event.wheel);
+        //   break;
+
+        case SDL_QUIT:
+          deinitGameAndExit();
+          break;
+      }
+    } else {
+      if (s_doGameCycles) {
+        UINT32 gameCycleMS = GetClock();
+        GameLoop();
+        gameCycleMS = GetClock() - gameCycleMS;
+
+        if (gameCycleMS < MS_PER_GAME_CYCLE) {
+          SDL_Delay(MS_PER_GAME_CYCLE - gameCycleMS);
+        }
+      } else {
+        SDL_WaitEvent(NULL);
+      }
+    }
+  }
 }
 
 static int Failure(char const *const msg, bool showInfoIcon = false) {

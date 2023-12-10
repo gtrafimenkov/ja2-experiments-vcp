@@ -1,7 +1,8 @@
-// #include "SGP/HImage.h"
-//
-// #include <stdexcept>
-//
+#include "SGP/HImage.h"
+
+#include <stdexcept>
+#include <string.h>
+
 // #include "SGP/Debug.h"
 // #include "SGP/FileMan.h"
 // #include "SGP/ImpTGA.h"
@@ -23,20 +24,20 @@
 // INT16 gusRedShift = 0;
 // INT16 gusBlueShift = 0;
 // INT16 gusGreenShift = 0;
-//
-// SGPImage *CreateImage(const char *const filename, const UINT16 fContents) {
-//   // depending on extension of filename, use different image readers
-//   const char *const dot = strstr(filename, ".");
-//   if (!dot) throw std::logic_error("Tried to load image with no extension");
-//   const char *const ext = dot + 1;
-//
-//   return strcasecmp(ext, "STI") == 0   ? LoadSTCIFileToImage(filename, fContents)
-//          : strcasecmp(ext, "PCX") == 0 ? LoadPCXFileToImage(filename, fContents)
-//          : strcasecmp(ext, "TGA") == 0
-//              ? LoadTGAFileToImage(filename, fContents)
-//              : throw std::logic_error("Tried to load image with unknown extension");
-// }
-//
+
+SGPImage *CreateImage(const char *const filename, const UINT16 fContents) {
+  // depending on extension of filename, use different image readers
+  const char *const dot = strstr(filename, ".");
+  if (!dot) throw std::logic_error("Tried to load image with no extension");
+  const char *const ext = dot + 1;
+
+  return strcasecmp(ext, "STI") == 0   ? LoadSTCIFileToImage(filename, fContents)
+         : strcasecmp(ext, "PCX") == 0 ? LoadPCXFileToImage(filename, fContents)
+         : strcasecmp(ext, "TGA") == 0
+             ? LoadTGAFileToImage(filename, fContents)
+             : throw std::logic_error("Tried to load image with unknown extension");
+}
+
 // static BOOLEAN Copy8BPPImageTo8BPPBuffer(SGPImage const *const img, BYTE *const pDestBuf,
 //                                          UINT16 const usDestWidth, UINT16 const usDestHeight,
 //                                          UINT16 const usX, UINT16 const usY,

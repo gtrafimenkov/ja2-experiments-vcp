@@ -1,9 +1,9 @@
-// #ifndef __DEBUG_MANAGER_
-// #define __DEBUG_MANAGER_
-//
+#ifndef __DEBUG_MANAGER_
+#define __DEBUG_MANAGER_
+
 // #include "SGP/TopicIDs.h"
-// #include "SGP/Types.h"
-//
+#include "SGP/Types.h"
+
 // #define DEBUG_PRINT_FPS (0) /**< Flag telling to print FPS (Frames per second) counter. */
 // #define DEBUG_PRINT_GAME_CYCLE_TIME \
 //   (0) /**< Flag telling to print how much time every game cycle takes. */
@@ -38,9 +38,9 @@
 // #define AssertMsg(a, b) ((void)0)
 //
 // #endif
-//
-// #ifdef SGP_DEBUG
-//
+
+#ifdef SGP_DEBUG
+
 // BOOLEAN InitializeDebugManager(void);
 //
 // // If DEBUG_ is defined, we need to initialize all the debug macros. Otherwise
@@ -60,22 +60,22 @@
 // };
 //
 // extern void DebugMsg(TopicID TopicId, DebugLevel uiDebugLevel, const char *Str);
-// #define FastDebugMsg(a) _DebugMessage(a, __LINE__, __FILE__)
-//
-// extern void _DebugMessage(const char *Message, UINT32 uiLineNum, const char *SourceFile);
-//
+#define FastDebugMsg(a) _DebugMessage(a, __LINE__, __FILE__)
+
+extern void _DebugMessage(const char *Message, UINT32 uiLineNum, const char *SourceFile);
+
 // const char *String(const char *fmt, ...);
-//
-// #else
-//
-// //*******************************************************************************************
-// // Release Mode
-// //*******************************************************************************************
-//
-// #define DebugMsg(a, b, c)
-// #define FastDebugMsg(a)
-//
-// #endif
-//
-// #endif
-//
+
+#else
+
+//*******************************************************************************************
+// Release Mode
+//*******************************************************************************************
+
+#define DebugMsg(a, b, c)
+#define FastDebugMsg(a)
+
+#endif
+
+#endif
+

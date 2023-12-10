@@ -16,7 +16,8 @@
 // #include "SGP/Logger.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/PODObj.h"
-//
+#include "SGP/Types.h"
+
 // #if _WIN32
 // #include <shlobj.h>
 // #else
@@ -41,15 +42,15 @@
 //     LibraryFile lib;
 //   } u;
 // };
-//
-// enum FileOpenFlags {
-//   FILE_ACCESS_READ = 1U << 0,
-//   FILE_ACCESS_WRITE = 1U << 1,
-//   FILE_ACCESS_READWRITE = FILE_ACCESS_READ | FILE_ACCESS_WRITE,
-//   FILE_ACCESS_APPEND = 1U << 2
-// };
-// ENUM_BITSET(FileOpenFlags)
-//
+
+enum FileOpenFlags {
+  FILE_ACCESS_READ = 1U << 0,
+  FILE_ACCESS_WRITE = 1U << 1,
+  FILE_ACCESS_READWRITE = FILE_ACCESS_READ | FILE_ACCESS_WRITE,
+  FILE_ACCESS_APPEND = 1U << 2
+};
+ENUM_BITSET(FileOpenFlags)
+
 // static std::string s_dataDir;
 // static std::string s_tileDir;
 // static std::string s_mapsDir;
@@ -200,57 +201,57 @@
 //   }
 //   return cMode;
 // }
-//
-// /** Open file for reading only.
-//  * When using the smart lookup:
-//  *  - first try to open file normally.
-//  *    It will work if the path is absolute and the file is found or path is
-//  * relative to the current directory and file is present;
-//  *  - if file is not found, try to find the file relatively to 'Data' directory;
-//  *  - if file is not found, try to find the file in libraries located in 'Data'
-//  * directory; */
-// HWFILE FileMan::openForReadingSmart(const char *filename, bool useSmartLookup) {
-//   int mode;
-//   const char *fmode = GetFileOpenModes(FILE_ACCESS_READ, &mode);
-//
-//   int d;
-//
-//   {
-//     d = open(filename, mode);
-//     if ((d < 0) && useSmartLookup) {
-//       // failed to open file in the local directory
-//       // let's try Data
-//       d = OpenFileInDataDirFD(filename, mode);
-//       if (d < 0) {
-//         LibraryFile libFile;
-//         memset(&libFile, 0, sizeof(libFile));
-//
-//         // failed to open in the data dir
-//         // let's try libraries
-//         if (OpenFileFromLibrary(filename, &libFile)) {
-// #if DEBUG_PRINT_OPENING_FILES
-//           LOG_INFO("Opened file (from library ): %s\n", filename);
-// #endif
-//           SGPFile *file = MALLOCZ(SGPFile);
-//           file->flags = SGPFILE_NONE;
-//           file->u.lib = libFile;
-//           return file;
-//         }
-//       } else {
-// #if DEBUG_PRINT_OPENING_FILES
-//         LOG_INFO("Opened file (from data dir): %s\n", filename);
-// #endif
-//       }
-//     } else {
-// #if DEBUG_PRINT_OPENING_FILES
-//       LOG_INFO("Opened file (current dir  ): %s\n", filename);
-// #endif
-//     }
-//   }
-//
-//   return getSGPFileFromFD(d, filename, fmode);
-// }
-//
+
+/** Open file for reading only.
+ * When using the smart lookup:
+ *  - first try to open file normally.
+ *    It will work if the path is absolute and the file is found or path is
+ * relative to the current directory and file is present;
+ *  - if file is not found, try to find the file relatively to 'Data' directory;
+ *  - if file is not found, try to find the file in libraries located in 'Data'
+ * directory; */
+HWFILE FileMan::openForReadingSmart(const char *filename, bool useSmartLookup) {
+  int mode;
+  const char *fmode = GetFileOpenModes(FILE_ACCESS_READ, &mode);
+
+  int d;
+
+  {
+    d = open(filename, mode);
+    if ((d < 0) && useSmartLookup) {
+      // failed to open file in the local directory
+      // let's try Data
+      d = OpenFileInDataDirFD(filename, mode);
+      if (d < 0) {
+        LibraryFile libFile;
+        memset(&libFile, 0, sizeof(libFile));
+
+        // failed to open in the data dir
+        // let's try libraries
+        if (OpenFileFromLibrary(filename, &libFile)) {
+#if DEBUG_PRINT_OPENING_FILES
+          LOG_INFO("Opened file (from library ): %s\n", filename);
+#endif
+          SGPFile *file = MALLOCZ(SGPFile);
+          file->flags = SGPFILE_NONE;
+          file->u.lib = libFile;
+          return file;
+        }
+      } else {
+#if DEBUG_PRINT_OPENING_FILES
+        LOG_INFO("Opened file (from data dir): %s\n", filename);
+#endif
+      }
+    } else {
+#if DEBUG_PRINT_OPENING_FILES
+      LOG_INFO("Opened file (current dir  ): %s\n", filename);
+#endif
+    }
+  }
+
+  return getSGPFileFromFD(d, filename, fmode);
+}
+
 // void FileClose(const HWFILE f) {
 //   if (f->flags & SGPFILE_REAL) {
 //     fclose(f->u.file);

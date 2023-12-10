@@ -1,10 +1,10 @@
-// #ifndef __VOBJECT_H
-// #define __VOBJECT_H
-//
+#ifndef __VOBJECT_H
+#define __VOBJECT_H
+
 // #include "SGP/AutoPtr.h"
 // #include "SGP/Buffer.h"
-// #include "SGP/Types.h"
-//
+#include "SGP/Types.h"
+
 // // Defines for HVOBJECT limits
 // #define HVOBJECT_SHADE_TABLES 48
 //
@@ -89,13 +89,13 @@
 //
 // // Deletes any video object placed into list
 // void ShutdownVideoObjectManager(void);
-//
-// // Creates and adds a video object to list
+
+// Creates and adds a video object to list
 // SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *);
-// SGPVObject *AddStandardVideoObjectFromFile(const char *ImageFile);
+SGPVObject *AddStandardVideoObjectFromFile(const char *ImageFile);
 // #define AddVideoObjectFromHImage(a) AddStandardVideoObjectFromHImage(a)
-// #define AddVideoObjectFromFile(a) AddStandardVideoObjectFromFile(a)
-//
+#define AddVideoObjectFromFile(a) AddStandardVideoObjectFromFile(a)
+
 // // Removes a video object
 // static inline void DeleteVideoObject(SGPVObject *const vo) { delete vo; }
 //
@@ -112,6 +112,6 @@
 // void BltVideoObjectOnce(SGPVSurface *dst, char const *filename, UINT16 region, INT32 x, INT32 y);
 //
 // typedef SGP::AutoPtr<SGPVObject> AutoSGPVObject;
-//
-// #endif
-//
+
+#endif
+

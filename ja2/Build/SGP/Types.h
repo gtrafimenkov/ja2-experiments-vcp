@@ -34,22 +34,22 @@
 //   a = b;
 //   b = t;
 // }
-//
-// typedef int32_t INT;
-// typedef int32_t INT32;
-// typedef uint32_t UINT;
-// typedef uint32_t UINT32;
-//
-// // integers
-// typedef uint8_t UINT8;
-// typedef int8_t INT8;
-// typedef uint16_t UINT16;
-// typedef int16_t INT16;
-// // floats
-// typedef float FLOAT;
-// typedef double DOUBLE;
-// // strings
-// typedef char CHAR8;
+
+typedef int32_t INT;
+typedef int32_t INT32;
+typedef uint32_t UINT;
+typedef uint32_t UINT32;
+
+// integers
+typedef uint8_t UINT8;
+typedef int8_t INT8;
+typedef uint16_t UINT16;
+typedef int16_t INT16;
+// floats
+typedef float FLOAT;
+typedef double DOUBLE;
+// strings
+typedef char CHAR8;
 
 // other
 typedef unsigned char BOOLEAN;
@@ -71,11 +71,11 @@ typedef unsigned char BOOLEAN;
 // #define BAD_INDEX -1
 //
 // #define PI 3.1415926
-//
-// #ifndef NULL
-// #define NULL 0
-// #endif
-//
+
+#ifndef NULL
+#define NULL 0
+#endif
+
 // struct SGPBox {
 //   int32_t x;
 //   int32_t y;
@@ -113,39 +113,39 @@ typedef unsigned char BOOLEAN;
 //     iY = y;
 //   }
 // };
-//
-// struct SDL_Color;
-// typedef SDL_Color SGPPaletteEntry;
-//
+
+struct SDL_Color;
+typedef SDL_Color SGPPaletteEntry;
+
 // typedef UINT32 COLORVAL;
 //
 // struct AuxObjectData;
-// struct ETRLEObject;
+struct ETRLEObject;
 // struct RelTileLoc;
-// struct SGPImage;
-//
-// class SGPVObject;
-// typedef SGPVObject *HVOBJECT;
-// typedef SGPVObject *Font;
-//
+struct SGPImage;
+
+class SGPVObject;
+typedef SGPVObject *HVOBJECT;
+typedef SGPVObject *Font;
+
 // class SGPVSurface;
 //
 // struct BUTTON_PICS;
-//
-// struct SGPFile;
-// typedef SGPFile *HWFILE;
-//
+
+struct SGPFile;
+typedef SGPFile *HWFILE;
+
 // #define SGP_TRANSPARENT ((UINT16)0)
-//
-// #ifdef __cplusplus
-// #define ENUM_BITSET(type)                                                                \
-//   static inline type operator~(type a) { return (type) ~(int)a; }                        \
-//   static inline type operator&(type a, type b) { return (type)((int)a & (int)b); }       \
-//   static inline type operator&=(type &a, type b) { return a = (type)((int)a & (int)b); } \
-//   static inline type operator|(type a, type b) { return (type)((int)a | (int)b); }       \
-//   static inline type operator|=(type &a, type b) { return a = (type)((int)a | (int)b); }
-// #else
-// #define ENUM_BITSET(type)
-// #endif
+
+#ifdef __cplusplus
+#define ENUM_BITSET(type)                                                                \
+  static inline type operator~(type a) { return (type) ~(int)a; }                        \
+  static inline type operator&(type a, type b) { return (type)((int)a & (int)b); }       \
+  static inline type operator&=(type &a, type b) { return a = (type)((int)a & (int)b); } \
+  static inline type operator|(type a, type b) { return (type)((int)a | (int)b); }       \
+  static inline type operator|=(type &a, type b) { return a = (type)((int)a | (int)b); }
+#else
+#define ENUM_BITSET(type)
+#endif
 
 #endif

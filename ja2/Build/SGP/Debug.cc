@@ -1,15 +1,16 @@
-// #include "SGP/Debug.h"
-//
+#include "SGP/Debug.h"
+
 // #if defined(SGP_DEBUG) || defined(FORCE_ASSERTS_ON)
 //
 // #include <SDL.h>
 // #include <stdarg.h>
-//
-// #include "SGP/Timer.h"
-//
+#include <stdio.h>
+
+#include "SGP/Timer.h"
+
 // static BOOLEAN gfRecordToFile = FALSE;
-// static BOOLEAN gfRecordToDebugger = TRUE;
-//
+static BOOLEAN gfRecordToDebugger = TRUE;
+
 // static STRING512 gpcDebugLogFileName;
 //
 // #ifndef _NO_DEBUG_TXT
@@ -48,16 +49,16 @@
 // static void _DebugRecordToFile(BOOLEAN gfState) { gfRecordToFile = gfState; }
 //
 // static void _DebugRecordToDebugger(BOOLEAN gfState) { gfRecordToDebugger = gfState; }
-//
-// void _DebugMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile) {
-//   char ubOutputString[512];
-//   sprintf(ubOutputString, "{ %ld } %s [Line %d in %s]\n", GetClock(), pString, uiLineNum,
-//           pSourceFile);
-//
-//   if (gfRecordToDebugger) {
-//     fputs(ubOutputString, stderr);
-//   }
-//
+
+void _DebugMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile) {
+  char ubOutputString[512];
+  sprintf(ubOutputString, "{ %ld } %s [Line %d in %s]\n", GetClock(), pString, uiLineNum,
+          pSourceFile);
+
+  if (gfRecordToDebugger) {
+    fputs(ubOutputString, stderr);
+  }
+
 // #ifndef _NO_DEBUG_TXT
 //   if (gfRecordToFile) {
 //     FILE *DebugFile = fopen(gpcDebugLogFileName, "a+");
@@ -67,8 +68,8 @@
 //     }
 //   }
 // #endif
-// }
-//
+}
+
 // void _FailMessage(const char *pString, UINT32 uiLineNum, const char *pSourceFile) {
 //   char ubOutputString[512];
 //   if (pString != NULL)

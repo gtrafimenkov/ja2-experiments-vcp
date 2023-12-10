@@ -1,9 +1,9 @@
-// #include "SGP/VObject.h"
-//
+#include "SGP/VObject.h"
+
 // #include <stdexcept>
 //
 // #include "SGP/Debug.h"
-// #include "SGP/HImage.h"
+#include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/VObjectBlitters.h"
 // #include "SGP/VSurface.h"
@@ -184,14 +184,14 @@
 //     delete gpVObjectHead;
 //   }
 // }
-//
-// SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *const img) { return new SGPVObject(img); }
-//
-// SGPVObject *AddStandardVideoObjectFromFile(const char *const ImageFile) {
-//   AutoSGPImage hImage(CreateImage(ImageFile, IMAGE_ALLIMAGEDATA));
-//   return AddStandardVideoObjectFromHImage(hImage);
-// }
-//
+
+SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *const img) { return new SGPVObject(img); }
+
+SGPVObject *AddStandardVideoObjectFromFile(const char *const ImageFile) {
+  AutoSGPImage hImage(CreateImage(ImageFile, IMAGE_ALLIMAGEDATA));
+  return AddStandardVideoObjectFromHImage(hImage);
+}
+
 // void BltVideoObject(SGPVSurface *const dst, SGPVObject const *const src, UINT16 const usRegionIndex,
 //                     INT32 const iDestX, INT32 const iDestY) {
 //   Assert(src->BPP() == 8);

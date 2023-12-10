@@ -1,10 +1,10 @@
-// #include "SGP/Input.h"
-//
-// #include "Local.h"
+#include "SGP/Input.h"
+
+#include "Local.h"
 // #include "SGP/English.h"
 // #include "SGP/MemMan.h"
-// #include "SGP/Timer.h"
-// #include "SGP/Types.h"
+#include "SGP/Timer.h"
+#include "SGP/Types.h"
 // #include "SGP/UTF8String.h"
 // #include "SGP/Video.h"
 //
@@ -15,37 +15,37 @@
 // gfKeyState[SDL_SCANCODE_TO_KEYCODE(SDL_NUM_SCANCODES)];  // TRUE = Pressed, FALSE = Not Pressed
 // static BOOLEAN fCursorWasClipped = FALSE;
 // static SGPRect gCursorClipRect;
-//
-// // These data structure are used to track the mouse while polling
-//
-// static UINT32 guiSingleClickTimer;
-//
-// static UINT32 guiLeftButtonRepeatTimer;
-// static UINT32 guiRightButtonRepeatTimer;
-//
-// BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
-// BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
-// UINT16 gusMouseXPos;         // X position of the mouse on screen
-// UINT16 gusMouseYPos;         // y position of the mouse on screen
-//
-// // The queue structures are used to track input events using queued events
-//
-// static InputAtom gEventQueue[256];
-// static UINT16 gusQueueCount;
-// static UINT16 gusHeadIndex;
-// static UINT16 gusTailIndex;
-//
-// static void QueueMouseEvent(UINT16 ubInputEvent) {
-//   // Can we queue up one more event, if not, the event is lost forever
-//   if (gusQueueCount == lengthof(gEventQueue)) return;
-//
-//   gEventQueue[gusTailIndex].usEvent = ubInputEvent;
-//
-//   gusQueueCount++;
-//
-//   gusTailIndex = (gusTailIndex + 1) % lengthof(gEventQueue);
-// }
-//
+
+// These data structure are used to track the mouse while polling
+
+static UINT32 guiSingleClickTimer;
+
+static UINT32 guiLeftButtonRepeatTimer;
+static UINT32 guiRightButtonRepeatTimer;
+
+BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
+BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
+UINT16 gusMouseXPos;         // X position of the mouse on screen
+UINT16 gusMouseYPos;         // y position of the mouse on screen
+
+// The queue structures are used to track input events using queued events
+
+static InputAtom gEventQueue[256];
+static UINT16 gusQueueCount;
+static UINT16 gusHeadIndex;
+static UINT16 gusTailIndex;
+
+static void QueueMouseEvent(UINT16 ubInputEvent) {
+  // Can we queue up one more event, if not, the event is lost forever
+  if (gusQueueCount == lengthof(gEventQueue)) return;
+
+  gEventQueue[gusTailIndex].usEvent = ubInputEvent;
+
+  gusQueueCount++;
+
+  gusTailIndex = (gusTailIndex + 1) % lengthof(gEventQueue);
+}
+
 // static void QueueKeyEvent(UINT16 ubInputEvent, SDL_Keycode Key, SDL_Keymod Mod, wchar_t Char) {
 //   // Can we queue up one more event, if not, the event is lost forever
 //   if (gusQueueCount == lengthof(gEventQueue)) return;
@@ -63,17 +63,17 @@
 //
 //   gusTailIndex = (gusTailIndex + 1) % lengthof(gEventQueue);
 // }
-//
-// void SetSafeMousePosition(int x, int y) {
-//   if (x < 0) x = 0;
-//   if (y < 0) y = 0;
-//   if (x > SCREEN_WIDTH) x = SCREEN_WIDTH;
-//   if (y > SCREEN_HEIGHT) y = SCREEN_HEIGHT;
-//
-//   gusMouseXPos = x;
-//   gusMouseYPos = y;
-// }
-//
+
+void SetSafeMousePosition(int x, int y) {
+  if (x < 0) x = 0;
+  if (y < 0) y = 0;
+  if (x > SCREEN_WIDTH) x = SCREEN_WIDTH;
+  if (y > SCREEN_HEIGHT) y = SCREEN_HEIGHT;
+
+  gusMouseXPos = x;
+  gusMouseYPos = y;
+}
+
 // BOOLEAN DequeueSpecificEvent(InputAtom *Event, UINT32 uiMaskFlags) {
 //   // Is there an event to dequeue
 //   if (gusQueueCount > 0) {
@@ -98,78 +98,78 @@
 //   gusQueueCount--;
 //   return TRUE;
 // }
-//
-// static void UpdateMousePos(const SDL_MouseButtonEvent *BtnEv) {
-//   SetSafeMousePosition(BtnEv->x, BtnEv->y);
-// }
-//
-// #if defined(WITH_MAEMO) || defined __APPLE__
-// static BOOLEAN g_down_right;
-// #endif
-//
-// void MouseButtonDown(const SDL_MouseButtonEvent *BtnEv) {
-//   UpdateMousePos(BtnEv);
-//   switch (BtnEv->button) {
-//     case SDL_BUTTON_LEFT: {
-// #if defined WITH_MAEMO
-//       /* If the menu button (mapped to F4) is pressed, then treat the event as
-//        * right click */
-//       const Uint8 *const key_state = SDL_GetKeyboardState(NULL);
-//       g_down_right = key_state[SDL_SCANCODE_F4];
-//       if (g_down_right) goto right_button;
-// #endif
-// #if defined(__APPLE__)
-//       const Uint8 *const key_state = SDL_GetKeyboardState(NULL);
-//       g_down_right = key_state[SDL_SCANCODE_LGUI] || key_state[SDL_SCANCODE_RGUI];
-//       if (g_down_right) goto right_button;
-// #endif
-//       guiLeftButtonRepeatTimer = GetClock() + BUTTON_REPEAT_TIMEOUT;
-//       gfLeftButtonState = TRUE;
-//       QueueMouseEvent(LEFT_BUTTON_DOWN);
-//       break;
-//     }
-//
-//     case SDL_BUTTON_RIGHT:
-// #if defined(WITH_MAEMO) || defined(__APPLE__)
-//     right_button:
-// #endif
-//       guiRightButtonRepeatTimer = GetClock() + BUTTON_REPEAT_TIMEOUT;
-//       gfRightButtonState = TRUE;
-//       QueueMouseEvent(RIGHT_BUTTON_DOWN);
-//       break;
-//   }
-// }
-//
-// void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
-//   UpdateMousePos(BtnEv);
-//   switch (BtnEv->button) {
-//     case SDL_BUTTON_LEFT: {
-// #if defined(WITH_MAEMO) || defined(__APPLE__)
-//       if (g_down_right) goto right_button;
-// #endif
-//       guiLeftButtonRepeatTimer = 0;
-//       gfLeftButtonState = FALSE;
-//       QueueMouseEvent(LEFT_BUTTON_UP);
-//       UINT32 uiTimer = GetClock();
-//       if (uiTimer - guiSingleClickTimer < DBL_CLK_TIME) {
-//         QueueMouseEvent(LEFT_BUTTON_DBL_CLK);
-//       } else {
-//         guiSingleClickTimer = uiTimer;
-//       }
-//       break;
-//     }
-//
-//     case SDL_BUTTON_RIGHT:
-// #if defined WITH_MAEMO || defined(__APPLE__)
-//     right_button:
-// #endif
-//       guiRightButtonRepeatTimer = 0;
-//       gfRightButtonState = FALSE;
-//       QueueMouseEvent(RIGHT_BUTTON_UP);
-//       break;
-//   }
-// }
-//
+
+static void UpdateMousePos(const SDL_MouseButtonEvent *BtnEv) {
+  SetSafeMousePosition(BtnEv->x, BtnEv->y);
+}
+
+#if defined(WITH_MAEMO) || defined __APPLE__
+static BOOLEAN g_down_right;
+#endif
+
+void MouseButtonDown(const SDL_MouseButtonEvent *BtnEv) {
+  UpdateMousePos(BtnEv);
+  switch (BtnEv->button) {
+    case SDL_BUTTON_LEFT: {
+#if defined WITH_MAEMO
+      /* If the menu button (mapped to F4) is pressed, then treat the event as
+       * right click */
+      const Uint8 *const key_state = SDL_GetKeyboardState(NULL);
+      g_down_right = key_state[SDL_SCANCODE_F4];
+      if (g_down_right) goto right_button;
+#endif
+#if defined(__APPLE__)
+      const Uint8 *const key_state = SDL_GetKeyboardState(NULL);
+      g_down_right = key_state[SDL_SCANCODE_LGUI] || key_state[SDL_SCANCODE_RGUI];
+      if (g_down_right) goto right_button;
+#endif
+      guiLeftButtonRepeatTimer = GetClock() + BUTTON_REPEAT_TIMEOUT;
+      gfLeftButtonState = TRUE;
+      QueueMouseEvent(LEFT_BUTTON_DOWN);
+      break;
+    }
+
+    case SDL_BUTTON_RIGHT:
+#if defined(WITH_MAEMO) || defined(__APPLE__)
+    right_button:
+#endif
+      guiRightButtonRepeatTimer = GetClock() + BUTTON_REPEAT_TIMEOUT;
+      gfRightButtonState = TRUE;
+      QueueMouseEvent(RIGHT_BUTTON_DOWN);
+      break;
+  }
+}
+
+void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
+  UpdateMousePos(BtnEv);
+  switch (BtnEv->button) {
+    case SDL_BUTTON_LEFT: {
+#if defined(WITH_MAEMO) || defined(__APPLE__)
+      if (g_down_right) goto right_button;
+#endif
+      guiLeftButtonRepeatTimer = 0;
+      gfLeftButtonState = FALSE;
+      QueueMouseEvent(LEFT_BUTTON_UP);
+      UINT32 uiTimer = GetClock();
+      if (uiTimer - guiSingleClickTimer < DBL_CLK_TIME) {
+        QueueMouseEvent(LEFT_BUTTON_DBL_CLK);
+      } else {
+        guiSingleClickTimer = uiTimer;
+      }
+      break;
+    }
+
+    case SDL_BUTTON_RIGHT:
+#if defined WITH_MAEMO || defined(__APPLE__)
+    right_button:
+#endif
+      guiRightButtonRepeatTimer = 0;
+      gfRightButtonState = FALSE;
+      QueueMouseEvent(RIGHT_BUTTON_UP);
+      break;
+  }
+}
+
 // void MouseWheelScroll(const SDL_MouseWheelEvent *WheelEv) {
 //   if (WheelEv->y > 0) {
 //     QueueMouseEvent(MOUSE_WHEEL_UP);
@@ -177,7 +177,7 @@
 //     QueueMouseEvent(MOUSE_WHEEL_DOWN);
 //   }
 // }
-//
+
 // static void KeyChange(SDL_Keysym const *const key_sym, bool const pressed) {
 //   SDL_Keycode key = key_sym->sym;
 //   SDL_Keymod const mod = (SDL_Keymod)key_sym->mod;

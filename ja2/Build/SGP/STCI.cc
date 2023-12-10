@@ -1,40 +1,40 @@
-// #include "SGP/STCI.h"
-//
+#include "SGP/STCI.h"
+
 // #include <stdexcept>
 //
 // #include "SGP/Buffer.h"
 // #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/HImage.h"
+#include "SGP/FileMan.h"
+#include "SGP/HImage.h"
 // #include "SGP/ImgFmt.h"
 // #include "SGP/MemMan.h"
 //
 // static SGPImage *STCILoadIndexed(UINT16 contents, HWFILE, STCIHeader const *);
 // static SGPImage *STCILoadRGB(UINT16 contents, HWFILE, STCIHeader const *);
-//
-// SGPImage *LoadSTCIFileToImage(char const *const filename, UINT16 const fContents) {
-//   AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
-//
-//   STCIHeader header;
-//   FileRead(f, &header, sizeof(header));
-//   if (memcmp(header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
-//     throw std::runtime_error("STCI file has invalid header");
-//   }
-//
-//   if (header.fFlags & STCI_ZLIB_COMPRESSED) {
-//     throw std::runtime_error("Cannot handle zlib compressed STCI files");
-//   }
-//
-//   // Determine from the header the data stored in the file. and run the
-//   // appropriate loader
-//   return header.fFlags & STCI_RGB ? STCILoadRGB(fContents, f, &header)
-//          : header.fFlags & STCI_INDEXED
-//              ? STCILoadIndexed(fContents, f, &header)
-//              :
-//              /* Unsupported type of data, or the right flags weren't set! */
-//              throw std::runtime_error("Unknown data organization in STCI file.");
-// }
-//
+
+SGPImage *LoadSTCIFileToImage(char const *const filename, UINT16 const fContents) {
+  AutoSGPFile f(FileMan::openForReadingSmart(filename, true));
+
+  STCIHeader header;
+  FileRead(f, &header, sizeof(header));
+  if (memcmp(header.cID, STCI_ID_STRING, STCI_ID_LEN) != 0) {
+    throw std::runtime_error("STCI file has invalid header");
+  }
+
+  if (header.fFlags & STCI_ZLIB_COMPRESSED) {
+    throw std::runtime_error("Cannot handle zlib compressed STCI files");
+  }
+
+  // Determine from the header the data stored in the file. and run the
+  // appropriate loader
+  return header.fFlags & STCI_RGB ? STCILoadRGB(fContents, f, &header)
+         : header.fFlags & STCI_INDEXED
+             ? STCILoadIndexed(fContents, f, &header)
+             :
+             /* Unsupported type of data, or the right flags weren't set! */
+             throw std::runtime_error("Unknown data organization in STCI file.");
+}
+
 // static SGPImage *STCILoadRGB(UINT16 const contents, HWFILE const f,
 //                              STCIHeader const *const header) {
 //   if (contents & IMAGE_PALETTE &&

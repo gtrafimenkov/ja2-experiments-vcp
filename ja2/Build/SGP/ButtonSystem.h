@@ -1,13 +1,13 @@
-// // by Kris Morness (originally created by Bret Rowden)
-//
-// #ifndef BUTTON_SYSTEM_H
-// #define BUTTON_SYSTEM_H
-//
+// by Kris Morness (originally created by Bret Rowden)
+
+#ifndef BUTTON_SYSTEM_H
+#define BUTTON_SYSTEM_H
+
 // #include "SGP/MouseSystem.h"
-//
-// #define MAX_BUTTONS 400
-// #define MAX_BUTTON_PICS 256
-//
+
+#define MAX_BUTTONS 400
+#define MAX_BUTTON_PICS 256
+
 // // Some GUI_BUTTON system defines
 // #define BUTTON_NO_IMAGE -1
 //
@@ -178,18 +178,18 @@
 //  private:
 //   INT32 btn_id_;
 // };
-//
-// /* Initializes the GUI button system for use. Must be called before using any
-//  * other button functions.
-//  */
-// void InitButtonSystem(void);
-//
-// /* Shuts down and cleans up the GUI button system. Must be called before exiting
-//  * the program.  Button functions should not be used after calling this
-//  * function.
-//  */
-// void ShutdownButtonSystem(void);
-//
+
+/* Initializes the GUI button system for use. Must be called before using any
+ * other button functions.
+ */
+void InitButtonSystem(void);
+
+/* Shuts down and cleans up the GUI button system. Must be called before exiting
+ * the program.  Button functions should not be used after calling this
+ * function.
+ */
+void ShutdownButtonSystem(void);
+
 // #if defined _JA2_RENDER_DIRTY
 //
 // void RenderButtonsFastHelp(void);
@@ -293,17 +293,17 @@
 // void UnmarkButtonsDirty(void);          // unmark ALL the buttoms on the screen dirty
 // void ForceButtonUnDirty(GUIButtonRef);  // forces button undirty no matter the
 //                                         // reason, only lasts one frame
-//
-// struct ButtonDimensions {
-//   UINT32 w;
-//   UINT32 h;
-// };
-//
+
+struct ButtonDimensions {
+  UINT32 w;
+  UINT32 h;
+};
+
 // const ButtonDimensions *GetDimensionsOfButtonPic(const BUTTON_PICS *);
 //
 // UINT16 GetGenericButtonFillColor(void);
 //
 // void ReleaseAnchorMode(void);
-//
-// #endif
-//
+
+#endif
+

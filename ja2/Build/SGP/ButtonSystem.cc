@@ -1,6 +1,6 @@
-// // Rewritten mostly by Kris Morness
-// #include "SGP/ButtonSystem.h"
-//
+// Rewritten mostly by Kris Morness
+#include "SGP/ButtonSystem.h"
+
 // #include <stdexcept>
 //
 // #include "SGP/ButtonSoundControl.h"
@@ -9,7 +9,8 @@
 // #include "SGP/HImage.h"
 // #include "SGP/Input.h"
 // #include "SGP/MemMan.h"
-// #include "SGP/VObject.h"
+#include "SGP/Types.h"
+#include "SGP/VObject.h"
 // #include "SGP/VObjectBlitters.h"
 // #include "SGP/VSurface.h"
 // #include "SGP/Video.h"
@@ -19,17 +20,17 @@
 // #ifdef _JA2_RENDER_DIRTY
 // #include "Utils/FontControl.h"
 // #endif
-//
-// // Names of the default generic button image files.
-// #define DEFAULT_GENERIC_BUTTON_OFF "genbutn.sti"
-// #define DEFAULT_GENERIC_BUTTON_ON "genbutn2.sti"
-// #define DEFAULT_GENERIC_BUTTON_OFF_HI "genbutn3.sti"
-// #define DEFAULT_GENERIC_BUTTON_ON_HI "genbutn4.sti"
-//
+
+// Names of the default generic button image files.
+#define DEFAULT_GENERIC_BUTTON_OFF "genbutn.sti"
+#define DEFAULT_GENERIC_BUTTON_ON "genbutn2.sti"
+#define DEFAULT_GENERIC_BUTTON_OFF_HI "genbutn3.sti"
+#define DEFAULT_GENERIC_BUTTON_ON_HI "genbutn4.sti"
+
 // #define MSYS_STARTING_CURSORVAL 0
-//
-// #define MAX_BUTTON_ICONS 40
-//
+
+#define MAX_BUTTON_ICONS 40
+
 // #define GUI_BTN_NONE 0
 // #define GUI_BTN_DUPLICATE_VOBJ 1
 //
@@ -79,21 +80,21 @@
 // static INT8 gbDisabledButtonStyle;
 //
 // BOOLEAN gfRenderHilights = TRUE;
-//
-// // Struct definition for the QuickButton pictures.
-// struct BUTTON_PICS {
-//   HVOBJECT vobj;         // The Image itself
-//   INT32 Grayed;          // Index to use for a "Grayed-out" button
-//   INT32 OffNormal;       // Index to use when button is OFF
-//   INT32 OffHilite;       // Index to use when button is OFF w/ hilite on it
-//   INT32 OnNormal;        // Index to use when button is ON
-//   INT32 OnHilite;        // Index to use when button is ON w/ hilite on it
-//   ButtonDimensions max;  // width/height of largest image in use
-//   UINT32 fFlags;         // Special image flags
-// };
-//
-// static BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
-//
+
+// Struct definition for the QuickButton pictures.
+struct BUTTON_PICS {
+  HVOBJECT vobj;         // The Image itself
+  INT32 Grayed;          // Index to use for a "Grayed-out" button
+  INT32 OffNormal;       // Index to use when button is OFF
+  INT32 OffHilite;       // Index to use when button is OFF w/ hilite on it
+  INT32 OnNormal;        // Index to use when button is ON
+  INT32 OnHilite;        // Index to use when button is ON w/ hilite on it
+  ButtonDimensions max;  // width/height of largest image in use
+  UINT32 fFlags;         // Special image flags
+};
+
+static BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
+
 // SGPVSurface *ButtonDestBuffer;
 //
 // GUI_BUTTON *ButtonList[MAX_BUTTONS];
@@ -101,15 +102,15 @@
 // const ButtonDimensions *GetDimensionsOfButtonPic(const BUTTON_PICS *const pics) {
 //   return &pics->max;
 // }
-//
-// static HVOBJECT GenericButtonOffNormal;
-// static HVOBJECT GenericButtonOffHilite;
-// static HVOBJECT GenericButtonOnNormal;
-// static HVOBJECT GenericButtonOnHilite;
-// static UINT16 GenericButtonFillColors;
-//
-// static HVOBJECT GenericButtonIcons[MAX_BUTTON_ICONS];
-//
+
+static HVOBJECT GenericButtonOffNormal;
+static HVOBJECT GenericButtonOffHilite;
+static HVOBJECT GenericButtonOnNormal;
+static HVOBJECT GenericButtonOnHilite;
+static UINT16 GenericButtonFillColors;
+
+static HVOBJECT GenericButtonIcons[MAX_BUTTON_ICONS];
+
 // static BOOLEAN gfDelayButtonDeletion = FALSE;
 // static BOOLEAN gfPendingButtonDeletion = FALSE;
 //
@@ -249,54 +250,54 @@
 // void EnableButton(GUIButtonRef const b, bool const enable) {
 //   enable ? EnableButton(b) : DisableButton(b);
 // }
-//
-// /* Initializes the button image sub-system. This function is called by
-//  * InitButtonSystem.
-//  */
-// static void InitializeButtonImageManager(void) {
-//   // Blank out all QuickButton images
-//   for (int x = 0; x < MAX_BUTTON_PICS; ++x) {
-//     BUTTON_PICS *const pics = &ButtonPictures[x];
-//     pics->vobj = NULL;
-//     pics->Grayed = -1;
-//     pics->OffNormal = -1;
-//     pics->OffHilite = -1;
-//     pics->OnNormal = -1;
-//     pics->OnHilite = -1;
-//   }
-//
-//   // Blank out all Generic button data
-//   GenericButtonOffNormal = NULL;
-//   GenericButtonOffHilite = NULL;
-//   GenericButtonOnNormal = NULL;
-//   GenericButtonOnHilite = NULL;
-//   GenericButtonFillColors = 0;
-//
-//   // Blank out all icon images
-//   for (int x = 0; x < MAX_BUTTON_ICONS; ++x) GenericButtonIcons[x] = NULL;
-//
-//   // Load the default generic button images
-//   GenericButtonOffNormal = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_OFF);
-//   GenericButtonOnNormal = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_ON);
-//
-//   /* Load up the off hilite and on hilite images. We won't check for errors
-//    * because if the file doesn't exists, the system simply ignores that file.
-//    * These are only here as extra images, they aren't required for operation
-//    * (only OFF Normal and ON Normal are required).
-//    */
-//   try {
-//     GenericButtonOffHilite = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_OFF_HI);
-//   } catch (...) { /* see comment above */
-//   }
-//   try {
-//     GenericButtonOnHilite = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_ON_HI);
-//   } catch (...) { /* see comment above */
-//   }
-//
-//   UINT8 const Pix = GenericButtonOffNormal->GetETRLEPixelValue(8, 0, 0);
-//   GenericButtonFillColors = GenericButtonOffNormal->Palette16()[Pix];
-// }
-//
+
+/* Initializes the button image sub-system. This function is called by
+ * InitButtonSystem.
+ */
+static void InitializeButtonImageManager(void) {
+  // Blank out all QuickButton images
+  for (int x = 0; x < MAX_BUTTON_PICS; ++x) {
+    BUTTON_PICS *const pics = &ButtonPictures[x];
+    pics->vobj = NULL;
+    pics->Grayed = -1;
+    pics->OffNormal = -1;
+    pics->OffHilite = -1;
+    pics->OnNormal = -1;
+    pics->OnHilite = -1;
+  }
+
+  // Blank out all Generic button data
+  GenericButtonOffNormal = NULL;
+  GenericButtonOffHilite = NULL;
+  GenericButtonOnNormal = NULL;
+  GenericButtonOnHilite = NULL;
+  GenericButtonFillColors = 0;
+
+  // Blank out all icon images
+  for (int x = 0; x < MAX_BUTTON_ICONS; ++x) GenericButtonIcons[x] = NULL;
+
+  // Load the default generic button images
+  GenericButtonOffNormal = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_OFF);
+  GenericButtonOnNormal = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_ON);
+
+  /* Load up the off hilite and on hilite images. We won't check for errors
+   * because if the file doesn't exists, the system simply ignores that file.
+   * These are only here as extra images, they aren't required for operation
+   * (only OFF Normal and ON Normal are required).
+   */
+  try {
+    GenericButtonOffHilite = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_OFF_HI);
+  } catch (...) { /* see comment above */
+  }
+  try {
+    GenericButtonOnHilite = AddVideoObjectFromFile(DEFAULT_GENERIC_BUTTON_ON_HI);
+  } catch (...) { /* see comment above */
+  }
+
+  UINT8 const Pix = GenericButtonOffNormal->GetETRLEPixelValue(8, 0, 0);
+  GenericButtonFillColors = GenericButtonOffNormal->Palette16()[Pix];
+}
+
 // // Finds the next available slot for button icon images.
 // static INT16 FindFreeIconSlot(void) {
 //   for (INT16 x = 0; x < MAX_BUTTON_ICONS; ++x) {
@@ -375,13 +376,13 @@
 //   // Initialize the button image manager sub-system
 //   InitializeButtonImageManager();
 // }
-//
-// void ShutdownButtonSystem(void) {
-//   // Kill off all buttons in the system
-//   FOR_EACH_BUTTON(i) { delete *i; }
-//   ShutdownButtonImageManager();
-// }
-//
+
+void ShutdownButtonSystem(void) {
+  // Kill off all buttons in the system
+  FOR_EACH_BUTTON(i) { delete *i; }
+  ShutdownButtonImageManager();
+}
+
 // static void RemoveButtonsMarkedForDeletion(void) {
 //   FOR_EACH_BUTTON(i) {
 //     if ((*i)->uiFlags & BUTTON_DELETION_PENDING) delete *i;

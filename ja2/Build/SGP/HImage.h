@@ -1,10 +1,10 @@
-// #ifndef __IMAGE_H
-// #define __IMAGE_H
-//
-// #include "SGP/AutoPtr.h"
-// #include "SGP/Buffer.h"
-// #include "SGP/Types.h"
-//
+#ifndef __IMAGE_H
+#define __IMAGE_H
+
+#include "SGP/AutoPtr.h"
+#include "SGP/Buffer.h"
+#include "SGP/Types.h"
+
 // // The HIMAGE module provides a common interface for managing image data. This
 // // module includes:
 // // - A set of data structures representing image data. Data can be 8 or 16 bpp
@@ -26,7 +26,7 @@
 // #define IMAGE_PALETTE 0x0004
 // #define IMAGE_BITMAPDATA 0x0008
 // #define IMAGE_APPDATA 0x0010
-// #define IMAGE_ALLIMAGEDATA 0x000C
+#define IMAGE_ALLIMAGEDATA 0x000C
 // #define IMAGE_ALLDATA 0x001C
 //
 // #define AUX_FULL_TILE 0x01
@@ -51,55 +51,55 @@
 //   INT8 bTileOffsetX;
 //   INT8 bTileOffsetY;
 // };  // relative tile location
-//
-// // TRLE subimage structure, mirroring that of ST(C)I
-// struct ETRLEObject {
-//   UINT32 uiDataOffset;
-//   UINT32 uiDataLength;
-//   INT16 sOffsetX;
-//   INT16 sOffsetY;
-//   UINT16 usHeight;
-//   UINT16 usWidth;
-// };
-//
+
+// TRLE subimage structure, mirroring that of ST(C)I
+struct ETRLEObject {
+  UINT32 uiDataOffset;
+  UINT32 uiDataLength;
+  INT16 sOffsetX;
+  INT16 sOffsetY;
+  UINT16 usHeight;
+  UINT16 usWidth;
+};
+
 // struct ETRLEData {
 //   PTR pPixData;
 //   UINT32 uiSizePixData;
 //   ETRLEObject *pETRLEObject;
 //   UINT16 usNumberOfObjects;
 // };
-//
-// // Image header structure
-// struct SGPImage {
-//   SGPImage(UINT16 const w, UINT16 const h, UINT8 const bpp)
-//       : usWidth(w),
-//         usHeight(h),
-//         ubBitDepth(bpp),
-//         fFlags(),
-//         uiAppDataSize(),
-//         uiSizePixData(),
-//         usNumberOfObjects() {}
-//
-//   UINT16 usWidth;
-//   UINT16 usHeight;
-//   UINT8 ubBitDepth;
-//   UINT16 fFlags;
-//   SGP::Buffer<SGPPaletteEntry> pPalette;
-//   SGP::Buffer<UINT16> pui16BPPPalette;
-//   SGP::Buffer<UINT8> pAppData;
-//   UINT32 uiAppDataSize;
-//   SGP::Buffer<UINT8> pImageData;
-//   UINT32 uiSizePixData;
-//   SGP::Buffer<ETRLEObject> pETRLEObject;
-//   UINT16 usNumberOfObjects;
-// };
-//
+
+// Image header structure
+struct SGPImage {
+  SGPImage(UINT16 const w, UINT16 const h, UINT8 const bpp)
+      : usWidth(w),
+        usHeight(h),
+        ubBitDepth(bpp),
+        fFlags(),
+        uiAppDataSize(),
+        uiSizePixData(),
+        usNumberOfObjects() {}
+
+  UINT16 usWidth;
+  UINT16 usHeight;
+  UINT8 ubBitDepth;
+  UINT16 fFlags;
+  SGP::Buffer<SGPPaletteEntry> pPalette;
+  SGP::Buffer<UINT16> pui16BPPPalette;
+  SGP::Buffer<UINT8> pAppData;
+  UINT32 uiAppDataSize;
+  SGP::Buffer<UINT8> pImageData;
+  UINT32 uiSizePixData;
+  SGP::Buffer<ETRLEObject> pETRLEObject;
+  UINT16 usNumberOfObjects;
+};
+
 // #define SGPGetRValue(rgb) ((BYTE)(rgb))
 // #define SGPGetBValue(rgb) ((BYTE)((rgb) >> 16))
 // #define SGPGetGValue(rgb) ((BYTE)(((UINT16)(rgb)) >> 8))
-//
-// SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
-//
+
+SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
+
 // // This function will run the appropriate copy function based on the type of
 // // SGPImage object
 // BOOLEAN CopyImageToBuffer(SGPImage const *, UINT32 fBufferType, BYTE *pDestBuf, UINT16 usDestWidth,
@@ -129,8 +129,8 @@
 // void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
 // void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
 // void ConvertRGBDistribution565ToAny(UINT16 *p16BPPData, UINT32 uiNumberOfPixels);
-//
-// typedef SGP::AutoPtr<SGPImage> AutoSGPImage;
-//
-// #endif
-//
+
+typedef SGP::AutoPtr<SGPImage> AutoSGPImage;
+
+#endif
+
