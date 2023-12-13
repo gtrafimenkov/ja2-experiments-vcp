@@ -1,16 +1,16 @@
-// #ifndef __VOBJECT_BLITTERS
-// #define __VOBJECT_BLITTERS
-//
-// #include "SGP/Types.h"
-//
-// extern SGPRect ClippingRect;
+#ifndef __VOBJECT_BLITTERS
+#define __VOBJECT_BLITTERS
+
+#include "SGP/Types.h"
+
+extern SGPRect ClippingRect;
 // extern UINT32 guiTranslucentMask;
-//
+
 // extern void SetClippingRect(SGPRect *clip);
 // void GetClippingRect(SGPRect *clip);
-//
-// BOOLEAN BltIsClipped(const SGPVObject *hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
-//                      const SGPRect *clipregion);
+
+BOOLEAN BltIsClipped(const SGPVObject *hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
+                     const SGPRect *clipregion);
 // CHAR8 BltIsClippedOrOffScreen(HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
 //                               SGPRect *clipregion);
 //
@@ -102,14 +102,14 @@
 //                                            SGPRect *clipregion);
 // void Blt8BPPDataTo16BPPBufferIntensity(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
 //                                        HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex);
-//
-// void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-//                                              const SGPVObject *hSrcVObject, INT32 iX, INT32 iY,
-//                                              UINT16 usIndex, const SGPRect *clipregion);
-// void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *buf, UINT32 uiDestPitchBYTES,
-//                                          SGPVObject const *hSrcVObject, INT32 iX, INT32 iY,
-//                                          UINT16 usIndex);
-//
+
+void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
+                                             const SGPVObject *hSrcVObject, INT32 iX, INT32 iY,
+                                             UINT16 usIndex, const SGPRect *clipregion);
+void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *buf, UINT32 uiDestPitchBYTES,
+                                         SGPVObject const *hSrcVObject, INT32 iX, INT32 iY,
+                                         UINT16 usIndex);
+
 // void Blt8BPPDataTo16BPPBufferTransShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
 //                                          HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
 //                                          const UINT16 *p16BPPPalette);
@@ -144,15 +144,15 @@
 // void Blt8BPPDataTo16BPPBufferHalf(UINT16 *dst_buf, UINT32 uiDestPitchBYTES,
 //                                   SGPVSurface *src_surface, UINT8 const *src_buf, UINT32 src_pitch,
 //                                   INT32 x, INT32 y, SGPBox const *rect);
-//
-// // ATE: New blitters for showing an outline at color 254
-// void Blt8BPPDataTo16BPPBufferOutline(UINT16 *buf, UINT32 uiDestPitchBYTES,
-//                                      SGPVObject const *hSrcVObject, INT32 iX, INT32 iY,
-//                                      UINT16 usIndex, INT16 outline);
-// void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-//                                          const SGPVObject *hSrcVObject, INT32 iX, INT32 iY,
-//                                          UINT16 usIndex, INT16 s16BPPColor,
-//                                          const SGPRect *clipregion);
+
+// ATE: New blitters for showing an outline at color 254
+void Blt8BPPDataTo16BPPBufferOutline(UINT16 *buf, UINT32 uiDestPitchBYTES,
+                                     SGPVObject const *hSrcVObject, INT32 iX, INT32 iY,
+                                     UINT16 usIndex, INT16 outline);
+void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
+                                         const SGPVObject *hSrcVObject, INT32 iX, INT32 iY,
+                                         UINT16 usIndex, INT16 s16BPPColor,
+                                         const SGPRect *clipregion);
 // void Blt8BPPDataTo16BPPBufferOutlineZ(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
 //                                       UINT16 usZValue, HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
 //                                       UINT16 usIndex, INT16 s16BPPColor);
@@ -199,5 +199,5 @@
 //                                                     HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
 //                                                     UINT16 usIndex);
 //
-// #endif
-//
+#endif
+

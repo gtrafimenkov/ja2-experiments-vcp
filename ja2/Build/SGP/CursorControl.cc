@@ -1,9 +1,9 @@
 #include "SGP/CursorControl.h"
 
-// #include "SGP/Debug.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Timer.h"
-// #include "SGP/VObject.h"
+#include "SGP/Debug.h"
+#include "SGP/HImage.h"
+#include "SGP/Timer.h"
+#include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
 
@@ -15,36 +15,36 @@
 
 static BOOLEAN gfCursorDatabaseInit = FALSE;
 
-// static CursorFileData *gpCursorFileDatabase;
+static CursorFileData *gpCursorFileDatabase;
 static CursorData *gpCursorDatabase;
-// INT16 gsGlobalCursorYOffset = 0;
-// UINT16 gsCurMouseHeight = 0;
-// UINT16 gsCurMouseWidth = 0;
+INT16 gsGlobalCursorYOffset = 0;
+UINT16 gsCurMouseHeight = 0;
+UINT16 gsCurMouseWidth = 0;
 // static UINT16 gusNumDataFiles = 0;
 static SGPVObject const *guiExternVo;
-// static UINT16 gusExternVoSubIndex;
-// static UINT32 guiOldSetCursor = 0;
-// static UINT32 guiDelayTimer = 0;
-//
-// static MOUSEBLT_HOOK gMouseBltOverride = NULL;
+static UINT16 gusExternVoSubIndex;
+static UINT32 guiOldSetCursor = 0;
+static UINT32 guiDelayTimer = 0;
+
+static MOUSEBLT_HOOK gMouseBltOverride = NULL;
 
 static void EraseMouseCursor(void) { MOUSE_BUFFER->Fill(0); }
 
-// static void BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
-//                                         UINT16 usXPos, UINT16 usYPos) {
-//   BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos);
-// }
-//
-// static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
-//                                                    UINT16 usXPos, UINT16 usYPos) {
-//   // Center and adjust for offsets
-//   ETRLEObject const &pTrav = hVObject->SubregionProperties(usVideoObjectSubIndex);
-//   INT16 const sXPos = (gsCurMouseWidth - pTrav.usWidth) / 2 - pTrav.sOffsetX;
-//   INT16 const sYPos = (gsCurMouseHeight - pTrav.usHeight) / 2 - pTrav.sOffsetY;
-//   BltVideoObjectOutline(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, sXPos, sYPos,
-//                         Get16BPPColor(FROMRGB(0, 255, 0)));
-// }
-//
+static void BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
+                                        UINT16 usXPos, UINT16 usYPos) {
+  BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos);
+}
+
+static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
+                                                   UINT16 usXPos, UINT16 usYPos) {
+  // Center and adjust for offsets
+  ETRLEObject const &pTrav = hVObject->SubregionProperties(usVideoObjectSubIndex);
+  INT16 const sXPos = (gsCurMouseWidth - pTrav.usWidth) / 2 - pTrav.sOffsetX;
+  INT16 const sYPos = (gsCurMouseHeight - pTrav.usHeight) / 2 - pTrav.sOffsetY;
+  BltVideoObjectOutline(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, sXPos, sYPos,
+                        Get16BPPColor(FROMRGB(0, 255, 0)));
+}
+
 // // THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC
 // // VARIABLES
 // void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
@@ -55,100 +55,100 @@ static void EraseMouseCursor(void) { MOUSE_BUFFER->Fill(0); }
 //   gusNumDataFiles = suNumDataFiles;
 //   gfCursorDatabaseInit = TRUE;
 // }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ///////////////////////////////////////////////////////////////////////////////////////////////////
-// //
-// // Cursor Handlers
-// //
-// ///////////////////////////////////////////////////////////////////////////////////////////////////
+// Cursor Handlers
 //
-// static void LoadCursorData(UINT32 uiCursorIndex) {
-//   // Load cursor data will load all data required for the cursor specified by
-//   // this index
-//   CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
-//
-//   INT16 sMaxHeight = -1;
-//   INT16 sMaxWidth = -1;
-//   for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
-//     const CursorImage *pCurImage = &pCurData->Composites[cnt];
-//     CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
-//
-//     if (CFData->hVObject == NULL) {
-//       // The file containing the video object hasn't been loaded yet. Let's load
-//       // it now First load as an SGPImage so we can get aux data!
-//       Assert(CFData->Filename != NULL);
-//
-//       AutoSGPImage hImage(CreateImage(CFData->Filename, IMAGE_ALLDATA));
-//
-//       CFData->hVObject = AddVideoObjectFromHImage(hImage);
-//
-//       // Check for animated tile
-//       if (hImage->uiAppDataSize > 0) {
-//         // Valid auxiliary data, so get # od frames from data
-//         AuxObjectData const *const pAuxData =
-//             (AuxObjectData const *)(UINT8 const *)hImage->pAppData;
-//         if (pAuxData->fFlags & AUX_ANIMATED_TILE) {
-//           CFData->ubNumberOfFrames = pAuxData->ubNumberOfFrames;
-//         }
-//       }
-//     }
-//
-//     // Get ETRLE Data for this video object
-//     ETRLEObject const &pTrav = CFData->hVObject->SubregionProperties(pCurImage->uiSubIndex);
-//
-//     if (pTrav.usHeight > sMaxHeight) sMaxHeight = pTrav.usHeight;
-//     if (pTrav.usWidth > sMaxWidth) sMaxWidth = pTrav.usWidth;
-//   }
-//
-//   pCurData->usHeight = sMaxHeight;
-//   pCurData->usWidth = sMaxWidth;
-//
-//   switch (pCurData->sOffsetX) {
-//     case CENTER_CURSOR:
-//       pCurData->sOffsetX = pCurData->usWidth / 2;
-//       break;
-//     case RIGHT_CURSOR:
-//       pCurData->sOffsetX = pCurData->usWidth;
-//       break;
-//     case LEFT_CURSOR:
-//       pCurData->sOffsetX = 0;
-//       break;
-//   }
-//
-//   switch (pCurData->sOffsetY) {
-//     case CENTER_CURSOR:
-//       pCurData->sOffsetY = pCurData->usHeight / 2;
-//       break;
-//     case BOTTOM_CURSOR:
-//       pCurData->sOffsetY = pCurData->usHeight;
-//       break;
-//     case TOP_CURSOR:
-//       pCurData->sOffsetY = 0;
-//       break;
-//   }
-//
-//   gsCurMouseHeight = pCurData->usHeight;
-//   gsCurMouseWidth = pCurData->usWidth;
-//
-//   // Adjust relative offsets
-//   for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
-//     CursorImage *pCurImage = &pCurData->Composites[cnt];
-//
-//     // Get ETRLE Data for this video object
-//     ETRLEObject const &pTrav =
-//         gpCursorFileDatabase[pCurImage->uiFileIndex].hVObject->SubregionProperties(
-//             pCurImage->uiSubIndex);
-//
-//     if (pCurImage->usPosX == CENTER_SUBCURSOR) {
-//       pCurImage->usPosX = pCurData->sOffsetX - pTrav.usWidth / 2;
-//     }
-//
-//     if (pCurImage->usPosY == CENTER_SUBCURSOR) {
-//       pCurImage->usPosY = pCurData->sOffsetY - pTrav.usHeight / 2;
-//     }
-//   }
-// }
-//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+static void LoadCursorData(UINT32 uiCursorIndex) {
+  // Load cursor data will load all data required for the cursor specified by
+  // this index
+  CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
+
+  INT16 sMaxHeight = -1;
+  INT16 sMaxWidth = -1;
+  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+    const CursorImage *pCurImage = &pCurData->Composites[cnt];
+    CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
+
+    if (CFData->hVObject == NULL) {
+      // The file containing the video object hasn't been loaded yet. Let's load
+      // it now First load as an SGPImage so we can get aux data!
+      Assert(CFData->Filename != NULL);
+
+      AutoSGPImage hImage(CreateImage(CFData->Filename, IMAGE_ALLDATA));
+
+      CFData->hVObject = AddVideoObjectFromHImage(hImage);
+
+      // Check for animated tile
+      if (hImage->uiAppDataSize > 0) {
+        // Valid auxiliary data, so get # od frames from data
+        AuxObjectData const *const pAuxData =
+            (AuxObjectData const *)(UINT8 const *)hImage->pAppData;
+        if (pAuxData->fFlags & AUX_ANIMATED_TILE) {
+          CFData->ubNumberOfFrames = pAuxData->ubNumberOfFrames;
+        }
+      }
+    }
+
+    // Get ETRLE Data for this video object
+    ETRLEObject const &pTrav = CFData->hVObject->SubregionProperties(pCurImage->uiSubIndex);
+
+    if (pTrav.usHeight > sMaxHeight) sMaxHeight = pTrav.usHeight;
+    if (pTrav.usWidth > sMaxWidth) sMaxWidth = pTrav.usWidth;
+  }
+
+  pCurData->usHeight = sMaxHeight;
+  pCurData->usWidth = sMaxWidth;
+
+  switch (pCurData->sOffsetX) {
+    case CENTER_CURSOR:
+      pCurData->sOffsetX = pCurData->usWidth / 2;
+      break;
+    case RIGHT_CURSOR:
+      pCurData->sOffsetX = pCurData->usWidth;
+      break;
+    case LEFT_CURSOR:
+      pCurData->sOffsetX = 0;
+      break;
+  }
+
+  switch (pCurData->sOffsetY) {
+    case CENTER_CURSOR:
+      pCurData->sOffsetY = pCurData->usHeight / 2;
+      break;
+    case BOTTOM_CURSOR:
+      pCurData->sOffsetY = pCurData->usHeight;
+      break;
+    case TOP_CURSOR:
+      pCurData->sOffsetY = 0;
+      break;
+  }
+
+  gsCurMouseHeight = pCurData->usHeight;
+  gsCurMouseWidth = pCurData->usWidth;
+
+  // Adjust relative offsets
+  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+    CursorImage *pCurImage = &pCurData->Composites[cnt];
+
+    // Get ETRLE Data for this video object
+    ETRLEObject const &pTrav =
+        gpCursorFileDatabase[pCurImage->uiFileIndex].hVObject->SubregionProperties(
+            pCurImage->uiSubIndex);
+
+    if (pCurImage->usPosX == CENTER_SUBCURSOR) {
+      pCurImage->usPosX = pCurData->sOffsetX - pTrav.usWidth / 2;
+    }
+
+    if (pCurImage->usPosY == CENTER_SUBCURSOR) {
+      pCurImage->usPosY = pCurData->sOffsetY - pTrav.usHeight / 2;
+    }
+  }
+}
+
 // static void UnLoadCursorData(UINT32 uiCursorIndex) {
 //   // This function will unload add data used for this cursor
 //   //

@@ -279,56 +279,56 @@ SGPVSurfaceAuto *g_mouse_buffer;
 //              "blitting");
 //   }
 // }
-//
-// void BltStretchVideoSurface(SGPVSurface *const dst, SGPVSurface const *const src,
-//                             SGPBox const *const src_rect, SGPBox const *const dst_rect) {
-//   if (dst->BPP() != 16 || src->BPP() != 16) return;
-//
-//   SDL_Surface const *const ssurface = src->surface_;
-//   SDL_Surface *const dsurface = dst->surface_;
-//
-//   const UINT32 s_pitch = ssurface->pitch >> 1;
-//   const UINT32 d_pitch = dsurface->pitch >> 1;
-//   UINT16 const *os = (const UINT16 *)ssurface->pixels + s_pitch * src_rect->y + src_rect->x;
-//   UINT16 *d = (UINT16 *)dsurface->pixels + d_pitch * dst_rect->y + dst_rect->x;
-//
-//   UINT const width = dst_rect->w;
-//   UINT const height = dst_rect->h;
-//   UINT const dx = src_rect->w;
-//   UINT const dy = src_rect->h;
-//   UINT py = 0;
-//   if (ssurface->flags & SDL_TRUE) {
-//     //		const UINT16 key = ssurface->format->colorkey;
-//     const UINT16 key = 0;
-//     for (UINT iy = 0; iy < height; ++iy) {
-//       const UINT16 *s = os;
-//       UINT px = 0;
-//       for (UINT ix = 0; ix < width; ++ix) {
-//         if (*s != key) *d = *s;
-//         ++d;
-//         px += dx;
-//         for (; px >= width; px -= width) ++s;
-//       }
-//       d += d_pitch - width;
-//       py += dy;
-//       for (; py >= height; py -= height) os += s_pitch;
-//     }
-//   } else {
-//     for (UINT iy = 0; iy < height; ++iy) {
-//       const UINT16 *s = os;
-//       UINT px = 0;
-//       for (UINT ix = 0; ix < width; ++ix) {
-//         *d++ = *s;
-//         px += dx;
-//         for (; px >= width; px -= width) ++s;
-//       }
-//       d += d_pitch - width;
-//       py += dy;
-//       for (; py >= height; py -= height) os += s_pitch;
-//     }
-//   }
-// }
-//
+
+void BltStretchVideoSurface(SGPVSurface *const dst, SGPVSurface const *const src,
+                            SGPBox const *const src_rect, SGPBox const *const dst_rect) {
+  if (dst->BPP() != 16 || src->BPP() != 16) return;
+
+  SDL_Surface const *const ssurface = src->surface_;
+  SDL_Surface *const dsurface = dst->surface_;
+
+  const UINT32 s_pitch = ssurface->pitch >> 1;
+  const UINT32 d_pitch = dsurface->pitch >> 1;
+  UINT16 const *os = (const UINT16 *)ssurface->pixels + s_pitch * src_rect->y + src_rect->x;
+  UINT16 *d = (UINT16 *)dsurface->pixels + d_pitch * dst_rect->y + dst_rect->x;
+
+  UINT const width = dst_rect->w;
+  UINT const height = dst_rect->h;
+  UINT const dx = src_rect->w;
+  UINT const dy = src_rect->h;
+  UINT py = 0;
+  if (ssurface->flags & SDL_TRUE) {
+    //		const UINT16 key = ssurface->format->colorkey;
+    const UINT16 key = 0;
+    for (UINT iy = 0; iy < height; ++iy) {
+      const UINT16 *s = os;
+      UINT px = 0;
+      for (UINT ix = 0; ix < width; ++ix) {
+        if (*s != key) *d = *s;
+        ++d;
+        px += dx;
+        for (; px >= width; px -= width) ++s;
+      }
+      d += d_pitch - width;
+      py += dy;
+      for (; py >= height; py -= height) os += s_pitch;
+    }
+  } else {
+    for (UINT iy = 0; iy < height; ++iy) {
+      const UINT16 *s = os;
+      UINT px = 0;
+      for (UINT ix = 0; ix < width; ++ix) {
+        *d++ = *s;
+        px += dx;
+        for (; px >= width; px -= width) ++s;
+      }
+      d += d_pitch - width;
+      py += dy;
+      for (; py >= height; py -= height) os += s_pitch;
+    }
+  }
+}
+
 // void BltVideoSurfaceOnce(SGPVSurface *const dst, const char *const filename, INT32 const x,
 //                          INT32 const y) {
 //   SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));
@@ -340,13 +340,13 @@ SGPVSurfaceAuto *g_mouse_buffer;
 //   SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));
 //   FillVideoSurfaceWithStretch(dst, src);
 // }
-//
-// /** Fill video surface with another one with stretch. */
-// void FillVideoSurfaceWithStretch(SGPVSurface *const dst, SGPVSurface *const src) {
-//   SGPBox srcRec;
-//   SGPBox dstRec;
-//   srcRec.set(0, 0, src->Width(), src->Height());
-//   dstRec.set(0, 0, dst->Width(), dst->Height());
-//   BltStretchVideoSurface(dst, src, &srcRec, &dstRec);
-// }
-//
+
+/** Fill video surface with another one with stretch. */
+void FillVideoSurfaceWithStretch(SGPVSurface *const dst, SGPVSurface *const src) {
+  SGPBox srcRec;
+  SGPBox dstRec;
+  srcRec.set(0, 0, src->Width(), src->Height());
+  dstRec.set(0, 0, dst->Width(), dst->Height());
+  BltStretchVideoSurface(dst, src, &srcRec, &dstRec);
+}
+

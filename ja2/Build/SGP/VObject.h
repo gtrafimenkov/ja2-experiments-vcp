@@ -45,7 +45,7 @@ class SGPVObject {
 
   ETRLEObject const &SubregionProperties(size_t idx) const;
 
-//   UINT8 const *PixData(ETRLEObject const &) const;
+  UINT8 const *PixData(ETRLEObject const &) const;
 
   /* Given a ETRLE image index, retrieves the value of the pixel located at
    * the given image coordinates. The value returned is an 8-bit palette index
@@ -91,20 +91,20 @@ ENUM_BITSET(SGPVObject::Flags)
 void ShutdownVideoObjectManager(void);
 
 // Creates and adds a video object to list
-// SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *);
+SGPVObject *AddStandardVideoObjectFromHImage(SGPImage *);
 SGPVObject *AddStandardVideoObjectFromFile(const char *ImageFile);
-// #define AddVideoObjectFromHImage(a) AddStandardVideoObjectFromHImage(a)
+#define AddVideoObjectFromHImage(a) AddStandardVideoObjectFromHImage(a)
 #define AddVideoObjectFromFile(a) AddStandardVideoObjectFromFile(a)
 
 // Removes a video object
 static inline void DeleteVideoObject(SGPVObject *const vo) { delete vo; }
 
-// // Blits a video object to another video object
-// void BltVideoObject(SGPVSurface *dst, SGPVObject const *src, UINT16 usRegionIndex, INT32 iDestX,
-//                     INT32 iDestY);
-//
-// void BltVideoObjectOutline(SGPVSurface *dst, SGPVObject const *src, UINT16 usIndex, INT32 iDestX,
-//                            INT32 iDestY, INT16 s16BPPColor);
+// Blits a video object to another video object
+void BltVideoObject(SGPVSurface *dst, SGPVObject const *src, UINT16 usRegionIndex, INT32 iDestX,
+                    INT32 iDestY);
+
+void BltVideoObjectOutline(SGPVSurface *dst, SGPVObject const *src, UINT16 usIndex, INT32 iDestX,
+                           INT32 iDestY, INT16 s16BPPColor);
 // void BltVideoObjectOutlineShadow(SGPVSurface *dst, SGPVObject const *src, UINT16 usIndex,
 //                                  INT32 iDestX, INT32 iDestY);
 //

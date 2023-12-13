@@ -279,24 +279,24 @@ void GetETRLEImageData(SGPImage const *const img, ETRLEData *const buf) {
   buf->usNumberOfObjects = img->usNumberOfObjects;
 }
 
-// void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-//   for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
-//     *Px = ((*Px >> 1) & ~0x001F) | (*Px & 0x001F);
-//   }
-// }
-//
-// void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-//   for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
-//     *Px = ((*Px >> 1) & 0x03E0) | (*Px & ~0x07E0);
-//   }
-// }
-//
-// void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
-//   for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
-//     *Px = (*Px & ~0x003F) | ((*Px << 1) & 0x003F);
-//   }
-// }
-//
+void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
+  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+    *Px = ((*Px >> 1) & ~0x001F) | (*Px & 0x001F);
+  }
+}
+
+void ConvertRGBDistribution565To655(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
+  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+    *Px = ((*Px >> 1) & 0x03E0) | (*Px & ~0x07E0);
+  }
+}
+
+void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
+  for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
+    *Px = (*Px & ~0x003F) | ((*Px << 1) & 0x003F);
+  }
+}
+
 // void ConvertRGBDistribution565ToAny(UINT16 *const p16BPPData, UINT32 const uiNumberOfPixels) {
 //   UINT16 *px = p16BPPData;
 //   for (size_t n = uiNumberOfPixels; n != 0; --n) {

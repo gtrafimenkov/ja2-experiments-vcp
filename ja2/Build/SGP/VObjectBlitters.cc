@@ -1,16 +1,16 @@
-// #include "SGP/VObjectBlitters.h"
-//
+#include "SGP/VObjectBlitters.h"
+
 // #include <stdint.h>
 //
 // #include "Local.h"
-// #include "SGP/Debug.h"
-// #include "SGP/HImage.h"
+#include "SGP/Debug.h"
+#include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/Shading.h"
-// #include "SGP/VObject.h"
+#include "SGP/VObject.h"
 // #include "SGP/VSurface.h"
-// #include "SGP/WCheck.h"
-//
+#include "SGP/WCheck.h"
+
 // SGPRect ClippingRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 // // 555      565
 // UINT32 guiTranslucentMask = 0x3def;  // 0x7bef;		// mask for halving 5,6,5
@@ -5296,542 +5296,542 @@
 //   }
 // #endif
 // }
-//
-// /* Blit an image into the destination buffer, using an ETRLE brush as a source
-//  * and a 16-bit buffer as a destination. */
-// void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-//                                          SGPVObject const *const hSrcVObject, INT32 const iX,
-//                                          INT32 const iY, UINT16 const usIndex) {
-//   Assert(hSrcVObject);
-//   Assert(buf);
-//
-//   // Get offsets from index into structure
-//   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-//   UINT32 height = e.usHeight;
-//   UINT32 const width = e.usWidth;
-//
-//   // Add to start position of dest buffer
-//   INT32 const x = iX + e.sOffsetX;
-//   INT32 const y = iY + e.sOffsetY;
-//
-//   CHECKV(x >= 0);
-//   CHECKV(y >= 0);
-//
-//   UINT32 const pitch = uiDestPitchBYTES / 2;
-//   UINT8 const *src = hSrcVObject->PixData(e);
-//   UINT16 *dst = buf + pitch * y + x;
-//   UINT16 const *const pal = hSrcVObject->CurrentShade();
-//   UINT32 line_skip = pitch - width;
-//
-// #if 1  // XXX TODO
-//   for (;;) {
-//     UINT8 data = *src++;
-//     if (data == 0) {
-//       if (--height == 0) break;
-//       dst += line_skip;
-//     } else if (data & 0x80) {  // Transparent
-//       dst += data & 0x7F;
-//     } else {
-//       do {
-//         *dst++ = pal[*src++];
-//       } while (--data != 0);
-//     }
-//   }
-// #else
-//   line_skip *= 2;
-//
-//   __asm {
-//
-// 		mov		esi, src
-// 		mov		edi, dst
-// 		mov		edx, pal
-// 		xor		eax, eax
-// 		xor		ebx, ebx
-// 		xor		ecx, ecx
-//
-// BlitDispatch:
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-// 		or		cl, cl
-// 		js		BlitTransparent
-// 		jz		BlitDoneLine
-//
-//         // BlitNonTransLoop:
-//
-// 		clc
-// 		rcr		cl, 1
-// 		jnc		BlitNTL2
-//
-// 		mov		bl, [esi]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi], ax
-//
-// 		inc		esi
-// 		add		edi, 2
-//
-// BlitNTL2:
-// 		clc
-// 		rcr		cl, 1
-// 		jnc		BlitNTL3
-//
-// 		mov		bl, [esi]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi], ax
-//
-// 		mov		bl, [esi+1]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi+2], ax
-//
-// 		add		esi, 2
-// 		add		edi, 4
-//
-// BlitNTL3:
-//
-// 		or		cl, cl
-// 		jz		BlitDispatch
-//
-// 		xor		ebx, ebx
-//
-// BlitNTL4:
-//
-// 		mov		bl, [esi]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi], ax
-//
-// 		mov		bl, [esi+1]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi+2], ax
-//
-// 		mov		bl, [esi+2]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi+4], ax
-//
-// 		mov		bl, [esi+3]
-// 		mov		ax, [edx+ebx*2]
-// 		mov		[edi+6], ax
-//
-// 		add		esi, 4
-// 		add		edi, 8
-// 		dec		cl
-// 		jnz		BlitNTL4
-//
-// 		jmp		BlitDispatch
-//
-// BlitTransparent:
-//
-// 		and		ecx, 07fH
-//     //		shl		ecx, 1
-// 		add   ecx, ecx
-// 		add		edi, ecx
-// 		jmp		BlitDispatch
-//
-//
-// BlitDoneLine:
-//
-// 		dec		height
-// 		jz		BlitDone
-// 		add		edi, line_skip
-// 		jmp		BlitDispatch
-//
-//
-// BlitDone:
-//   }
-// #endif
-// }
-//
-// /**********************************************************************************************
-//  Blt8BPPDataTo16BPPBufferTransparentClip
-//
-//         Blits an image into the destination buffer, using an ETRLE brush as a
-// source, and a 16-bit buffer as a destination. Clips the brush.
-//
-// **********************************************************************************************/
-// void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-//                                              const SGPVObject *const hSrcVObject, const INT32 iX,
-//                                              const INT32 iY, const UINT16 usIndex,
-//                                              const SGPRect *const clipregion) {
-//   UINT32 Unblitted;
-//   UINT8 *DestPtr;
-//   UINT32 LineSkip;
-//   INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
-//   INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-//
-//   // Assertions
-//   Assert(hSrcVObject != NULL);
-//   Assert(pBuffer != NULL);
-//
-//   // Get Offsets from Index into structure
-//   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-//   UINT32 const usHeight = pTrav.usHeight;
-//   UINT32 const usWidth = pTrav.usWidth;
-//
-//   // Add to start position of dest buffer
-//   INT32 const iTempX = iX + pTrav.sOffsetX;
-//   INT32 const iTempY = iY + pTrav.sOffsetY;
-//
-//   if (clipregion == NULL) {
-//     ClipX1 = ClippingRect.iLeft;
-//     ClipY1 = ClippingRect.iTop;
-//     ClipX2 = ClippingRect.iRight;
-//     ClipY2 = ClippingRect.iBottom;
-//   } else {
-//     ClipX1 = clipregion->iLeft;
-//     ClipY1 = clipregion->iTop;
-//     ClipX2 = clipregion->iRight;
-//     ClipY2 = clipregion->iBottom;
-//   }
-//
-//   // Calculate rows hanging off each side of the screen
-//   LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth);
-//   RightSkip = __min(MAX(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-//   TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
-//   BottomSkip = __min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
-//
-//   // calculate the remaining rows and columns to blit
-//   BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-//   BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
-//
-//   // check if whole thing is clipped
-//   if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
-//
-//   // check if whole thing is clipped
-//   if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
-//
-//   UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-//   DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-//   UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
-//   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
-//
-// #if 1  // XXX TODO
-//   UINT32 LSCount;
-//   UINT32 PxCount;
-//
-//   while (TopSkip > 0) {
-//     for (;;) {
-//       PxCount = *SrcPtr++;
-//       if (PxCount & 0x80) continue;
-//       if (PxCount == 0) break;
-//       SrcPtr += PxCount;
-//     }
-//     TopSkip--;
-//   }
-//
-//   do {
-//     for (LSCount = LeftSkip; LSCount > 0; LSCount -= PxCount) {
-//       PxCount = *SrcPtr++;
-//       if (PxCount & 0x80) {
-//         PxCount &= 0x7F;
-//         if (PxCount > LSCount) {
-//           PxCount -= LSCount;
-//           LSCount = BlitLength;
-//           goto BlitTransparent;
-//         }
-//       } else {
-//         if (PxCount > LSCount) {
-//           SrcPtr += LSCount;
-//           PxCount -= LSCount;
-//           LSCount = BlitLength;
-//           goto BlitNonTransLoop;
-//         }
-//         SrcPtr += PxCount;
-//       }
-//     }
-//
-//     LSCount = BlitLength;
-//     while (LSCount > 0) {
-//       PxCount = *SrcPtr++;
-//       if (PxCount & 0x80) {
-//       BlitTransparent:  // skip transparent pixels
-//         PxCount &= 0x7F;
-//         if (PxCount > LSCount) PxCount = LSCount;
-//         LSCount -= PxCount;
-//         DestPtr += 2 * PxCount;
-//       } else {
-//       BlitNonTransLoop:  // blit non-transparent pixels
-//         if (PxCount > LSCount) {
-//           Unblitted = PxCount - LSCount;
-//           PxCount = LSCount;
-//         } else {
-//           Unblitted = 0;
-//         }
-//         LSCount -= PxCount;
-//
-//         do {
-//           *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr++];
-//           DestPtr += 2;
-//         } while (--PxCount > 0);
-//         SrcPtr += Unblitted;
-//       }
-//     }
-//
-//     while (*SrcPtr++ != 0) {
-//     }  // skip along until we hit and end-of-line marker
-//     DestPtr += LineSkip;
-//   } while (--BlitHeight > 0);
-// #else
-//   __asm {
-//
-// 		mov		esi, SrcPtr
-// 		mov		edi, DestPtr
-// 		mov		edx, p16BPPPalette
-// 		xor		eax, eax
-// 		mov		ebx, TopSkip
-// 		xor		ecx, ecx
-//
-// 		or		ebx, ebx  // check for nothing clipped on top
-// 		jz		LeftSkipSetup
-//
-// TopSkipLoop:  // Skips the number of lines clipped at the top
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-// 		or		cl, cl
-// 		js		TopSkipLoop
-// 		jz		TSEndLine
-//
-// 		add		esi, ecx
-// 		jmp		TopSkipLoop
-//
-// TSEndLine:
-// 		dec		ebx
-// 		jnz		TopSkipLoop
-//
-//
-//
-//
-// LeftSkipSetup:
-//
-// 		mov		Unblitted, 0
-// 		mov		ebx, LeftSkip  // check for nothing clipped on the left
-// 		or		ebx, ebx
-// 		jz		BlitLineSetup
-//
-// LeftSkipLoop:
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-//
-// 		or		cl, cl
-// 		js		LSTrans
-//
-// 		cmp		ecx, ebx
-// 		je		LSSkip2  // if equal, skip whole, and start blit with new run
-// 		jb		LSSkip1  // if less, skip whole thing
-//
-// 		add		esi, ebx  // skip partial run, jump into normal loop for rest
-// 		sub		ecx, ebx
-// 		mov		ebx, BlitLength
-// 		mov		Unblitted, 0
-// 		jmp		BlitNonTransLoop
-//
-// LSSkip2:
-// 		add		esi, ecx  // skip whole run, and start blit with new run
-// 		jmp		BlitLineSetup
-//
-//
-// LSSkip1:
-// 		add		esi, ecx  // skip whole run, continue skipping
-// 		sub		ebx, ecx
-// 		jmp		LeftSkipLoop
-//
-//
-// LSTrans:
-// 		and		ecx, 07fH
-// 		cmp		ecx, ebx
-// 		je		BlitLineSetup  // if equal, skip whole, and start blit with new run
-// 		jb		LSTrans1  // if less, skip whole thing
-//
-// 		sub		ecx, ebx  // skip partial run, jump into normal loop for rest
-// 		mov		ebx, BlitLength
-// 		mov		Unblitted, 0
-// 		jmp		BlitTransparent
-//
-//
-// LSTrans1:
-// 		sub		ebx, ecx  // skip whole run, continue skipping
-// 		jmp		LeftSkipLoop
-//
-//
-//
-//
-// BlitLineSetup:  // Does any actual blitting (trans/non) for the line
-// 		mov		ebx, BlitLength
-// 		mov		Unblitted, 0
-//
-// BlitDispatch:
-//
-// 		or		ebx, ebx  // Check to see if we're done blitting
-// 		jz		RightSkipLoop
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-// 		or		cl, cl
-// 		js		BlitTransparent
-//
-// BlitNonTransLoop:  // blit non-transparent pixels
-//
-// 		cmp		ecx, ebx
-// 		jbe		BNTrans1
-//
-// 		sub		ecx, ebx
-// 		mov		Unblitted, ecx
-// 		mov		ecx, ebx
-//
-// BNTrans1:
-// 		sub		ebx, ecx
-//
-// 		clc
-// 		rcr		cl, 1
-// 		jnc		BlitNTL2
-//
-// 		xor		eax, eax
-// 		mov		al, [esi]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi], ax
-//
-// 		inc		esi
-// 		add		edi, 2
-//
-// BlitNTL2:
-// 		clc
-// 		rcr		cl, 1
-// 		jnc		BlitNTL3
-//
-// 		xor		eax, eax
-// 		mov		al, [esi]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi], ax
-//
-// 		xor		eax, eax
-// 		mov		al, [esi+1]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi+2], ax
-//
-// 		add		esi, 2
-// 		add		edi, 4
-//
-// BlitNTL3:
-//
-// 		or		cl, cl
-// 		jz		BlitLineEnd
-//
-// BlitNTL4:
-//
-// 		xor		eax, eax
-// 		mov		al, [esi]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi], ax
-//
-// 		xor		eax, eax
-// 		mov		al, [esi+1]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi+2], ax
-//
-// 		xor		eax, eax
-// 		mov		al, [esi+2]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi+4], ax
-//
-// 		xor		eax, eax
-// 		mov		al, [esi+3]
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi+6], ax
-//
-// 		add		esi, 4
-// 		add		edi, 8
-// 		dec		cl
-// 		jnz		BlitNTL4
-//
-// BlitLineEnd:
-// 		add		esi, Unblitted
-// 		jmp		BlitDispatch
-//
-// BlitTransparent:  // skip transparent pixels
-//
-// 		and		ecx, 07fH
-// 		cmp		ecx, ebx
-// 		jbe		BTrans1
-//
-// 		mov		ecx, ebx
-//
-// BTrans1:
-//
-// 		sub		ebx, ecx
-//         //		shl		ecx, 1
-// 		add   ecx, ecx
-// 		add		edi, ecx
-// 		jmp		BlitDispatch
-//
-//
-// RightSkipLoop:    // skip along until we hit and end-of-line marker
-//
-//
-// RSLoop1:
-// 		mov		al, [esi]
-// 		inc		esi
-// 		or		al, al
-// 		jnz		RSLoop1
-//
-// 		dec		BlitHeight
-// 		jz		BlitDone
-// 		add		edi, LineSkip
-//
-// 		jmp		LeftSkipSetup
-//
-//
-// BlitDone:
-//   }
-// #endif
-// }
-//
-// /**********************************************************************************************
-//  BltIsClipped
-//
-//         Determines whether a given blit will need clipping or not. Returns
-// TRUE/FALSE.
-//
-// **********************************************************************************************/
-// BOOLEAN BltIsClipped(const SGPVObject *const hSrcVObject, const INT32 iX, const INT32 iY,
-//                      const UINT16 usIndex, const SGPRect *const clipregion) {
-//   INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-//
-//   // Assertions
-//   Assert(hSrcVObject != NULL);
-//
-//   // Get Offsets from Index into structure
-//   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-//   UINT32 const usHeight = pTrav.usHeight;
-//   UINT32 const usWidth = pTrav.usWidth;
-//
-//   // Add to start position of dest buffer
-//   INT32 const iTempX = iX + pTrav.sOffsetX;
-//   INT32 const iTempY = iY + pTrav.sOffsetY;
-//
-//   if (clipregion == NULL) {
-//     ClipX1 = ClippingRect.iLeft;
-//     ClipY1 = ClippingRect.iTop;
-//     ClipX2 = ClippingRect.iRight;
-//     ClipY2 = ClippingRect.iBottom;
-//   } else {
-//     ClipX1 = clipregion->iLeft;
-//     ClipY1 = clipregion->iTop;
-//     ClipX2 = clipregion->iRight;
-//     ClipY2 = clipregion->iBottom;
-//   }
-//
-//   // Calculate rows hanging off each side of the screen
-//   if (__min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth)) return (TRUE);
-//
-//   if (__min(MAX(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth)) return (TRUE);
-//
-//   if (__min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight)) return (TRUE);
-//
-//   if (__min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight)) return (TRUE);
-//
-//   return (FALSE);
-// }
-//
+
+/* Blit an image into the destination buffer, using an ETRLE brush as a source
+ * and a 16-bit buffer as a destination. */
+void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
+                                         SGPVObject const *const hSrcVObject, INT32 const iX,
+                                         INT32 const iY, UINT16 const usIndex) {
+  Assert(hSrcVObject);
+  Assert(buf);
+
+  // Get offsets from index into structure
+  ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
+  UINT32 height = e.usHeight;
+  UINT32 const width = e.usWidth;
+
+  // Add to start position of dest buffer
+  INT32 const x = iX + e.sOffsetX;
+  INT32 const y = iY + e.sOffsetY;
+
+  CHECKV(x >= 0);
+  CHECKV(y >= 0);
+
+  UINT32 const pitch = uiDestPitchBYTES / 2;
+  UINT8 const *src = hSrcVObject->PixData(e);
+  UINT16 *dst = buf + pitch * y + x;
+  UINT16 const *const pal = hSrcVObject->CurrentShade();
+  UINT32 line_skip = pitch - width;
+
+#if 1  // XXX TODO
+  for (;;) {
+    UINT8 data = *src++;
+    if (data == 0) {
+      if (--height == 0) break;
+      dst += line_skip;
+    } else if (data & 0x80) {  // Transparent
+      dst += data & 0x7F;
+    } else {
+      do {
+        *dst++ = pal[*src++];
+      } while (--data != 0);
+    }
+  }
+#else
+  line_skip *= 2;
+
+  __asm {
+
+		mov		esi, src
+		mov		edi, dst
+		mov		edx, pal
+		xor		eax, eax
+		xor		ebx, ebx
+		xor		ecx, ecx
+
+BlitDispatch:
+
+		mov		cl, [esi]
+		inc		esi
+		or		cl, cl
+		js		BlitTransparent
+		jz		BlitDoneLine
+
+        // BlitNonTransLoop:
+
+		clc
+		rcr		cl, 1
+		jnc		BlitNTL2
+
+		mov		bl, [esi]
+		mov		ax, [edx+ebx*2]
+		mov		[edi], ax
+
+		inc		esi
+		add		edi, 2
+
+BlitNTL2:
+		clc
+		rcr		cl, 1
+		jnc		BlitNTL3
+
+		mov		bl, [esi]
+		mov		ax, [edx+ebx*2]
+		mov		[edi], ax
+
+		mov		bl, [esi+1]
+		mov		ax, [edx+ebx*2]
+		mov		[edi+2], ax
+
+		add		esi, 2
+		add		edi, 4
+
+BlitNTL3:
+
+		or		cl, cl
+		jz		BlitDispatch
+
+		xor		ebx, ebx
+
+BlitNTL4:
+
+		mov		bl, [esi]
+		mov		ax, [edx+ebx*2]
+		mov		[edi], ax
+
+		mov		bl, [esi+1]
+		mov		ax, [edx+ebx*2]
+		mov		[edi+2], ax
+
+		mov		bl, [esi+2]
+		mov		ax, [edx+ebx*2]
+		mov		[edi+4], ax
+
+		mov		bl, [esi+3]
+		mov		ax, [edx+ebx*2]
+		mov		[edi+6], ax
+
+		add		esi, 4
+		add		edi, 8
+		dec		cl
+		jnz		BlitNTL4
+
+		jmp		BlitDispatch
+
+BlitTransparent:
+
+		and		ecx, 07fH
+    //		shl		ecx, 1
+		add   ecx, ecx
+		add		edi, ecx
+		jmp		BlitDispatch
+
+
+BlitDoneLine:
+
+		dec		height
+		jz		BlitDone
+		add		edi, line_skip
+		jmp		BlitDispatch
+
+
+BlitDone:
+  }
+#endif
+}
+
+/**********************************************************************************************
+ Blt8BPPDataTo16BPPBufferTransparentClip
+
+        Blits an image into the destination buffer, using an ETRLE brush as a
+source, and a 16-bit buffer as a destination. Clips the brush.
+
+**********************************************************************************************/
+void Blt8BPPDataTo16BPPBufferTransparentClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
+                                             const SGPVObject *const hSrcVObject, const INT32 iX,
+                                             const INT32 iY, const UINT16 usIndex,
+                                             const SGPRect *const clipregion) {
+  UINT32 Unblitted;
+  UINT8 *DestPtr;
+  UINT32 LineSkip;
+  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight;
+  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+
+  // Assertions
+  Assert(hSrcVObject != NULL);
+  Assert(pBuffer != NULL);
+
+  // Get Offsets from Index into structure
+  ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
+  UINT32 const usHeight = pTrav.usHeight;
+  UINT32 const usWidth = pTrav.usWidth;
+
+  // Add to start position of dest buffer
+  INT32 const iTempX = iX + pTrav.sOffsetX;
+  INT32 const iTempY = iY + pTrav.sOffsetY;
+
+  if (clipregion == NULL) {
+    ClipX1 = ClippingRect.iLeft;
+    ClipY1 = ClippingRect.iTop;
+    ClipX2 = ClippingRect.iRight;
+    ClipY2 = ClippingRect.iBottom;
+  } else {
+    ClipX1 = clipregion->iLeft;
+    ClipY1 = clipregion->iTop;
+    ClipX2 = clipregion->iRight;
+    ClipY2 = clipregion->iBottom;
+  }
+
+  // Calculate rows hanging off each side of the screen
+  LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth);
+  RightSkip = __min(MAX(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
+  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
+  BottomSkip = __min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+
+  // calculate the remaining rows and columns to blit
+  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+
+  // check if whole thing is clipped
+  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+
+  // check if whole thing is clipped
+  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+
+  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+
+#if 1  // XXX TODO
+  UINT32 LSCount;
+  UINT32 PxCount;
+
+  while (TopSkip > 0) {
+    for (;;) {
+      PxCount = *SrcPtr++;
+      if (PxCount & 0x80) continue;
+      if (PxCount == 0) break;
+      SrcPtr += PxCount;
+    }
+    TopSkip--;
+  }
+
+  do {
+    for (LSCount = LeftSkip; LSCount > 0; LSCount -= PxCount) {
+      PxCount = *SrcPtr++;
+      if (PxCount & 0x80) {
+        PxCount &= 0x7F;
+        if (PxCount > LSCount) {
+          PxCount -= LSCount;
+          LSCount = BlitLength;
+          goto BlitTransparent;
+        }
+      } else {
+        if (PxCount > LSCount) {
+          SrcPtr += LSCount;
+          PxCount -= LSCount;
+          LSCount = BlitLength;
+          goto BlitNonTransLoop;
+        }
+        SrcPtr += PxCount;
+      }
+    }
+
+    LSCount = BlitLength;
+    while (LSCount > 0) {
+      PxCount = *SrcPtr++;
+      if (PxCount & 0x80) {
+      BlitTransparent:  // skip transparent pixels
+        PxCount &= 0x7F;
+        if (PxCount > LSCount) PxCount = LSCount;
+        LSCount -= PxCount;
+        DestPtr += 2 * PxCount;
+      } else {
+      BlitNonTransLoop:  // blit non-transparent pixels
+        if (PxCount > LSCount) {
+          Unblitted = PxCount - LSCount;
+          PxCount = LSCount;
+        } else {
+          Unblitted = 0;
+        }
+        LSCount -= PxCount;
+
+        do {
+          *(UINT16 *)DestPtr = p16BPPPalette[*SrcPtr++];
+          DestPtr += 2;
+        } while (--PxCount > 0);
+        SrcPtr += Unblitted;
+      }
+    }
+
+    while (*SrcPtr++ != 0) {
+    }  // skip along until we hit and end-of-line marker
+    DestPtr += LineSkip;
+  } while (--BlitHeight > 0);
+#else
+  __asm {
+
+		mov		esi, SrcPtr
+		mov		edi, DestPtr
+		mov		edx, p16BPPPalette
+		xor		eax, eax
+		mov		ebx, TopSkip
+		xor		ecx, ecx
+
+		or		ebx, ebx  // check for nothing clipped on top
+		jz		LeftSkipSetup
+
+TopSkipLoop:  // Skips the number of lines clipped at the top
+
+		mov		cl, [esi]
+		inc		esi
+		or		cl, cl
+		js		TopSkipLoop
+		jz		TSEndLine
+
+		add		esi, ecx
+		jmp		TopSkipLoop
+
+TSEndLine:
+		dec		ebx
+		jnz		TopSkipLoop
+
+
+
+
+LeftSkipSetup:
+
+		mov		Unblitted, 0
+		mov		ebx, LeftSkip  // check for nothing clipped on the left
+		or		ebx, ebx
+		jz		BlitLineSetup
+
+LeftSkipLoop:
+
+		mov		cl, [esi]
+		inc		esi
+
+		or		cl, cl
+		js		LSTrans
+
+		cmp		ecx, ebx
+		je		LSSkip2  // if equal, skip whole, and start blit with new run
+		jb		LSSkip1  // if less, skip whole thing
+
+		add		esi, ebx  // skip partial run, jump into normal loop for rest
+		sub		ecx, ebx
+		mov		ebx, BlitLength
+		mov		Unblitted, 0
+		jmp		BlitNonTransLoop
+
+LSSkip2:
+		add		esi, ecx  // skip whole run, and start blit with new run
+		jmp		BlitLineSetup
+
+
+LSSkip1:
+		add		esi, ecx  // skip whole run, continue skipping
+		sub		ebx, ecx
+		jmp		LeftSkipLoop
+
+
+LSTrans:
+		and		ecx, 07fH
+		cmp		ecx, ebx
+		je		BlitLineSetup  // if equal, skip whole, and start blit with new run
+		jb		LSTrans1  // if less, skip whole thing
+
+		sub		ecx, ebx  // skip partial run, jump into normal loop for rest
+		mov		ebx, BlitLength
+		mov		Unblitted, 0
+		jmp		BlitTransparent
+
+
+LSTrans1:
+		sub		ebx, ecx  // skip whole run, continue skipping
+		jmp		LeftSkipLoop
+
+
+
+
+BlitLineSetup:  // Does any actual blitting (trans/non) for the line
+		mov		ebx, BlitLength
+		mov		Unblitted, 0
+
+BlitDispatch:
+
+		or		ebx, ebx  // Check to see if we're done blitting
+		jz		RightSkipLoop
+
+		mov		cl, [esi]
+		inc		esi
+		or		cl, cl
+		js		BlitTransparent
+
+BlitNonTransLoop:  // blit non-transparent pixels
+
+		cmp		ecx, ebx
+		jbe		BNTrans1
+
+		sub		ecx, ebx
+		mov		Unblitted, ecx
+		mov		ecx, ebx
+
+BNTrans1:
+		sub		ebx, ecx
+
+		clc
+		rcr		cl, 1
+		jnc		BlitNTL2
+
+		xor		eax, eax
+		mov		al, [esi]
+		mov		ax, [edx+eax*2]
+		mov		[edi], ax
+
+		inc		esi
+		add		edi, 2
+
+BlitNTL2:
+		clc
+		rcr		cl, 1
+		jnc		BlitNTL3
+
+		xor		eax, eax
+		mov		al, [esi]
+		mov		ax, [edx+eax*2]
+		mov		[edi], ax
+
+		xor		eax, eax
+		mov		al, [esi+1]
+		mov		ax, [edx+eax*2]
+		mov		[edi+2], ax
+
+		add		esi, 2
+		add		edi, 4
+
+BlitNTL3:
+
+		or		cl, cl
+		jz		BlitLineEnd
+
+BlitNTL4:
+
+		xor		eax, eax
+		mov		al, [esi]
+		mov		ax, [edx+eax*2]
+		mov		[edi], ax
+
+		xor		eax, eax
+		mov		al, [esi+1]
+		mov		ax, [edx+eax*2]
+		mov		[edi+2], ax
+
+		xor		eax, eax
+		mov		al, [esi+2]
+		mov		ax, [edx+eax*2]
+		mov		[edi+4], ax
+
+		xor		eax, eax
+		mov		al, [esi+3]
+		mov		ax, [edx+eax*2]
+		mov		[edi+6], ax
+
+		add		esi, 4
+		add		edi, 8
+		dec		cl
+		jnz		BlitNTL4
+
+BlitLineEnd:
+		add		esi, Unblitted
+		jmp		BlitDispatch
+
+BlitTransparent:  // skip transparent pixels
+
+		and		ecx, 07fH
+		cmp		ecx, ebx
+		jbe		BTrans1
+
+		mov		ecx, ebx
+
+BTrans1:
+
+		sub		ebx, ecx
+        //		shl		ecx, 1
+		add   ecx, ecx
+		add		edi, ecx
+		jmp		BlitDispatch
+
+
+RightSkipLoop:    // skip along until we hit and end-of-line marker
+
+
+RSLoop1:
+		mov		al, [esi]
+		inc		esi
+		or		al, al
+		jnz		RSLoop1
+
+		dec		BlitHeight
+		jz		BlitDone
+		add		edi, LineSkip
+
+		jmp		LeftSkipSetup
+
+
+BlitDone:
+  }
+#endif
+}
+
+/**********************************************************************************************
+ BltIsClipped
+
+        Determines whether a given blit will need clipping or not. Returns
+TRUE/FALSE.
+
+**********************************************************************************************/
+BOOLEAN BltIsClipped(const SGPVObject *const hSrcVObject, const INT32 iX, const INT32 iY,
+                     const UINT16 usIndex, const SGPRect *const clipregion) {
+  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+
+  // Assertions
+  Assert(hSrcVObject != NULL);
+
+  // Get Offsets from Index into structure
+  ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
+  UINT32 const usHeight = pTrav.usHeight;
+  UINT32 const usWidth = pTrav.usWidth;
+
+  // Add to start position of dest buffer
+  INT32 const iTempX = iX + pTrav.sOffsetX;
+  INT32 const iTempY = iY + pTrav.sOffsetY;
+
+  if (clipregion == NULL) {
+    ClipX1 = ClippingRect.iLeft;
+    ClipY1 = ClippingRect.iTop;
+    ClipX2 = ClippingRect.iRight;
+    ClipY2 = ClippingRect.iBottom;
+  } else {
+    ClipX1 = clipregion->iLeft;
+    ClipY1 = clipregion->iTop;
+    ClipX2 = clipregion->iRight;
+    ClipY2 = clipregion->iBottom;
+  }
+
+  // Calculate rows hanging off each side of the screen
+  if (__min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth)) return (TRUE);
+
+  if (__min(MAX(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth)) return (TRUE);
+
+  if (__min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight)) return (TRUE);
+
+  if (__min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight)) return (TRUE);
+
+  return (FALSE);
+}
+
 // /**********************************************************************************************
 //  Blt8BPPDataTo16BPPBufferShadowClip
 //
@@ -6283,435 +6283,435 @@
 //
 //   return (FALSE);
 // }
-//
-// // ATE New blitter for rendering a differrent color for value 254. Can be
-// // transparent if outline is SGP_TRANSPARENT
-// void Blt8BPPDataTo16BPPBufferOutline(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
-//                                      SGPVObject const *const hSrcVObject, INT32 const iX,
-//                                      INT32 const iY, UINT16 const usIndex, INT16 const outline) {
-//   Assert(hSrcVObject);
-//   Assert(buf);
-//
-//   // Get offsets from index into structure
-//   ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
-//   UINT32 height = e.usHeight;
-//   UINT32 const width = e.usWidth;
-//
-//   // Add to start position of dest buffer
-//   INT32 const x = iX + e.sOffsetX;
-//   INT32 const y = iY + e.sOffsetY;
-//
-//   CHECKV(x >= 0);
-//   CHECKV(y >= 0);
-//
-//   UINT8 const *src = hSrcVObject->PixData(e);
-//   UINT32 const pitch = uiDestPitchBYTES / 2;
-//   UINT16 *dst = buf + pitch * y + x;
-//   UINT32 line_skip = pitch - width;
-//   UINT16 const *const pal = hSrcVObject->CurrentShade();
-//
-// #if 1  // XXX TODO
-//   for (;;) {
-//     UINT8 data = *src++;
-//     if (data == 0) {
-//       if (--height == 0) break;
-//       dst += line_skip;
-//     } else if (data & 0x80) {
-//       dst += data & 0x7F;
-//     } else {
-//       do {
-//         UINT8 const px = *src++;
-//         if (px != 254) {
-//           *dst = pal[px];
-//         } else if (outline != SGP_TRANSPARENT) {
-//           *dst = outline;
-//         }
-//         ++dst;
-//       } while (--data != 0);
-//     }
-//   }
-// #else
-//   line_skip *= 2;
-//
-//   __asm {
-//
-// 		mov		esi, src
-// 		mov		edi, dst
-// 		mov		edx, pal
-// 		xor		eax, eax
-// 		xor		ecx, ecx
-//
-// BlitDispatch:
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-// 		or		cl, cl
-// 		js		BlitTransparent
-// 		jz		BlitDoneLine
-//
-//         // BlitNonTransLoop:
-//
-// BlitNTL4:
-//
-// 		xor		eax, eax
-// 		mov		al, [esi]
-// 		cmp		al, 254
-// 		jne		BlitNTL6
-//
-//         //		DO OUTLINE
-//         //		ONLY IF WE WANT IT!
-// 		mov		al, fDoOutline;
-// 		cmp		al,	1
-// 		jne		BlitNTL5
-//
-// 		mov		ax, s16BPPColor
-// 		mov		[edi], ax
-// 		jmp		BlitNTL5
-//
-//
-// BlitNTL6:
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi], ax
-//
-// BlitNTL5:
-// 		inc		esi
-// 		add		edi, 2
-// 		dec		cl
-// 		jnz		BlitNTL4
-//
-// 		jmp		BlitDispatch
-//
-//
-// BlitTransparent:
-//
-// 		and		ecx, 07fH
-//     //		shl		ecx, 1
-// 		add   ecx, ecx
-// 		add		edi, ecx
-// 		jmp		BlitDispatch
-//
-//
-// BlitDoneLine:
-//
-// 		dec		height
-// 		jz		BlitDone
-// 		add		edi, line_skip
-// 		jmp		BlitDispatch
-//
-//
-// BlitDone:
-//   }
-// #endif
-// }
-//
-// // ATE New blitter for rendering a differrent color for value 254. Can be
-// // transparent if s16BPPColor is SGP_TRANSPARENT
-// void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
-//                                          const SGPVObject *const hSrcVObject, const INT32 iX,
-//                                          const INT32 iY, const UINT16 usIndex,
-//                                          const INT16 s16BPPColor, const SGPRect *const clipregion) {
-//   UINT32 Unblitted;
-//   UINT8 *DestPtr;
-//   UINT32 LineSkip;
-//   INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
-//   INT32 ClipX1, ClipY1, ClipX2, ClipY2;
-//
-//   // Assertions
-//   Assert(hSrcVObject != NULL);
-//   Assert(pBuffer != NULL);
-//
-//   // Get Offsets from Index into structure
-//   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
-//   UINT32 const usHeight = pTrav.usHeight;
-//   UINT32 const usWidth = pTrav.usWidth;
-//
-//   // Add to start position of dest buffer
-//   INT32 const iTempX = iX + pTrav.sOffsetX;
-//   INT32 const iTempY = iY + pTrav.sOffsetY;
-//
-//   if (clipregion == NULL) {
-//     ClipX1 = ClippingRect.iLeft;
-//     ClipY1 = ClippingRect.iTop;
-//     ClipX2 = ClippingRect.iRight;
-//     ClipY2 = ClippingRect.iBottom;
-//   } else {
-//     ClipX1 = clipregion->iLeft;
-//     ClipY1 = clipregion->iTop;
-//     ClipX2 = clipregion->iRight;
-//     ClipY2 = clipregion->iBottom;
-//   }
-//
-//   // Calculate rows hanging off each side of the screen
-//   LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth);
-//   RightSkip = __min(MAX(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
-//   TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
-//   BottomSkip = __min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
-//
-//   // calculate the remaining rows and columns to blit
-//   BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
-//   BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
-//
-//   // check if whole thing is clipped
-//   if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
-//
-//   // check if whole thing is clipped
-//   if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
-//
-//   UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
-//   DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
-//   LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
-//   UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
-//
-// #if 1  // XXX TODO
-//   UINT32 PxCount;
-//
-//   while (TopSkip > 0) {
-//     for (;;) {
-//       PxCount = *SrcPtr++;
-//       if (PxCount & 0x80) continue;
-//       if (PxCount == 0) break;
-//       SrcPtr += PxCount;
-//     }
-//     TopSkip--;
-//   }
-//
-//   do {
-//     for (LSCount = LeftSkip; LSCount > 0; LSCount -= PxCount) {
-//       PxCount = *SrcPtr++;
-//       if (PxCount & 0x80) {
-//         PxCount &= 0x7F;
-//         if (PxCount > LSCount) {
-//           PxCount -= LSCount;
-//           LSCount = BlitLength;
-//           goto BlitTransparent;
-//         }
-//       } else {
-//         if (PxCount > LSCount) {
-//           SrcPtr += LSCount;
-//           PxCount -= LSCount;
-//           LSCount = BlitLength;
-//           goto BlitNonTransLoop;
-//         }
-//         SrcPtr += PxCount;
-//       }
-//     }
-//
-//     LSCount = BlitLength;
-//     while (LSCount > 0) {
-//       PxCount = *SrcPtr++;
-//       if (PxCount & 0x80) {
-//       BlitTransparent:  // skip transparent pixels
-//         PxCount &= 0x7F;
-//         if (PxCount > LSCount) PxCount = LSCount;
-//         LSCount -= PxCount;
-//         DestPtr += 2 * PxCount;
-//       } else {
-//       BlitNonTransLoop:  // blit non-transparent pixels
-//         if (PxCount > LSCount) {
-//           Unblitted = PxCount - LSCount;
-//           PxCount = LSCount;
-//         } else {
-//           Unblitted = 0;
-//         }
-//         LSCount -= PxCount;
-//
-//         do {
-//           UINT32 src = *SrcPtr++;
-//
-//           if (src != 254) {
-//             *(UINT16 *)DestPtr = p16BPPPalette[src];
-//           } else if (s16BPPColor != SGP_TRANSPARENT) {
-//             *(UINT16 *)DestPtr = s16BPPColor;
-//           }
-//           DestPtr += 2;
-//         } while (--PxCount > 0);
-//         SrcPtr += Unblitted;
-//       }
-//     }
-//
-//     while (*SrcPtr++ != 0) {
-//     }  // skip along until we hit and end-of-line marker
-//     DestPtr += LineSkip;
-//   } while (--BlitHeight > 0);
-// #else
-//   __asm {
-//
-// 		mov		esi, SrcPtr
-// 		mov		edi, DestPtr
-// 		mov		edx, p16BPPPalette
-// 		xor		eax, eax
-// 		xor		ecx, ecx
-//
-// 		cmp		TopSkip, 0  // check for nothing clipped on top
-// 		je		LeftSkipSetup
-//
-// TopSkipLoop:  // Skips the number of lines clipped at the top
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-// 		or		cl, cl
-// 		js		TopSkipLoop
-// 		jz		TSEndLine
-//
-// 		add		esi, ecx
-// 		jmp		TopSkipLoop
-//
-// TSEndLine:
-// 		dec		TopSkip
-// 		jnz		TopSkipLoop
-//
-// LeftSkipSetup:
-//
-// 		mov		Unblitted, 0
-// 		mov		eax, LeftSkip
-// 		mov		LSCount, eax
-// 		or		eax, eax
-// 		jz		BlitLineSetup
-//
-// LeftSkipLoop:
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-//
-// 		or		cl, cl
-// 		js		LSTrans
-//
-// 		cmp		ecx, LSCount
-// 		je		LSSkip2  // if equal, skip whole, and start blit with new run
-// 		jb		LSSkip1  // if less, skip whole thing
-//
-// 		add		esi, LSCount  // skip partial run, jump into normal loop for rest
-// 		sub		ecx, LSCount
-// 		mov		eax, BlitLength
-// 		mov		LSCount, eax
-// 		mov		Unblitted, 0
-// 		jmp		BlitNonTransLoop
-//
-// LSSkip2:
-// 		add		esi, ecx  // skip whole run, and start blit with new run
-// 		jmp		BlitLineSetup
-//
-//
-// LSSkip1:
-// 		add		esi, ecx  // skip whole run, continue skipping
-// 		sub		LSCount, ecx
-// 		jmp		LeftSkipLoop
-//
-//
-// LSTrans:
-// 		and		ecx, 07fH
-// 		cmp		ecx, LSCount
-// 		je		BlitLineSetup  // if equal, skip whole, and start blit with new run
-// 		jb		LSTrans1  // if less, skip whole thing
-//
-// 		sub		ecx, LSCount  // skip partial run, jump into normal loop for rest
-// 		mov		eax, BlitLength
-// 		mov		LSCount, eax
-// 		mov		Unblitted, 0
-// 		jmp		BlitTransparent
-//
-//
-// LSTrans1:
-// 		sub		LSCount, ecx  // skip whole run, continue skipping
-// 		jmp		LeftSkipLoop
-//
-//
-// BlitLineSetup:  // Does any actual blitting (trans/non) for the line
-// 		mov		eax, BlitLength
-// 		mov		LSCount, eax
-// 		mov		Unblitted, 0
-//
-// BlitDispatch:
-//
-// 		cmp		LSCount, 0  // Check to see if we're done blitting
-// 		je		RightSkipLoop
-//
-// 		mov		cl, [esi]
-// 		inc		esi
-// 		or		cl, cl
-// 		js		BlitTransparent
-//
-// BlitNonTransLoop:  // blit non-transparent pixels
-//
-// 		cmp		ecx, LSCount
-// 		jbe		BNTrans1
-//
-// 		sub		ecx, LSCount
-// 		mov		Unblitted, ecx
-// 		mov		ecx, LSCount
-//
-// BNTrans1:
-// 		sub		LSCount, ecx
-//
-// BlitNTL1:
-// 		xor		eax, eax
-//
-// 		mov		al, [esi]
-// 		cmp		al, 254
-// 		jne		BlitNTL3
-//
-//         //		DO OUTLINE
-//         //		ONLY IF WE WANT IT!
-// 		mov		al, fDoOutline;
-// 		cmp		al,	1
-// 		jne		BlitNTL2
-//
-// 		mov		ax, s16BPPColor
-// 		mov		[edi], ax
-// 		jmp		BlitNTL2
-//
-// BlitNTL3:
-// 		mov		ax, [edx+eax*2]
-// 		mov		[edi], ax
-//
-// BlitNTL2:
-// 		inc		esi
-// 		add		edi, 2
-// 		dec		cl
-// 		jnz		BlitNTL1
-//
-//         // BlitLineEnd:
-// 		add		esi, Unblitted
-// 		jmp		BlitDispatch
-//
-// BlitTransparent:  // skip transparent pixels
-//
-// 		and		ecx, 07fH
-// 		cmp		ecx, LSCount
-// 		jbe		BTrans1
-//
-// 		mov		ecx, LSCount
-//
-// BTrans1:
-//
-// 		sub		LSCount, ecx
-//         //		shl		ecx, 1
-// 		add   ecx, ecx
-// 		add		edi, ecx
-// 		jmp		BlitDispatch
-//
-//
-// RightSkipLoop:    // skip along until we hit and end-of-line marker
-//
-//
-// RSLoop1:
-// 		mov		al, [esi]
-// 		inc		esi
-// 		or		al, al
-// 		jnz		RSLoop1
-//
-// 		dec		BlitHeight
-// 		jz		BlitDone
-// 		add		edi, LineSkip
-//
-// 		jmp		LeftSkipSetup
-//
-//
-// BlitDone:
-//   }
-// #endif
-// }
-//
+
+// ATE New blitter for rendering a differrent color for value 254. Can be
+// transparent if outline is SGP_TRANSPARENT
+void Blt8BPPDataTo16BPPBufferOutline(UINT16 *const buf, UINT32 const uiDestPitchBYTES,
+                                     SGPVObject const *const hSrcVObject, INT32 const iX,
+                                     INT32 const iY, UINT16 const usIndex, INT16 const outline) {
+  Assert(hSrcVObject);
+  Assert(buf);
+
+  // Get offsets from index into structure
+  ETRLEObject const &e = hSrcVObject->SubregionProperties(usIndex);
+  UINT32 height = e.usHeight;
+  UINT32 const width = e.usWidth;
+
+  // Add to start position of dest buffer
+  INT32 const x = iX + e.sOffsetX;
+  INT32 const y = iY + e.sOffsetY;
+
+  CHECKV(x >= 0);
+  CHECKV(y >= 0);
+
+  UINT8 const *src = hSrcVObject->PixData(e);
+  UINT32 const pitch = uiDestPitchBYTES / 2;
+  UINT16 *dst = buf + pitch * y + x;
+  UINT32 line_skip = pitch - width;
+  UINT16 const *const pal = hSrcVObject->CurrentShade();
+
+#if 1  // XXX TODO
+  for (;;) {
+    UINT8 data = *src++;
+    if (data == 0) {
+      if (--height == 0) break;
+      dst += line_skip;
+    } else if (data & 0x80) {
+      dst += data & 0x7F;
+    } else {
+      do {
+        UINT8 const px = *src++;
+        if (px != 254) {
+          *dst = pal[px];
+        } else if (outline != SGP_TRANSPARENT) {
+          *dst = outline;
+        }
+        ++dst;
+      } while (--data != 0);
+    }
+  }
+#else
+  line_skip *= 2;
+
+  __asm {
+
+		mov		esi, src
+		mov		edi, dst
+		mov		edx, pal
+		xor		eax, eax
+		xor		ecx, ecx
+
+BlitDispatch:
+
+		mov		cl, [esi]
+		inc		esi
+		or		cl, cl
+		js		BlitTransparent
+		jz		BlitDoneLine
+
+        // BlitNonTransLoop:
+
+BlitNTL4:
+
+		xor		eax, eax
+		mov		al, [esi]
+		cmp		al, 254
+		jne		BlitNTL6
+
+        //		DO OUTLINE
+        //		ONLY IF WE WANT IT!
+		mov		al, fDoOutline;
+		cmp		al,	1
+		jne		BlitNTL5
+
+		mov		ax, s16BPPColor
+		mov		[edi], ax
+		jmp		BlitNTL5
+
+
+BlitNTL6:
+		mov		ax, [edx+eax*2]
+		mov		[edi], ax
+
+BlitNTL5:
+		inc		esi
+		add		edi, 2
+		dec		cl
+		jnz		BlitNTL4
+
+		jmp		BlitDispatch
+
+
+BlitTransparent:
+
+		and		ecx, 07fH
+    //		shl		ecx, 1
+		add   ecx, ecx
+		add		edi, ecx
+		jmp		BlitDispatch
+
+
+BlitDoneLine:
+
+		dec		height
+		jz		BlitDone
+		add		edi, line_skip
+		jmp		BlitDispatch
+
+
+BlitDone:
+  }
+#endif
+}
+
+// ATE New blitter for rendering a differrent color for value 254. Can be
+// transparent if s16BPPColor is SGP_TRANSPARENT
+void Blt8BPPDataTo16BPPBufferOutlineClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
+                                         const SGPVObject *const hSrcVObject, const INT32 iX,
+                                         const INT32 iY, const UINT16 usIndex,
+                                         const INT16 s16BPPColor, const SGPRect *const clipregion) {
+  UINT32 Unblitted;
+  UINT8 *DestPtr;
+  UINT32 LineSkip;
+  INT32 LeftSkip, RightSkip, TopSkip, BottomSkip, BlitLength, BlitHeight, LSCount;
+  INT32 ClipX1, ClipY1, ClipX2, ClipY2;
+
+  // Assertions
+  Assert(hSrcVObject != NULL);
+  Assert(pBuffer != NULL);
+
+  // Get Offsets from Index into structure
+  ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(usIndex);
+  UINT32 const usHeight = pTrav.usHeight;
+  UINT32 const usWidth = pTrav.usWidth;
+
+  // Add to start position of dest buffer
+  INT32 const iTempX = iX + pTrav.sOffsetX;
+  INT32 const iTempY = iY + pTrav.sOffsetY;
+
+  if (clipregion == NULL) {
+    ClipX1 = ClippingRect.iLeft;
+    ClipY1 = ClippingRect.iTop;
+    ClipX2 = ClippingRect.iRight;
+    ClipY2 = ClippingRect.iBottom;
+  } else {
+    ClipX1 = clipregion->iLeft;
+    ClipY1 = clipregion->iTop;
+    ClipX2 = clipregion->iRight;
+    ClipY2 = clipregion->iBottom;
+  }
+
+  // Calculate rows hanging off each side of the screen
+  LeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth);
+  RightSkip = __min(MAX(ClipX2, (iTempX + (INT32)usWidth)) - ClipX2, (INT32)usWidth);
+  TopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
+  BottomSkip = __min(__max(ClipY2, (iTempY + (INT32)usHeight)) - ClipY2, (INT32)usHeight);
+
+  // calculate the remaining rows and columns to blit
+  BlitLength = ((INT32)usWidth - LeftSkip - RightSkip);
+  BlitHeight = ((INT32)usHeight - TopSkip - BottomSkip);
+
+  // check if whole thing is clipped
+  if ((LeftSkip >= (INT32)usWidth) || (RightSkip >= (INT32)usWidth)) return;
+
+  // check if whole thing is clipped
+  if ((TopSkip >= (INT32)usHeight) || (BottomSkip >= (INT32)usHeight)) return;
+
+  UINT8 const *SrcPtr = hSrcVObject->PixData(pTrav);
+  DestPtr = (UINT8 *)pBuffer + (uiDestPitchBYTES * (iTempY + TopSkip)) + ((iTempX + LeftSkip) * 2);
+  LineSkip = (uiDestPitchBYTES - (BlitLength * 2));
+  UINT16 const *const p16BPPPalette = hSrcVObject->CurrentShade();
+
+#if 1  // XXX TODO
+  UINT32 PxCount;
+
+  while (TopSkip > 0) {
+    for (;;) {
+      PxCount = *SrcPtr++;
+      if (PxCount & 0x80) continue;
+      if (PxCount == 0) break;
+      SrcPtr += PxCount;
+    }
+    TopSkip--;
+  }
+
+  do {
+    for (LSCount = LeftSkip; LSCount > 0; LSCount -= PxCount) {
+      PxCount = *SrcPtr++;
+      if (PxCount & 0x80) {
+        PxCount &= 0x7F;
+        if (PxCount > LSCount) {
+          PxCount -= LSCount;
+          LSCount = BlitLength;
+          goto BlitTransparent;
+        }
+      } else {
+        if (PxCount > LSCount) {
+          SrcPtr += LSCount;
+          PxCount -= LSCount;
+          LSCount = BlitLength;
+          goto BlitNonTransLoop;
+        }
+        SrcPtr += PxCount;
+      }
+    }
+
+    LSCount = BlitLength;
+    while (LSCount > 0) {
+      PxCount = *SrcPtr++;
+      if (PxCount & 0x80) {
+      BlitTransparent:  // skip transparent pixels
+        PxCount &= 0x7F;
+        if (PxCount > LSCount) PxCount = LSCount;
+        LSCount -= PxCount;
+        DestPtr += 2 * PxCount;
+      } else {
+      BlitNonTransLoop:  // blit non-transparent pixels
+        if (PxCount > LSCount) {
+          Unblitted = PxCount - LSCount;
+          PxCount = LSCount;
+        } else {
+          Unblitted = 0;
+        }
+        LSCount -= PxCount;
+
+        do {
+          UINT32 src = *SrcPtr++;
+
+          if (src != 254) {
+            *(UINT16 *)DestPtr = p16BPPPalette[src];
+          } else if (s16BPPColor != SGP_TRANSPARENT) {
+            *(UINT16 *)DestPtr = s16BPPColor;
+          }
+          DestPtr += 2;
+        } while (--PxCount > 0);
+        SrcPtr += Unblitted;
+      }
+    }
+
+    while (*SrcPtr++ != 0) {
+    }  // skip along until we hit and end-of-line marker
+    DestPtr += LineSkip;
+  } while (--BlitHeight > 0);
+#else
+  __asm {
+
+		mov		esi, SrcPtr
+		mov		edi, DestPtr
+		mov		edx, p16BPPPalette
+		xor		eax, eax
+		xor		ecx, ecx
+
+		cmp		TopSkip, 0  // check for nothing clipped on top
+		je		LeftSkipSetup
+
+TopSkipLoop:  // Skips the number of lines clipped at the top
+
+		mov		cl, [esi]
+		inc		esi
+		or		cl, cl
+		js		TopSkipLoop
+		jz		TSEndLine
+
+		add		esi, ecx
+		jmp		TopSkipLoop
+
+TSEndLine:
+		dec		TopSkip
+		jnz		TopSkipLoop
+
+LeftSkipSetup:
+
+		mov		Unblitted, 0
+		mov		eax, LeftSkip
+		mov		LSCount, eax
+		or		eax, eax
+		jz		BlitLineSetup
+
+LeftSkipLoop:
+
+		mov		cl, [esi]
+		inc		esi
+
+		or		cl, cl
+		js		LSTrans
+
+		cmp		ecx, LSCount
+		je		LSSkip2  // if equal, skip whole, and start blit with new run
+		jb		LSSkip1  // if less, skip whole thing
+
+		add		esi, LSCount  // skip partial run, jump into normal loop for rest
+		sub		ecx, LSCount
+		mov		eax, BlitLength
+		mov		LSCount, eax
+		mov		Unblitted, 0
+		jmp		BlitNonTransLoop
+
+LSSkip2:
+		add		esi, ecx  // skip whole run, and start blit with new run
+		jmp		BlitLineSetup
+
+
+LSSkip1:
+		add		esi, ecx  // skip whole run, continue skipping
+		sub		LSCount, ecx
+		jmp		LeftSkipLoop
+
+
+LSTrans:
+		and		ecx, 07fH
+		cmp		ecx, LSCount
+		je		BlitLineSetup  // if equal, skip whole, and start blit with new run
+		jb		LSTrans1  // if less, skip whole thing
+
+		sub		ecx, LSCount  // skip partial run, jump into normal loop for rest
+		mov		eax, BlitLength
+		mov		LSCount, eax
+		mov		Unblitted, 0
+		jmp		BlitTransparent
+
+
+LSTrans1:
+		sub		LSCount, ecx  // skip whole run, continue skipping
+		jmp		LeftSkipLoop
+
+
+BlitLineSetup:  // Does any actual blitting (trans/non) for the line
+		mov		eax, BlitLength
+		mov		LSCount, eax
+		mov		Unblitted, 0
+
+BlitDispatch:
+
+		cmp		LSCount, 0  // Check to see if we're done blitting
+		je		RightSkipLoop
+
+		mov		cl, [esi]
+		inc		esi
+		or		cl, cl
+		js		BlitTransparent
+
+BlitNonTransLoop:  // blit non-transparent pixels
+
+		cmp		ecx, LSCount
+		jbe		BNTrans1
+
+		sub		ecx, LSCount
+		mov		Unblitted, ecx
+		mov		ecx, LSCount
+
+BNTrans1:
+		sub		LSCount, ecx
+
+BlitNTL1:
+		xor		eax, eax
+
+		mov		al, [esi]
+		cmp		al, 254
+		jne		BlitNTL3
+
+        //		DO OUTLINE
+        //		ONLY IF WE WANT IT!
+		mov		al, fDoOutline;
+		cmp		al,	1
+		jne		BlitNTL2
+
+		mov		ax, s16BPPColor
+		mov		[edi], ax
+		jmp		BlitNTL2
+
+BlitNTL3:
+		mov		ax, [edx+eax*2]
+		mov		[edi], ax
+
+BlitNTL2:
+		inc		esi
+		add		edi, 2
+		dec		cl
+		jnz		BlitNTL1
+
+        // BlitLineEnd:
+		add		esi, Unblitted
+		jmp		BlitDispatch
+
+BlitTransparent:  // skip transparent pixels
+
+		and		ecx, 07fH
+		cmp		ecx, LSCount
+		jbe		BTrans1
+
+		mov		ecx, LSCount
+
+BTrans1:
+
+		sub		LSCount, ecx
+        //		shl		ecx, 1
+		add   ecx, ecx
+		add		edi, ecx
+		jmp		BlitDispatch
+
+
+RightSkipLoop:    // skip along until we hit and end-of-line marker
+
+
+RSLoop1:
+		mov		al, [esi]
+		inc		esi
+		or		al, al
+		jnz		RSLoop1
+
+		dec		BlitHeight
+		jz		BlitDone
+		add		edi, LineSkip
+
+		jmp		LeftSkipSetup
+
+
+BlitDone:
+  }
+#endif
+}
+
 // void Blt8BPPDataTo16BPPBufferOutlineZClip(UINT16 *const pBuffer, const UINT32 uiDestPitchBYTES,
 //                                           UINT16 *const pZBuffer, const UINT16 usZValue,
 //                                           const HVOBJECT hSrcVObject, const INT32 iX,

@@ -31,9 +31,9 @@ class SGPVSurface {
  public:
   virtual ~SGPVSurface();
 
-//   UINT16 Width() const { return surface_->w; }
-//   UINT16 Height() const { return surface_->h; }
-//   UINT8 BPP() const { return surface_->format->BitsPerPixel; }
+  UINT16 Width() const { return surface_->w; }
+  UINT16 Height() const { return surface_->h; }
+  UINT8 BPP() const { return surface_->format->BitsPerPixel; }
 //
 //   // Set palette, also sets 16BPP palette
 //   void SetPalette(const SGPPaletteEntry *src_pal);
@@ -42,10 +42,10 @@ class SGPVSurface {
 //   SGPPaletteEntry const *GetPalette() const { return palette_; }
 //
 //   void SetTransparency(COLORVAL);
-//
-//   /* Fill an entire surface with a colour */
-//   void Fill(UINT16 colour);
-//
+
+  /* Fill an entire surface with a colour */
+  void Fill(UINT16 colour);
+
 //   void ShadowRect(INT32 x1, INT32 y1, INT32 x2, INT32 y2);
 //   void ShadowRectUsingLowPercentTable(INT32 x1, INT32 y1, INT32 x2, INT32 y2);
 //
@@ -56,12 +56,12 @@ class SGPVSurface {
 //   // Blits a video Surface to another video Surface
 //   friend void BltVideoSurface(SGPVSurface *dst, SGPVSurface *src, INT32 iDestX, INT32 iDestY,
 //                               SGPBox const *src_rect);
-//
-//   /* This function will stretch the source image to the size of the dest rect.
-//    * If the 2 images are not 16 Bpp, it returns false. */
-//   friend void BltStretchVideoSurface(SGPVSurface *dst, SGPVSurface const *src,
-//                                      SGPBox const *src_rect, SGPBox const *dst_rect);
-//
+
+  /* This function will stretch the source image to the size of the dest rect.
+   * If the 2 images are not 16 Bpp, it returns false. */
+  friend void BltStretchVideoSurface(SGPVSurface *dst, SGPVSurface const *src,
+                                     SGPBox const *src_rect, SGPBox const *dst_rect);
+
  protected:
   SDL_Surface *surface_;
   SGP::Buffer<SGPPaletteEntry> palette_;
@@ -70,44 +70,44 @@ class SGPVSurface {
   UINT16 *p16BPPPalette;  // A 16BPP palette used for 8->16 blits
   SGPVSurface *next_;
 
-//  private:
-//   class LockBase {
-//    public:
-//     explicit LockBase(SDL_Surface *const s) : surface_(s) {}
-//
-//     template <typename T>
-//     T *Buffer() {
-//       return static_cast<T *>(surface_->pixels);
-//     }
-//
-//     UINT32 Pitch() { return surface_->pitch; }
-//
-//    protected:
-//     SDL_Surface *surface_;
-//   };
-//
-//  public:
-//   class Lock : public LockBase {
-//    public:
-//     explicit Lock(SGPVSurface *const vs) : LockBase(vs->surface_) { SDL_LockSurface(surface_); }
-//
-//     ~Lock() { SDL_UnlockSurface(surface_); }
-//   };
-//
-//   class Lockable : public LockBase {
-//    public:
-//     explicit Lockable() : LockBase(0) {}
-//
-//     ~Lockable() {
-//       if (surface_) SDL_UnlockSurface(surface_);
-//     }
-//
-//     void Lock(SGPVSurface *const vs) {
-//       if (surface_) SDL_UnlockSurface(surface_);
-//       surface_ = vs->surface_;
-//       if (surface_) SDL_LockSurface(surface_);
-//     }
-//   };
+ private:
+  class LockBase {
+   public:
+    explicit LockBase(SDL_Surface *const s) : surface_(s) {}
+
+    template <typename T>
+    T *Buffer() {
+      return static_cast<T *>(surface_->pixels);
+    }
+
+    UINT32 Pitch() { return surface_->pitch; }
+
+   protected:
+    SDL_Surface *surface_;
+  };
+
+ public:
+  class Lock : public LockBase {
+   public:
+    explicit Lock(SGPVSurface *const vs) : LockBase(vs->surface_) { SDL_LockSurface(surface_); }
+
+    ~Lock() { SDL_UnlockSurface(surface_); }
+  };
+
+  class Lockable : public LockBase {
+   public:
+    explicit Lockable() : LockBase(0) {}
+
+    ~Lockable() {
+      if (surface_) SDL_UnlockSurface(surface_);
+    }
+
+    void Lock(SGPVSurface *const vs) {
+      if (surface_) SDL_UnlockSurface(surface_);
+      surface_ = vs->surface_;
+      if (surface_) SDL_LockSurface(surface_);
+    }
+  };
 };
 
 /**

@@ -5,9 +5,9 @@
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-//
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+
 // // ******************************************************************************
 // //
 // // Video Object SGP Module
@@ -93,56 +93,56 @@ ETRLEObject const &SGPVObject::SubregionProperties(size_t const idx) const {
   return etrle_object_[idx];
 }
 
-// UINT8 const *SGPVObject::PixData(ETRLEObject const &e) const { return &pix_data_[e.uiDataOffset]; }
-//
-// #define COMPRESS_TRANSPARENT 0x80
-// #define COMPRESS_RUN_MASK 0x7F
-//
-// UINT8 SGPVObject::GetETRLEPixelValue(UINT16 const usETRLEIndex, UINT16 const usX,
-//                                      UINT16 const usY) const {
-//   ETRLEObject const &pETRLEObject = SubregionProperties(usETRLEIndex);
-//
-//   if (usX >= pETRLEObject.usWidth || usY >= pETRLEObject.usHeight) {
-//     throw std::logic_error("Tried to get pixel from invalid coordinate");
-//   }
-//
-//   // Assuming everything's okay, go ahead and look...
-//   UINT8 const *pCurrent = PixData(pETRLEObject);
-//
-//   // Skip past all uninteresting scanlines
-//   for (UINT16 usLoopY = 0; usLoopY < usY; usLoopY++) {
-//     while (*pCurrent != 0) {
-//       if (*pCurrent & COMPRESS_TRANSPARENT) {
-//         pCurrent++;
-//       } else {
-//         pCurrent += *pCurrent & COMPRESS_RUN_MASK;
-//       }
-//     }
-//   }
-//
-//   // Now look in this scanline for the appropriate byte
-//   UINT16 usLoopX = 0;
-//   do {
-//     UINT16 ubRunLength = *pCurrent & COMPRESS_RUN_MASK;
-//
-//     if (*pCurrent & COMPRESS_TRANSPARENT) {
-//       if (usLoopX + ubRunLength >= usX) return 0;
-//       pCurrent++;
-//     } else {
-//       if (usLoopX + ubRunLength >= usX) {
-//         // skip to the correct byte; skip at least 1 to get past the byte
-//         // defining the run
-//         pCurrent += (usX - usLoopX) + 1;
-//         return *pCurrent;
-//       } else {
-//         pCurrent += ubRunLength + 1;
-//       }
-//     }
-//     usLoopX += ubRunLength;
-//   } while (usLoopX < usX);
-//
-//   throw std::logic_error("Inconsistent video object data");
-// }
+UINT8 const *SGPVObject::PixData(ETRLEObject const &e) const { return &pix_data_[e.uiDataOffset]; }
+
+#define COMPRESS_TRANSPARENT 0x80
+#define COMPRESS_RUN_MASK 0x7F
+
+UINT8 SGPVObject::GetETRLEPixelValue(UINT16 const usETRLEIndex, UINT16 const usX,
+                                     UINT16 const usY) const {
+  ETRLEObject const &pETRLEObject = SubregionProperties(usETRLEIndex);
+
+  if (usX >= pETRLEObject.usWidth || usY >= pETRLEObject.usHeight) {
+    throw std::logic_error("Tried to get pixel from invalid coordinate");
+  }
+
+  // Assuming everything's okay, go ahead and look...
+  UINT8 const *pCurrent = PixData(pETRLEObject);
+
+  // Skip past all uninteresting scanlines
+  for (UINT16 usLoopY = 0; usLoopY < usY; usLoopY++) {
+    while (*pCurrent != 0) {
+      if (*pCurrent & COMPRESS_TRANSPARENT) {
+        pCurrent++;
+      } else {
+        pCurrent += *pCurrent & COMPRESS_RUN_MASK;
+      }
+    }
+  }
+
+  // Now look in this scanline for the appropriate byte
+  UINT16 usLoopX = 0;
+  do {
+    UINT16 ubRunLength = *pCurrent & COMPRESS_RUN_MASK;
+
+    if (*pCurrent & COMPRESS_TRANSPARENT) {
+      if (usLoopX + ubRunLength >= usX) return 0;
+      pCurrent++;
+    } else {
+      if (usLoopX + ubRunLength >= usX) {
+        // skip to the correct byte; skip at least 1 to get past the byte
+        // defining the run
+        pCurrent += (usX - usLoopX) + 1;
+        return *pCurrent;
+      } else {
+        pCurrent += ubRunLength + 1;
+      }
+    }
+    usLoopX += ubRunLength;
+  } while (usLoopX < usX);
+
+  throw std::logic_error("Inconsistent video object data");
+}
 
 /* Destroys the palette tables of a video object. All memory is deallocated, and
  * the pointers set to NULL. Be careful not to try and blit this object until
@@ -192,39 +192,39 @@ SGPVObject *AddStandardVideoObjectFromFile(const char *const ImageFile) {
   return AddStandardVideoObjectFromHImage(hImage);
 }
 
-// void BltVideoObject(SGPVSurface *const dst, SGPVObject const *const src, UINT16 const usRegionIndex,
-//                     INT32 const iDestX, INT32 const iDestY) {
-//   Assert(src->BPP() == 8);
-//   Assert(dst->BPP() == 16);
-//
-//   SGPVSurface::Lock l(dst);
-//   UINT16 *const pBuffer = l.Buffer<UINT16>();
-//   UINT32 const uiPitch = l.Pitch();
-//
-//   if (BltIsClipped(src, iDestX, iDestY, usRegionIndex, &ClippingRect)) {
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer, uiPitch, src, iDestX, iDestY, usRegionIndex,
-//                                             &ClippingRect);
-//   } else {
-//     Blt8BPPDataTo16BPPBufferTransparent(pBuffer, uiPitch, src, iDestX, iDestY, usRegionIndex);
-//   }
-// }
-//
-// void BltVideoObjectOutline(SGPVSurface *const dst, SGPVObject const *const hSrcVObject,
-//                            UINT16 const usIndex, INT32 const iDestX, INT32 const iDestY,
-//                            INT16 const s16BPPColor) {
-//   SGPVSurface::Lock l(dst);
-//   UINT16 *const pBuffer = l.Buffer<UINT16>();
-//   UINT32 const uiPitch = l.Pitch();
-//
-//   if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
-//     Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex,
-//                                         s16BPPColor, &ClippingRect);
-//   } else {
-//     Blt8BPPDataTo16BPPBufferOutline(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex,
-//                                     s16BPPColor);
-//   }
-// }
-//
+void BltVideoObject(SGPVSurface *const dst, SGPVObject const *const src, UINT16 const usRegionIndex,
+                    INT32 const iDestX, INT32 const iDestY) {
+  Assert(src->BPP() == 8);
+  Assert(dst->BPP() == 16);
+
+  SGPVSurface::Lock l(dst);
+  UINT16 *const pBuffer = l.Buffer<UINT16>();
+  UINT32 const uiPitch = l.Pitch();
+
+  if (BltIsClipped(src, iDestX, iDestY, usRegionIndex, &ClippingRect)) {
+    Blt8BPPDataTo16BPPBufferTransparentClip(pBuffer, uiPitch, src, iDestX, iDestY, usRegionIndex,
+                                            &ClippingRect);
+  } else {
+    Blt8BPPDataTo16BPPBufferTransparent(pBuffer, uiPitch, src, iDestX, iDestY, usRegionIndex);
+  }
+}
+
+void BltVideoObjectOutline(SGPVSurface *const dst, SGPVObject const *const hSrcVObject,
+                           UINT16 const usIndex, INT32 const iDestX, INT32 const iDestY,
+                           INT16 const s16BPPColor) {
+  SGPVSurface::Lock l(dst);
+  UINT16 *const pBuffer = l.Buffer<UINT16>();
+  UINT32 const uiPitch = l.Pitch();
+
+  if (BltIsClipped(hSrcVObject, iDestX, iDestY, usIndex, &ClippingRect)) {
+    Blt8BPPDataTo16BPPBufferOutlineClip(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex,
+                                        s16BPPColor, &ClippingRect);
+  } else {
+    Blt8BPPDataTo16BPPBufferOutline(pBuffer, uiPitch, hSrcVObject, iDestX, iDestY, usIndex,
+                                    s16BPPColor);
+  }
+}
+
 // void BltVideoObjectOutlineShadow(SGPVSurface *const dst, const SGPVObject *const src,
 //                                  const UINT16 usIndex, const INT32 iDestX, const INT32 iDestY) {
 //   SGPVSurface::Lock l(dst);
