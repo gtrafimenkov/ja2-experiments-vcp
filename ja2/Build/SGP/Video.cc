@@ -51,13 +51,13 @@
 // static UINT32 guiLastFrame;
 // static UINT16 *gpFrameData[MAX_NUM_FRAMES];
 // static INT32 giNumFrames = 0;
-//
-// // Globals for mouse cursor
-// static UINT16 gusMouseCursorWidth;
-// static UINT16 gusMouseCursorHeight;
-// static INT16 gsMouseCursorXOffset;
-// static INT16 gsMouseCursorYOffset;
-//
+
+// Globals for mouse cursor
+static UINT16 gusMouseCursorWidth;
+static UINT16 gusMouseCursorHeight;
+static INT16 gsMouseCursorXOffset;
+static INT16 gsMouseCursorYOffset;
+
 // static SDL_Rect MouseBackground = {0, 0, 0, 0};
 //
 // // Refresh thread based variables
@@ -70,8 +70,8 @@ static UINT32 guiDirtyRegionCount;
 static BOOLEAN gfForceFullScreenRefresh;
 
 // static SDL_Rect DirtyRegionsEx[MAX_DIRTY_REGIONS];
-// static UINT32 guiDirtyRegionExCount;
-//
+static UINT32 guiDirtyRegionExCount;
+
 // // Screen output stuff
 // static BOOLEAN gfPrintFrameBuffer;
 // static UINT32 guiPrintFrameBufferIndex;
@@ -621,15 +621,15 @@ void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
 //   *GreenBitMask = gusGreenMask;
 //   *BlueBitMask = gusBlueMask;
 // }
-//
-// void SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursorHeight,
-//                               UINT16 usCursorWidth) {
-//   gsMouseCursorXOffset = sOffsetX;
-//   gsMouseCursorYOffset = sOffsetY;
-//   gusMouseCursorWidth = usCursorWidth;
-//   gusMouseCursorHeight = usCursorHeight;
-// }
-//
+
+void SetMouseCursorProperties(INT16 sOffsetX, INT16 sOffsetY, UINT16 usCursorHeight,
+                              UINT16 usCursorWidth) {
+  gsMouseCursorXOffset = sOffsetX;
+  gsMouseCursorYOffset = sOffsetY;
+  gusMouseCursorWidth = usCursorWidth;
+  gusMouseCursorHeight = usCursorHeight;
+}
+
 // void EndFrameBufferRender(void) { guiFrameBufferState = BUFFER_DIRTY; }
 //
 // void PrintScreen(void) { gfPrintFrameBuffer = TRUE; }

@@ -5,7 +5,7 @@
 
 // #include "SGP/AutoObj.h"
 // #include "SGP/AutoPtr.h"
-// #include "SGP/Buffer.h"
+#include "SGP/Buffer.h"
 // #include "SGP/Types.h"
 
 #define BACKBUFFER g_back_buffer
@@ -20,17 +20,17 @@ extern SGPVSurface *g_back_buffer;
 extern SGPVSurfaceAuto *g_frame_buffer;
 extern SGPVSurfaceAuto *g_mouse_buffer;
 
-// /** Utility wrapper around SDL_Surface. */
-// class SGPVSurface {
-//  public:
-//   SGPVSurface(SDL_Surface *);
-//
-//  protected:
-//   SGPVSurface(UINT16 w, UINT16 h, UINT8 bpp);
-//
-//  public:
-//   virtual ~SGPVSurface();
-//
+/** Utility wrapper around SDL_Surface. */
+class SGPVSurface {
+ public:
+  SGPVSurface(SDL_Surface *);
+
+ protected:
+  SGPVSurface(UINT16 w, UINT16 h, UINT8 bpp);
+
+ public:
+  virtual ~SGPVSurface();
+
 //   UINT16 Width() const { return surface_->w; }
 //   UINT16 Height() const { return surface_->h; }
 //   UINT8 BPP() const { return surface_->format->BitsPerPixel; }
@@ -62,14 +62,14 @@ extern SGPVSurfaceAuto *g_mouse_buffer;
 //   friend void BltStretchVideoSurface(SGPVSurface *dst, SGPVSurface const *src,
 //                                      SGPBox const *src_rect, SGPBox const *dst_rect);
 //
-//  protected:
-//   SDL_Surface *surface_;
-//   SGP::Buffer<SGPPaletteEntry> palette_;
-//
-//  public:
-//   UINT16 *p16BPPPalette;  // A 16BPP palette used for 8->16 blits
-//   SGPVSurface *next_;
-//
+ protected:
+  SDL_Surface *surface_;
+  SGP::Buffer<SGPPaletteEntry> palette_;
+
+ public:
+  UINT16 *p16BPPPalette;  // A 16BPP palette used for 8->16 blits
+  SGPVSurface *next_;
+
 //  private:
 //   class LockBase {
 //    public:
@@ -108,19 +108,19 @@ extern SGPVSurfaceAuto *g_mouse_buffer;
 //       if (surface_) SDL_LockSurface(surface_);
 //     }
 //   };
-// };
-//
-// /**
-//  * Utility wrapper around SDL_Surface which automatically
-//  * frees SDL_Surface when the object is destroyed. */
-// class SGPVSurfaceAuto : public SGPVSurface {
-//  public:
-//   SGPVSurfaceAuto(UINT16 w, UINT16 h, UINT8 bpp);
-//   SGPVSurfaceAuto(SDL_Surface *);
-//
-//   virtual ~SGPVSurfaceAuto();
-// };
-//
+};
+
+/**
+ * Utility wrapper around SDL_Surface which automatically
+ * frees SDL_Surface when the object is destroyed. */
+class SGPVSurfaceAuto : public SGPVSurface {
+ public:
+  SGPVSurfaceAuto(UINT16 w, UINT16 h, UINT8 bpp);
+  SGPVSurfaceAuto(SDL_Surface *);
+
+  virtual ~SGPVSurfaceAuto();
+};
+
 // SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth);
 // SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *Filename);
 //

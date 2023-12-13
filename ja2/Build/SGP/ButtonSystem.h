@@ -3,7 +3,7 @@
 #ifndef BUTTON_SYSTEM_H
 #define BUTTON_SYSTEM_H
 
-// #include "SGP/MouseSystem.h"
+#include "SGP/MouseSystem.h"
 
 #define MAX_BUTTONS 400
 #define MAX_BUTTON_PICS 256
@@ -116,7 +116,7 @@ struct GUI_BUTTON {
 //
 //   INT32 IDNum;                 // ID Number, contains it's own button number
 //   BUTTON_PICS *image;          // Image to use (see DOCs for details)
-//   MouseRegion Area;            // Mouse System's mouse region to use for this button
+  MouseRegion Area;            // Mouse System's mouse region to use for this button
 //   GUI_CALLBACK ClickCallback;  // Button Callback when button is clicked
 //   GUI_CALLBACK MoveCallback;   // Button Callback when mouse moved on this region
   UINT32 uiFlags;              // Button state flags etc.( 32-bit )

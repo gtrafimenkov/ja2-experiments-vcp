@@ -74,7 +74,7 @@
  * release it.  This follows the Windows 95 convention.
  */
 static GUI_BUTTON *gpAnchoredButton;
-// static GUI_BUTTON *gpPrevAnchoredButton;
+static GUI_BUTTON *gpPrevAnchoredButton;
 static BOOLEAN gfAnchoredState;
 
 // static INT8 gbDisabledButtonStyle;

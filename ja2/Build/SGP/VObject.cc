@@ -1,8 +1,8 @@
 #include "SGP/VObject.h"
 
-// #include <stdexcept>
-//
-// #include "SGP/Debug.h"
+#include <stdexcept>
+
+#include "SGP/Debug.h"
 #include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/VObjectBlitters.h"
@@ -21,78 +21,78 @@
 // // Second Revision: Dec 10, 1996, Andrew Emmons
 // //
 // // *******************************************************************************
-//
-// static SGPVObject *gpVObjectHead = 0;
-//
-// SGPVObject::SGPVObject(SGPImage const *const img)
-//     : flags_(), palette16_(), current_shade_(), ppZStripInfo(), next_(gpVObjectHead) {
-//   memset(&pShades[0], 0, sizeof(pShades));
-//
-//   if (!(img->fFlags & IMAGE_TRLECOMPRESSED)) {
-//     throw std::runtime_error("Image for video object creation must be TRLE compressed");
-//   }
-//
-//   ETRLEData TempETRLEData;
-//   GetETRLEImageData(img, &TempETRLEData);
-//
-//   subregion_count_ = TempETRLEData.usNumberOfObjects;
-//   etrle_object_ = TempETRLEData.pETRLEObject;
-//   pix_data_ = static_cast<UINT8 *>(TempETRLEData.pPixData);
-//   pix_data_size_ = TempETRLEData.uiSizePixData;
-//   bit_depth_ = img->ubBitDepth;
-//
-//   if (img->ubBitDepth == 8) {
-//     // create palette
-//     const SGPPaletteEntry *const src_pal = img->pPalette;
-//     Assert(src_pal != NULL);
-//
-//     SGPPaletteEntry *const pal = palette_.Allocate(256);
-//     memcpy(pal, src_pal, sizeof(*pal) * 256);
-//
-//     palette16_ = Create16BPPPalette(pal);
-//     current_shade_ = palette16_;
-//   }
-//
-//   gpVObjectHead = this;
-// }
-//
-// SGPVObject::~SGPVObject() {
-//   for (SGPVObject **anchor = &gpVObjectHead;; anchor = &(*anchor)->next_) {
-//     if (*anchor != this) continue;
-//     *anchor = next_;
-//     break;
-//   }
-//
-//   DestroyPalettes();
-//
-//   if (pix_data_) MemFree(pix_data_);
-//   if (etrle_object_) MemFree(etrle_object_);
-//
-//   if (ppZStripInfo != NULL) {
-//     for (UINT32 usLoop = 0; usLoop < SubregionCount(); usLoop++) {
-//       if (ppZStripInfo[usLoop] != NULL) {
-//         MemFree(ppZStripInfo[usLoop]->pbZChange);
-//         MemFree(ppZStripInfo[usLoop]);
-//       }
-//     }
-//     MemFree(ppZStripInfo);
-//   }
-// }
-//
+
+static SGPVObject *gpVObjectHead = 0;
+
+SGPVObject::SGPVObject(SGPImage const *const img)
+    : flags_(), palette16_(), current_shade_(), ppZStripInfo(), next_(gpVObjectHead) {
+  memset(&pShades[0], 0, sizeof(pShades));
+
+  if (!(img->fFlags & IMAGE_TRLECOMPRESSED)) {
+    throw std::runtime_error("Image for video object creation must be TRLE compressed");
+  }
+
+  ETRLEData TempETRLEData;
+  GetETRLEImageData(img, &TempETRLEData);
+
+  subregion_count_ = TempETRLEData.usNumberOfObjects;
+  etrle_object_ = TempETRLEData.pETRLEObject;
+  pix_data_ = static_cast<UINT8 *>(TempETRLEData.pPixData);
+  pix_data_size_ = TempETRLEData.uiSizePixData;
+  bit_depth_ = img->ubBitDepth;
+
+  if (img->ubBitDepth == 8) {
+    // create palette
+    const SGPPaletteEntry *const src_pal = img->pPalette;
+    Assert(src_pal != NULL);
+
+    SGPPaletteEntry *const pal = palette_.Allocate(256);
+    memcpy(pal, src_pal, sizeof(*pal) * 256);
+
+    palette16_ = Create16BPPPalette(pal);
+    current_shade_ = palette16_;
+  }
+
+  gpVObjectHead = this;
+}
+
+SGPVObject::~SGPVObject() {
+  for (SGPVObject **anchor = &gpVObjectHead;; anchor = &(*anchor)->next_) {
+    if (*anchor != this) continue;
+    *anchor = next_;
+    break;
+  }
+
+  DestroyPalettes();
+
+  if (pix_data_) MemFree(pix_data_);
+  if (etrle_object_) MemFree(etrle_object_);
+
+  if (ppZStripInfo != NULL) {
+    for (UINT32 usLoop = 0; usLoop < SubregionCount(); usLoop++) {
+      if (ppZStripInfo[usLoop] != NULL) {
+        MemFree(ppZStripInfo[usLoop]->pbZChange);
+        MemFree(ppZStripInfo[usLoop]);
+      }
+    }
+    MemFree(ppZStripInfo);
+  }
+}
+
 // void SGPVObject::CurrentShade(size_t const idx) {
 //   if (idx >= lengthof(pShades) || !pShades[idx]) {
 //     throw std::logic_error("Tried to set invalid video object shade");
 //   }
 //   current_shade_ = pShades[idx];
 // }
-//
-// ETRLEObject const &SGPVObject::SubregionProperties(size_t const idx) const {
-//   if (idx >= SubregionCount()) {
-//     throw std::logic_error("Tried to access invalid subregion in video object");
-//   }
-//   return etrle_object_[idx];
-// }
-//
+
+ETRLEObject const &SGPVObject::SubregionProperties(size_t const idx) const {
+  if (idx >= SubregionCount()) {
+    throw std::logic_error("Tried to access invalid subregion in video object");
+  }
+  return etrle_object_[idx];
+}
+
 // UINT8 const *SGPVObject::PixData(ETRLEObject const &e) const { return &pix_data_[e.uiDataOffset]; }
 //
 // #define COMPRESS_TRANSPARENT 0x80
@@ -143,28 +143,28 @@
 //
 //   throw std::logic_error("Inconsistent video object data");
 // }
-//
-// /* Destroys the palette tables of a video object. All memory is deallocated, and
-//  * the pointers set to NULL. Be careful not to try and blit this object until
-//  * new tables are calculated, or things WILL go boom. */
-// void SGPVObject::DestroyPalettes() {
-//   FOR_EACH(UINT16 *, i, pShades) {
-//     if (flags_ & SHADETABLE_SHARED) continue;
-//     UINT16 *const p = *i;
-//     if (!p) continue;
-//     if (palette16_ == p) palette16_ = 0;
-//     *i = 0;
-//     MemFree(p);
-//   }
-//
-//   if (UINT16 *const p = palette16_) {
-//     palette16_ = 0;
-//     MemFree(p);
-//   }
-//
-//   current_shade_ = 0;
-// }
-//
+
+/* Destroys the palette tables of a video object. All memory is deallocated, and
+ * the pointers set to NULL. Be careful not to try and blit this object until
+ * new tables are calculated, or things WILL go boom. */
+void SGPVObject::DestroyPalettes() {
+  FOR_EACH(UINT16 *, i, pShades) {
+    if (flags_ & SHADETABLE_SHARED) continue;
+    UINT16 *const p = *i;
+    if (!p) continue;
+    if (palette16_ == p) palette16_ = 0;
+    *i = 0;
+    MemFree(p);
+  }
+
+  if (UINT16 *const p = palette16_) {
+    palette16_ = 0;
+    MemFree(p);
+  }
+
+  current_shade_ = 0;
+}
+
 // void SGPVObject::ShareShadetables(SGPVObject *const other) {
 //   flags_ |= SHADETABLE_SHARED;
 //   for (size_t i = 0; i < lengthof(pShades); ++i) {

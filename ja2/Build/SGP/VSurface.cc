@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-// #include "SGP/Debug.h"
+#include "SGP/Debug.h"
 // #include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/SGP.h"
@@ -10,48 +10,48 @@
 // #include "SGP/VObjectBlitters.h"
 #include "SGP/Video.h"
 
-// extern SGPVSurface *gpVSurfaceHead;
-//
-// SGPVSurface::SGPVSurface(UINT16 const w, UINT16 const h, UINT8 const bpp)
-//     : p16BPPPalette(), next_(gpVSurfaceHead) {
-//   Assert(w > 0);
-//   Assert(h > 0);
-//
-//   SDL_Surface *s;
-//   switch (bpp) {
-//     case 8:
-//       s = SDL_CreateRGBSurface(0, w, h, bpp, 0, 0, 0, 0);
-//       break;
-//
-//     case 16: {
-//       SDL_PixelFormat const *f = SDL_AllocFormat(SDL_PIXELFORMAT_RGB565);
-//       s = SDL_CreateRGBSurface(0, w, h, bpp, f->Rmask, f->Gmask, f->Bmask, f->Amask);
-//       break;
-//     }
-//
-//     default:
-//       throw std::logic_error("Tried to create video surface with invalid bpp, must be 8 or 16.");
-//   }
-//   if (!s) throw std::runtime_error("Failed to create SDL surface");
-//   surface_ = s;
-//   gpVSurfaceHead = this;
-// }
-//
-// SGPVSurface::SGPVSurface(SDL_Surface *const s)
-//     : surface_(s), p16BPPPalette(), next_(gpVSurfaceHead) {
-//   gpVSurfaceHead = this;
-// }
-//
-// SGPVSurface::~SGPVSurface() {
-//   for (SGPVSurface **anchor = &gpVSurfaceHead;; anchor = &(*anchor)->next_) {
-//     if (*anchor != this) continue;
-//     *anchor = next_;
-//     break;
-//   }
-//
-//   if (p16BPPPalette) MemFree(p16BPPPalette);
-// }
-//
+extern SGPVSurface *gpVSurfaceHead;
+
+SGPVSurface::SGPVSurface(UINT16 const w, UINT16 const h, UINT8 const bpp)
+    : p16BPPPalette(), next_(gpVSurfaceHead) {
+  Assert(w > 0);
+  Assert(h > 0);
+
+  SDL_Surface *s;
+  switch (bpp) {
+    case 8:
+      s = SDL_CreateRGBSurface(0, w, h, bpp, 0, 0, 0, 0);
+      break;
+
+    case 16: {
+      SDL_PixelFormat const *f = SDL_AllocFormat(SDL_PIXELFORMAT_RGB565);
+      s = SDL_CreateRGBSurface(0, w, h, bpp, f->Rmask, f->Gmask, f->Bmask, f->Amask);
+      break;
+    }
+
+    default:
+      throw std::logic_error("Tried to create video surface with invalid bpp, must be 8 or 16.");
+  }
+  if (!s) throw std::runtime_error("Failed to create SDL surface");
+  surface_ = s;
+  gpVSurfaceHead = this;
+}
+
+SGPVSurface::SGPVSurface(SDL_Surface *const s)
+    : surface_(s), p16BPPPalette(), next_(gpVSurfaceHead) {
+  gpVSurfaceHead = this;
+}
+
+SGPVSurface::~SGPVSurface() {
+  for (SGPVSurface **anchor = &gpVSurfaceHead;; anchor = &(*anchor)->next_) {
+    if (*anchor != this) continue;
+    *anchor = next_;
+    break;
+  }
+
+  if (p16BPPPalette) MemFree(p16BPPPalette);
+}
+
 // void SGPVSurface::SetPalette(const SGPPaletteEntry *const src_pal) {
 //   // Create palette object if not already done so
 //   if (!palette_) palette_.Allocate(256);
@@ -85,13 +85,13 @@
 // SGPVSurfaceAuto::SGPVSurfaceAuto(UINT16 w, UINT16 h, UINT8 bpp) : SGPVSurface(w, h, bpp) {}
 //
 // SGPVSurfaceAuto::SGPVSurfaceAuto(SDL_Surface *surface) : SGPVSurface(surface) {}
-//
-// SGPVSurfaceAuto::~SGPVSurfaceAuto() {
-//   if (surface_) {
-//     SDL_FreeSurface(surface_);
-//   }
-// }
-//
+
+SGPVSurfaceAuto::~SGPVSurfaceAuto() {
+  if (surface_) {
+    SDL_FreeSurface(surface_);
+  }
+}
+
 // static void InternalShadowVideoSurfaceRect(SGPVSurface *const dst, INT32 X1, INT32 Y1, INT32 X2,
 //                                            INT32 Y2, const UINT16 *const filter_table) {
 //   if (X1 < 0) X1 = 0;

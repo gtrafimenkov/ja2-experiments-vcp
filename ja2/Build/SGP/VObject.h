@@ -2,20 +2,20 @@
 #define __VOBJECT_H
 
 // #include "SGP/AutoPtr.h"
-// #include "SGP/Buffer.h"
+#include "SGP/Buffer.h"
 #include "SGP/Types.h"
 
-// // Defines for HVOBJECT limits
-// #define HVOBJECT_SHADE_TABLES 48
-//
-// // Z-buffer info structure for properly assigning Z values
-// struct ZStripInfo {
-//   INT8 bInitialZChange;      // difference in Z value between the leftmost and base
-//                              // strips
-//   UINT8 ubFirstZStripWidth;  // # of pixels in the leftmost strip
-//   UINT8 ubNumberOfZChanges;  // number of strips (after the first)
-//   INT8 *pbZChange;           // change to the Z value in each strip (after the first)
-// };
+// Defines for HVOBJECT limits
+#define HVOBJECT_SHADE_TABLES 48
+
+// Z-buffer info structure for properly assigning Z values
+struct ZStripInfo {
+  INT8 bInitialZChange;      // difference in Z value between the leftmost and base
+                             // strips
+  UINT8 ubFirstZStripWidth;  // # of pixels in the leftmost strip
+  UINT8 ubNumberOfZChanges;  // number of strips (after the first)
+  INT8 *pbZChange;           // change to the Z value in each strip (after the first)
+};
 
 // This definition mimics what is found in WINDOWS.H ( for Direct Draw
 // compatiblity ) From RGB to COLORVAL
@@ -36,15 +36,15 @@ class SGPVObject {
 
   UINT16 const *Palette16() const { return palette16_; }
 
-//   UINT16 const *CurrentShade() const { return current_shade_; }
-//
+  UINT16 const *CurrentShade() const { return current_shade_; }
+
 //   // Set the current object shade table
 //   void CurrentShade(size_t idx);
-//
-//   UINT16 SubregionCount() const { return subregion_count_; }
-//
-//   ETRLEObject const &SubregionProperties(size_t idx) const;
-//
+
+  UINT16 SubregionCount() const { return subregion_count_; }
+
+  ETRLEObject const &SubregionProperties(size_t idx) const;
+
 //   UINT8 const *PixData(ETRLEObject const &) const;
 
   /* Given a ETRLE image index, retrieves the value of the pixel located at
@@ -52,35 +52,35 @@ class SGPVObject {
    */
   UINT8 GetETRLEPixelValue(UINT16 usETLREIndex, UINT16 usX, UINT16 usY) const;
 
-//   // Deletes the 16-bit palette tables
-//   void DestroyPalettes();
-//
+  // Deletes the 16-bit palette tables
+  void DestroyPalettes();
+
 //   void ShareShadetables(SGPVObject *);
 
   enum Flags { NONE = 0, SHADETABLE_SHARED = 1U << 0 };
 
-//  private:
-//   Flags flags_;                           // Special flags
-//   UINT32 pix_data_size_;                  // ETRLE data size
-//   SGP::Buffer<SGPPaletteEntry> palette_;  // 8BPP Palette
+ private:
+  Flags flags_;                           // Special flags
+  UINT32 pix_data_size_;                  // ETRLE data size
+  SGP::Buffer<SGPPaletteEntry> palette_;  // 8BPP Palette
   UINT16 *palette16_;                     // A 16BPP palette used for 8->16 blits
 
-//   UINT8 *pix_data_;            // ETRLE pixel data
-//   ETRLEObject *etrle_object_;  // Object offset data etc
-//  public:
-//   UINT16 *pShades[HVOBJECT_SHADE_TABLES];  // Shading tables
-//  private:
-//   UINT16 const *current_shade_;
-//
-//  public:
-//   ZStripInfo **ppZStripInfo;  // Z-value strip info arrays
-//
-//  private:
-//   UINT16 subregion_count_;  // Total number of objects
-//   UINT8 bit_depth_;         // BPP
-//
-//  public:
-//   SGPVObject *next_;
+  UINT8 *pix_data_;            // ETRLE pixel data
+  ETRLEObject *etrle_object_;  // Object offset data etc
+ public:
+  UINT16 *pShades[HVOBJECT_SHADE_TABLES];  // Shading tables
+ private:
+  UINT16 const *current_shade_;
+
+ public:
+  ZStripInfo **ppZStripInfo;  // Z-value strip info arrays
+
+ private:
+  UINT16 subregion_count_;  // Total number of objects
+  UINT8 bit_depth_;         // BPP
+
+ public:
+  SGPVObject *next_;
 };
 ENUM_BITSET(SGPVObject::Flags)
 

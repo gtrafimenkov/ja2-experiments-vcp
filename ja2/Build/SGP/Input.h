@@ -17,9 +17,9 @@
 #define RIGHT_BUTTON_DOWN 0x0080
 #define RIGHT_BUTTON_UP 0x0100
 #define RIGHT_BUTTON_REPEAT 0x0200
-// #define MOUSE_POS 0x0400
-// #define MOUSE_WHEEL_UP 0x0800
-// #define MOUSE_WHEEL_DOWN 0x1000
+#define MOUSE_POS 0x0400
+#define MOUSE_WHEEL_UP 0x0800
+#define MOUSE_WHEEL_DOWN 0x1000
 // #define MOUSE_EVENTS 0x1FF8
 //
 // #define SHIFT_DOWN 0x01
@@ -68,12 +68,12 @@ extern void FreeMouseCursor(void);
 
 extern UINT16 gusMouseXPos;         // X position of the mouse on screen
 extern UINT16 gusMouseYPos;         // y position of the mouse on screen
-// extern BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
-// extern BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
-//
+extern BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
+extern BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
+
 // #define _KeyDown(a) gfKeyState[(a)]
-// #define _LeftButtonDown gfLeftButtonState
-// #define _RightButtonDown gfRightButtonState
+#define _LeftButtonDown gfLeftButtonState
+#define _RightButtonDown gfRightButtonState
 
 #endif
 

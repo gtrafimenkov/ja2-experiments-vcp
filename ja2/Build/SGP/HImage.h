@@ -20,9 +20,9 @@
 // // Defines for buffer bit depth
 // #define BUFFER_8BPP 0x1
 // #define BUFFER_16BPP 0x2
-//
-// // Defines for image charactoristics
-// #define IMAGE_TRLECOMPRESSED 0x0002
+
+// Defines for image charactoristics
+#define IMAGE_TRLECOMPRESSED 0x0002
 #define IMAGE_PALETTE 0x0004
 #define IMAGE_BITMAPDATA 0x0008
 // #define IMAGE_APPDATA 0x0010
@@ -62,12 +62,12 @@ struct ETRLEObject {
   UINT16 usWidth;
 };
 
-// struct ETRLEData {
-//   PTR pPixData;
-//   UINT32 uiSizePixData;
-//   ETRLEObject *pETRLEObject;
-//   UINT16 usNumberOfObjects;
-// };
+struct ETRLEData {
+  PTR pPixData;
+  UINT32 uiSizePixData;
+  ETRLEObject *pETRLEObject;
+  UINT16 usNumberOfObjects;
+};
 
 // Image header structure
 struct SGPImage {
@@ -104,10 +104,10 @@ SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
 // // SGPImage object
 // BOOLEAN CopyImageToBuffer(SGPImage const *, UINT32 fBufferType, BYTE *pDestBuf, UINT16 usDestWidth,
 //                           UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPBox const *src_rect);
-//
-// // This function will create a buffer in memory of ETRLE data, excluding palette
-// void GetETRLEImageData(SGPImage const *, ETRLEData *);
-//
+
+// This function will create a buffer in memory of ETRLE data, excluding palette
+void GetETRLEImageData(SGPImage const *, ETRLEData *);
+
 // // UTILITY FUNCTIONS
 //
 // // Used to create a 16BPP Palette from an 8 bit palette, found in himage.c

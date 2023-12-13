@@ -12,11 +12,11 @@
 // #include "SGP/Types.h"
 #include "SGP/VObject.h"
 // #include "SGP/WCheck.h"
-//
-// // This is the color substituted to keep a 24bpp -> 16bpp color
-// // from going transparent (0x0000) -- DB
-//
-// #define BLACK_SUBSTITUTE 0x0001
+
+// This is the color substituted to keep a 24bpp -> 16bpp color
+// from going transparent (0x0000) -- DB
+
+#define BLACK_SUBSTITUTE 0x0001
 
 UINT16 gusRedMask = 0;
 UINT16 gusGreenMask = 0;
@@ -262,23 +262,23 @@ UINT16 Get16BPPColor(UINT32 RGBValue) {
 //   UINT32 val = FROMRGB(r, g, b);
 //   return val;
 // }
-//
-// void GetETRLEImageData(SGPImage const *const img, ETRLEData *const buf) {
-//   Assert(img);
-//   Assert(buf);
-//
-//   SGP::Buffer<ETRLEObject> etrle_objs(img->usNumberOfObjects);
-//   memcpy(etrle_objs, img->pETRLEObject, sizeof(*etrle_objs) * img->usNumberOfObjects);
-//
-//   SGP::Buffer<UINT8> pix_data(img->uiSizePixData);
-//   memcpy(pix_data, img->pImageData, sizeof(*pix_data) * img->uiSizePixData);
-//
-//   buf->pPixData = pix_data.Release();
-//   buf->uiSizePixData = img->uiSizePixData;
-//   buf->pETRLEObject = etrle_objs.Release();
-//   buf->usNumberOfObjects = img->usNumberOfObjects;
-// }
-//
+
+void GetETRLEImageData(SGPImage const *const img, ETRLEData *const buf) {
+  Assert(img);
+  Assert(buf);
+
+  SGP::Buffer<ETRLEObject> etrle_objs(img->usNumberOfObjects);
+  memcpy(etrle_objs, img->pETRLEObject, sizeof(*etrle_objs) * img->usNumberOfObjects);
+
+  SGP::Buffer<UINT8> pix_data(img->uiSizePixData);
+  memcpy(pix_data, img->pImageData, sizeof(*pix_data) * img->uiSizePixData);
+
+  buf->pPixData = pix_data.Release();
+  buf->uiSizePixData = img->uiSizePixData;
+  buf->pETRLEObject = etrle_objs.Release();
+  buf->usNumberOfObjects = img->usNumberOfObjects;
+}
+
 // void ConvertRGBDistribution565To555(UINT16 *p16BPPData, UINT32 uiNumberOfPixels) {
 //   for (UINT16 *Px = p16BPPData; Px != p16BPPData + uiNumberOfPixels; ++Px) {
 //     *Px = ((*Px >> 1) & ~0x001F) | (*Px & 0x001F);

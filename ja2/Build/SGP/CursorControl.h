@@ -1,15 +1,15 @@
-// #ifndef CURSOR_CONTROL_H
-// #define CURSOR_CONTROL_H
-//
-// #include "SGP/Types.h"
-//
+#ifndef CURSOR_CONTROL_H
+#define CURSOR_CONTROL_H
+
+#include "SGP/Types.h"
+
 // void CursorDatabaseClear(void);
-// BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex);
-//
+BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex);
+
 // #define USE_OUTLINE_BLITTER 0x08
-//
-// #define EXTERN_CURSOR 0xFFF0
-// #define MAX_COMPOSITES 5
+
+#define EXTERN_CURSOR 0xFFF0
+#define MAX_COMPOSITES 5
 // #define CENTER_SUBCURSOR 31000
 // #define HIDE_SUBCURSOR 32000
 //
@@ -37,26 +37,26 @@
 //   UINT8 ubFlags;
 //   UINT8 ubNumberOfFrames;  // If != 0 then the cursor is animated
 // };
-//
-// struct CursorImage {
-//   UINT32 uiFileIndex;
-//   UINT16 uiSubIndex;
-//   UINT32 uiCurrentFrame;
-//   INT16 usPosX;
-//   INT16 usPosY;
-// };
-//
-// struct CursorData {
-//   CursorImage Composites[MAX_COMPOSITES];
-//   UINT16 usNumComposites;
-//   INT16 sOffsetX;
-//   INT16 sOffsetY;
-//   UINT16 usHeight;
-//   UINT16 usWidth;
-//   UINT8 bFlags;
-//   UINT8 bFlashIndex;
-// };
-//
+
+struct CursorImage {
+  UINT32 uiFileIndex;
+  UINT16 uiSubIndex;
+  UINT32 uiCurrentFrame;
+  INT16 usPosX;
+  INT16 usPosY;
+};
+
+struct CursorData {
+  CursorImage Composites[MAX_COMPOSITES];
+  UINT16 usNumComposites;
+  INT16 sOffsetX;
+  INT16 sOffsetY;
+  UINT16 usHeight;
+  UINT16 usWidth;
+  UINT8 bFlags;
+  UINT8 bFlashIndex;
+};
+
 // extern INT16 gsGlobalCursorYOffset;
 //
 // // Globals for cursor database offset values
@@ -72,6 +72,6 @@
 // void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride);
 //
 // void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex);
-//
-// #endif
-//
+
+#endif
+

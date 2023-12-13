@@ -1,35 +1,35 @@
-// #include "SGP/CursorControl.h"
-//
+#include "SGP/CursorControl.h"
+
 // #include "SGP/Debug.h"
 // #include "SGP/HImage.h"
 // #include "SGP/Timer.h"
 // #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// ///////////////////////////////////////////////////////////////////////////////////////////////////
-// //
-// // Cursor Database
-// //
-// ///////////////////////////////////////////////////////////////////////////////////////////////////
+// Cursor Database
 //
-// static BOOLEAN gfCursorDatabaseInit = FALSE;
-//
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+static BOOLEAN gfCursorDatabaseInit = FALSE;
+
 // static CursorFileData *gpCursorFileDatabase;
-// static CursorData *gpCursorDatabase;
+static CursorData *gpCursorDatabase;
 // INT16 gsGlobalCursorYOffset = 0;
 // UINT16 gsCurMouseHeight = 0;
 // UINT16 gsCurMouseWidth = 0;
 // static UINT16 gusNumDataFiles = 0;
-// static SGPVObject const *guiExternVo;
+static SGPVObject const *guiExternVo;
 // static UINT16 gusExternVoSubIndex;
 // static UINT32 guiOldSetCursor = 0;
 // static UINT32 guiDelayTimer = 0;
 //
 // static MOUSEBLT_HOOK gMouseBltOverride = NULL;
-//
-// static void EraseMouseCursor(void) { MOUSE_BUFFER->Fill(0); }
-//
+
+static void EraseMouseCursor(void) { MOUSE_BUFFER->Fill(0); }
+
 // static void BltToMouseCursorFromVObject(HVOBJECT hVObject, UINT16 usVideoObjectSubIndex,
 //                                         UINT16 usXPos, UINT16 usYPos) {
 //   BltVideoObject(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, usXPos, usYPos);
@@ -176,112 +176,112 @@
 //     }
 //   }
 // }
-//
-// BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
-//   if (uiCursorIndex == VIDEO_NO_CURSOR) {
-//     SetMouseCursorProperties(0, 0, 0, 0);
-//   } else if (gfCursorDatabaseInit) {
-//     // CHECK FOR EXTERN CURSOR
-//     if (uiCursorIndex == EXTERN_CURSOR) {
-//       // Erase old cursor
-//       EraseMouseCursor();
-//
-//       ETRLEObject const &pTrav = guiExternVo->SubregionProperties(gusExternVoSubIndex);
-//       UINT16 const usEffHeight = pTrav.usHeight + pTrav.sOffsetY;
-//       UINT16 const usEffWidth = pTrav.usWidth + pTrav.sOffsetX;
-//
-//       BltVideoObjectOutline(MOUSE_BUFFER, guiExternVo, gusExternVoSubIndex, 0, 0, SGP_TRANSPARENT);
-//
-//       // Hook into hook function
-//       if (gMouseBltOverride != NULL) gMouseBltOverride();
-//
-//       SetMouseCursorProperties(usEffWidth / 2, usEffHeight / 2, usEffHeight, usEffWidth);
-//     } else {
-//       const CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
-//
-//       // First check if we are a differnet curosr...
-//       if (uiCursorIndex != guiOldSetCursor) {
-//         // OK, check if we are a delay cursor...
-//         if (pCurData->bFlags & DELAY_START_CURSOR) {
-//           guiDelayTimer = GetClock();
-//         }
-//       }
-//
-//       guiOldSetCursor = uiCursorIndex;
-//
-//       // Olny update if delay timer has elapsed...
-//       if (pCurData->bFlags & DELAY_START_CURSOR) {
-//         if (GetClock() - guiDelayTimer < 1000) {
-//           SetMouseCursorProperties(0, 0, 0, 0);
-//           return TRUE;
-//         }
-//       }
-//
-//       // Call LoadCursorData to make sure that the video object is loaded
-//       LoadCursorData(uiCursorIndex);
-//
-//       // Erase old cursor
-//       EraseMouseCursor();
-//       // NOW ACCOMODATE COMPOSITE CURSORS
-//       pCurData = &gpCursorDatabase[uiCursorIndex];
-//
-//       for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
-//         // Check if we are a flashing cursor!
-//         if (pCurData->bFlags & CURSOR_TO_FLASH && cnt <= 1 && pCurData->bFlashIndex != cnt) {
-//           continue;
-//         }
-//         // Check if we are a sub cursor!
-//         // IN this case, do all frames but
-//         // skip the 1st or second!
-//
-//         if (pCurData->bFlags & CURSOR_TO_SUB_CONDITIONALLY) {
-//           if (pCurData->bFlags & CURSOR_TO_FLASH2) {
-//             if (0 < cnt && cnt <= 2 && pCurData->bFlashIndex != cnt) {
-//               continue;
-//             }
-//           } else {
-//             if (cnt <= 1 && pCurData->bFlashIndex != cnt) {
-//               continue;
-//             }
-//           }
-//         }
-//
-//         const CursorImage *pCurImage = &pCurData->Composites[cnt];
-//         CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
-//
-//         // Adjust sub-index if cursor is animated
-//         UINT16 usSubIndex;
-//         if (CFData->ubNumberOfFrames != 0) {
-//           usSubIndex = pCurImage->uiCurrentFrame;
-//         } else {
-//           usSubIndex = pCurImage->uiSubIndex;
-//         }
-//
-//         if (pCurImage->usPosX != HIDE_SUBCURSOR && pCurImage->usPosY != HIDE_SUBCURSOR) {
-//           // Blit cursor at position in mouse buffer
-//           if (CFData->ubFlags & USE_OUTLINE_BLITTER) {
-//             BltToMouseCursorFromVObjectWithOutline(CFData->hVObject, usSubIndex, pCurImage->usPosX,
-//                                                    pCurImage->usPosY);
-//           } else {
-//             BltToMouseCursorFromVObject(CFData->hVObject, usSubIndex, pCurImage->usPosX,
-//                                         pCurImage->usPosY);
-//           }
-//         }
-//       }
-//
-//       // Hook into hook function
-//       if (gMouseBltOverride != NULL) gMouseBltOverride();
-//
-//       INT16 sCenterValX = pCurData->sOffsetX;
-//       INT16 sCenterValY = pCurData->sOffsetY;
-//       SetMouseCursorProperties(sCenterValX, sCenterValY + gsGlobalCursorYOffset, pCurData->usHeight,
-//                                pCurData->usWidth);
-//     }
-//   }
-//
-//   return TRUE;
-// }
-//
+
+BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
+  if (uiCursorIndex == VIDEO_NO_CURSOR) {
+    SetMouseCursorProperties(0, 0, 0, 0);
+  } else if (gfCursorDatabaseInit) {
+    // CHECK FOR EXTERN CURSOR
+    if (uiCursorIndex == EXTERN_CURSOR) {
+      // Erase old cursor
+      EraseMouseCursor();
+
+      ETRLEObject const &pTrav = guiExternVo->SubregionProperties(gusExternVoSubIndex);
+      UINT16 const usEffHeight = pTrav.usHeight + pTrav.sOffsetY;
+      UINT16 const usEffWidth = pTrav.usWidth + pTrav.sOffsetX;
+
+      BltVideoObjectOutline(MOUSE_BUFFER, guiExternVo, gusExternVoSubIndex, 0, 0, SGP_TRANSPARENT);
+
+      // Hook into hook function
+      if (gMouseBltOverride != NULL) gMouseBltOverride();
+
+      SetMouseCursorProperties(usEffWidth / 2, usEffHeight / 2, usEffHeight, usEffWidth);
+    } else {
+      const CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
+
+      // First check if we are a differnet curosr...
+      if (uiCursorIndex != guiOldSetCursor) {
+        // OK, check if we are a delay cursor...
+        if (pCurData->bFlags & DELAY_START_CURSOR) {
+          guiDelayTimer = GetClock();
+        }
+      }
+
+      guiOldSetCursor = uiCursorIndex;
+
+      // Olny update if delay timer has elapsed...
+      if (pCurData->bFlags & DELAY_START_CURSOR) {
+        if (GetClock() - guiDelayTimer < 1000) {
+          SetMouseCursorProperties(0, 0, 0, 0);
+          return TRUE;
+        }
+      }
+
+      // Call LoadCursorData to make sure that the video object is loaded
+      LoadCursorData(uiCursorIndex);
+
+      // Erase old cursor
+      EraseMouseCursor();
+      // NOW ACCOMODATE COMPOSITE CURSORS
+      pCurData = &gpCursorDatabase[uiCursorIndex];
+
+      for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+        // Check if we are a flashing cursor!
+        if (pCurData->bFlags & CURSOR_TO_FLASH && cnt <= 1 && pCurData->bFlashIndex != cnt) {
+          continue;
+        }
+        // Check if we are a sub cursor!
+        // IN this case, do all frames but
+        // skip the 1st or second!
+
+        if (pCurData->bFlags & CURSOR_TO_SUB_CONDITIONALLY) {
+          if (pCurData->bFlags & CURSOR_TO_FLASH2) {
+            if (0 < cnt && cnt <= 2 && pCurData->bFlashIndex != cnt) {
+              continue;
+            }
+          } else {
+            if (cnt <= 1 && pCurData->bFlashIndex != cnt) {
+              continue;
+            }
+          }
+        }
+
+        const CursorImage *pCurImage = &pCurData->Composites[cnt];
+        CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
+
+        // Adjust sub-index if cursor is animated
+        UINT16 usSubIndex;
+        if (CFData->ubNumberOfFrames != 0) {
+          usSubIndex = pCurImage->uiCurrentFrame;
+        } else {
+          usSubIndex = pCurImage->uiSubIndex;
+        }
+
+        if (pCurImage->usPosX != HIDE_SUBCURSOR && pCurImage->usPosY != HIDE_SUBCURSOR) {
+          // Blit cursor at position in mouse buffer
+          if (CFData->ubFlags & USE_OUTLINE_BLITTER) {
+            BltToMouseCursorFromVObjectWithOutline(CFData->hVObject, usSubIndex, pCurImage->usPosX,
+                                                   pCurImage->usPosY);
+          } else {
+            BltToMouseCursorFromVObject(CFData->hVObject, usSubIndex, pCurImage->usPosX,
+                                        pCurImage->usPosY);
+          }
+        }
+      }
+
+      // Hook into hook function
+      if (gMouseBltOverride != NULL) gMouseBltOverride();
+
+      INT16 sCenterValX = pCurData->sOffsetX;
+      INT16 sCenterValY = pCurData->sOffsetY;
+      SetMouseCursorProperties(sCenterValX, sCenterValY + gsGlobalCursorYOffset, pCurData->usHeight,
+                               pCurData->usWidth);
+    }
+  }
+
+  return TRUE;
+}
+
 // void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride) { gMouseBltOverride = pMouseBltOverride; }
 //
 // // Sets an external video object as cursor file data....
