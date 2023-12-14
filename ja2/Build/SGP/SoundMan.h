@@ -9,8 +9,8 @@
 #define NO_SAMPLE 0xffffffff
 #define SOUND_ERROR 0xffffffff
 
-// // Zeros out the structs for the system info, and initializes the cache.
-// void InitializeSoundManager(void);
+// Zeros out the structs for the system info, and initializes the cache.
+void InitializeSoundManager(void);
 
 /* Silences all currently playing sound, deallocates any memory allocated, and
  * releases the sound hardware. */

@@ -10,26 +10,26 @@
 
 // // Some GUI_BUTTON system defines
 // #define BUTTON_NO_IMAGE -1
-//
-// // effects how the button is rendered.
-// #define BUTTON_TYPES (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX)
-//
-// // button flags
-// #define BUTTON_TOGGLE 0x00000000
-// #define BUTTON_QUICK 0x00000000
-// #define BUTTON_ENABLED 0x00000001
+
+// effects how the button is rendered.
+#define BUTTON_TYPES (BUTTON_QUICK | BUTTON_GENERIC | BUTTON_HOT_SPOT | BUTTON_CHECKBOX)
+
+// button flags
+#define BUTTON_TOGGLE 0x00000000
+#define BUTTON_QUICK 0x00000000
+#define BUTTON_ENABLED 0x00000001
 #define BUTTON_CLICKED_ON 0x00000002
-// #define BUTTON_GENERIC 0x00000020
-// #define BUTTON_HOT_SPOT 0x00000040
-// #define BUTTON_SELFDELETE_IMAGE 0x00000080
-// #define BUTTON_DELETION_PENDING 0x00000100
-// #define BUTTON_DIRTY 0x00000400
-// #define BUTTON_CHECKBOX 0x00001000
-// #define BUTTON_NEWTOGGLE 0x00002000
-// #define BUTTON_FORCE_UNDIRTY \
-//   0x00004000  // no matter what happens this buttons does NOT get marked dirty
-// #define BUTTON_NO_DUPLICATE 0x80000000  // Exclude button from duplicate check
-//
+#define BUTTON_GENERIC 0x00000020
+#define BUTTON_HOT_SPOT 0x00000040
+#define BUTTON_SELFDELETE_IMAGE 0x00000080
+#define BUTTON_DELETION_PENDING 0x00000100
+#define BUTTON_DIRTY 0x00000400
+#define BUTTON_CHECKBOX 0x00001000
+#define BUTTON_NEWTOGGLE 0x00002000
+#define BUTTON_FORCE_UNDIRTY \
+  0x00004000  // no matter what happens this buttons does NOT get marked dirty
+#define BUTTON_NO_DUPLICATE 0x80000000  // Exclude button from duplicate check
+
 // extern SGPVSurface *ButtonDestBuffer;
 
 struct GUI_BUTTON;
@@ -71,13 +71,13 @@ struct GUI_BUTTON {
 //
 //   void AllowDisabledFastHelp();
 //
-//   enum DisabledStyle {
-//     DISABLED_STYLE_NONE,     // for dummy buttons, panels, etc.  Always displays
-//                              // normal state.
-//     DISABLED_STYLE_DEFAULT,  // if button has text then shade, else hatch
-//     DISABLED_STYLE_HATCHED,  // always hatches the disabled button
-//     DISABLED_STYLE_SHADED    // always shades the disabled button 25% darker
-//   };
+  enum DisabledStyle {
+    DISABLED_STYLE_NONE,     // for dummy buttons, panels, etc.  Always displays
+                             // normal state.
+    DISABLED_STYLE_DEFAULT,  // if button has text then shade, else hatch
+    DISABLED_STYLE_HATCHED,  // always hatches the disabled button
+    DISABLED_STYLE_SHADED    // always shades the disabled button 25% darker
+  };
 //   void SpecifyDisabledStyle(DisabledStyle);
 //
 //   /* Note:  Text is always on top
@@ -114,22 +114,22 @@ struct GUI_BUTTON {
 //   }
 //   void SetUserPtr(void *const p) { User.Ptr = p; }
 //
-//   INT32 IDNum;                 // ID Number, contains it's own button number
+  INT32 IDNum;                 // ID Number, contains it's own button number
 //   BUTTON_PICS *image;          // Image to use (see DOCs for details)
   MouseRegion Area;            // Mouse System's mouse region to use for this button
 //   GUI_CALLBACK ClickCallback;  // Button Callback when button is clicked
 //   GUI_CALLBACK MoveCallback;   // Button Callback when mouse moved on this region
   UINT32 uiFlags;              // Button state flags etc.( 32-bit )
-//   UINT32 uiOldFlags;           // Old flags from previous render loop
+  UINT32 uiOldFlags;           // Old flags from previous render loop
 //   union                        // Place holder for user data etc.
 //   {
 //     INT32 Data;
 //     void *Ptr;
 //   } User;
-//   INT8 bDisabledStyle;  // Button disabled style
-//
-//   // For buttons with text
-//   wchar_t *string;   // the string
+  INT8 bDisabledStyle;  // Button disabled style
+
+  // For buttons with text
+  wchar_t *string;   // the string
 //   Font usFont;       // font for text
 //   INT16 sForeColor;  // text colors if there is text
 //   INT16 sShadowColor;
@@ -159,25 +159,25 @@ struct GUI_BUTTON {
 //   UINT8 ubSoundSchemeID;
 };
 
-// extern GUI_BUTTON *ButtonList[MAX_BUTTONS];  // Button System's Main Button List
-//
-// class GUIButtonRef {
-//  public:
-//   GUIButtonRef() : btn_id_(0) {}
-//
-//   GUIButtonRef(GUI_BUTTON *const b) : btn_id_(b->IDNum) {}
-//
-//   void Reset() { btn_id_ = 0; }
-//
-//   INT32 ID() const { return btn_id_; }
-//
-//   GUI_BUTTON *operator->() const { return ButtonList[btn_id_]; }
-//
-//   operator GUI_BUTTON *() const { return ButtonList[btn_id_]; }
-//
-//  private:
-//   INT32 btn_id_;
-// };
+extern GUI_BUTTON *ButtonList[MAX_BUTTONS];  // Button System's Main Button List
+
+class GUIButtonRef {
+ public:
+  GUIButtonRef() : btn_id_(0) {}
+
+  GUIButtonRef(GUI_BUTTON *const b) : btn_id_(b->IDNum) {}
+
+  void Reset() { btn_id_ = 0; }
+
+  INT32 ID() const { return btn_id_; }
+
+  GUI_BUTTON *operator->() const { return ButtonList[btn_id_]; }
+
+  operator GUI_BUTTON *() const { return ButtonList[btn_id_]; }
+
+ private:
+  INT32 btn_id_;
+};
 
 /* Initializes the GUI button system for use. Must be called before using any
  * other button functions.
@@ -236,9 +236,9 @@ void UnloadButtonImage(BUTTON_PICS *);
 //
 // void HideButton(GUIButtonRef);
 // void ShowButton(GUIButtonRef);
-//
-// void RenderButtons(void);
-//
+
+void RenderButtons(void);
+
 // extern BOOLEAN gfRenderHilights;
 //
 // /* Creates a QuickButton. QuickButtons only have graphics associated with them.
@@ -285,8 +285,8 @@ void UnloadButtonImage(BUTTON_PICS *);
 //  * implemented as button */
 // GUIButtonRef CreateLabel(const wchar_t *text, Font, INT16 forecolor, INT16 shadowcolor, INT16 x,
 //                          INT16 y, INT16 w, INT16 h, INT16 priority);
-//
-// void MarkAButtonDirty(GUIButtonRef);    // will mark only selected button dirty
+
+void MarkAButtonDirty(GUIButtonRef);    // will mark only selected button dirty
 // void MarkButtonsDirty(void);            // Function to mark buttons dirty ( all will redraw
 //                                         // at next RenderButtons )
 // void UnMarkButtonDirty(GUIButtonRef);   // unmark button

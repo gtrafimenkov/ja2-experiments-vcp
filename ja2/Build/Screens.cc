@@ -10,7 +10,7 @@
 // #include "Intro.h"
 // #include "JAScreens.h"
 // #include "Laptop/Laptop.h"
-// #include "MainMenuScreen.h"
+#include "MainMenuScreen.h"
 // #include "MessageBoxScreen.h"
 #include "OptionsScreen.h"
 // #include "SaveLoadScreen.h"

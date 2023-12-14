@@ -93,7 +93,7 @@ void EndMapScreen(BOOLEAN fDuringFade);
 // void DrawFace(void);
 //
 // extern GUIButtonRef giMapInvDoneButton;
-// extern BOOLEAN fInMapMode;
+extern BOOLEAN fInMapMode;
 // extern BOOLEAN fReDrawFace;
 // extern BOOLEAN fShowInventoryFlag;
 // extern BOOLEAN fShowDescriptionFlag;

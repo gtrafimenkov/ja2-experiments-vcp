@@ -1,12 +1,12 @@
-// #ifndef CURSORS_H
-// #define CURSORS_H
-//
-// #include "SGP/Types.h"
-//
-// // INDIVIDUAL CURSORS
-//
-// enum CursorTypeDefines {
-//   CURSOR_NORMAL,
+#ifndef CURSORS_H
+#define CURSORS_H
+
+#include "SGP/Types.h"
+
+// INDIVIDUAL CURSORS
+
+enum CursorTypeDefines {
+  CURSOR_NORMAL,
 //   CURSOR_TARGET,
 //   CURSOR_TARGETON1,
 //   CURSOR_TARGETON2,
@@ -155,8 +155,8 @@
 //   CURSOR_JUMP_OVER,
 //   CURSOR_FUEL,
 //   CURSOR_FUEL_RED
-// };
-//
+};
+
 // enum CursorSurfaceDefines {
 //   C_MISC,
 //   C_ACTIONMODE,
@@ -247,6 +247,6 @@
 //
 // const wchar_t *GetIntTileLocationText(void);
 // const wchar_t *GetIntTileLocation2Text(void);
-//
-// #endif
-//
+
+#endif
+

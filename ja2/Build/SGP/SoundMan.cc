@@ -106,7 +106,7 @@ static UINT32 guiSoundMemoryUsed = 0;                            // Memory curre
 // static const UINT32 guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;  // Double-buffered threshold
 
 static BOOLEAN fSoundSystemInit = FALSE;  // Startup called
-// static BOOLEAN gfEnableStartup = TRUE;    // Allow hardware to start up
+static BOOLEAN gfEnableStartup = TRUE;    // Allow hardware to start up
 
 // Sample cache list for files loaded
 static SAMPLETAG pSampleList[SOUND_MAX_CACHED];
@@ -114,23 +114,23 @@ static SAMPLETAG pSampleList[SOUND_MAX_CACHED];
 static SOUNDTAG pSoundList[SOUND_MAX_CHANNELS];
 
 // void SoundEnableSound(BOOLEAN fEnable) { gfEnableStartup = fEnable; }
-//
-// static void SoundInitCache(void);
-// static BOOLEAN SoundInitHardware(void);
-//
-// void InitializeSoundManager(void) {
-//   if (fSoundSystemInit) ShutdownSoundManager();
-//
-//   memset(pSoundList, 0, sizeof(pSoundList));
-//
-// #ifndef SOUND_DISABLE
-//   if (gfEnableStartup && SoundInitHardware()) fSoundSystemInit = TRUE;
-// #endif
-//
-//   SoundInitCache();
-//
-//   guiSoundMemoryUsed = 0;
-// }
+
+static void SoundInitCache(void);
+static BOOLEAN SoundInitHardware(void);
+
+void InitializeSoundManager(void) {
+  if (fSoundSystemInit) ShutdownSoundManager();
+
+  memset(pSoundList, 0, sizeof(pSoundList));
+
+#ifndef SOUND_DISABLE
+  if (gfEnableStartup && SoundInitHardware()) fSoundSystemInit = TRUE;
+#endif
+
+  SoundInitCache();
+
+  guiSoundMemoryUsed = 0;
+}
 
 static void SoundEmptyCache(void);
 static void SoundShutdownHardware(void);
@@ -426,9 +426,9 @@ void SoundServiceStreams(void) {
 //   const UINT32 now = GetClock();
 //   return now - channel->uiTimeStamp;
 // }
-//
-// // Zeros out the structures of the sample list.
-// static void SoundInitCache(void) { memset(pSampleList, 0, sizeof(pSampleList)); }
+
+// Zeros out the structures of the sample list.
+static void SoundInitCache(void) { memset(pSampleList, 0, sizeof(pSampleList)); }
 
 static void SoundFreeSample(SAMPLETAG *s);
 
@@ -784,99 +784,99 @@ static SOUNDTAG *SoundGetChannelByID(UINT32 uiSoundID) {
   return NULL;
 }
 
-// static void SoundCallback(void *userdata, Uint8 *stream, int len) {
-//   SDL_memset(stream, 0, len);
-//
-//   UINT16 *Stream = (UINT16 *)stream;
-//
-//   // XXX TODO proper mixing, mainly clipping
-//   for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
-//     SOUNDTAG *Sound = &pSoundList[i];
-//
-//     switch (Sound->State) {
-//       default:
-//       case CHANNEL_FREE:
-//       case CHANNEL_DEAD:
-//         continue;
-//
-//       case CHANNEL_STOP:
-//         Sound->State = CHANNEL_DEAD;
-//         continue;
-//
-//       case CHANNEL_PLAY: {
-//         const SAMPLETAG *const s = Sound->pSample;
-//         const INT vol_l = Sound->uiFadeVolume * (127 - Sound->Pan) / MAXVOLUME;
-//         const INT vol_r = Sound->uiFadeVolume * (0 + Sound->Pan) / MAXVOLUME;
-//         size_t samples = len / 4;
-//         size_t amount;
-//
-//       mixing:
-//         amount = MIN(samples, s->n_samples - Sound->pos);
-//         if (s->uiFlags & SAMPLE_16BIT) {
-//           if (s->uiFlags & SAMPLE_STEREO) {
-//             const INT16 *const src = (const INT16 *)s->pData + Sound->pos * 2;
-//             for (UINT32 i = 0; i < amount; ++i) {
-//               Stream[2 * i + 0] += src[2 * i + 0] * vol_l >> 7;
-//               Stream[2 * i + 1] += src[2 * i + 1] * vol_r >> 7;
-//             }
-//           } else {
-//             const INT16 *const src = (const INT16 *)s->pData + Sound->pos;
-//             for (UINT32 i = 0; i < amount; i++) {
-//               const INT data = src[i];
-//               Stream[2 * i + 0] += data * vol_l >> 7;
-//               Stream[2 * i + 1] += data * vol_r >> 7;
-//             }
-//           }
-//         } else {
-//           if (s->uiFlags & SAMPLE_STEREO) {
-//             const UINT8 *const src = (const UINT8 *)s->pData + Sound->pos * 2;
-//             for (UINT32 i = 0; i < amount; ++i) {
-//               Stream[2 * i + 0] += (src[2 * i + 0] - 128) * vol_l << 1;
-//               Stream[2 * i + 1] += (src[2 * i + 1] - 128) * vol_r << 1;
-//             }
-//           } else {
-//             const UINT8 *const src = (const UINT8 *)s->pData + Sound->pos;
-//             for (UINT32 i = 0; i < amount; ++i) {
-//               const INT data = (src[i] - 128) << 1;
-//               Stream[2 * i + 0] += data * vol_l;
-//               Stream[2 * i + 1] += data * vol_r;
-//             }
-//           }
-//         }
-//
-//         Sound->pos += amount;
-//         if (Sound->pos == s->n_samples) {
-//           if (Sound->Loops != 1) {
-//             if (Sound->Loops != 0) --Sound->Loops;
-//             Sound->pos = 0;
-//             samples -= amount;
-//             if (samples != 0) goto mixing;
-//           } else {
-//             Sound->State = CHANNEL_DEAD;
-//           }
-//         }
-//       }
-//     }
-//   }
-// }
-//
-// static BOOLEAN SoundInitHardware(void) {
-//   SDL_InitSubSystem(SDL_INIT_AUDIO);
-//
-//   SDL_AudioSpec spec;
-//   spec.freq = 22050;
-//   spec.format = AUDIO_S16SYS;
-//   spec.channels = 2;
-//   spec.samples = 1024;
-//   spec.callback = SoundCallback;
-//   spec.userdata = NULL;
-//
-//   if (SDL_OpenAudio(&spec, NULL) != 0) return FALSE;
-//
-//   memset(pSoundList, 0, sizeof(pSoundList));
-//   SDL_PauseAudio(0);
-//   return TRUE;
-// }
+static void SoundCallback(void *userdata, Uint8 *stream, int len) {
+  SDL_memset(stream, 0, len);
+
+  UINT16 *Stream = (UINT16 *)stream;
+
+  // XXX TODO proper mixing, mainly clipping
+  for (UINT32 i = 0; i < lengthof(pSoundList); i++) {
+    SOUNDTAG *Sound = &pSoundList[i];
+
+    switch (Sound->State) {
+      default:
+      case CHANNEL_FREE:
+      case CHANNEL_DEAD:
+        continue;
+
+      case CHANNEL_STOP:
+        Sound->State = CHANNEL_DEAD;
+        continue;
+
+      case CHANNEL_PLAY: {
+        const SAMPLETAG *const s = Sound->pSample;
+        const INT vol_l = Sound->uiFadeVolume * (127 - Sound->Pan) / MAXVOLUME;
+        const INT vol_r = Sound->uiFadeVolume * (0 + Sound->Pan) / MAXVOLUME;
+        size_t samples = len / 4;
+        size_t amount;
+
+      mixing:
+        amount = MIN(samples, s->n_samples - Sound->pos);
+        if (s->uiFlags & SAMPLE_16BIT) {
+          if (s->uiFlags & SAMPLE_STEREO) {
+            const INT16 *const src = (const INT16 *)s->pData + Sound->pos * 2;
+            for (UINT32 i = 0; i < amount; ++i) {
+              Stream[2 * i + 0] += src[2 * i + 0] * vol_l >> 7;
+              Stream[2 * i + 1] += src[2 * i + 1] * vol_r >> 7;
+            }
+          } else {
+            const INT16 *const src = (const INT16 *)s->pData + Sound->pos;
+            for (UINT32 i = 0; i < amount; i++) {
+              const INT data = src[i];
+              Stream[2 * i + 0] += data * vol_l >> 7;
+              Stream[2 * i + 1] += data * vol_r >> 7;
+            }
+          }
+        } else {
+          if (s->uiFlags & SAMPLE_STEREO) {
+            const UINT8 *const src = (const UINT8 *)s->pData + Sound->pos * 2;
+            for (UINT32 i = 0; i < amount; ++i) {
+              Stream[2 * i + 0] += (src[2 * i + 0] - 128) * vol_l << 1;
+              Stream[2 * i + 1] += (src[2 * i + 1] - 128) * vol_r << 1;
+            }
+          } else {
+            const UINT8 *const src = (const UINT8 *)s->pData + Sound->pos;
+            for (UINT32 i = 0; i < amount; ++i) {
+              const INT data = (src[i] - 128) << 1;
+              Stream[2 * i + 0] += data * vol_l;
+              Stream[2 * i + 1] += data * vol_r;
+            }
+          }
+        }
+
+        Sound->pos += amount;
+        if (Sound->pos == s->n_samples) {
+          if (Sound->Loops != 1) {
+            if (Sound->Loops != 0) --Sound->Loops;
+            Sound->pos = 0;
+            samples -= amount;
+            if (samples != 0) goto mixing;
+          } else {
+            Sound->State = CHANNEL_DEAD;
+          }
+        }
+      }
+    }
+  }
+}
+
+static BOOLEAN SoundInitHardware(void) {
+  SDL_InitSubSystem(SDL_INIT_AUDIO);
+
+  SDL_AudioSpec spec;
+  spec.freq = 22050;
+  spec.format = AUDIO_S16SYS;
+  spec.channels = 2;
+  spec.samples = 1024;
+  spec.callback = SoundCallback;
+  spec.userdata = NULL;
+
+  if (SDL_OpenAudio(&spec, NULL) != 0) return FALSE;
+
+  memset(pSoundList, 0, sizeof(pSoundList));
+  SDL_PauseAudio(0);
+  return TRUE;
+}
 
 static void SoundShutdownHardware(void) { SDL_QuitSubSystem(SDL_INIT_AUDIO); }
 

@@ -7,7 +7,7 @@
 #define CALLBACKTIMER
 #endif
 
-// typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)(void);
+typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)(void);
 
 // TIMER DEFINES
 enum {
@@ -34,8 +34,8 @@ enum {
   NUMTIMERS = 20
 };
 
-// // Base resultion of callback timer
-// #define BASETIMESLICE 10
+// Base resultion of callback timer
+#define BASETIMESLICE 10
 
 extern const INT32 giTimerIntervals[NUMTIMERS];
 extern INT32 giTimerCounters[NUMTIMERS];
@@ -46,22 +46,22 @@ extern INT32 giTimerCounters[NUMTIMERS];
 // extern INT32 giTimerDiag;
 //
 // extern INT32 giTimerTeamTurnUpdate;
-//
-// void InitializeJA2Clock(void);
+
+void InitializeJA2Clock(void);
 // void ShutdownJA2Clock(void);
-//
-// #define GetJA2Clock() guiBaseJA2Clock
-//
+
+#define GetJA2Clock() guiBaseJA2Clock
+
 // void PauseTime(BOOLEAN fPaused);
 //
 // void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback,
 //                                           BOOLEAN fReplace);
 // void CheckCustomizableTimer(void);
 //
-// // Don't modify this value
-// extern UINT32 guiBaseJA2Clock;
-// extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
-//
+// Don't modify this value
+extern UINT32 guiBaseJA2Clock;
+extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
+
 // // MACROS
 // //																CHeck
 // // if new counter < 0
@@ -70,15 +70,15 @@ extern INT32 giTimerCounters[NUMTIMERS];
 
 #ifdef CALLBACKTIMER
 
-// #define UPDATECOUNTER(c)                                                \
-//   ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) \
-//                                              : (giTimerCounters[c] -= BASETIMESLICE)
+#define UPDATECOUNTER(c)                                                \
+  ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) \
+                                             : (giTimerCounters[c] -= BASETIMESLICE)
 #define RESETCOUNTER(c) (giTimerCounters[c] = giTimerIntervals[c])
 #define COUNTERDONE(c) (giTimerCounters[c] == 0) ? TRUE : FALSE
 
-// #define UPDATETIMECOUNTER(c) ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE)
-// #define RESETTIMECOUNTER(c, d) (c = d)
-//
+#define UPDATETIMECOUNTER(c) ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE)
+#define RESETTIMECOUNTER(c, d) (c = d)
+
 // #ifdef BOUNDS_CHECKER
 // #define TIMECOUNTERDONE(c, d) true
 // #else

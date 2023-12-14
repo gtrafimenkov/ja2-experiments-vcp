@@ -9,17 +9,17 @@
 #include "GameState.h"
 // #include "Init.h"  // XXX should not be used in SGP
 // #include "Intro.h"
-// #include "JA2Splash.h"
+#include "JA2Splash.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/Debug.h"
 #include "SGP/Exceptions.h"
 #include "SGP/FileMan.h"
-// #include "SGP/Font.h"
+#include "SGP/Font.h"
 #include "SGP/Input.h"
 #include "SGP/Logger.h"
 #include "SGP/MemMan.h"
 #include "SGP/MouseSystem.h"
-// #include "SGP/Random.h"
+#include "SGP/Random.h"
 #include "SGP/SoundMan.h"
 #include "SGP/Timer.h"
 #include "SGP/Types.h"
@@ -183,17 +183,17 @@ int main(int argc, char *argv[]) try {
 
   SDL_Init(SDL_INIT_VIDEO);
 
-//   InitializeMemoryManager();
-//   InitializeFileManager(exeFolder.c_str());
-//   InitializeVideoManager();
-//   InitializeVideoObjectManager();
-//   InitializeVideoSurfaceManager();
-//   InitGameResources();
-//   InitJA2SplashScreen();
-//   InitializeFontManager();
-//   InitializeSoundManager();
-//   InitializeRandom();
-//   InitializeGame();
+  InitializeMemoryManager();
+  InitializeFileManager(exeFolder.c_str());
+  InitializeVideoManager();
+  InitializeVideoObjectManager();
+  InitializeVideoSurfaceManager();
+  InitGameResources();
+  InitJA2SplashScreen();
+  InitializeFontManager();
+  InitializeSoundManager();
+  InitializeRandom();
+  InitializeGame();
 
   gfGameInitialized = TRUE;
 

@@ -5,7 +5,7 @@
 //
 // #include "SGP/ButtonSoundControl.h"
 #include "SGP/Debug.h"
-// #include "SGP/Font.h"
+#include "SGP/Font.h"
 // #include "SGP/HImage.h"
 #include "SGP/Input.h"
 // #include "SGP/MemMan.h"
@@ -14,7 +14,7 @@
 // #include "SGP/VObjectBlitters.h"
 // #include "SGP/VSurface.h"
 #include "SGP/Video.h"
-// #include "SGP/WCheck.h"
+#include "SGP/WCheck.h"
 // #include "Utils/WordWrap.h"
 //
 // #ifdef _JA2_RENDER_DIRTY
@@ -77,8 +77,8 @@ static GUI_BUTTON *gpAnchoredButton;
 static GUI_BUTTON *gpPrevAnchoredButton;
 static BOOLEAN gfAnchoredState;
 
-// static INT8 gbDisabledButtonStyle;
-//
+static INT8 gbDisabledButtonStyle;
+
 // BOOLEAN gfRenderHilights = TRUE;
 
 // Struct definition for the QuickButton pictures.
@@ -95,7 +95,7 @@ struct BUTTON_PICS {
 
 static BUTTON_PICS ButtonPictures[MAX_BUTTON_PICS];
 
-// SGPVSurface *ButtonDestBuffer;
+SGPVSurface *ButtonDestBuffer;
 
 GUI_BUTTON *ButtonList[MAX_BUTTONS];
 
@@ -370,12 +370,12 @@ static void ShutdownButtonImageManager(void) {
   }
 }
 
-// void InitButtonSystem(void) {
-//   ButtonDestBuffer = FRAME_BUFFER;
-//
-//   // Initialize the button image manager sub-system
-//   InitializeButtonImageManager();
-// }
+void InitButtonSystem(void) {
+  ButtonDestBuffer = FRAME_BUFFER;
+
+  // Initialize the button image manager sub-system
+  InitializeButtonImageManager();
+}
 
 void ShutdownButtonSystem(void) {
   // Kill off all buttons in the system
@@ -822,50 +822,50 @@ void ShutdownButtonSystem(void) {
 //
 //   if (gfPendingButtonDeletion) RemoveButtonsMarkedForDeletion();
 // }
-//
-// static void DrawButtonFromPtr(GUI_BUTTON *b);
-//
-// void RenderButtons(void) {
-//   SaveFontSettings();
-//   FOR_EACH_BUTTON(i) {
-//     // If the button exists, and it's not owned by another object, draw it
-//     // Kris:  and make sure that the button isn't hidden.
-//     GUI_BUTTON *const b = *i;
-//     if (!(b->Area.uiFlags & MSYS_REGION_ENABLED)) continue;
-//
-//     if ((b->uiFlags ^ b->uiOldFlags) & (BUTTON_CLICKED_ON | BUTTON_ENABLED)) {
-//       // Something is different, set dirty!
-//       b->uiFlags |= BUTTON_DIRTY;
-//     }
-//
-//     // Set old flags
-//     b->uiOldFlags = b->uiFlags;
-//
-//     if (b->uiFlags & BUTTON_FORCE_UNDIRTY) {
-//       b->uiFlags &= ~BUTTON_DIRTY;
-//       b->uiFlags &= ~BUTTON_FORCE_UNDIRTY;
-//     }
-//
-//     // Check if we need to update!
-//     if (b->uiFlags & BUTTON_DIRTY) {
-//       // Turn off dirty flag
-//       b->uiFlags &= ~BUTTON_DIRTY;
-//       DrawButtonFromPtr(b);
-//
-//       InvalidateRegion(b->X(), b->Y(), b->BottomRightX(), b->BottomRightY());
-//     }
-//   }
-//
-//   RestoreFontSettings();
-// }
-//
-// void MarkAButtonDirty(GUIButtonRef const b) {
-//   // surgical dirtying -> marks a user specified button dirty, without dirty the
-//   // whole lot of them
-//   CHECKV(b != NULL);  // XXX HACK000C
-//   b->uiFlags |= BUTTON_DIRTY;
-// }
-//
+
+static void DrawButtonFromPtr(GUI_BUTTON *b);
+
+void RenderButtons(void) {
+  SaveFontSettings();
+  FOR_EACH_BUTTON(i) {
+    // If the button exists, and it's not owned by another object, draw it
+    // Kris:  and make sure that the button isn't hidden.
+    GUI_BUTTON *const b = *i;
+    if (!(b->Area.uiFlags & MSYS_REGION_ENABLED)) continue;
+
+    if ((b->uiFlags ^ b->uiOldFlags) & (BUTTON_CLICKED_ON | BUTTON_ENABLED)) {
+      // Something is different, set dirty!
+      b->uiFlags |= BUTTON_DIRTY;
+    }
+
+    // Set old flags
+    b->uiOldFlags = b->uiFlags;
+
+    if (b->uiFlags & BUTTON_FORCE_UNDIRTY) {
+      b->uiFlags &= ~BUTTON_DIRTY;
+      b->uiFlags &= ~BUTTON_FORCE_UNDIRTY;
+    }
+
+    // Check if we need to update!
+    if (b->uiFlags & BUTTON_DIRTY) {
+      // Turn off dirty flag
+      b->uiFlags &= ~BUTTON_DIRTY;
+      DrawButtonFromPtr(b);
+
+      InvalidateRegion(b->X(), b->Y(), b->BottomRightX(), b->BottomRightY());
+    }
+  }
+
+  RestoreFontSettings();
+}
+
+void MarkAButtonDirty(GUIButtonRef const b) {
+  // surgical dirtying -> marks a user specified button dirty, without dirty the
+  // whole lot of them
+  CHECKV(b != NULL);  // XXX HACK000C
+  b->uiFlags |= BUTTON_DIRTY;
+}
+
 // void MarkButtonsDirty(void) {
 //   FOR_EACH_BUTTON(i) { (*i)->uiFlags |= BUTTON_DIRTY; }
 // }
@@ -895,86 +895,86 @@ void ShutdownButtonSystem(void) {
 // static void DrawGenericButton(const GUI_BUTTON *b);
 // static void DrawHatchOnButton(const GUI_BUTTON *b);
 // static void DrawIconOnButton(const GUI_BUTTON *b);
-// static void DrawQuickButton(const GUI_BUTTON *b);
+static void DrawQuickButton(const GUI_BUTTON *b);
 // static void DrawShadeOnButton(const GUI_BUTTON *b);
 // static void DrawTextOnButton(const GUI_BUTTON *b);
-//
-// // Given a pointer to a GUI_BUTTON structure, draws the button on the screen.
-// static void DrawButtonFromPtr(GUI_BUTTON *b) {
-//   // Draw the appropriate button according to button type
-//   gbDisabledButtonStyle = GUI_BUTTON::DISABLED_STYLE_NONE;
-//   switch (b->uiFlags & BUTTON_TYPES) {
-//     case BUTTON_QUICK:
-//       DrawQuickButton(b);
-//       break;
-//     case BUTTON_GENERIC:
-//       DrawGenericButton(b);
-//       break;
-//     case BUTTON_CHECKBOX:
-//       DrawCheckBoxButton(b);
-//       break;
-//
-//     case BUTTON_HOT_SPOT:
-//       return;  // hotspots don't have text, but if you want to, change this to a
-//                // break!
-//   }
-//   if (b->icon) DrawIconOnButton(b);
-//   if (b->string) DrawTextOnButton(b);
-//   /* If the button is disabled, and a style has been calculated, then draw the
-//    * style last.
-//    */
-//   switch (gbDisabledButtonStyle) {
-//     case GUI_BUTTON::DISABLED_STYLE_HATCHED:
-//       DrawHatchOnButton(b);
-//       break;
-//     case GUI_BUTTON::DISABLED_STYLE_SHADED:
-//       DrawShadeOnButton(b);
-//       break;
-//   }
-// }
-//
-// // Draws a QuickButton type button on the screen.
-// static void DrawQuickButton(const GUI_BUTTON *b) {
-//   const BUTTON_PICS *const pics = b->image;
-//
-//   INT32 UseImage = 0;
-//   if (b->Enabled()) {
-//     if (b->Clicked()) {
-//       // Is the mouse over this area, and we have a hilite image?
-//       if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && pics->OnHilite != -1) {
-//         UseImage = pics->OnHilite;
-//       } else if (pics->OnNormal != -1) {
-//         UseImage = pics->OnNormal;
-//       }
-//     } else {
-//       // Is the mouse over the button, and do we have hilite image?
-//       if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && pics->OffHilite != -1) {
-//         UseImage = pics->OffHilite;
-//       } else if (pics->OffNormal != -1) {
-//         UseImage = pics->OffNormal;
-//       }
-//     }
-//   } else if (pics->Grayed != -1) {
-//     // Button is diabled so use the "Grayed-out" image
-//     UseImage = pics->Grayed;
-//   } else {
-//     UseImage = pics->OffNormal;
-//     switch (b->bDisabledStyle) {
-//       case GUI_BUTTON::DISABLED_STYLE_DEFAULT:
-//         gbDisabledButtonStyle =
-//             b->string ? GUI_BUTTON::DISABLED_STYLE_SHADED : GUI_BUTTON::DISABLED_STYLE_HATCHED;
-//         break;
-//
-//       case GUI_BUTTON::DISABLED_STYLE_HATCHED:
-//       case GUI_BUTTON::DISABLED_STYLE_SHADED:
-//         gbDisabledButtonStyle = b->bDisabledStyle;
-//         break;
-//     }
-//   }
-//
-//   BltVideoObject(ButtonDestBuffer, pics->vobj, UseImage, b->X(), b->Y());
-// }
-//
+
+// Given a pointer to a GUI_BUTTON structure, draws the button on the screen.
+static void DrawButtonFromPtr(GUI_BUTTON *b) {
+  // Draw the appropriate button according to button type
+  gbDisabledButtonStyle = GUI_BUTTON::DISABLED_STYLE_NONE;
+  switch (b->uiFlags & BUTTON_TYPES) {
+    case BUTTON_QUICK:
+      DrawQuickButton(b);
+      break;
+    case BUTTON_GENERIC:
+      DrawGenericButton(b);
+      break;
+    case BUTTON_CHECKBOX:
+      DrawCheckBoxButton(b);
+      break;
+
+    case BUTTON_HOT_SPOT:
+      return;  // hotspots don't have text, but if you want to, change this to a
+               // break!
+  }
+  if (b->icon) DrawIconOnButton(b);
+  if (b->string) DrawTextOnButton(b);
+  /* If the button is disabled, and a style has been calculated, then draw the
+   * style last.
+   */
+  switch (gbDisabledButtonStyle) {
+    case GUI_BUTTON::DISABLED_STYLE_HATCHED:
+      DrawHatchOnButton(b);
+      break;
+    case GUI_BUTTON::DISABLED_STYLE_SHADED:
+      DrawShadeOnButton(b);
+      break;
+  }
+}
+
+// Draws a QuickButton type button on the screen.
+static void DrawQuickButton(const GUI_BUTTON *b) {
+  const BUTTON_PICS *const pics = b->image;
+
+  INT32 UseImage = 0;
+  if (b->Enabled()) {
+    if (b->Clicked()) {
+      // Is the mouse over this area, and we have a hilite image?
+      if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && pics->OnHilite != -1) {
+        UseImage = pics->OnHilite;
+      } else if (pics->OnNormal != -1) {
+        UseImage = pics->OnNormal;
+      }
+    } else {
+      // Is the mouse over the button, and do we have hilite image?
+      if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && pics->OffHilite != -1) {
+        UseImage = pics->OffHilite;
+      } else if (pics->OffNormal != -1) {
+        UseImage = pics->OffNormal;
+      }
+    }
+  } else if (pics->Grayed != -1) {
+    // Button is diabled so use the "Grayed-out" image
+    UseImage = pics->Grayed;
+  } else {
+    UseImage = pics->OffNormal;
+    switch (b->bDisabledStyle) {
+      case GUI_BUTTON::DISABLED_STYLE_DEFAULT:
+        gbDisabledButtonStyle =
+            b->string ? GUI_BUTTON::DISABLED_STYLE_SHADED : GUI_BUTTON::DISABLED_STYLE_HATCHED;
+        break;
+
+      case GUI_BUTTON::DISABLED_STYLE_HATCHED:
+      case GUI_BUTTON::DISABLED_STYLE_SHADED:
+        gbDisabledButtonStyle = b->bDisabledStyle;
+        break;
+    }
+  }
+
+  BltVideoObject(ButtonDestBuffer, pics->vobj, UseImage, b->X(), b->Y());
+}
+
 // static void DrawHatchOnButton(const GUI_BUTTON *b) {
 //   SGPRect ClipRect;
 //   ClipRect.iLeft = b->X();

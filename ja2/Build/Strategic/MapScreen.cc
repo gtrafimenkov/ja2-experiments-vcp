@@ -322,7 +322,7 @@
 // // GLOBAL VARIABLES (OURS)
 //
 // static BOOLEAN fFlashAssignDone = FALSE;
-// BOOLEAN fInMapMode = FALSE;
+BOOLEAN fInMapMode = FALSE;
 // BOOLEAN fMapPanelDirty = TRUE;
 // BOOLEAN fTeamPanelDirty = TRUE;
 // BOOLEAN fCharacterInfoPanelDirty = TRUE;

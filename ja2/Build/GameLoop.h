@@ -5,7 +5,7 @@
 // #include "SGP/Types.h"
 // #include "ScreenIDs.h"
 
-// void InitializeGame(void);
+void InitializeGame(void);
 // void ShutdownGame(void);
 void GameLoop(void);
 

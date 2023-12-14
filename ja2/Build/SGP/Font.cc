@@ -3,7 +3,7 @@
 // #include <stdarg.h>
 //
 // #include "GameRes.h"
-// #include "Local.h"
+#include "Local.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
@@ -11,26 +11,26 @@
 // #include "SGP/Types.h"
 #include "SGP/VObject.h"
 // #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-//
+#include "SGP/VSurface.h"
+
 // typedef UINT8 GlyphIdx;
 
 // Destination printing parameters
 Font FontDefault = 0;
-// static SGPVSurface *FontDestBuffer;
-// static SGPRect FontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+static SGPVSurface *FontDestBuffer;
+static SGPRect FontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 static UINT16 FontForeground16 = 0;
 static UINT16 FontBackground16 = 0;
 static UINT16 FontShadow16 = DEFAULT_SHADOW;
 
-// // Temp, for saving printing parameters
-// static Font SaveFontDefault = 0;
-// static SGPVSurface *SaveFontDestBuffer = NULL;
-// static SGPRect SaveFontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-// static UINT16 SaveFontForeground16 = 0;
-// static UINT16 SaveFontShadow16 = 0;
-// static UINT16 SaveFontBackground16 = 0;
-//
+// Temp, for saving printing parameters
+static Font SaveFontDefault = 0;
+static SGPVSurface *SaveFontDestBuffer = NULL;
+static SGPRect SaveFontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+static UINT16 SaveFontForeground16 = 0;
+static UINT16 SaveFontShadow16 = 0;
+static UINT16 SaveFontBackground16 = 0;
+
 // /* Sets both the foreground and the background colors of the current font. The
 //  * top byte of the parameter word is the background color, and the bottom byte
 //  * is the foreground. */
@@ -104,27 +104,27 @@ Font LoadFontFile(const char *filename) {
 //   }
 //   return w;
 // }
-//
-// /* Saves the current font printing settings into temporary locations. */
-// void SaveFontSettings(void) {
-//   SaveFontDefault = FontDefault;
-//   SaveFontDestBuffer = FontDestBuffer;
-//   SaveFontDestRegion = FontDestRegion;
-//   SaveFontForeground16 = FontForeground16;
-//   SaveFontShadow16 = FontShadow16;
-//   SaveFontBackground16 = FontBackground16;
-// }
-//
-// /* Restores the last saved font printing settings from the temporary lactions */
-// void RestoreFontSettings(void) {
-//   FontDefault = SaveFontDefault;
-//   FontDestBuffer = SaveFontDestBuffer;
-//   FontDestRegion = SaveFontDestRegion;
-//   FontForeground16 = SaveFontForeground16;
-//   FontShadow16 = SaveFontShadow16;
-//   FontBackground16 = SaveFontBackground16;
-// }
-//
+
+/* Saves the current font printing settings into temporary locations. */
+void SaveFontSettings(void) {
+  SaveFontDefault = FontDefault;
+  SaveFontDestBuffer = FontDestBuffer;
+  SaveFontDestRegion = FontDestRegion;
+  SaveFontForeground16 = FontForeground16;
+  SaveFontShadow16 = FontShadow16;
+  SaveFontBackground16 = FontBackground16;
+}
+
+/* Restores the last saved font printing settings from the temporary lactions */
+void RestoreFontSettings(void) {
+  FontDefault = SaveFontDefault;
+  FontDestBuffer = SaveFontDestBuffer;
+  FontDestRegion = SaveFontDestRegion;
+  FontForeground16 = SaveFontForeground16;
+  FontShadow16 = SaveFontShadow16;
+  FontBackground16 = SaveFontBackground16;
+}
+
 // /* Returns the height of a given character in the font. */
 // static UINT32 GetHeight(HVOBJECT hSrcVObject, INT16 ssIndex) {
 //   // Get Offsets from Index into structure
@@ -167,22 +167,22 @@ void SetFontAttributes(Font const font, UINT8 const foreground, UINT8 const shad
   SetFontBackground(background);
 }
 
-// void SetFontDestBuffer(SGPVSurface *const dst, const INT32 x1, const INT32 y1, const INT32 x2,
-//                        const INT32 y2) {
-//   Assert(x2 > x1);
-//   Assert(y2 > y1);
-//
-//   FontDestBuffer = dst;
-//   FontDestRegion.iLeft = x1;
-//   FontDestRegion.iTop = y1;
-//   FontDestRegion.iRight = x2;
-//   FontDestRegion.iBottom = y2;
-// }
-//
-// void SetFontDestBuffer(SGPVSurface *const dst) {
-//   SetFontDestBuffer(dst, 0, 0, dst->Width(), dst->Height());
-// }
-//
+void SetFontDestBuffer(SGPVSurface *const dst, const INT32 x1, const INT32 y1, const INT32 x2,
+                       const INT32 y2) {
+  Assert(x2 > x1);
+  Assert(y2 > y1);
+
+  FontDestBuffer = dst;
+  FontDestRegion.iLeft = x1;
+  FontDestRegion.iTop = y1;
+  FontDestRegion.iRight = x2;
+  FontDestRegion.iBottom = y2;
+}
+
+void SetFontDestBuffer(SGPVSurface *const dst) {
+  SetFontDestBuffer(dst, 0, 0, dst->Width(), dst->Height());
+}
+
 // /** Replace backbuffer if it is used by the font system. */
 // void ReplaceFontBackBuffer(SGPVSurface *oldBackbuffer, SGPVSurface *newBackbuffer) {
 //   if (FontDestBuffer == oldBackbuffer) {
@@ -283,9 +283,9 @@ void SetFontAttributes(Font const font, UINT8 const foreground, UINT8 const shad
 //   va_end(ap);
 //   MPrintBuffer(pDestBuf, uiDestPitchBYTES, x, y, str);
 // }
-//
-// void InitializeFontManager(void) {
-//   FontDefault = 0;
-//   SetFontDestBuffer(BACKBUFFER);
-// }
-//
+
+void InitializeFontManager(void) {
+  FontDefault = 0;
+  SetFontDestBuffer(BACKBUFFER);
+}
+

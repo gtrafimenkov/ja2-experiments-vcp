@@ -45,32 +45,31 @@ ScreenID guiPendingScreen = NO_PENDING_SCREEN;
 
 #define DONT_CHECK_FOR_FREE_SPACE 255
 static UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
-//
-// // The InitializeGame function is responsible for setting up all data and Gaming
-// // Engine tasks which will run the game
-//
-// void InitializeGame(void) {
-//   UINT32 uiIndex;
-//
-//   // Initlaize mouse subsystems
-//   MSYS_Init();
-//   InitButtonSystem();
-//   InitCursors();
-//
-//   // Init Fonts
-//   InitializeFonts();
-//
+
+// The InitializeGame function is responsible for setting up all data and Gaming
+// Engine tasks which will run the game
+void InitializeGame(void) {
+  UINT32 uiIndex;
+
+  // Initlaize mouse subsystems
+  MSYS_Init();
+  InitButtonSystem();
+  InitCursors();
+
+  // Init Fonts
+  InitializeFonts();
+
 //   InitTacticalSave();
 //
 //   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version Label: %s", g_version_label));
 //   DebugMsg(TOPIC_JA2, DBG_LEVEL_3, String("Version #:     %s", g_version_number));
-//
-//   // Initialize Game Screens.
-//   for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
-//     void (*const init)(void) = GameScreens[uiIndex].InitializeScreen;
-//     if (init) init();
-//   }
-//
+
+  // Initialize Game Screens.
+  for (uiIndex = 0; uiIndex < MAX_SCREENS; uiIndex++) {
+    void (*const init)(void) = GameScreens[uiIndex].InitializeScreen;
+    if (init) init();
+  }
+
 //   // Init the help screen system
 //   InitHelpScreenSystem();
 //
@@ -82,10 +81,10 @@ static UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 //
 //   // preload mapscreen graphics
 //   HandlePreloadOfMapGraphics();
-//
-//   guiCurrentScreen = INIT_SCREEN;
-// }
-//
+
+  guiCurrentScreen = INIT_SCREEN;
+}
+
 // // The ShutdownGame function will free up/undo all things that were started in
 // // InitializeGame() It will also be responsible to making sure that all Gaming
 // // Engine tasks exit properly

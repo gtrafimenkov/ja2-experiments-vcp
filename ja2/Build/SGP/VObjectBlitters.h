@@ -125,12 +125,12 @@ void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *buf, UINT32 uiDestPitchBYTES,
 // void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area);
 // void Blt16BPPBufferLooseHatchRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area,
 //                                            UINT16 usColor);
-//
-// /* Filter a rectangular area with the given filter table.  This is used for
-//  * shading. */
-// void Blt16BPPBufferFilterRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, const UINT16 *filter_table,
-//                               SGPRect *area);
-//
+
+/* Filter a rectangular area with the given filter table.  This is used for
+ * shading. */
+void Blt16BPPBufferFilterRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, const UINT16 *filter_table,
+                              SGPRect *area);
+
 // void Blt8BPPDataTo16BPPBufferShadow(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, HVOBJECT hSrcVObject,
 //                                     INT32 iX, INT32 iY, UINT16 usIndex);
 //

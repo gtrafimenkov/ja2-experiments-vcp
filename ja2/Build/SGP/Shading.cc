@@ -1,11 +1,11 @@
-// #include "SGP/Shading.h"
-//
-// #include "SGP/HImage.h"
-// #include "SGP/VObject.h"
-//
-// UINT16 IntensityTable[65536];
-// UINT16 ShadeTable[65536];
-// UINT16 White16BPPPalette[256];
+#include "SGP/Shading.h"
+
+#include "SGP/HImage.h"
+#include "SGP/VObject.h"
+
+UINT16 IntensityTable[65536];
+UINT16 ShadeTable[65536];
+UINT16 White16BPPPalette[256];
 // static float guiShadePercent = 0.48f;
 //
 // /* Builds a 16-bit color shading table. This function should be called only

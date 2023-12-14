@@ -38,13 +38,13 @@ void SetFontShadow(UINT8 ubBackground);
 // void mprintf(INT32 x, INT32 y, wchar_t const *fmt, ...);
 // void mprintf_buffer(UINT16 *pDestBuf, UINT32 uiDestPitchBYTES, INT32 x, INT32 y, wchar_t const *fmt,
 //                     ...);
-//
-// /* Sets the destination buffer for printing to and the clipping rectangle. */
-// void SetFontDestBuffer(SGPVSurface *dst, INT32 x1, INT32 y1, INT32 x2, INT32 y2);
-//
-// /* Set the destination buffer for printing while using the whole surface. */
-// void SetFontDestBuffer(SGPVSurface *dst);
-//
+
+/* Sets the destination buffer for printing to and the clipping rectangle. */
+void SetFontDestBuffer(SGPVSurface *dst, INT32 x1, INT32 y1, INT32 x2, INT32 y2);
+
+/* Set the destination buffer for printing while using the whole surface. */
+void SetFontDestBuffer(SGPVSurface *dst);
+
 // /** Replace backbuffer if it is used by the font system. */
 // void ReplaceFontBackBuffer(SGPVSurface *oldBackbuffer, SGPVSurface *newBackbuffer);
 
@@ -54,15 +54,15 @@ void SetFontAttributes(Font, UINT8 foreground, UINT8 shadow = DEFAULT_SHADOW, UI
 
 Font LoadFontFile(const char *filename);
 // UINT16 GetFontHeight(Font);
-// void InitializeFontManager(void);
+void InitializeFontManager(void);
 // void UnloadFont(Font);
 //
 // UINT32 GetCharWidth(HVOBJECT Font, wchar_t c);
 //
 // INT16 StringPixLength(const wchar_t *string, Font);
-// extern void SaveFontSettings(void);
-// extern void RestoreFontSettings(void);
-//
+extern void SaveFontSettings(void);
+extern void RestoreFontSettings(void);
+
 // void FindFontRightCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
 //                               const wchar_t *pStr, Font, INT16 *psNewX, INT16 *psNewY);
 // void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
