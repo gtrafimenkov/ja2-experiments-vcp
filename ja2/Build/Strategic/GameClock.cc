@@ -1,5 +1,5 @@
-// #include "Strategic/GameClock.h"
-//
+#include "Strategic/GameClock.h"
+
 // #include "FadeScreen.h"
 // #include "GameScreen.h"
 // #include "JAScreens.h"
@@ -501,17 +501,17 @@
 // }
 //
 // static void CreateDestroyScreenMaskForPauseGame(void);
-//
-// // There are two factors that influence the flow of time in the game.
-// //-Speed:  The speed is the amount of game time passes per real second of time.
-// // The higher this
-// //         value, the faster the game time flows.
-// //-Resolution:  The higher the resolution, the more often per second the clock
-// // is actually updated. 				 This value doesn't affect how much game
-// // time passes per
-// // real second, but allows for 				 a more accurate representation of faster
-// // time flows.
-// void UpdateClock() {
+
+// There are two factors that influence the flow of time in the game.
+//-Speed:  The speed is the amount of game time passes per real second of time.
+// The higher this
+//         value, the faster the game time flows.
+//-Resolution:  The higher the resolution, the more often per second the clock
+// is actually updated. 				 This value doesn't affect how much game
+// time passes per
+// real second, but allows for 				 a more accurate representation of faster
+// time flows.
+void UpdateClock() {
 //   UINT32 uiNewTime;
 //   UINT32 uiThousandthsOfThisSecondProcessed;
 //   UINT32 uiTimeSlice;
@@ -530,26 +530,26 @@
 // #endif
 //   // check game state for pause screen masks
 //   CreateDestroyScreenMaskForPauseGame();
-//
+
 //   if (guiCurrentScreen != GAME_SCREEN && guiCurrentScreen != MAP_SCREEN &&
 //       guiCurrentScreen != GAME_SCREEN) {
 //     uiLastSecondTime = GetJA2Clock();
 //     gfTimeInterruptPause = FALSE;
 //     return;
 //   }
-//
+
 //   if (gfGamePaused || gfTimeInterruptPause || (gubClockResolution == 0) ||
 //       !guiGameSecondsPerRealSecond || ARE_IN_FADE_IN() || gfFadeOut) {
 //     uiLastSecondTime = GetJA2Clock();
 //     gfTimeInterruptPause = FALSE;
 //     return;
 //   }
-//
+
 //   if ((gTacticalStatus.uiFlags & TURNBASED && gTacticalStatus.uiFlags & INCOMBAT))
 //     return;  // time is currently stopped!
-//
+
 //   uiNewTime = GetJA2Clock();
-//
+
 // #ifdef DEBUG_GAME_CLOCK
 //   uiOrigNewTime = uiNewTime;
 //   uiOrigLastSecondTime = uiLastSecondTime;
@@ -558,15 +558,15 @@
 //   uiOrigTimesThisSecondProcessed = guiTimesThisSecondProcessed;
 //   ubOrigLastResolution = ubLastResolution;
 // #endif
-//
+
 //   // Because we debug so much, breakpoints tend to break the game, and cause
 //   // unnecessary headaches. This line ensures that no more than 1 real-second
 //   // passes between frames.  This otherwise has no effect on anything else.
 //   uiLastSecondTime = MAX(uiNewTime - 1000, uiLastSecondTime);
-//
+
 //   // 1000's of a second difference since last second.
 //   uiThousandthsOfThisSecondProcessed = uiNewTime - uiLastSecondTime;
-//
+
 //   if (uiThousandthsOfThisSecondProcessed >= 1000 && gubClockResolution == 1) {
 //     uiLastSecondTime = uiNewTime;
 //     guiTimesThisSecondProcessed = uiLastTimeProcessed = 0;
@@ -586,18 +586,18 @@
 //       guiTimesThisSecondProcessed = uiThousandthsOfThisSecondProcessed * 1000 / uiTimeSlice;
 //       uiNewTimeProcessed =
 //           guiGameSecondsPerRealSecond * guiTimesThisSecondProcessed / gubClockResolution;
-//
+
 //       uiNewTimeProcessed = MAX(uiNewTimeProcessed, uiLastTimeProcessed);
-//
+
 //       uiAmountToAdvanceTime = uiNewTimeProcessed - uiLastTimeProcessed;
-//
+
 // #ifdef DEBUG_GAME_CLOCK
 //       if (uiAmountToAdvanceTime > 0x80000000 ||
 //           guiGameClock + uiAmountToAdvanceTime < guiPreviousGameClock) {
 //         uiNewTimeProcessed = uiNewTimeProcessed;
 //       }
 // #endif
-//
+
 //       WarpGameTime(uiNewTimeProcessed - uiLastTimeProcessed, WARPTIME_PROCESS_EVENTS_NORMALLY);
 //       if (uiNewTimeProcessed < guiGameSecondsPerRealSecond) {  // Processed the same real second
 //         uiLastTimeProcessed = uiNewTimeProcessed;
@@ -614,8 +614,8 @@
 //       }
 //     }
 //   }
-// }
-//
+}
+
 // void SaveGameClock(HWFILE const hFile, BOOLEAN const fGamePaused, BOOLEAN const fLockPauseState) {
 //   FileWrite(hFile, &giTimeCompressMode, sizeof(INT32));
 //   FileWrite(hFile, &gubClockResolution, sizeof(UINT8));

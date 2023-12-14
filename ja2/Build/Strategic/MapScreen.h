@@ -1,7 +1,7 @@
-// #ifndef __MAPSCREEN_H
-// #define __MAPSCREEN_H
-//
-// #include "JA2Types.h"
+#ifndef __MAPSCREEN_H
+#define __MAPSCREEN_H
+
+#include "JA2Types.h"
 // #include "MessageBoxScreen.h"
 // #include "SGP/ButtonSystem.h"
 // #include "ScreenIDs.h"
@@ -38,7 +38,7 @@
 // extern BOOLEAN gfSkyriderEmptyHelpGiven;
 //
 // void SetInfoChar(SOLDIERTYPE const *);
-// void EndMapScreen(BOOLEAN fDuringFade);
+void EndMapScreen(BOOLEAN fDuringFade);
 // void ReBuildCharactersList(void);
 //
 // void HandlePreloadOfMapGraphics(void);
@@ -112,6 +112,6 @@
 // void MakeDialogueEventEnterMapScreen();
 //
 // void SetMapCursorItem();
-//
-// #endif
-//
+
+#endif
+

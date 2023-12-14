@@ -1,8 +1,8 @@
-// #ifndef __WORLD_CLOCK
-// #define __WORLD_CLOCK
-//
-// #include "SGP/Types.h"
-//
+#ifndef __WORLD_CLOCK
+#define __WORLD_CLOCK
+
+#include "SGP/Types.h"
+
 // #define NUM_SEC_IN_DAY 86400
 // #define NUM_SEC_IN_HOUR 3600
 // #define NUM_SEC_IN_MIN 60
@@ -115,11 +115,11 @@
 // void WarpGameTime(UINT32 uiAdjustment, UINT8 ubWarpCode);
 //
 // void AdvanceToNextDay(void);
-//
-// // This function is called once per cycle in the game loop.  This determine how
-// // often the clock should be as well as how much to update the clock by.
-// void UpdateClock(void);
-//
+
+// This function is called once per cycle in the game loop.  This determine how
+// often the clock should be as well as how much to update the clock by.
+void UpdateClock(void);
+
 // extern wchar_t gswzWorldTimeStr[20];  // Day 99, 23:55
 //
 // extern UINT32 guiDay;
@@ -200,6 +200,6 @@
 //
 // extern BOOLEAN gfGamePaused;
 // extern BOOLEAN gfLockPauseState;
-//
-// #endif
-//
+
+#endif
+

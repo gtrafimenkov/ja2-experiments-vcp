@@ -1,5 +1,5 @@
-// #include "Strategic/MapScreen.h"
-//
+#include "Strategic/MapScreen.h"
+
 // #include "Cheats.h"
 // #include "Directories.h"
 // #include "FadeScreen.h"
@@ -2875,8 +2875,8 @@
 //
 // static void DestroyMouseRegionsForTeamList(void);
 // static void RemoveTeamPanelSortButtonsForMapScreen();
-//
-// void EndMapScreen(BOOLEAN fDuringFade) {
+
+void EndMapScreen(BOOLEAN fDuringFade) {
 //   if (!fInMapMode) return;
 //
 //   fLeavingMapScreen = FALSE;
@@ -3044,8 +3044,8 @@
 //
 //   // cancel request if we somehow leave first
 //   gfRequestGiveSkyriderNewDestination = FALSE;
-// }
-//
+}
+
 // static BOOLEAN GetMapXY(INT16 sX, INT16 sY, INT16 *psMapWorldX, INT16 *psMapWorldY);
 //
 // BOOLEAN GetMouseMapXY(INT16 *psMapWorldX, INT16 *psMapWorldY) {

@@ -1,5 +1,5 @@
-// #include "SysGlobals.h"
-//
+#include "SysGlobals.h"
+
 // #include <stdarg.h>
 //
 // #include "GameLoop.h"
@@ -12,10 +12,10 @@
 // BOOLEAN gfEditMode = FALSE;
 // BOOLEAN fFirstTimeInGameScreen = TRUE;
 // INT8 gbFPSDisplay = SHOW_MIN_FPS;
-// BOOLEAN gfGlobalError = FALSE;
-//
-// UINT32 guiGameCycleCounter = 0;
-//
+BOOLEAN gfGlobalError = FALSE;
+
+UINT32 guiGameCycleCounter = 0;
+
 // void SET_ERROR(char const *const String, ...) {
 //   va_list ArgPtr;
 //

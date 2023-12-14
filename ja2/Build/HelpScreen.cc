@@ -1,5 +1,5 @@
-// #include "HelpScreen.h"
-//
+#include "HelpScreen.h"
+
 // #include "Directories.h"
 // #include "GameSettings.h"
 // #include "HelpScreenText.h"
@@ -1231,13 +1231,13 @@
 //     */
 //   }
 // }
-//
-// // set the fact the we have chmaged to a new screen
-// void NewScreenSoResetHelpScreen() {
+
+// set the fact the we have chmaged to a new screen
+void NewScreenSoResetHelpScreen() {
 //   gHelpScreen.fHaveAlreadyBeenInHelpScreenSinceEnteringCurrenScreen = FALSE;
 //   gHelpScreen.bDelayEnteringHelpScreenBy1FrameCount = 0;
-// }
-//
+}
+
 // static void BtnHelpScreenExitCallback(GUI_BUTTON *btn, INT32 reason) {
 //   if (reason & MSYS_CALLBACK_REASON_LBUTTON_UP) {
 //     PrepareToExitHelpScreen();

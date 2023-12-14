@@ -1,45 +1,45 @@
-// #include "SGP/Random.h"
-//
-// #include <stdlib.h>
-// #include <time.h>
-//
-// #ifdef PRERANDOM_GENERATOR
-//
-// UINT32 guiPreRandomIndex = 0;
-// UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
-//
-// #endif
-//
-// void InitializeRandom(void) {
-//   // Seed the random-number generator with current time so that
-//   // the numbers will be different every time we run.
-//   srand((unsigned)time(NULL));
-// #ifdef PRERANDOM_GENERATOR
-//   // Pregenerate all of the random numbers.
-//   for (guiPreRandomIndex = 0; guiPreRandomIndex < MAX_PREGENERATED_NUMS; guiPreRandomIndex++) {
-//     guiPreRandomNums[guiPreRandomIndex] = rand();
-//   }
-//   guiPreRandomIndex = 0;
-// #endif
-// }
-//
-// // Returns a pseudo-random integer between 0 and uiRange
-// UINT32 Random(UINT32 uiRange) {
-//   UINT32 x;
-//   // Always return 0, if no range given (it's not an error)
-//   if (uiRange == 0) return (0);
-//   /* Ensures a correct average value by actually limiting the possible
-//    * set of values to the largest multiple of uiRange and
-//    * discarding [largest multiple of uiRange beneath RAND_MAX,RAND_MAX].
-//    * The rather complex limitation ensures a correct behaviour even
-//    * for very large (close to RAND_MAX) values of uiRange.
-//    */
-//   do {
-//     x = rand();
-//   } while (x >= (((RAND_MAX - uiRange + 1) / uiRange + 1) * uiRange));
-//   return x % uiRange;
-// }
-//
+#include "SGP/Random.h"
+
+#include <stdlib.h>
+#include <time.h>
+
+#ifdef PRERANDOM_GENERATOR
+
+UINT32 guiPreRandomIndex = 0;
+UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
+
+#endif
+
+void InitializeRandom(void) {
+  // Seed the random-number generator with current time so that
+  // the numbers will be different every time we run.
+  srand((unsigned)time(NULL));
+#ifdef PRERANDOM_GENERATOR
+  // Pregenerate all of the random numbers.
+  for (guiPreRandomIndex = 0; guiPreRandomIndex < MAX_PREGENERATED_NUMS; guiPreRandomIndex++) {
+    guiPreRandomNums[guiPreRandomIndex] = rand();
+  }
+  guiPreRandomIndex = 0;
+#endif
+}
+
+// Returns a pseudo-random integer between 0 and uiRange
+UINT32 Random(UINT32 uiRange) {
+  UINT32 x;
+  // Always return 0, if no range given (it's not an error)
+  if (uiRange == 0) return (0);
+  /* Ensures a correct average value by actually limiting the possible
+   * set of values to the largest multiple of uiRange and
+   * discarding [largest multiple of uiRange beneath RAND_MAX,RAND_MAX].
+   * The rather complex limitation ensures a correct behaviour even
+   * for very large (close to RAND_MAX) values of uiRange.
+   */
+  do {
+    x = rand();
+  } while (x >= (((RAND_MAX - uiRange + 1) / uiRange + 1) * uiRange));
+  return x % uiRange;
+}
+
 // BOOLEAN Chance(UINT32 uiChance) { return Random(100) < uiChance; }
 //
 // #ifdef PRERANDOM_GENERATOR

@@ -28,8 +28,8 @@
 // #include "Utils/TimerControl.h"
 //
 // #define BUFFER_READY 0x00
-// #define BUFFER_DIRTY 0x02
-//
+#define BUFFER_DIRTY 0x02
+
 // #define MAX_CURSOR_WIDTH 64
 // #define MAX_CURSOR_HEIGHT 64
 
@@ -59,9 +59,9 @@ static INT16 gsMouseCursorXOffset;
 static INT16 gsMouseCursorYOffset;
 
 // static SDL_Rect MouseBackground = {0, 0, 0, 0};
-//
-// // Refresh thread based variables
-// static UINT32 guiFrameBufferState;   // BUFFER_READY, BUFFER_DIRTY
+
+// Refresh thread based variables
+static UINT32 guiFrameBufferState;   // BUFFER_READY, BUFFER_DIRTY
 static UINT32 guiVideoManagerState;  // VIDEO_ON, VIDEO_OFF, VIDEO_SUSPENDED
 
 // Dirty rectangle management variables
@@ -276,20 +276,20 @@ void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
 //   }
 // }
 //
-// void InvalidateScreen(void) {
-//   // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
-//   // W A R N I N G ----
-//   //
-//   // This function is intended to be called by a thread which has already locked
-//   // the FRAME_BUFFER_MUTEX mutual exclusion section. Anything else will cause
-//   // the application to yack
-//
-//   guiDirtyRegionCount = 0;
-//   guiDirtyRegionExCount = 0;
-//   gfForceFullScreenRefresh = TRUE;
-//   guiFrameBufferState = BUFFER_DIRTY;
-// }
-//
+void InvalidateScreen(void) {
+  // W A R N I N G ---- W A R N I N G ---- W A R N I N G ---- W A R N I N G ----
+  // W A R N I N G ----
+  //
+  // This function is intended to be called by a thread which has already locked
+  // the FRAME_BUFFER_MUTEX mutual exclusion section. Anything else will cause
+  // the application to yack
+
+  guiDirtyRegionCount = 0;
+  guiDirtyRegionExCount = 0;
+  gfForceFullScreenRefresh = TRUE;
+  guiFrameBufferState = BUFFER_DIRTY;
+}
+
 // //#define SCROLL_TEST
 //
 // static void ScrollJA2Background(INT16 sScrollXIncrement, INT16 sScrollYIncrement) {
@@ -503,99 +503,99 @@ void InvalidateRegion(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
 //     }
 //   }
 // }
-//
-// void RefreshScreen(void) {
-//   if (guiVideoManagerState != VIDEO_ON) return;
-//
-// #if DEBUG_PRINT_FPS
-//   {
-//     static int32_t prevSecond = 0;
-//     static int32_t fps = 0;
-//
-//     int32_t currentSecond = time(NULL);
-//     if (currentSecond != prevSecond) {
-//       printf("fps: %d\n", fps);
-//       fps = 0;
-//       prevSecond = currentSecond;
-//     } else {
-//       fps++;
-//     }
-//   }
-// #endif
-//
-//   SDL_BlitSurface(FrameBuffer, &MouseBackground, ScreenBuffer, &MouseBackground);
-//
-//   const BOOLEAN scrolling = (gsScrollXIncrement != 0 || gsScrollYIncrement != 0);
-//
-//   if (guiFrameBufferState == BUFFER_DIRTY) {
-//     if (gfFadeInitialized && gfFadeInVideo) {
-//       gFadeFunction();
-//     } else {
-//       if (gfForceFullScreenRefresh) {
-//         SDL_BlitSurface(FrameBuffer, NULL, ScreenBuffer, NULL);
-//       } else {
-//         for (UINT32 i = 0; i < guiDirtyRegionCount; i++) {
-//           SDL_BlitSurface(FrameBuffer, &DirtyRegions[i], ScreenBuffer, &DirtyRegions[i]);
-//         }
-//
-//         for (UINT32 i = 0; i < guiDirtyRegionExCount; i++) {
-//           SDL_Rect *r = &DirtyRegionsEx[i];
-//           if (scrolling) {
-//             // Check if we are completely out of bounds
-//             if (r->y <= gsVIEWPORT_WINDOW_END_Y && r->y + r->h <= gsVIEWPORT_WINDOW_END_Y) {
-//               continue;
-//             }
-//           }
-//           SDL_BlitSurface(FrameBuffer, r, ScreenBuffer, r);
-//         }
-//       }
-//     }
-//     if (scrolling) {
-//       ScrollJA2Background(gsScrollXIncrement, gsScrollYIncrement);
-//       gsScrollXIncrement = 0;
-//       gsScrollYIncrement = 0;
-//     }
-//     gfIgnoreScrollDueToCenterAdjust = FALSE;
-//     guiFrameBufferState = BUFFER_READY;
-//   }
-//
-//   if (gfVideoCapture) {
-//     UINT32 uiTime = GetClock();
-//     if (uiTime < guiLastFrame || uiTime > guiLastFrame + guiFramePeriod) {
-//       SnapshotSmall();
-//       guiLastFrame = uiTime;
-//     }
-//   }
-//
-//   if (gfPrintFrameBuffer) {
-//     TakeScreenshot();
-//     gfPrintFrameBuffer = FALSE;
-//   }
-//
-//   SGPPoint MousePos;
-//   GetMousePos(&MousePos);
-//   SDL_Rect src;
-//   src.x = 0;
-//   src.y = 0;
-//   src.w = gusMouseCursorWidth;
-//   src.h = gusMouseCursorHeight;
-//   SDL_Rect dst;
-//   dst.x = MousePos.iX - gsMouseCursorXOffset;
-//   dst.y = MousePos.iY - gsMouseCursorYOffset;
-//   SDL_BlitSurface(MouseCursor, &src, ScreenBuffer, &dst);
-//   MouseBackground = dst;
-//
-//   SDL_UpdateTexture(ScreenTexture, NULL, ScreenBuffer->pixels, ScreenBuffer->pitch);
-//
-//   SDL_RenderClear(GameRenderer);
-//   SDL_RenderCopy(GameRenderer, ScreenTexture, NULL, NULL);
-//   SDL_RenderPresent(GameRenderer);
-//
-//   gfForceFullScreenRefresh = FALSE;
-//   guiDirtyRegionCount = 0;
-//   guiDirtyRegionExCount = 0;
-// }
-//
+
+void RefreshScreen(void) {
+  if (guiVideoManagerState != VIDEO_ON) return;
+
+#if DEBUG_PRINT_FPS
+  {
+    static int32_t prevSecond = 0;
+    static int32_t fps = 0;
+
+    int32_t currentSecond = time(NULL);
+    if (currentSecond != prevSecond) {
+      printf("fps: %d\n", fps);
+      fps = 0;
+      prevSecond = currentSecond;
+    } else {
+      fps++;
+    }
+  }
+#endif
+
+  SDL_BlitSurface(FrameBuffer, &MouseBackground, ScreenBuffer, &MouseBackground);
+
+  const BOOLEAN scrolling = (gsScrollXIncrement != 0 || gsScrollYIncrement != 0);
+
+  if (guiFrameBufferState == BUFFER_DIRTY) {
+    if (gfFadeInitialized && gfFadeInVideo) {
+      gFadeFunction();
+    } else {
+      if (gfForceFullScreenRefresh) {
+        SDL_BlitSurface(FrameBuffer, NULL, ScreenBuffer, NULL);
+      } else {
+        for (UINT32 i = 0; i < guiDirtyRegionCount; i++) {
+          SDL_BlitSurface(FrameBuffer, &DirtyRegions[i], ScreenBuffer, &DirtyRegions[i]);
+        }
+
+        for (UINT32 i = 0; i < guiDirtyRegionExCount; i++) {
+          SDL_Rect *r = &DirtyRegionsEx[i];
+          if (scrolling) {
+            // Check if we are completely out of bounds
+            if (r->y <= gsVIEWPORT_WINDOW_END_Y && r->y + r->h <= gsVIEWPORT_WINDOW_END_Y) {
+              continue;
+            }
+          }
+          SDL_BlitSurface(FrameBuffer, r, ScreenBuffer, r);
+        }
+      }
+    }
+    if (scrolling) {
+      ScrollJA2Background(gsScrollXIncrement, gsScrollYIncrement);
+      gsScrollXIncrement = 0;
+      gsScrollYIncrement = 0;
+    }
+    gfIgnoreScrollDueToCenterAdjust = FALSE;
+    guiFrameBufferState = BUFFER_READY;
+  }
+
+  if (gfVideoCapture) {
+    UINT32 uiTime = GetClock();
+    if (uiTime < guiLastFrame || uiTime > guiLastFrame + guiFramePeriod) {
+      SnapshotSmall();
+      guiLastFrame = uiTime;
+    }
+  }
+
+  if (gfPrintFrameBuffer) {
+    TakeScreenshot();
+    gfPrintFrameBuffer = FALSE;
+  }
+
+  SGPPoint MousePos;
+  GetMousePos(&MousePos);
+  SDL_Rect src;
+  src.x = 0;
+  src.y = 0;
+  src.w = gusMouseCursorWidth;
+  src.h = gusMouseCursorHeight;
+  SDL_Rect dst;
+  dst.x = MousePos.iX - gsMouseCursorXOffset;
+  dst.y = MousePos.iY - gsMouseCursorYOffset;
+  SDL_BlitSurface(MouseCursor, &src, ScreenBuffer, &dst);
+  MouseBackground = dst;
+
+  SDL_UpdateTexture(ScreenTexture, NULL, ScreenBuffer->pixels, ScreenBuffer->pitch);
+
+  SDL_RenderClear(GameRenderer);
+  SDL_RenderCopy(GameRenderer, ScreenTexture, NULL, NULL);
+  SDL_RenderPresent(GameRenderer);
+
+  gfForceFullScreenRefresh = FALSE;
+  guiDirtyRegionCount = 0;
+  guiDirtyRegionExCount = 0;
+}
+
 // static void GetRGBDistribution() {
 //   SDL_PixelFormat const &f = *ScreenBuffer->format;
 //

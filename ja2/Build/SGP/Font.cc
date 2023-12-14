@@ -1,28 +1,28 @@
-// #include "SGP/Font.h"
-//
+#include "SGP/Font.h"
+
 // #include <stdarg.h>
 //
 // #include "GameRes.h"
 // #include "Local.h"
-// #include "SGP/Debug.h"
-// #include "SGP/HImage.h"
+#include "SGP/Debug.h"
+#include "SGP/HImage.h"
 // #include "SGP/MemMan.h"
 // #include "SGP/TranslationTable.h"
 // #include "SGP/Types.h"
-// #include "SGP/VObject.h"
+#include "SGP/VObject.h"
 // #include "SGP/VObjectBlitters.h"
 // #include "SGP/VSurface.h"
 //
 // typedef UINT8 GlyphIdx;
-//
-// // Destination printing parameters
-// Font FontDefault = 0;
+
+// Destination printing parameters
+Font FontDefault = 0;
 // static SGPVSurface *FontDestBuffer;
 // static SGPRect FontDestRegion = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-// static UINT16 FontForeground16 = 0;
-// static UINT16 FontBackground16 = 0;
-// static UINT16 FontShadow16 = DEFAULT_SHADOW;
-//
+static UINT16 FontForeground16 = 0;
+static UINT16 FontBackground16 = 0;
+static UINT16 FontShadow16 = DEFAULT_SHADOW;
+
 // // Temp, for saving printing parameters
 // static Font SaveFontDefault = 0;
 // static SGPVSurface *SaveFontDestBuffer = NULL;
@@ -41,45 +41,45 @@
 //   SetFontForeground(ubForeground);
 //   SetFontBackground(ubBackground);
 // }
-//
-// /* Sets the foreground color of the currently selected font. The parameter is
-//  * the index into the 8-bit palette. In 16BPP mode, the RGB values from the
-//  * palette are used to create the pixel color. Note that if you change fonts,
-//  * the selected foreground/background colors will stay at what they are
-//  * currently set to. */
-// void SetFontForeground(UINT8 ubForeground) {
-//   if (!FontDefault) return;
-//   const SGPPaletteEntry *const c = &FontDefault->Palette()[ubForeground];
-//   FontForeground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
-// }
-//
-// void SetFontShadow(UINT8 ubShadow) {
-//   if (!FontDefault) return;
-//   const SGPPaletteEntry *const c = &FontDefault->Palette()[ubShadow];
-//   FontShadow16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
-//
-//   if (ubShadow != 0 && FontShadow16 == 0) FontShadow16 = 1;
-// }
-//
-// /* Sets the Background color of the currently selected font. The parameter is
-//  * the index into the 8-bit palette. In 16BPP mode, the RGB values from the
-//  * palette are used to create the pixel color. If the background value is zero,
-//  * the background of the font will be transparent.  Note that if you change
-//  * fonts, the selected foreground/background colors will stay at what they are
-//  * currently set to. */
-// void SetFontBackground(UINT8 ubBackground) {
-//   if (!FontDefault) return;
-//   const SGPPaletteEntry *const c = &FontDefault->Palette()[ubBackground];
-//   FontBackground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
-// }
-//
-// /* Loads a font from an ETRLE file */
-// Font LoadFontFile(const char *filename) {
-//   Font const font = AddVideoObjectFromFile(filename);
-//   if (!FontDefault) FontDefault = font;
-//   return font;
-// }
-//
+
+/* Sets the foreground color of the currently selected font. The parameter is
+ * the index into the 8-bit palette. In 16BPP mode, the RGB values from the
+ * palette are used to create the pixel color. Note that if you change fonts,
+ * the selected foreground/background colors will stay at what they are
+ * currently set to. */
+void SetFontForeground(UINT8 ubForeground) {
+  if (!FontDefault) return;
+  const SGPPaletteEntry *const c = &FontDefault->Palette()[ubForeground];
+  FontForeground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
+}
+
+void SetFontShadow(UINT8 ubShadow) {
+  if (!FontDefault) return;
+  const SGPPaletteEntry *const c = &FontDefault->Palette()[ubShadow];
+  FontShadow16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
+
+  if (ubShadow != 0 && FontShadow16 == 0) FontShadow16 = 1;
+}
+
+/* Sets the Background color of the currently selected font. The parameter is
+ * the index into the 8-bit palette. In 16BPP mode, the RGB values from the
+ * palette are used to create the pixel color. If the background value is zero,
+ * the background of the font will be transparent.  Note that if you change
+ * fonts, the selected foreground/background colors will stay at what they are
+ * currently set to. */
+void SetFontBackground(UINT8 ubBackground) {
+  if (!FontDefault) return;
+  const SGPPaletteEntry *const c = &FontDefault->Palette()[ubBackground];
+  FontBackground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
+}
+
+/* Loads a font from an ETRLE file */
+Font LoadFontFile(const char *filename) {
+  Font const font = AddVideoObjectFromFile(filename);
+  if (!FontDefault) FontDefault = font;
+  return font;
+}
+
 // /* Deletes the video object of a particular font. Frees up the memory and
 //  * resources allocated for it. */
 // void UnloadFont(Font const font) {
@@ -152,21 +152,21 @@
 // }
 //
 // UINT32 GetCharWidth(HVOBJECT Font, wchar_t c) { return GetWidth(Font, GetGlyphIndex(c)); }
-//
-// /* Sets the current font number. */
-// void SetFont(Font const font) {
-//   Assert(font);
-//   FontDefault = font;
-// }
-//
-// void SetFontAttributes(Font const font, UINT8 const foreground, UINT8 const shadow,
-//                        UINT8 const background) {
-//   SetFont(font);
-//   SetFontForeground(foreground);
-//   SetFontShadow(shadow);
-//   SetFontBackground(background);
-// }
-//
+
+/* Sets the current font number. */
+void SetFont(Font const font) {
+  Assert(font);
+  FontDefault = font;
+}
+
+void SetFontAttributes(Font const font, UINT8 const foreground, UINT8 const shadow,
+                       UINT8 const background) {
+  SetFont(font);
+  SetFontForeground(foreground);
+  SetFontShadow(shadow);
+  SetFontBackground(background);
+}
+
 // void SetFontDestBuffer(SGPVSurface *const dst, const INT32 x1, const INT32 y1, const INT32 x2,
 //                        const INT32 y2) {
 //   Assert(x2 > x1);

@@ -1,5 +1,5 @@
-// #include "Strategic/StrategicMap.h"
-//
+#include "Strategic/StrategicMap.h"
+
 // #include <stdexcept>
 //
 // #include "Directories.h"
@@ -121,8 +121,8 @@
 //
 // INT16 gWorldSectorX = 0;
 // INT16 gWorldSectorY = 0;
-// INT8 gbWorldSectorZ = -1;
-//
+INT8 gbWorldSectorZ = -1;
+
 // static INT16 gsAdjacentSectorX;
 // static INT16 gsAdjacentSectorY;
 // static INT8 gbAdjacentSectorZ;
@@ -3099,8 +3099,8 @@
 //
 //   return (FALSE);
 // }
-//
-// BOOLEAN CheckAndHandleUnloadingOfCurrentWorld() try {
+
+BOOLEAN CheckAndHandleUnloadingOfCurrentWorld() try {
 //   INT16 sBattleSectorX, sBattleSectorY, sBattleSectorZ;
 //
 //   // Don't bother checking this if we don't have a world loaded.
@@ -3210,12 +3210,12 @@
 //   // Clear the flags regarding.
 //   gfCaves = FALSE;
 //   gfBasement = FALSE;
-//
-//   return TRUE;
-// } catch (...) {
-//   return FALSE;
-// }
-//
+
+  return TRUE;
+} catch (...) {
+  return FALSE;
+}
+
 // /* This is called just before the world is unloaded to preserve location
 //  * information for RPCs and NPCs either in the sector or strategically in the
 //  * sector (such as firing an NPC in a sector that isn't yet loaded.)  When
@@ -3276,7 +3276,7 @@
 //     p.fUseProfileInsertionInfo = TRUE;
 //   }
 // }
-//
+
 // static void HandlePotentialMoraleHitForSkimmingSectors(GROUP *pGroup) {
 //   if (!gTacticalStatus.fHasEnteredCombatModeSinceEntering && gTacticalStatus.fEnemyInSector) {
 //     // Flag is set so if "wilderness" enemies are in the adjacent sector of this

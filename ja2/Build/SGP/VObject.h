@@ -31,15 +31,15 @@ class SGPVObject {
   ~SGPVObject();
 
 //   UINT8 BPP() const { return bit_depth_; }
-//
-//   SGPPaletteEntry const *Palette() const { return palette_; }
+
+  SGPPaletteEntry const *Palette() const { return palette_; }
 
   UINT16 const *Palette16() const { return palette16_; }
 
   UINT16 const *CurrentShade() const { return current_shade_; }
 
-//   // Set the current object shade table
-//   void CurrentShade(size_t idx);
+  // Set the current object shade table
+  void CurrentShade(size_t idx);
 
   UINT16 SubregionCount() const { return subregion_count_; }
 

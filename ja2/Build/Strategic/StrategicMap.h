@@ -1,9 +1,10 @@
-// #ifndef __STRATMAP_H
-// #define __STRATMAP_H
-// // this file is for manipulation of the strategic map structure
-//
-// #include "JA2Types.h"
-//
+#ifndef __STRATMAP_H
+#define __STRATMAP_H
+// this file is for manipulation of the strategic map structure
+
+#include "JA2Types.h"
+#include "SGP/Types.h"
+
 // // The maximum size for any team strategically speaking.  For example, we can't
 // // have more than 20 enemies, militia, or creatures at a time.
 // #define MAX_STRATEGIC_TEAM_SIZE 20
@@ -19,8 +20,8 @@
 // // For speed, etc lets make these globals, forget the functions if you want
 // extern INT16 gWorldSectorX;
 // extern INT16 gWorldSectorY;
-// extern INT8 gbWorldSectorZ;
-//
+extern INT8 gbWorldSectorZ;
+
 // #define NO_SECTOR ((UINT)-1)
 //
 // UINT GetWorldSector();
@@ -119,9 +120,9 @@
 // // handle a soldier leaving thier squad behind, this sets them up for mvt and
 // // potential rejoining of group
 // void HandleSoldierLeavingSectorByThemSelf(SOLDIERTYPE *pSoldier);
-//
-// BOOLEAN CheckAndHandleUnloadingOfCurrentWorld(void);
-//
+
+BOOLEAN CheckAndHandleUnloadingOfCurrentWorld(void);
+
 // // number of SAM sites under player control
 // INT32 GetNumberOfSAMSitesUnderPlayerControl();
 //
@@ -165,6 +166,6 @@
 // };
 //
 // extern StrategicMapElement StrategicMap[MAP_WORLD_X * MAP_WORLD_Y];
-//
-// #endif
-//
+
+#endif
+

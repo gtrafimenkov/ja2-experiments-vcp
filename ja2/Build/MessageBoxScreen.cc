@@ -1,5 +1,5 @@
-// #include "MessageBoxScreen.h"
-//
+#include "MessageBoxScreen.h"
+
 // #include "Directories.h"
 // #include "FadeScreen.h"
 // #include "GameLoop.h"
@@ -42,8 +42,8 @@
 //
 // // if the cursor was locked to a region
 // static BOOLEAN fCursorLockedToArea = FALSE;
-// BOOLEAN gfInMsgBox = FALSE;
-//
+BOOLEAN gfInMsgBox = FALSE;
+
 // static SGPRect gOldCursorLimitRectangle;
 //
 // MESSAGE_BOX_STRUCT gMsgBox;

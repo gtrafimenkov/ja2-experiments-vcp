@@ -1,5 +1,5 @@
-// #include "Utils/TimerControl.h"
-//
+#include "Utils/TimerControl.h"
+
 // #include <SDL.h>
 // #include <stdexcept>
 //
@@ -16,33 +16,33 @@
 // UINT32 guiBaseJA2Clock = 0;
 //
 // static BOOLEAN gfPauseClock = FALSE;
-//
-// const INT32 giTimerIntervals[NUMTIMERS] = {
-//     5,     // Tactical Overhead
-//     20,    // NEXTSCROLL
-//     200,   // Start Scroll
-//     200,   // Animate tiles
-//     1000,  // FPS Counter
-//     80,    // PATH FIND COUNTER
-//     150,   // CURSOR TIMER
-//     250,   // RIGHT CLICK FOR MENU
-//     300,   // LEFT
-//     200,   // TARGET REFINE TIMER
-//     150,   // CURSOR/AP FLASH
-//     20,    // PHYSICS UPDATE
-//     100,   // FADE ENEMYS
-//     20,    // STRATEGIC OVERHEAD
-//     40,
-//     500,  // NON GUN TARGET REFINE TIMER
-//     250,  // IMPROVED CURSOR FLASH
-//     500,  // 2nd CURSOR FLASH
-//     400,  // RADARMAP BLINK AND OVERHEAD MAP BLINK SHOUDL BE THE SAME
-//     10    // Music Overhead
-// };
-//
-// // TIMER COUNTERS
-// INT32 giTimerCounters[NUMTIMERS];
-//
+
+const INT32 giTimerIntervals[NUMTIMERS] = {
+    5,     // Tactical Overhead
+    20,    // NEXTSCROLL
+    200,   // Start Scroll
+    200,   // Animate tiles
+    1000,  // FPS Counter
+    80,    // PATH FIND COUNTER
+    150,   // CURSOR TIMER
+    250,   // RIGHT CLICK FOR MENU
+    300,   // LEFT
+    200,   // TARGET REFINE TIMER
+    150,   // CURSOR/AP FLASH
+    20,    // PHYSICS UPDATE
+    100,   // FADE ENEMYS
+    20,    // STRATEGIC OVERHEAD
+    40,
+    500,  // NON GUN TARGET REFINE TIMER
+    250,  // IMPROVED CURSOR FLASH
+    500,  // 2nd CURSOR FLASH
+    400,  // RADARMAP BLINK AND OVERHEAD MAP BLINK SHOUDL BE THE SAME
+    10    // Music Overhead
+};
+
+// TIMER COUNTERS
+INT32 giTimerCounters[NUMTIMERS];
+
 // INT32 giTimerAirRaidQuote = 0;
 // INT32 giTimerAirRaidDiveStarted = 0;
 // INT32 giTimerAirRaidUpdate = 0;

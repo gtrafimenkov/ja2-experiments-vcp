@@ -1,8 +1,8 @@
-// #ifndef _HELP_SCREEN__H_
-// #define _HELP_SCREEN__H_
-//
-// #include "SGP/Types.h"
-//
+#ifndef _HELP_SCREEN__H_
+#define _HELP_SCREEN__H_
+
+#include "SGP/Types.h"
+
 // // enum used for the different help screens that can come up
 // enum HelpScreenID {
 //   HELP_SCREEN_NONE = -1,
@@ -61,8 +61,8 @@
 // BOOLEAN ShouldTheHelpScreenComeUp(HelpScreenID, BOOLEAN fForceHelpScreenToComeUp);
 // void HelpScreenHandler(void);
 // void InitHelpScreenSystem(void);
-// void NewScreenSoResetHelpScreen(void);
+void NewScreenSoResetHelpScreen(void);
 // HelpScreenID HelpScreenDetermineWhichMapScreenHelpToShow();
-//
-// #endif
-//
+
+#endif
+

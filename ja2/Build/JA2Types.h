@@ -1,8 +1,8 @@
-// #ifndef JA2TYPES_H
-// #define JA2TYPES_H
-//
-// #include "SGP/Types.h"
-//
+#ifndef JA2TYPES_H
+#define JA2TYPES_H
+
+#include "SGP/Types.h"
+
 // typedef INT16 GridNo;
 // typedef UINT8 ProfileID;
 // typedef INT32 TIMECOUNTER;
@@ -32,6 +32,6 @@
 // struct TILE_IMAGERY;
 // struct VEHICLETYPE;
 // struct VIDEO_OVERLAY;
-//
-// #endif
-//
+
+#endif
+

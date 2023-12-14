@@ -1,5 +1,5 @@
-// #include "Screens.h"
-//
+#include "Screens.h"
+
 // #include "AniViewScreen.h"
 // #include "Credits.h"
 // #include "Editor/EditScreen.h"
@@ -12,7 +12,7 @@
 // #include "Laptop/Laptop.h"
 // #include "MainMenuScreen.h"
 // #include "MessageBoxScreen.h"
-// #include "OptionsScreen.h"
+#include "OptionsScreen.h"
 // #include "SaveLoadScreen.h"
 // #include "Strategic/AIViewer.h"
 // #include "Strategic/AutoResolve.h"
@@ -20,36 +20,37 @@
 // #include "Strategic/QuestDebugSystem.h"
 // #include "Tactical/ShopKeeperInterface.h"
 // #include "Utils/MapUtility.h"
-//
-// Screens const GameScreens[] = {
+
+Screens const GameScreens[MAX_SCREENS] = {
 //     {EditScreenInit, EditScreenHandle, EditScreenShutdown},
-//     {NULL, NULL, NULL},
-//     {NULL, NULL, NULL},
-//     {NULL, ErrorScreenHandle, NULL},  // Title Screen
+    {NULL, NULL, NULL},
+    {NULL, NULL, NULL},
+    {NULL, ErrorScreenHandle, NULL},  // Title Screen
 //     {NULL, InitScreenHandle, NULL},   // Title Screen
-//     {MainGameScreenInit, MainGameScreenHandle, MainGameScreenShutdown},
+    {MainGameScreenInit, MainGameScreenHandle, MainGameScreenShutdown},
 //     {NULL, AniEditScreenHandle, NULL},
 //     {NULL, PalEditScreenHandle, NULL},
 //     {NULL, DebugScreenHandle, NULL},
-//     {MapScreenInit, MapScreenHandle, MapScreenShutdown},
-//     {LaptopScreenInit, LaptopScreenHandle, LaptopScreenShutdown},
+    {MapScreenInit, MapScreenHandle, MapScreenShutdown},
+    {LaptopScreenInit, LaptopScreenHandle, LaptopScreenShutdown},
 //     {NULL, LoadSaveScreenHandle, NULL},
 //     {NULL, MapUtilScreenHandle, NULL},
 //     {NULL, FadeScreenHandle, NULL},
-//     {NULL, MessageBoxScreenHandle, MessageBoxScreenShutdown},
-//     {NULL, MainMenuScreenHandle, NULL},
+    {NULL, MessageBoxScreenHandle, MessageBoxScreenShutdown},
+    {NULL, MainMenuScreenHandle, NULL},
 //     {NULL, AutoResolveScreenHandle, NULL},
 //     {NULL, SaveLoadScreenHandle, NULL},
-//     {NULL, OptionsScreenHandle, NULL},
+    {NULL, OptionsScreenHandle, NULL},
 //     {ShopKeeperScreenInit, ShopKeeperScreenHandle, ShopKeeperScreenShutdown},
 //     {NULL, SexScreenHandle, NULL},
 //     {NULL, GameInitOptionsScreenHandle, NULL},
 //     {NULL, NULL, NULL},
 //     {NULL, IntroScreenHandle, NULL},
 //     {NULL, CreditScreenHandle, NULL},
-//     {QuestDebugScreenInit, QuestDebugScreenHandle, NULL}};
-//
-// #include "gtest/gtest.h"
-//
-// TEST(Screens, asserts) { EXPECT_EQ(lengthof(GameScreens), MAX_SCREENS); }
-//
+//     {QuestDebugScreenInit, QuestDebugScreenHandle, NULL}
+};
+
+#include "gtest/gtest.h"
+
+TEST(Screens, asserts) { EXPECT_EQ(lengthof(GameScreens), MAX_SCREENS); }
+

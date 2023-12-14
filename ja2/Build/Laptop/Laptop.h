@@ -1,12 +1,12 @@
-// #ifndef LAPTOP_H
-// #define LAPTOP_H
-//
+#ifndef LAPTOP_H
+#define LAPTOP_H
+
 // #include "MessageBoxScreen.h"
 // #include "SGP/MouseSystem.h"
 // #include "SGP/Types.h"
 // #include "ScreenIDs.h"
 //
-// void ExitLaptop(void);
+void ExitLaptop(void);
 // void HandleLapTopESCKey(void);
 // void SetBookMark(INT32 iBookId);
 // void SetLaptopExitScreen(ScreenID uiExitScreen);
@@ -140,6 +140,6 @@
 // void LaptopScreenInit(void);
 // ScreenID LaptopScreenHandle(void);
 // void LaptopScreenShutdown(void);
-//
-// #endif
-//
+
+#endif
+

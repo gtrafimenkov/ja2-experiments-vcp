@@ -108,11 +108,11 @@ SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
 // This function will create a buffer in memory of ETRLE data, excluding palette
 void GetETRLEImageData(SGPImage const *, ETRLEData *);
 
-// // UTILITY FUNCTIONS
-//
-// // Used to create a 16BPP Palette from an 8 bit palette, found in himage.c
-// UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
-//                                  UINT32 bscale, BOOLEAN mono);
+// UTILITY FUNCTIONS
+
+// Used to create a 16BPP Palette from an 8 bit palette, found in himage.c
+UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
+                                 UINT32 bscale, BOOLEAN mono);
 UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette);
 UINT16 Get16BPPColor(UINT32 RGBValue);
 // UINT32 GetRGBColor(UINT16 Value16BPP);

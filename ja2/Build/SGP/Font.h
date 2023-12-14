@@ -1,9 +1,9 @@
-// #ifndef FONT_H
-// #define FONT_H
-//
-// #include "SGP/Types.h"
-//
-// #define DEFAULT_SHADOW 2
+#ifndef FONT_H
+#define FONT_H
+
+#include "SGP/Types.h"
+
+#define DEFAULT_SHADOW 2
 // #define MILITARY_SHADOW 67
 // #define NO_SHADOW 0
 //
@@ -18,14 +18,14 @@
 // #define FONT_FCOLOR_BROWN 184
 // #define FONT_FCOLOR_ORANGE 76
 // #define FONT_FCOLOR_PURPLE 160
-//
-// extern Font FontDefault;
-//
+
+extern Font FontDefault;
+
 // void SetFontColors(UINT16 usColors);
-// void SetFontForeground(UINT8 ubForeground);
-// void SetFontBackground(UINT8 ubBackground);
-// void SetFontShadow(UINT8 ubBackground);
-//
+void SetFontForeground(UINT8 ubForeground);
+void SetFontBackground(UINT8 ubBackground);
+void SetFontShadow(UINT8 ubBackground);
+
 // /* Print to the currently selected destination buffer, at the X/Y coordinates
 //  * specified, using the currently selected font. Other than the X/Y coordinates,
 //  * the parameters are identical to printf. The resulting string may be no longer
@@ -47,12 +47,12 @@
 //
 // /** Replace backbuffer if it is used by the font system. */
 // void ReplaceFontBackBuffer(SGPVSurface *oldBackbuffer, SGPVSurface *newBackbuffer);
-//
-// void SetFont(Font);
-//
-// void SetFontAttributes(Font, UINT8 foreground, UINT8 shadow = DEFAULT_SHADOW, UINT8 background = 0);
-//
-// Font LoadFontFile(const char *filename);
+
+void SetFont(Font);
+
+void SetFontAttributes(Font, UINT8 foreground, UINT8 shadow = DEFAULT_SHADOW, UINT8 background = 0);
+
+Font LoadFontFile(const char *filename);
 // UINT16 GetFontHeight(Font);
 // void InitializeFontManager(void);
 // void UnloadFont(Font);
@@ -69,6 +69,6 @@
 //                                const wchar_t *pStr, Font, INT16 *psNewX, INT16 *psNewY);
 //
 // bool IsPrintableChar(wchar_t);
-//
-// #endif
-//
+
+#endif
+

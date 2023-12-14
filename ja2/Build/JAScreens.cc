@@ -9,18 +9,18 @@
 // #include "Local.h"
 // #include "MainMenuScreen.h"
 // #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
+#include "SGP/Debug.h"
 // #include "SGP/English.h"
-// #include "SGP/Font.h"
+#include "SGP/Font.h"
 // #include "SGP/HImage.h"
-// #include "SGP/Input.h"
+#include "SGP/Input.h"
 // #include "SGP/MouseSystem.h"
 // #include "SGP/Random.h"
 // #include "SGP/SGP.h"
 // #include "SGP/Timer.h"
 // #include "SGP/VObject.h"
 // #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
+#include "SGP/Video.h"
 // #include "Screens.h"
 // #include "Strategic/GameClock.h"
 // #include "Strategic/GameInit.h"
@@ -32,7 +32,7 @@
 // #include "TileEngine/RenderDirty.h"
 // #include "TileEngine/SysUtil.h"
 // #include "TileEngine/WorldDef.h"
-// #include "Utils/FontControl.h"
+#include "Utils/FontControl.h"
 // #include "Utils/MultiLanguageGraphicUtils.h"
 // #include "Utils/SoundControl.h"
 // #include "Utils/Text.h"
@@ -82,43 +82,43 @@
 //     SetVideoOverlayTextF(g_counter_period_overlay, L"%ld", __min(giTimerDiag, 1000));
 //   }
 // }
-//
-// ScreenID ErrorScreenHandle(void) {
-//   InputAtom InputEvent;
-//   static BOOLEAN fFirstTime = FALSE;
-//
-//   // Create string
-//   SetFontAttributes(LARGEFONT1, FONT_MCOLOR_LTGRAY);
-//   MPrint(50, 200, L"RUNTIME ERROR");
-//   MPrint(50, 225, L"PRESS <ESC> TO EXIT");
-//
-//   SetFontAttributes(FONT12ARIAL, FONT_YELLOW);
-//   mprintf(50, 255, L"%hs", gubErrorText);
-//
-//   if (!fFirstTime) {
-//     DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Runtime Error: %s ", gubErrorText));
-//     fFirstTime = TRUE;
-//   }
-//
-//   // For quick setting of new video stuff / to be changed
-//   InvalidateScreen();
-//
-//   // Check for esc
-//   while (DequeueEvent(&InputEvent)) {
-//     if (InputEvent.usEvent == KEY_DOWN) {
-//       if (InputEvent.usParam == SDLK_ESCAPE ||
-//           (InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN)) {  // Exit the program
-//         DebugMsg(TOPIC_GAME, DBG_LEVEL_0, "GameLoop: User pressed ESCape, TERMINATING");
-//
-//         // handle shortcut exit
-//         HandleShortCutExitState();
-//       }
-//     }
-//   }
-//
-//   return (ERROR_SCREEN);
-// }
-//
+
+ScreenID ErrorScreenHandle(void) {
+  InputAtom InputEvent;
+  static BOOLEAN fFirstTime = FALSE;
+
+  // Create string
+  SetFontAttributes(LARGEFONT1, FONT_MCOLOR_LTGRAY);
+  MPrint(50, 200, L"RUNTIME ERROR");
+  MPrint(50, 225, L"PRESS <ESC> TO EXIT");
+
+  SetFontAttributes(FONT12ARIAL, FONT_YELLOW);
+  mprintf(50, 255, L"%hs", gubErrorText);
+
+  if (!fFirstTime) {
+    DebugMsg(TOPIC_JA2, DBG_LEVEL_0, String("Runtime Error: %s ", gubErrorText));
+    fFirstTime = TRUE;
+  }
+
+  // For quick setting of new video stuff / to be changed
+  InvalidateScreen();
+
+  // Check for esc
+  while (DequeueEvent(&InputEvent)) {
+    if (InputEvent.usEvent == KEY_DOWN) {
+      if (InputEvent.usParam == SDLK_ESCAPE ||
+          (InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN)) {  // Exit the program
+        DebugMsg(TOPIC_GAME, DBG_LEVEL_0, "GameLoop: User pressed ESCape, TERMINATING");
+
+        // handle shortcut exit
+        HandleShortCutExitState();
+      }
+    }
+  }
+
+  return (ERROR_SCREEN);
+}
+
 // ScreenID InitScreenHandle(void) {
 //   static UINT32 splashDisplayedMoment = 0;
 //   static UINT8 ubCurrentScreen = 255;

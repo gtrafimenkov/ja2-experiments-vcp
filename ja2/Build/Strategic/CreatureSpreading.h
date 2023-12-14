@@ -1,9 +1,9 @@
-// #ifndef __CREATURE_SPREADING_H
-// #define __CREATURE_SPREADING_H
-//
+#ifndef __CREATURE_SPREADING_H
+#define __CREATURE_SPREADING_H
+
 // #include "JA2Types.h"
-// #include "SGP/Types.h"
-//
+#include "SGP/Types.h"
+
 // void InitCreatureQuest(void);
 // void SpreadCreatures(void);
 // void ClearCreatureQuest(void);
@@ -17,9 +17,9 @@
 // void CreatureAttackTown(UINT8 ubSectorID, BOOLEAN fOverrideTest);
 //
 // void CheckConditionsForTriggeringCreatureQuest(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
-//
-// extern BOOLEAN gfUseCreatureMusic;
-//
+
+extern BOOLEAN gfUseCreatureMusic;
+
 // BOOLEAN MineClearOfMonsters(UINT8 ubMineIndex);
 //
 // // Returns true if valid and creature quest over, false if creature quest active
@@ -57,6 +57,6 @@
 // BOOLEAN PlayerGroupIsInACreatureInfestedMine(void);
 //
 // void EndCreatureQuest(void);
-//
-// #endif
-//
+
+#endif
+

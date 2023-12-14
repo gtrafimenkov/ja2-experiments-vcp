@@ -514,8 +514,8 @@
 // static void DeleteLapTopMouseRegions(void);
 // static void DeleteLoadPending(void);
 // static void ExitLaptopMode(UINT32 uiMode);
-//
-// void ExitLaptop(void) {
+
+void ExitLaptop(void) {
 //   // exit is called due to message box, leave
 //   if (fExitDueToMessageBox) {
 //     fExitDueToMessageBox = FALSE;
@@ -591,8 +591,8 @@
 //
 //   // pause the game because we dont want time to advance in the laptop
 //   UnPauseGame();
-// }
-//
+}
+
 // static void RenderLapTopImage(void) {
 //   if (fMaximizingProgram || fMinizingProgram) return;
 //

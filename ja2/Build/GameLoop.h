@@ -9,13 +9,13 @@
 // void ShutdownGame(void);
 void GameLoop(void);
 
-// // handle exit from game due to shortcut key
-// void HandleShortCutExitState();
-//
+// handle exit from game due to shortcut key
+void HandleShortCutExitState();
+
 // void SetPendingNewScreen(ScreenID);
-//
-// extern ScreenID guiPendingScreen;
-//
+
+extern ScreenID guiPendingScreen;
+
 // void NextLoopCheckForEnoughFreeHardDriveSpace(void);
 //
 // // callback to confirm game is over

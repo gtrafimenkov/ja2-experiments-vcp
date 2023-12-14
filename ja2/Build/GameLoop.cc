@@ -5,24 +5,27 @@
 // #include "GameSettings.h"
 // #include "GameState.h"
 // #include "GameVersion.h"
-// #include "HelpScreen.h"
+#include "HelpScreen.h"
 #include "Init.h"
 // #include "Laptop/Finances.h"
-// #include "Laptop/Laptop.h"
+#include "Laptop/Laptop.h"
 // #include "Local.h"
+#include "MessageBoxScreen.h"
 // #include "OptionsScreen.h"
 // #include "SGP/ButtonSystem.h"
 // #include "SGP/Debug.h"
+#include "SGP/Input.h"
 // #include "SGP/LibraryDataBase.h"
 // #include "SGP/MemMan.h"
-// #include "SGP/SGP.h"
-// #include "SGP/Video.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/SGP.h"
+#include "SGP/Video.h"
 #include "SaveLoadGame.h"
 #include "Screens.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/MapScreen.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/MapScreen.h"
 // #include "Strategic/MapScreenInterface.h"
-// #include "SysGlobals.h"
+#include "SysGlobals.h"
 // #include "Tactical/Interface.h"
 // #include "Tactical/Overhead.h"
 // #include "Tactical/ShopKeeperInterface.h"
@@ -30,18 +33,18 @@
 // #include "TileEngine/TacticalPlacementGUI.h"
 // #include "Utils/Cursors.h"
 // #include "Utils/FontControl.h"
-// #include "Utils/MusicControl.h"
-// #include "Utils/Text.h"
-//
+#include "Utils/MusicControl.h"
+#include "Utils/Text.h"
+
 // #ifdef JA2BETAVERSION
 // #include "PreBattle_Interface.h"
 // #endif
-//
-// ScreenID guiCurrentScreen = ERROR_SCREEN;  // XXX TODO001A had no explicit initialisation
-// ScreenID guiPendingScreen = NO_PENDING_SCREEN;
-//
-// #define DONT_CHECK_FOR_FREE_SPACE 255
-// static UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
+
+ScreenID guiCurrentScreen = ERROR_SCREEN;  // XXX TODO001A had no explicit initialisation
+ScreenID guiPendingScreen = NO_PENDING_SCREEN;
+
+#define DONT_CHECK_FOR_FREE_SPACE 255
+static UINT8 gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
 //
 // // The InitializeGame function is responsible for setting up all data and Gaming
 // // Engine tasks which will run the game
@@ -148,8 +151,8 @@
 //     sCounter--;
 //   }
 // }
-//
-// static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen);
+
+static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen);
 
 // This is the main Gameloop. This should eventually by one big switch statement
 // which represents the state of the game (i.e. Main Menu, PC Generation, Combat
@@ -174,39 +177,39 @@ void GameLoop(void) try {
 
   // if we are to check for free space on the hard drive
   if (gubCheckForFreeSpaceOnHardDriveCount < DONT_CHECK_FOR_FREE_SPACE) {
-    // only if we are in a screen that can get this check
-    if (guiCurrentScreen == MAP_SCREEN || guiCurrentScreen == GAME_SCREEN ||
-        guiCurrentScreen == SAVE_LOAD_SCREEN) {
-      if (gubCheckForFreeSpaceOnHardDriveCount < 1) {
-        gubCheckForFreeSpaceOnHardDriveCount++;
-      } else {
-        // Make sure the user has enough hard drive space
-        if (!DoesUserHaveEnoughHardDriveSpace()) {
-          wchar_t zText[512];
-          wchar_t zSpaceOnDrive[512];
-          UINT32 uiSpaceOnDrive;
-          wchar_t zSizeNeeded[512];
+    // // only if we are in a screen that can get this check
+    // if (guiCurrentScreen == MAP_SCREEN || guiCurrentScreen == GAME_SCREEN ||
+    //     guiCurrentScreen == SAVE_LOAD_SCREEN) {
+    //   if (gubCheckForFreeSpaceOnHardDriveCount < 1) {
+    //     gubCheckForFreeSpaceOnHardDriveCount++;
+    //   } else {
+    //     // Make sure the user has enough hard drive space
+    //     if (!DoesUserHaveEnoughHardDriveSpace()) {
+    //       wchar_t zText[512];
+    //       wchar_t zSpaceOnDrive[512];
+    //       UINT32 uiSpaceOnDrive;
+    //       wchar_t zSizeNeeded[512];
 
-          swprintf(zSizeNeeded, lengthof(zSizeNeeded), L"%d",
-                   REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
-          InsertCommasIntoNumber(zSizeNeeded);
+    //       swprintf(zSizeNeeded, lengthof(zSizeNeeded), L"%d",
+    //                REQUIRED_FREE_SPACE / BYTESINMEGABYTE);
+    //       InsertCommasIntoNumber(zSizeNeeded);
 
-          uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
+    //       uiSpaceOnDrive = GetFreeSpaceOnHardDriveWhereGameIsRunningFrom();
 
-          swprintf(zSpaceOnDrive, lengthof(zSpaceOnDrive), L"%.2f",
-                   uiSpaceOnDrive / (FLOAT)BYTESINMEGABYTE);
+    //       swprintf(zSpaceOnDrive, lengthof(zSpaceOnDrive), L"%.2f",
+    //                uiSpaceOnDrive / (FLOAT)BYTESINMEGABYTE);
 
-          swprintf(zText, lengthof(zText), pMessageStrings[MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive,
-                   zSizeNeeded);
+    //       swprintf(zText, lengthof(zText), pMessageStrings[MSG_LOWDISKSPACE_WARNING], zSpaceOnDrive,
+    //                zSizeNeeded);
 
-          if (guiPreviousOptionScreen == MAP_SCREEN)
-            DoMapMessageBox(MSG_BOX_BASIC_STYLE, zText, MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
-          else
-            DoMessageBox(MSG_BOX_BASIC_STYLE, zText, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
-        }
-        gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
-      }
-    }
+    //       if (guiPreviousOptionScreen == MAP_SCREEN)
+    //         DoMapMessageBox(MSG_BOX_BASIC_STYLE, zText, MAP_SCREEN, MSG_BOX_FLAG_OK, NULL);
+    //       else
+    //         DoMessageBox(MSG_BOX_BASIC_STYLE, zText, GAME_SCREEN, MSG_BOX_FLAG_OK, NULL, NULL);
+    //     }
+    //     gubCheckForFreeSpaceOnHardDriveCount = DONT_CHECK_FOR_FREE_SPACE;
+    //   }
+    // }
   }
 
   // ATE: Force to be in message box screen!
@@ -284,51 +287,51 @@ void GameLoop(void) try {
 }
 
 // void SetPendingNewScreen(ScreenID const uiNewScreen) { guiPendingScreen = uiNewScreen; }
-//
-// // Gets called when the screen changes, place any needed in code in here
-// static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen) {
-//   // if we are not going into the message box screen, and we didnt just come
-//   // from it
-//   if ((uiNewScreen != MSG_BOX_SCREEN && uiOldScreen != MSG_BOX_SCREEN)) {
-//     // reset the help screen
-//     NewScreenSoResetHelpScreen();
-//   }
-// }
-//
-// void HandleShortCutExitState() {
-//   // Use YES/NO pop up box, setup for particular screen
-//   switch (guiCurrentScreen) {
-//     case DEBUG_SCREEN:
-//     case EDIT_SCREEN:
-//     case ERROR_SCREEN:
-//       // Do not prompt if error or editor
-//       requestGameExit();
-//       break;
-//
-//     case LAPTOP_SCREEN:
-//       DoLapTopSystemMessageBox(pMessageStrings[MSG_EXITGAME], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO,
-//                                EndGameMessageBoxCallBack);
-//       break;
-//
-//     case MAP_SCREEN:
-//       DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], MAP_SCREEN,
-//                       MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
-//       return;
-//
-//     case SHOPKEEPER_SCREEN:
-//       DoSkiMessageBox(pMessageStrings[MSG_EXITGAME], SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO,
-//                       EndGameMessageBoxCallBack);
-//       break;
-//
-//     default: {  // set up for all otherscreens
-//       SGPBox const pCenteringRect = {0, 0, SCREEN_WIDTH, INV_INTERFACE_START_Y};
-//       DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen,
-//                    MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack, &pCenteringRect);
-//       break;
-//     }
-//   }
-// }
-//
+
+// Gets called when the screen changes, place any needed in code in here
+static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen) {
+  // if we are not going into the message box screen, and we didnt just come
+  // from it
+  if ((uiNewScreen != MSG_BOX_SCREEN && uiOldScreen != MSG_BOX_SCREEN)) {
+    // reset the help screen
+    NewScreenSoResetHelpScreen();
+  }
+}
+
+void HandleShortCutExitState() {
+  // Use YES/NO pop up box, setup for particular screen
+  switch (guiCurrentScreen) {
+    // case DEBUG_SCREEN:
+    // case EDIT_SCREEN:
+    case ERROR_SCREEN:
+      // Do not prompt if error or editor
+      requestGameExit();
+      break;
+
+    // case LAPTOP_SCREEN:
+    //   DoLapTopSystemMessageBox(pMessageStrings[MSG_EXITGAME], LAPTOP_SCREEN, MSG_BOX_FLAG_YESNO,
+    //                            EndGameMessageBoxCallBack);
+    //   break;
+
+    // case MAP_SCREEN:
+    //   DoMapMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], MAP_SCREEN,
+    //                   MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack);
+    //   return;
+
+    // case SHOPKEEPER_SCREEN:
+    //   DoSkiMessageBox(pMessageStrings[MSG_EXITGAME], SHOPKEEPER_SCREEN, MSG_BOX_FLAG_YESNO,
+    //                   EndGameMessageBoxCallBack);
+    //   break;
+
+    default: {  // set up for all otherscreens
+      SGPBox const pCenteringRect = {0, 0, SCREEN_WIDTH, INV_INTERFACE_START_Y};
+      DoMessageBox(MSG_BOX_BASIC_STYLE, pMessageStrings[MSG_EXITGAME], guiCurrentScreen,
+                   MSG_BOX_FLAG_YESNO, EndGameMessageBoxCallBack, &pCenteringRect);
+      break;
+    }
+  }
+}
+
 // void EndGameMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
 //   // yes, so start over, else stay here and do nothing for now
 //   if (bExitValue == MSG_BOX_RETURN_YES) {

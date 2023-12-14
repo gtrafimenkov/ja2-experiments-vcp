@@ -90,12 +90,12 @@ struct MOUSE_REGION {
   MOUSE_REGION *prev;
 };
 
-// // Mouse region priorities
-// #define MSYS_PRIORITY_LOWEST 0
-// #define MSYS_PRIORITY_LOW 15
-// #define MSYS_PRIORITY_NORMAL 31
-// #define MSYS_PRIORITY_HIGH 63
-// #define MSYS_PRIORITY_HIGHEST 127
+// Mouse region priorities
+#define MSYS_PRIORITY_LOWEST 0
+#define MSYS_PRIORITY_LOW 15
+#define MSYS_PRIORITY_NORMAL 31
+#define MSYS_PRIORITY_HIGH 63
+#define MSYS_PRIORITY_HIGHEST 127
 
 // Mouse system defines used during updates
 #define MSYS_NO_ACTION 0
@@ -155,9 +155,9 @@ struct MOUSE_REGION {
 // // External
 // void MSYS_Init(void);
 void MSYS_Shutdown(void);
-// void MSYS_DefineRegion(MOUSE_REGION *region, UINT16 tlx, UINT16 tly, UINT16 brx, UINT16 bry,
-//                        INT8 priority, UINT16 crsr, MOUSE_CALLBACK movecallback,
-//                        MOUSE_CALLBACK buttoncallback);
+void MSYS_DefineRegion(MOUSE_REGION *region, UINT16 tlx, UINT16 tly, UINT16 brx, UINT16 bry,
+                       INT8 priority, UINT16 crsr, MOUSE_CALLBACK movecallback,
+                       MOUSE_CALLBACK buttoncallback);
 // void MSYS_RemoveRegion(MOUSE_REGION *region);
 //
 // /* Set one of the user data entries in a mouse region */
@@ -176,36 +176,36 @@ void MSYS_Shutdown(void);
 // Hook to the SGP's mouse handler
 void MouseSystemHook(UINT16 Type, UINT16 Xcoord, UINT16 Ycoord);
 
-// class MouseRegion : private MOUSE_REGION {
-//  public:
-//   MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h, INT8 const priority,
-//               UINT16 const cursor, MOUSE_CALLBACK const movecallback,
-//               MOUSE_CALLBACK const buttoncallback) {
-//     MOUSE_REGION *const r = this;
-//     memset(r, 0, sizeof(*r));
-//     MSYS_DefineRegion(r, x, y, x + w, y + h, priority, cursor, movecallback, buttoncallback);
-//   }
-//
-//   ~MouseRegion() { MSYS_RemoveRegion(this); }
-//
-//   MOUSE_REGION const &Base() const { return *this; }  // XXX hack
-//
-//   using MOUSE_REGION::ChangeCursor;
-//   using MOUSE_REGION::Disable;
-//   using MOUSE_REGION::Enable;
-//   using MOUSE_REGION::MouseXPos;
-//   using MOUSE_REGION::MouseYPos;
-//   using MOUSE_REGION::PriorityLevel;
-//   using MOUSE_REGION::RegionBottomRightX;
-//   using MOUSE_REGION::RegionBottomRightY;
-//   using MOUSE_REGION::RegionTopLeftX;
-//   using MOUSE_REGION::RegionTopLeftY;
-//   using MOUSE_REGION::RelativeXPos;
-//   using MOUSE_REGION::RelativeYPos;
-//   using MOUSE_REGION::SetFastHelpText;
-//   using MOUSE_REGION::SetUserPtr;
-//   using MOUSE_REGION::uiFlags;
-// };
+class MouseRegion : private MOUSE_REGION {
+ public:
+  MouseRegion(UINT16 const x, UINT16 const y, UINT16 const w, UINT16 const h, INT8 const priority,
+              UINT16 const cursor, MOUSE_CALLBACK const movecallback,
+              MOUSE_CALLBACK const buttoncallback) {
+    MOUSE_REGION *const r = this;
+    memset(r, 0, sizeof(*r));
+    MSYS_DefineRegion(r, x, y, x + w, y + h, priority, cursor, movecallback, buttoncallback);
+  }
+
+  ~MouseRegion() { MSYS_RemoveRegion(this); }
+
+  MOUSE_REGION const &Base() const { return *this; }  // XXX hack
+
+  using MOUSE_REGION::ChangeCursor;
+  using MOUSE_REGION::Disable;
+  using MOUSE_REGION::Enable;
+  using MOUSE_REGION::MouseXPos;
+  using MOUSE_REGION::MouseYPos;
+  using MOUSE_REGION::PriorityLevel;
+  using MOUSE_REGION::RegionBottomRightX;
+  using MOUSE_REGION::RegionBottomRightY;
+  using MOUSE_REGION::RegionTopLeftX;
+  using MOUSE_REGION::RegionTopLeftY;
+  using MOUSE_REGION::RelativeXPos;
+  using MOUSE_REGION::RelativeYPos;
+  using MOUSE_REGION::SetFastHelpText;
+  using MOUSE_REGION::SetUserPtr;
+  using MOUSE_REGION::uiFlags;
+};
 
 #endif
 

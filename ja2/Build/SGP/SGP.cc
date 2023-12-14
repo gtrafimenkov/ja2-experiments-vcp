@@ -75,13 +75,13 @@ static void deinitGameAndExit() {
   exit(0);
 }
 
-// /** Request game exit.
-//  * Call this function if you want to exit the game. */
-// void requestGameExit() {
-//   SDL_Event event;
-//   event.type = SDL_QUIT;
-//   SDL_PushEvent(&event);
-// }
+/** Request game exit.
+ * Call this function if you want to exit the game. */
+void requestGameExit() {
+  SDL_Event event;
+  event.type = SDL_QUIT;
+  SDL_PushEvent(&event);
+}
 
 static void MainLoop() {
   BOOLEAN s_doGameCycles = TRUE;

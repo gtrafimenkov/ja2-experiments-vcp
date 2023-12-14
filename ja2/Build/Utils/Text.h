@@ -551,7 +551,7 @@ struct LanguageRes {
 // #define pNewNoiseStr (g_langRes->pNewNoiseStr)
 // #define gzLateLocalizedString (g_langRes->gzLateLocalizedString)
 // #define pAntiHackerString (g_langRes->pAntiHackerString)
-// #define pMessageStrings (g_langRes->pMessageStrings)
+#define pMessageStrings (g_langRes->pMessageStrings)
 // #define ItemPickupHelpPopup (g_langRes->ItemPickupHelpPopup)
 // #define TacticalStr (g_langRes->TacticalStr)
 // #define LargeTacticalStr (g_langRes->LargeTacticalStr)

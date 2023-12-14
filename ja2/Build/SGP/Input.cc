@@ -330,12 +330,12 @@ void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
 //   UTF8String utf8String = UTF8String(TextEv->text);
 //   QueueKeyEvent(TEXT_INPUT, SDLK_UNKNOWN, KMOD_NONE, utf8String.getUTF16()[0]);
 // }
-//
-// void GetMousePos(SGPPoint *Point) {
-//   Point->iX = gusMouseXPos;
-//   Point->iY = gusMouseYPos;
-// }
-//
+
+void GetMousePos(SGPPoint *Point) {
+  Point->iX = gusMouseXPos;
+  Point->iY = gusMouseYPos;
+}
+
 // void RestrictMouseToXYXY(UINT16 usX1, UINT16 usY1, UINT16 usX2, UINT16 usY2) {
 //   SGPRect TempRect;
 //   TempRect.iLeft = usX1;

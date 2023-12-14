@@ -1,7 +1,7 @@
-// #ifndef MESSAGEBOXSCREEN_H
-// #define MESSAGEBOXSCREEN_H
-//
-// #include "JA2Types.h"
+#ifndef MESSAGEBOXSCREEN_H
+#define MESSAGEBOXSCREEN_H
+
+#include "JA2Types.h"
 // #include "SGP/ButtonSystem.h"
 // #include "SGP/MouseSystem.h"
 // #include "ScreenIDs.h"
@@ -36,18 +36,18 @@
 // };
 //
 // typedef void (*MSGBOX_CALLBACK)(MessageBoxReturnValue);
-//
-// // message box style flags
-// enum MessageBoxStyleID {
-//   MSG_BOX_BASIC_STYLE,  // We'll have other styles, like in laptop, etc
-//                         // Graphics are all that are required here...
-//   MSG_BOX_RED_ON_WHITE,
-//   MSG_BOX_BLUE_ON_GREY,
-//   MSG_BOX_BASIC_SMALL_BUTTONS,
-//   MSG_BOX_IMP_STYLE,
-//   MSG_BOX_LAPTOP_DEFAULT
-// };
-//
+
+// message box style flags
+enum MessageBoxStyleID {
+  MSG_BOX_BASIC_STYLE,  // We'll have other styles, like in laptop, etc
+                        // Graphics are all that are required here...
+  MSG_BOX_RED_ON_WHITE,
+  MSG_BOX_BLUE_ON_GREY,
+  MSG_BOX_BASIC_SMALL_BUTTONS,
+  MSG_BOX_IMP_STYLE,
+  MSG_BOX_LAPTOP_DEFAULT
+};
+
 // struct MESSAGE_BOX_STRUCT {
 //   MessageBoxFlags usFlags;
 //   ScreenID uiExitScreen;
@@ -99,11 +99,11 @@
 //                                  MSGBOX_CALLBACK ReturnCallback, SGPBox const *centering_rect);
 // void DoSaveLoadMessageBoxWithRect(wchar_t const *zString, ScreenID uiExitScreen, MessageBoxFlags,
 //                                   MSGBOX_CALLBACK ReturnCallback, SGPBox const *centering_rect);
-//
-// extern BOOLEAN gfInMsgBox;
-//
+
+extern BOOLEAN gfInMsgBox;
+
 // ScreenID MessageBoxScreenHandle(void);
 // void MessageBoxScreenShutdown();
-//
-// #endif
-//
+
+#endif
+

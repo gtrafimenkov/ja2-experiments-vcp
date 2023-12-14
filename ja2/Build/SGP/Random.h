@@ -1,11 +1,11 @@
-// #ifndef __RANDOM_
-// #define __RANDOM_
-//
-// #include "SGP/Types.h"
-//
-// extern void InitializeRandom(void);
-// extern UINT32 Random(UINT32 uiRange);
-//
+#ifndef __RANDOM_
+#define __RANDOM_
+
+#include "SGP/Types.h"
+
+extern void InitializeRandom(void);
+extern UINT32 Random(UINT32 uiRange);
+
 // // Chance( 74 ) returns TRUE 74% of the time.  If uiChance >= 100, then it will
 // // always return TRUE.
 // extern BOOLEAN Chance(UINT32 uiChance);
@@ -25,6 +25,5 @@
 // extern UINT32 guiPreRandomIndex;
 // extern UINT32 guiPreRandomNums[MAX_PREGENERATED_NUMS];
 // #endif
-//
-// #endif
-//
+
+#endif

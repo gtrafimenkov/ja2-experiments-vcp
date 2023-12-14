@@ -1,5 +1,5 @@
-// #include "OptionsScreen.h"
-//
+#include "OptionsScreen.h"
+
 // #include "Directories.h"
 // #include "GameScreen.h"
 // #include "GameSettings.h"
@@ -118,8 +118,8 @@
 // static BOOLEAN gfRedrawOptionsScreen = TRUE;
 //
 // static ScreenID guiOptionsScreen = OPTIONS_SCREEN;
-// ScreenID guiPreviousOptionScreen = OPTIONS_SCREEN;
-//
+ScreenID guiPreviousOptionScreen = OPTIONS_SCREEN;
+
 // static BOOLEAN gfExitOptionsDueToMessageBox = FALSE;
 // static BOOLEAN gfExitOptionsAfterMessageBox = FALSE;
 //
@@ -153,8 +153,8 @@
 // static void GetOptionsScreenUserInput(void);
 // static void HandleOptionsScreen(void);
 // static void RenderOptionsScreen(void);
-//
-// ScreenID OptionsScreenHandle() {
+
+ScreenID OptionsScreenHandle() {
 //   if (gfOptionsScreenEntry) {
 //     PauseGame();
 //     EnterOptionsScreen();
@@ -204,8 +204,8 @@
 //   }
 //
 //   return (guiOptionsScreen);
-// }
-//
+}
+
 // static GUIButtonRef MakeButton(INT16 x, GUI_CALLBACK click, const wchar_t *text) {
 //   return CreateIconAndTextButton(giOptionsButtonImages, text, OPT_BUTTON_FONT, OPT_BUTTON_ON_COLOR,
 //                                  DEFAULT_SHADOW, OPT_BUTTON_OFF_COLOR, DEFAULT_SHADOW, x, OPT_BTN_Y,

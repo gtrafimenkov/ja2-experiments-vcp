@@ -4,8 +4,8 @@
 #include "SGP/Types.h"
 #include "ScreenIDs.h"
 
-// ScreenID ErrorScreenHandle(void);
-//
+ScreenID ErrorScreenHandle(void);
+
 // ScreenID InitScreenHandle(void);
 //
 // ScreenID PalEditScreenHandle(void);

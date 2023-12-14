@@ -79,12 +79,12 @@ SGPVObject::~SGPVObject() {
   }
 }
 
-// void SGPVObject::CurrentShade(size_t const idx) {
-//   if (idx >= lengthof(pShades) || !pShades[idx]) {
-//     throw std::logic_error("Tried to set invalid video object shade");
-//   }
-//   current_shade_ = pShades[idx];
-// }
+void SGPVObject::CurrentShade(size_t const idx) {
+  if (idx >= lengthof(pShades) || !pShades[idx]) {
+    throw std::logic_error("Tried to set invalid video object shade");
+  }
+  current_shade_ = pShades[idx];
+}
 
 ETRLEObject const &SGPVObject::SubregionProperties(size_t const idx) const {
   if (idx >= SubregionCount()) {

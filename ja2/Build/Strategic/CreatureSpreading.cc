@@ -1,5 +1,5 @@
-// #include "Strategic/CreatureSpreading.h"
-//
+#include "Strategic/CreatureSpreading.h"
+
 // #include <stdexcept>
 //
 // #include "GameSettings.h"
@@ -86,11 +86,11 @@
 // #define NORMAL_QUEEN_REPRODUCTION_BONUS 2
 // #define HARD_QUEEN_REPRODUCTION_BASE 9  // 9-12
 // #define HARD_QUEEN_REPRODUCTION_BONUS 3
-//
-// // When either in a cave level with blue lights or there is a creature presence,
-// // then we override the normal music with the creature music.  The conditions are
-// // maintained inside the function PrepareCreaturesForBattle() in this module.
-// BOOLEAN gfUseCreatureMusic = FALSE;
+
+// When either in a cave level with blue lights or there is a creature presence,
+// then we override the normal music with the creature music.  The conditions are
+// maintained inside the function PrepareCreaturesForBattle() in this module.
+BOOLEAN gfUseCreatureMusic = FALSE;
 // BOOLEAN gfCreatureMeanwhileScenePlayed = FALSE;
 // enum {
 //   QUEEN_LAIR,       // where the queen lives.  Highly protected

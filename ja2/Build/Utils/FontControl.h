@@ -1,11 +1,11 @@
-// #ifndef __FONT_CONTROL_H
-// #define __FONT_CONTROL_H
-//
-// #include "SGP/Types.h"
-//
+#ifndef __FONT_CONTROL_H
+#define __FONT_CONTROL_H
+
+#include "SGP/Types.h"
+
 // extern Font gp10PointArial;
 // extern Font gp10PointArialBold;
-// extern Font gp12PointArial;
+extern Font gp12PointArial;
 // extern Font gp12PointArialFixedFont;
 // extern Font gp12PointFont1;
 // extern Font gp14PointArial;
@@ -14,16 +14,16 @@
 // extern Font gpBlockFontNarrow;
 // extern Font gpBlockyFont;
 // extern Font gpBlockyFont2;
-// extern Font gpLargeFontType1;
+extern Font gpLargeFontType1;
 // extern Font gpSmallFontType1;
 // extern Font gpTinyFontType1;
 // extern Font gpCompFont;
 // extern Font gpSmallCompFont;
 //
 // extern Font gpHugeFont;
-//
-// // Defines
-// #define LARGEFONT1 gpLargeFontType1
+
+// Defines
+#define LARGEFONT1 gpLargeFontType1
 // #define SMALLFONT1 gpSmallFontType1
 // #define TINYFONT1 gpTinyFontType1
 // #define FONT12POINT1 gp12PointFont1
@@ -32,7 +32,7 @@
 // #define MILITARYFONT1 BLOCKFONT
 // #define FONT10ARIAL gp10PointArial
 // #define FONT14ARIAL gp14PointArial
-// #define FONT12ARIAL gp12PointArial
+#define FONT12ARIAL gp12PointArial
 // #define FONT10ARIALBOLD gp10PointArialBold
 // #define BLOCKFONT gpBlockyFont
 // #define BLOCKFONT2 gpBlockyFont2
@@ -48,7 +48,7 @@
 // #define FONT_MCOLOR_WHITE 208
 // #define FONT_MCOLOR_DKWHITE 134
 // #define FONT_MCOLOR_DKWHITE2 134
-// #define FONT_MCOLOR_LTGRAY 134
+#define FONT_MCOLOR_LTGRAY 134
 // #define FONT_MCOLOR_LTGRAY2 134
 // #define FONT_MCOLOR_DKGRAY 136
 // #define FONT_MCOLOR_LTBLUE 203
@@ -75,7 +75,7 @@
 // #define FONT_RED 163
 // #define FONT_DKRED 218
 // #define FONT_ORANGE 76
-// #define FONT_YELLOW 145
+#define FONT_YELLOW 145
 // #define FONT_DKYELLOW 80
 // #define FONT_LTGREEN 184
 // #define FONT_GREEN 185
@@ -93,18 +93,18 @@
 //
 // void InitializeFonts(void);
 // void ShutdownFonts(void);
-//
-// enum FontShade {
-//   FONT_SHADE_GREY_165 = 0,
-//   FONT_SHADE_BLUE = 1,
-//   FONT_SHADE_GREEN = 2,
-//   FONT_SHADE_YELLOW = 3,
-//   FONT_SHADE_NEUTRAL = 4,
-//   FONT_SHADE_WHITE = 5,
-//   FONT_SHADE_RED = 6
-// };
-//
+
+enum FontShade {
+  FONT_SHADE_GREY_165 = 0,
+  FONT_SHADE_BLUE = 1,
+  FONT_SHADE_GREEN = 2,
+  FONT_SHADE_YELLOW = 3,
+  FONT_SHADE_NEUTRAL = 4,
+  FONT_SHADE_WHITE = 5,
+  FONT_SHADE_RED = 6
+};
+
 // void SetFontShade(Font, FontShade);
-//
-// #endif
-//
+
+#endif
+

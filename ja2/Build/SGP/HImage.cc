@@ -169,61 +169,61 @@ UINT16 *Create16BPPPalette(const SGPPaletteEntry *pPalette) {
   return p16BPPPalette;
 }
 
-// /**********************************************************************************************
-//  Create16BPPPaletteShaded
-//
-//         Creates an 8 bit to 16 bit palette table, and modifies the colors as it
-// builds.
-//
-//         Parameters:
-//                 rscale, gscale, bscale:
-//                                 Color mode: Percentages (255=100%) of color to
-// translate into destination palette. Mono mode:  Color for monochrome palette.
-//                 mono:
-//                                 TRUE or FALSE to create a monochrome palette. In
-// mono mode, Luminance values for colors are calculated, and the RGB color is
-// shaded according to each pixel's brightness.
-//
-//         This can be used in several ways:
-//
-//         1) To "brighten" a palette, pass down RGB values that are higher than
-// 100% ( > 255) for all three. mono=FALSE. 2) To "darken" a palette, do the same
-// with less than 100% ( < 255) values. mono=FALSE.
-//
-//         3) To create a "glow" palette, select mono=TRUE, and pass the color in
-// the RGB parameters.
-//
-//         4) For gamma correction, pass in weighted values for each color.
-//
-// **********************************************************************************************/
-// UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
-//                                  UINT32 bscale, BOOLEAN mono) {
-//   Assert(pPalette != NULL);
-//
-//   UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
-//
-//   for (UINT32 cnt = 0; cnt < 256; cnt++) {
-//     UINT32 rmod;
-//     UINT32 gmod;
-//     UINT32 bmod;
-//     if (mono) {
-//       UINT32 lumin = (pPalette[cnt].r * 299 + pPalette[cnt].g * 587 + pPalette[cnt].b * 114) / 1000;
-//       rmod = rscale * lumin / 256;
-//       gmod = gscale * lumin / 256;
-//       bmod = bscale * lumin / 256;
-//     } else {
-//       rmod = rscale * pPalette[cnt].r / 256;
-//       gmod = gscale * pPalette[cnt].g / 256;
-//       bmod = bscale * pPalette[cnt].b / 256;
-//     }
-//
-//     UINT8 r = __min(rmod, 255);
-//     UINT8 g = __min(gmod, 255);
-//     UINT8 b = __min(bmod, 255);
-//     p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
-//   }
-//   return p16BPPPalette;
-// }
+/**********************************************************************************************
+ Create16BPPPaletteShaded
+
+        Creates an 8 bit to 16 bit palette table, and modifies the colors as it
+builds.
+
+        Parameters:
+                rscale, gscale, bscale:
+                                Color mode: Percentages (255=100%) of color to
+translate into destination palette. Mono mode:  Color for monochrome palette.
+                mono:
+                                TRUE or FALSE to create a monochrome palette. In
+mono mode, Luminance values for colors are calculated, and the RGB color is
+shaded according to each pixel's brightness.
+
+        This can be used in several ways:
+
+        1) To "brighten" a palette, pass down RGB values that are higher than
+100% ( > 255) for all three. mono=FALSE. 2) To "darken" a palette, do the same
+with less than 100% ( < 255) values. mono=FALSE.
+
+        3) To create a "glow" palette, select mono=TRUE, and pass the color in
+the RGB parameters.
+
+        4) For gamma correction, pass in weighted values for each color.
+
+**********************************************************************************************/
+UINT16 *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, UINT32 rscale, UINT32 gscale,
+                                 UINT32 bscale, BOOLEAN mono) {
+  Assert(pPalette != NULL);
+
+  UINT16 *const p16BPPPalette = MALLOCN(UINT16, 256);
+
+  for (UINT32 cnt = 0; cnt < 256; cnt++) {
+    UINT32 rmod;
+    UINT32 gmod;
+    UINT32 bmod;
+    if (mono) {
+      UINT32 lumin = (pPalette[cnt].r * 299 + pPalette[cnt].g * 587 + pPalette[cnt].b * 114) / 1000;
+      rmod = rscale * lumin / 256;
+      gmod = gscale * lumin / 256;
+      bmod = bscale * lumin / 256;
+    } else {
+      rmod = rscale * pPalette[cnt].r / 256;
+      gmod = gscale * pPalette[cnt].g / 256;
+      bmod = bscale * pPalette[cnt].b / 256;
+    }
+
+    UINT8 r = __min(rmod, 255);
+    UINT8 g = __min(gmod, 255);
+    UINT8 b = __min(bmod, 255);
+    p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
+  }
+  return p16BPPPalette;
+}
 
 // Convert from RGB to 16 bit value
 UINT16 Get16BPPColor(UINT32 RGBValue) {
