@@ -6,7 +6,7 @@
 
 #include "SGP/Types.h"
 
-// extern char gubErrorText[200];
+extern char gubErrorText[200];
 // extern BOOLEAN gfAniEditMode;
 // extern BOOLEAN gfEditMode;
 // extern BOOLEAN fFirstTimeInGameScreen;

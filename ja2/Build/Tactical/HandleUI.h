@@ -1,13 +1,13 @@
-// #ifndef _HANDLE_UI_
-// #define _HANDLE_UI_
-//
-// #include "JA2Types.h"
-// #include "SGP/Input.h"
-// #include "SGP/MouseSystem.h"
-// #include "ScreenIDs.h"
-// #include "Tactical/InterfaceCursors.h"
-// #include "Tactical/SoldierFind.h"
-//
+#ifndef _HANDLE_UI_
+#define _HANDLE_UI_
+
+#include "JA2Types.h"
+#include "SGP/Input.h"
+#include "SGP/MouseSystem.h"
+#include "ScreenIDs.h"
+#include "Tactical/InterfaceCursors.h"
+#include "Tactical/SoldierFind.h"
+
 // #define UIEVENT_SINGLEEVENT 0x00000002
 // #define UIEVENT_SNAPMOUSE 0x00000008
 //
@@ -155,14 +155,14 @@
 // extern INT16 gsSelectedLevel;
 // extern BOOLEAN gfPlotNewMovement;
 // extern UIEventKind guiPendingOverrideEvent;
-//
-// // GLOBALS
-// extern BOOLEAN gfUIDisplayActionPoints;
-// extern BOOLEAN gfUIDisplayActionPointsInvalid;
-// extern BOOLEAN gfUIDisplayActionPointsBlack;
-// extern BOOLEAN gfUIDisplayActionPointsCenter;
-// extern INT16 gUIDisplayActionPointsOffY;
-// extern INT16 gUIDisplayActionPointsOffX;
+
+// GLOBALS
+extern BOOLEAN gfUIDisplayActionPoints;
+extern BOOLEAN gfUIDisplayActionPointsInvalid;
+extern BOOLEAN gfUIDisplayActionPointsBlack;
+extern BOOLEAN gfUIDisplayActionPointsCenter;
+extern INT16 gUIDisplayActionPointsOffY;
+extern INT16 gUIDisplayActionPointsOffX;
 // extern UINT32 guiShowUPDownArrows;
 // extern BOOLEAN gfUIHandleSelection;
 // extern INT16 gsSelectedGridNo;
@@ -268,7 +268,7 @@
 // void PopupAssignmentMenuInTactical(void);
 //
 // extern GridNo gfUIOverItemPoolGridNo;
-// extern INT16 gsCurrentActionPoints;
+extern INT16 gsCurrentActionPoints;
 // extern BOOLEAN fRightButtonDown;
 // extern BOOLEAN fLeftButtonDown;
 // extern BOOLEAN fIgnoreLeftUp;
@@ -293,6 +293,6 @@
 // void HandleTacticalUILoseCursorFromOtherScreen(void);
 //
 // void SetInterfaceHeightLevel(void);
-//
-// #endif
-//
+
+#endif
+

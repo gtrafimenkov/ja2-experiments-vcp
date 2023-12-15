@@ -1,43 +1,43 @@
-// #include "TileEngine/RenderWorld.h"
-//
-// #include <math.h>
-// #include <stdint.h>
-//
-// #include "GameSettings.h"
-// #include "GameState.h"
-// #include "Local.h"
-// #include "SGP/Debug.h"
-// #include "SGP/English.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Shading.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/WCheck.h"
-// #include "SysGlobals.h"
-// #include "Tactical/AnimationControl.h"
-// #include "Tactical/AnimationData.h"
-// #include "Tactical/HandleItems.h"
-// #include "Tactical/HandleUI.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/InterfaceControl.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/RottingCorpses.h"
-// #include "Tactical/SoldierFind.h"
-// #include "TileEngine/InteractiveTiles.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/RadarScreen.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/RenderFun.h"
-// #include "TileEngine/Structure.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/TileCache.h"
-// #include "TileEngine/TileDef.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/TimerControl.h"
-//
+#include "TileEngine/RenderWorld.h"
+
+#include <math.h>
+#include <stdint.h>
+
+#include "GameSettings.h"
+#include "GameState.h"
+#include "Local.h"
+#include "SGP/Debug.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Shading.h"
+#include "SGP/VObject.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+#include "SGP/WCheck.h"
+#include "SysGlobals.h"
+#include "Tactical/AnimationControl.h"
+#include "Tactical/AnimationData.h"
+#include "Tactical/HandleItems.h"
+#include "Tactical/HandleUI.h"
+#include "Tactical/Interface.h"
+#include "Tactical/InterfaceControl.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/RottingCorpses.h"
+#include "Tactical/SoldierFind.h"
+#include "TileEngine/InteractiveTiles.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/RadarScreen.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/RenderFun.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/TileCache.h"
+#include "TileEngine/TileDef.h"
+#include "Utils/FontControl.h"
+#include "Utils/SoundControl.h"
+#include "Utils/TimerControl.h"
+
 // UINT16 *gpZBuffer = NULL;
 //
 // static INT16 gsCurrentGlowFrame = 0;
@@ -167,8 +167,8 @@
 //
 // static SGPRect gClippingRect = {0, 0, SCREEN_WIDTH, 360};
 // static SGPRect gOldClipRect;
-// INT16 gsRenderCenterX;
-// INT16 gsRenderCenterY;
+INT16 gsRenderCenterX;
+INT16 gsRenderCenterY;
 // INT16 gsRenderWorldOffsetX = 0;
 // INT16 gsRenderWorldOffsetY = 10;
 //

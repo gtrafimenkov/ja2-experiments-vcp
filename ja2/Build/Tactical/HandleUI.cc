@@ -1,79 +1,79 @@
-// #include "Tactical/HandleUI.h"
-//
-// #include "GameSettings.h"
-// #include "JAScreens.h"
-// #include "Local.h"
-// #include "MessageBoxScreen.h"
-// #include "OptionsScreen.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/English.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/Input.h"
-// #include "SGP/Line.h"
-// #include "SGP/MouseSystem.h"
-// #include "SGP/Random.h"
-// #include "SGP/Video.h"
-// #include "SaveLoadGame.h"
-// #include "Screens.h"
-// #include "Strategic/Assignments.h"
-// #include "Strategic/CampaignTypes.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/QueenCommand.h"
-// #include "Strategic/Strategic.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Strategic/StrategicMovement.h"
-// #include "Strategic/StrategicPathing.h"
-// #include "SysGlobals.h"
-// #include "Tactical/AnimationControl.h"
-// #include "Tactical/AnimationData.h"
-// #include "Tactical/CivQuotes.h"
-// #include "Tactical/DialogueControl.h"
-// #include "Tactical/HandleDoors.h"
-// #include "Tactical/HandleItems.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/InterfaceDialogue.h"
-// #include "Tactical/InterfaceItems.h"
-// #include "Tactical/Items.h"
-// #include "Tactical/LOS.h"
-// #include "Tactical/MapInformation.h"
-// #include "Tactical/MercHiring.h"
-// #include "Tactical/OppList.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/PathAI.h"
-// #include "Tactical/Points.h"
-// #include "Tactical/QArray.h"
-// #include "Tactical/RealTimeInput.h"
-// #include "Tactical/SoldierAdd.h"
-// #include "Tactical/SoldierControl.h"
-// #include "Tactical/SoldierCreate.h"
-// #include "Tactical/SoldierFind.h"
-// #include "Tactical/SoldierFunctions.h"
-// #include "Tactical/SoldierMacros.h"
-// #include "Tactical/SoldierProfile.h"
-// #include "Tactical/SpreadBurst.h"
-// #include "Tactical/Squads.h"
-// #include "Tactical/StructureWrap.h"
-// #include "Tactical/UICursors.h"
-// #include "Tactical/Vehicles.h"
-// #include "Tactical/Weapons.h"
-// #include "TacticalAI/AI.h"
-// #include "TileEngine/Environment.h"
-// #include "TileEngine/ExitGrids.h"
-// #include "TileEngine/InteractiveTiles.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/RenderFun.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/Structure.h"
-// #include "TileEngine/TileDef.h"
-// #include "TileEngine/WorldMan.h"
-// #include "Utils/Cursors.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-//
+#include "Tactical/HandleUI.h"
+
+#include "GameSettings.h"
+#include "JAScreens.h"
+#include "Local.h"
+#include "MessageBoxScreen.h"
+#include "OptionsScreen.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/English.h"
+#include "SGP/FileMan.h"
+#include "SGP/Input.h"
+#include "SGP/Line.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/Random.h"
+#include "SGP/Video.h"
+#include "SaveLoadGame.h"
+#include "Screens.h"
+#include "Strategic/Assignments.h"
+#include "Strategic/CampaignTypes.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/QueenCommand.h"
+#include "Strategic/Strategic.h"
+#include "Strategic/StrategicMap.h"
+#include "Strategic/StrategicMovement.h"
+#include "Strategic/StrategicPathing.h"
+#include "SysGlobals.h"
+#include "Tactical/AnimationControl.h"
+#include "Tactical/AnimationData.h"
+#include "Tactical/CivQuotes.h"
+#include "Tactical/DialogueControl.h"
+#include "Tactical/HandleDoors.h"
+#include "Tactical/HandleItems.h"
+#include "Tactical/Interface.h"
+#include "Tactical/InterfaceDialogue.h"
+#include "Tactical/InterfaceItems.h"
+#include "Tactical/Items.h"
+#include "Tactical/LOS.h"
+#include "Tactical/MapInformation.h"
+#include "Tactical/MercHiring.h"
+#include "Tactical/OppList.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/PathAI.h"
+#include "Tactical/Points.h"
+#include "Tactical/QArray.h"
+#include "Tactical/RealTimeInput.h"
+#include "Tactical/SoldierAdd.h"
+#include "Tactical/SoldierControl.h"
+#include "Tactical/SoldierCreate.h"
+#include "Tactical/SoldierFind.h"
+#include "Tactical/SoldierFunctions.h"
+#include "Tactical/SoldierMacros.h"
+#include "Tactical/SoldierProfile.h"
+#include "Tactical/SpreadBurst.h"
+#include "Tactical/Squads.h"
+#include "Tactical/StructureWrap.h"
+#include "Tactical/UICursors.h"
+#include "Tactical/Vehicles.h"
+#include "Tactical/Weapons.h"
+#include "TacticalAI/AI.h"
+#include "TileEngine/Environment.h"
+#include "TileEngine/ExitGrids.h"
+#include "TileEngine/InteractiveTiles.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/RenderFun.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldMan.h"
+#include "Utils/Cursors.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+
 // #define MAX_ON_DUTY_SOLDIERS 6
 //
 // /////////////////////////////////////////////////////////////////////////////////////
@@ -306,23 +306,23 @@
 // BOOLEAN gRubberBandActive = FALSE;
 // BOOLEAN gfIgnoreOnSelectedGuy = FALSE;
 // static BOOLEAN gfViewPortAdjustedForSouth = FALSE;
-//
-// // FLAGS
-// // These flags are set for a single frame execution and then are reset for the
-// // next iteration.
-// BOOLEAN gfUIDisplayActionPoints = FALSE;
-// BOOLEAN gfUIDisplayActionPointsInvalid = FALSE;
-// BOOLEAN gfUIDisplayActionPointsBlack = FALSE;
-// BOOLEAN gfUIDisplayActionPointsCenter = FALSE;
-//
-// INT16 gUIDisplayActionPointsOffY = 0;
-// INT16 gUIDisplayActionPointsOffX = 0;
+
+// FLAGS
+// These flags are set for a single frame execution and then are reset for the
+// next iteration.
+BOOLEAN gfUIDisplayActionPoints = FALSE;
+BOOLEAN gfUIDisplayActionPointsInvalid = FALSE;
+BOOLEAN gfUIDisplayActionPointsBlack = FALSE;
+BOOLEAN gfUIDisplayActionPointsCenter = FALSE;
+
+INT16 gUIDisplayActionPointsOffY = 0;
+INT16 gUIDisplayActionPointsOffX = 0;
 // BOOLEAN gfUIHandleSelection = FALSE;
 //
 // BOOLEAN gfUIHandleShowMoveGrid = FALSE;
 // UINT16 gsUIHandleShowMoveGridLocation = NOWHERE;
 // GridNo gfUIOverItemPoolGridNo = NOWHERE;
-// INT16 gsCurrentActionPoints = 1;
+INT16 gsCurrentActionPoints = 1;
 // BOOLEAN gfUIHandlePhysicsTrajectory = FALSE;
 // BOOLEAN gfUIMouseOnValidCatcher = FALSE;
 // const SOLDIERTYPE *gUIValidCatcher = NULL;

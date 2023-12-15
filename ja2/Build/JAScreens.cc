@@ -1,44 +1,45 @@
 #include "JAScreens.h"
 
-// #include "Directories.h"
-// #include "Editor/EditScreen.h"
-// #include "GameLoop.h"
-// #include "GameScreen.h"
-// #include "GameVersion.h"
-// #include "Init.h"
-// #include "Local.h"
-// #include "MainMenuScreen.h"
-// #include "SGP/CursorControl.h"
+#include "Directories.h"
+#include "Editor/EditScreen.h"
+#include "GameLoop.h"
+#include "GameRes.h"
+#include "GameScreen.h"
+#include "GameVersion.h"
+#include "Init.h"
+#include "Local.h"
+#include "MainMenuScreen.h"
+#include "SGP/CursorControl.h"
 #include "SGP/Debug.h"
-// #include "SGP/English.h"
+#include "SGP/English.h"
 #include "SGP/Font.h"
-// #include "SGP/HImage.h"
+#include "SGP/HImage.h"
 #include "SGP/Input.h"
-// #include "SGP/MouseSystem.h"
-// #include "SGP/Random.h"
-// #include "SGP/SGP.h"
-// #include "SGP/Timer.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/Random.h"
+#include "SGP/SGP.h"
+#include "SGP/Timer.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
 #include "SGP/Video.h"
-// #include "Screens.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/GameInit.h"
-// #include "SysGlobals.h"
-// #include "Tactical/AnimationCache.h"
-// #include "Tactical/HandleUI.h"
-// #include "Tactical/Overhead.h"
-// #include "TileEngine/Environment.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/WorldDef.h"
+#include "Screens.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/GameInit.h"
+#include "SysGlobals.h"
+#include "Tactical/AnimationCache.h"
+#include "Tactical/HandleUI.h"
+#include "Tactical/Overhead.h"
+#include "TileEngine/Environment.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/WorldDef.h"
 #include "Utils/FontControl.h"
-// #include "Utils/MultiLanguageGraphicUtils.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-// #include "Utils/Utilities.h"
-//
+#include "Utils/MultiLanguageGraphicUtils.h"
+#include "Utils/SoundControl.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+#include "Utils/Utilities.h"
+
 // #define MAX_DEBUG_PAGES 4
 //
 // // GLOBAL FOR PAL EDITOR
@@ -119,73 +120,73 @@ ScreenID ErrorScreenHandle(void) {
   return (ERROR_SCREEN);
 }
 
-// ScreenID InitScreenHandle(void) {
-//   static UINT32 splashDisplayedMoment = 0;
-//   static UINT8 ubCurrentScreen = 255;
-//
-//   if (ubCurrentScreen == 255) {
-//     if (isEnglishVersion()) {
-//       if (gfDoneWithSplashScreen) {
-//         ubCurrentScreen = 0;
-//       } else {
-//         SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-//         return (INTRO_SCREEN);
-//       }
-//     } else {
-//       ubCurrentScreen = 0;
-//     }
-//   }
-//
-//   if (ubCurrentScreen == 0) {
-//     ubCurrentScreen = 1;
-//
-//     // Init screen
-//
-//     SetFontAttributes(TINYFONT1, FONT_MCOLOR_WHITE);
-//
-//     const INT32 x = 10;
-//     const INT32 y = SCREEN_HEIGHT;
-//
-//     mprintf(x, y - 50, L"%hs", g_version_label, g_version_number);
-//
-//     InvalidateScreen();
-//
-//     // ATE: Set to true to reset before going into main screen!
-//
-//     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-//     splashDisplayedMoment = GetClock();
-//     return (INIT_SCREEN);
-//   }
-//
-//   if (ubCurrentScreen == 1) {
-//     ubCurrentScreen = 2;
-//     return (InitializeJA2());
-//   }
-//
-//   if (ubCurrentScreen == 2) {
-//     // wait 3 seconds since the splash displayed and then switch
-//     // to the main menu
-//     if ((GetClock() - splashDisplayedMoment) >= 3000) {
-//       InitMainMenu();
-//       ubCurrentScreen = 3;
-//     }
-//     return (INIT_SCREEN);
-//   }
-//
-//   // Let one frame pass....
-//   if (ubCurrentScreen == 3) {
-//     ubCurrentScreen = 4;
-//     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-//     return (INIT_SCREEN);
-//   }
-//
-//   if (ubCurrentScreen == 4) {
-//     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-//     InitNewGame();
-//   }
-//   return (INIT_SCREEN);
-// }
-//
+ScreenID InitScreenHandle(void) {
+  static UINT32 splashDisplayedMoment = 0;
+  static UINT8 ubCurrentScreen = 255;
+
+  if (ubCurrentScreen == 255) {
+    // if (isEnglishVersion()) {
+    //   if (gfDoneWithSplashScreen) {
+    //     ubCurrentScreen = 0;
+    //   } else {
+    //     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+    //     return (INTRO_SCREEN);
+    //   }
+    // } else {
+      ubCurrentScreen = 0;
+    // }
+  }
+
+  if (ubCurrentScreen == 0) {
+    ubCurrentScreen = 1;
+
+    // Init screen
+
+    SetFontAttributes(TINYFONT1, FONT_MCOLOR_WHITE);
+
+    const INT32 x = 10;
+    const INT32 y = SCREEN_HEIGHT;
+
+    mprintf(x, y - 50, L"%hs", g_version_label, g_version_number);
+
+    InvalidateScreen();
+
+    // ATE: Set to true to reset before going into main screen!
+
+    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+    splashDisplayedMoment = GetClock();
+    return (INIT_SCREEN);
+  }
+
+  if (ubCurrentScreen == 1) {
+    ubCurrentScreen = 2;
+    return (InitializeJA2());
+  }
+
+  if (ubCurrentScreen == 2) {
+    // wait 3 seconds since the splash displayed and then switch
+    // to the main menu
+    if ((GetClock() - splashDisplayedMoment) >= 3000) {
+      InitMainMenu();
+      ubCurrentScreen = 3;
+    }
+    return (INIT_SCREEN);
+  }
+
+  // Let one frame pass....
+  if (ubCurrentScreen == 3) {
+    ubCurrentScreen = 4;
+    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+    return (INIT_SCREEN);
+  }
+
+  if (ubCurrentScreen == 4) {
+    SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
+    InitNewGame();
+  }
+  return (INIT_SCREEN);
+}
+
 // static BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent);
 // static void PalEditRenderHook(void);
 //

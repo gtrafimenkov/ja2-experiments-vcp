@@ -3,9 +3,9 @@
 #include <stdexcept>
 
 #include "SGP/Debug.h"
-// #include "SGP/HImage.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/SGP.h"
+#include "SGP/HImage.h"
+#include "SGP/MemMan.h"
+#include "SGP/SGP.h"
 #include "SGP/Shading.h"
 #include "SGP/VObjectBlitters.h"
 #include "SGP/Video.h"
@@ -52,18 +52,18 @@ SGPVSurface::~SGPVSurface() {
   if (p16BPPPalette) MemFree(p16BPPPalette);
 }
 
-// void SGPVSurface::SetPalette(const SGPPaletteEntry *const src_pal) {
-//   // Create palette object if not already done so
-//   if (!palette_) palette_.Allocate(256);
-//   SGPPaletteEntry *const p = palette_;
-//   for (UINT32 i = 0; i < 256; i++) {
-//     p[i] = src_pal[i];
-//   }
-//
-//   if (p16BPPPalette != NULL) MemFree(p16BPPPalette);
-//   p16BPPPalette = Create16BPPPalette(src_pal);
-// }
-//
+void SGPVSurface::SetPalette(const SGPPaletteEntry *const src_pal) {
+  // Create palette object if not already done so
+  if (!palette_) palette_.Allocate(256);
+  SGPPaletteEntry *const p = palette_;
+  for (UINT32 i = 0; i < 256; i++) {
+    p[i] = src_pal[i];
+  }
+
+  if (p16BPPPalette != NULL) MemFree(p16BPPPalette);
+  p16BPPPalette = Create16BPPPalette(src_pal);
+}
+
 // void SGPVSurface::SetTransparency(const COLORVAL colour) {
 //   Uint32 colour_key;
 //   switch (BPP()) {
@@ -134,48 +134,48 @@ SGPVSurface *g_back_buffer;
 SGPVSurfaceAuto *g_frame_buffer;
 SGPVSurfaceAuto *g_mouse_buffer;
 
-// #undef AddVideoSurface
-// #undef AddVideoSurfaceFromFile
-//
+#undef AddVideoSurface
+#undef AddVideoSurfaceFromFile
+
 // SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth) {
 //   SGPVSurfaceAuto *const vs = new SGPVSurfaceAuto(Width, Height, BitDepth);
 //   return vs;
 // }
-//
-// SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *const Filename) {
-//   AutoSGPImage img(CreateImage(Filename, IMAGE_ALLIMAGEDATA));
-//
-//   SGPVSurfaceAuto *const vs = new SGPVSurfaceAuto(img->usWidth, img->usHeight, img->ubBitDepth);
-//
-//   UINT8 const dst_bpp = vs->BPP();
-//   UINT32 buffer_bpp;
-//   switch (dst_bpp) {
-//     case 8:
-//       buffer_bpp = BUFFER_8BPP;
-//       break;
-//     case 16:
-//       buffer_bpp = BUFFER_16BPP;
-//       break;
-//     default:
-//       throw std::logic_error("Invalid bpp");
-//   }
-//
-//   {
-//     SGPVSurface::Lock l(vs);
-//     UINT8 *const dst = l.Buffer<UINT8>();
-//     UINT16 const pitch = l.Pitch() / (dst_bpp / 8);  // pitch in pixels
-//     SGPBox const box = {0, 0, img->usWidth, img->usHeight};
-//     BOOLEAN const Ret = CopyImageToBuffer(img, buffer_bpp, dst, pitch, vs->Height(), 0, 0, &box);
-//     if (!Ret) {
-//       DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, "Error Occured Copying SGPImage to video surface");
-//     }
-//   }
-//
-//   if (img->ubBitDepth == 8) vs->SetPalette(img->pPalette);
-//
-//   return vs;
-// }
-//
+
+SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *const Filename) {
+  AutoSGPImage img(CreateImage(Filename, IMAGE_ALLIMAGEDATA));
+
+  SGPVSurfaceAuto *const vs = new SGPVSurfaceAuto(img->usWidth, img->usHeight, img->ubBitDepth);
+
+  UINT8 const dst_bpp = vs->BPP();
+  UINT32 buffer_bpp;
+  switch (dst_bpp) {
+    case 8:
+      buffer_bpp = BUFFER_8BPP;
+      break;
+    case 16:
+      buffer_bpp = BUFFER_16BPP;
+      break;
+    default:
+      throw std::logic_error("Invalid bpp");
+  }
+
+  {
+    SGPVSurface::Lock l(vs);
+    UINT8 *const dst = l.Buffer<UINT8>();
+    UINT16 const pitch = l.Pitch() / (dst_bpp / 8);  // pitch in pixels
+    SGPBox const box = {0, 0, img->usWidth, img->usHeight};
+    BOOLEAN const Ret = CopyImageToBuffer(img, buffer_bpp, dst, pitch, vs->Height(), 0, 0, &box);
+    if (!Ret) {
+      DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2, "Error Occured Copying SGPImage to video surface");
+    }
+  }
+
+  if (img->ubBitDepth == 8) vs->SetPalette(img->pPalette);
+
+  return vs;
+}
+
 // #define RECORD(cs, name) ((void)0)
 //
 // void BltVideoSurfaceHalf(SGPVSurface *const dst, SGPVSurface *const src, INT32 const DestX,
@@ -216,69 +216,69 @@ SGPVSurfaceAuto *g_mouse_buffer;
 //   Rect.h = iDestY2 - iDestY1;
 //   SDL_FillRect(dst->surface_, &Rect, Color16BPP);
 // }
-//
-// // Will drop down into user-defined blitter if 8->16 BPP blitting is being done
-// void BltVideoSurface(SGPVSurface *const dst, SGPVSurface *const src, INT32 const iDestX,
-//                      INT32 const iDestY, SGPBox const *const src_box) {
-//   Assert(dst);
-//   Assert(src);
-//
-//   const UINT8 src_bpp = src->BPP();
-//   const UINT8 dst_bpp = dst->BPP();
-//   if (src_bpp == dst_bpp) {
-//     SDL_Rect *src_rect = 0;
-//     SDL_Rect r;
-//     if (src_box) {
-//       r.x = src_box->x;
-//       r.y = src_box->y;
-//       r.w = src_box->w;
-//       r.h = src_box->h;
-//       src_rect = &r;
-//     }
-//
-//     SDL_Rect dstrect;
-//     dstrect.x = iDestX;
-//     dstrect.y = iDestY;
-//     SDL_BlitSurface(src->surface_, src_rect, dst->surface_, &dstrect);
-// #if defined __GNUC__ && defined i386
-//     __asm__ __volatile__("cld");  // XXX HACK000D
-// #endif
-//   } else if (src_bpp < dst_bpp) {
-//     SGPBox const *src_rect = src_box;
-//     SGPBox r;
-//     if (!src_rect) {
-//       // Check Sizes, SRC size MUST be <= DEST size
-//       if (dst->Height() < src->Height()) {
-//         DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2,
-//                  "Incompatible height size given in Video Surface blit");
-//         return;
-//       }
-//       if (dst->Width() < src->Width()) {
-//         DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2,
-//                  "Incompatible height size given in Video Surface blit");
-//         return;
-//       }
-//
-//       r.x = 0;
-//       r.y = 0;
-//       r.w = src->Width();
-//       r.h = src->Height();
-//       src_rect = &r;
-//     }
-//
-//     SGPVSurface::Lock lsrc(src);
-//     SGPVSurface::Lock ldst(dst);
-//     UINT8 *const s_buf = lsrc.Buffer<UINT8>();
-//     UINT32 const spitch = lsrc.Pitch();
-//     UINT16 *const d_buf = ldst.Buffer<UINT16>();
-//     UINT32 const dpitch = ldst.Pitch();
-//     Blt8BPPDataSubTo16BPPBuffer(d_buf, dpitch, src, s_buf, spitch, iDestX, iDestY, src_rect);
-//   } else {
-//     DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2,
-//              "Incompatible BPP values with src and dest Video Surfaces for "
-//              "blitting");
-//   }
-// }
+
+// Will drop down into user-defined blitter if 8->16 BPP blitting is being done
+void BltVideoSurface(SGPVSurface *const dst, SGPVSurface *const src, INT32 const iDestX,
+                     INT32 const iDestY, SGPBox const *const src_box) {
+  Assert(dst);
+  Assert(src);
+
+  const UINT8 src_bpp = src->BPP();
+  const UINT8 dst_bpp = dst->BPP();
+  if (src_bpp == dst_bpp) {
+    SDL_Rect *src_rect = 0;
+    SDL_Rect r;
+    if (src_box) {
+      r.x = src_box->x;
+      r.y = src_box->y;
+      r.w = src_box->w;
+      r.h = src_box->h;
+      src_rect = &r;
+    }
+
+    SDL_Rect dstrect;
+    dstrect.x = iDestX;
+    dstrect.y = iDestY;
+    SDL_BlitSurface(src->surface_, src_rect, dst->surface_, &dstrect);
+#if defined __GNUC__ && defined i386
+    __asm__ __volatile__("cld");  // XXX HACK000D
+#endif
+  } else if (src_bpp < dst_bpp) {
+    SGPBox const *src_rect = src_box;
+    SGPBox r;
+    if (!src_rect) {
+      // Check Sizes, SRC size MUST be <= DEST size
+      if (dst->Height() < src->Height()) {
+        DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2,
+                 "Incompatible height size given in Video Surface blit");
+        return;
+      }
+      if (dst->Width() < src->Width()) {
+        DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2,
+                 "Incompatible height size given in Video Surface blit");
+        return;
+      }
+
+      r.x = 0;
+      r.y = 0;
+      r.w = src->Width();
+      r.h = src->Height();
+      src_rect = &r;
+    }
+
+    SGPVSurface::Lock lsrc(src);
+    SGPVSurface::Lock ldst(dst);
+    UINT8 *const s_buf = lsrc.Buffer<UINT8>();
+    UINT32 const spitch = lsrc.Pitch();
+    UINT16 *const d_buf = ldst.Buffer<UINT16>();
+    UINT32 const dpitch = ldst.Pitch();
+    Blt8BPPDataSubTo16BPPBuffer(d_buf, dpitch, src, s_buf, spitch, iDestX, iDestY, src_rect);
+  } else {
+    DebugMsg(TOPIC_VIDEOSURFACE, DBG_LEVEL_2,
+             "Incompatible BPP values with src and dest Video Surfaces for "
+             "blitting");
+  }
+}
 
 void BltStretchVideoSurface(SGPVSurface *const dst, SGPVSurface const *const src,
                             SGPBox const *const src_rect, SGPBox const *const dst_rect) {
@@ -329,12 +329,12 @@ void BltStretchVideoSurface(SGPVSurface *const dst, SGPVSurface const *const src
   }
 }
 
-// void BltVideoSurfaceOnce(SGPVSurface *const dst, const char *const filename, INT32 const x,
-//                          INT32 const y) {
-//   SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));
-//   BltVideoSurface(dst, src, x, y, NULL);
-// }
-//
+void BltVideoSurfaceOnce(SGPVSurface *const dst, const char *const filename, INT32 const x,
+                         INT32 const y) {
+  SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));
+  BltVideoSurface(dst, src, x, y, NULL);
+}
+
 // /** Draw image on the video surface stretching the image if necessary. */
 // void BltVideoSurfaceOnceWithStretch(SGPVSurface *const dst, const char *const filename) {
 //   SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));

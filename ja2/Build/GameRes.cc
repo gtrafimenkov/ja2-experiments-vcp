@@ -1,14 +1,14 @@
 #include "GameRes.h"
 
 // #include <locale.h>
-// #include <stdexcept>
-//
-// #include "Directories.h"
+#include <stdexcept>
+
+#include "Directories.h"
 // #include "GameState.h"
 // #include "SGP/EncodingCorrectors.h"
 // #include "SGP/LibraryDataBase.h"
 // #include "SGP/Logger.h"
-// #include "SGP/StrUtils.h"
+#include "SGP/StrUtils.h"
 #include "SGP/TranslationTable.h"
 // #include "Utils/MultiLanguageGraphicUtils.h"
 #include "Utils/Text.h"
@@ -31,13 +31,13 @@ static GameVersion s_gameVersion = GV_ENGLISH;
 /** Character->Glyph translation table for the current language. */
 unsigned char const *TranslationTable = g_en_TranslationTable->m_table;
 
-// wchar_t getZeroGlyphChar() {
-//   if (s_gameVersion == GV_RUSSIAN) {
-//     return L' ';
-//   } else {
-//     return L'A';
-//   }
-// }
+wchar_t getZeroGlyphChar() {
+  if (s_gameVersion == GV_RUSSIAN) {
+    return L' ';
+  } else {
+    return L'A';
+  }
+}
 
 /** Set language resources. */
 static void setResources(const LanguageRes *langRes, const CTranslationTable *translationTable) {
@@ -81,21 +81,21 @@ void setGameVersion(GameVersion ver) {
   }
 }
 
-// /** Check if this is English version of the game. */
-// bool isEnglishVersion() { return s_gameVersion == GV_ENGLISH; }
-//
+/** Check if this is English version of the game. */
+bool isEnglishVersion() { return s_gameVersion == GV_ENGLISH; }
+
 // /** Check if this is German version of the game. */
 // bool isGermanVersion() { return s_gameVersion == GV_GERMAN; }
-//
-// /** Check if this is Polish version of the game. */
-// bool isPolishVersion() { return s_gameVersion == GV_POLISH; }
-//
-// /** Check if this is Russian version of the game. */
-// bool isRussianVersion() { return s_gameVersion == GV_RUSSIAN; }
-//
-// /** Check if this is Russian GOLD version of the game. */
-// bool isRussianGoldVersion() { return s_gameVersion == GV_RUSSIAN_GOLD; }
-//
+
+/** Check if this is Polish version of the game. */
+bool isPolishVersion() { return s_gameVersion == GV_POLISH; }
+
+/** Check if this is Russian version of the game. */
+bool isRussianVersion() { return s_gameVersion == GV_RUSSIAN; }
+
+/** Check if this is Russian GOLD version of the game. */
+bool isRussianGoldVersion() { return s_gameVersion == GV_RUSSIAN_GOLD; }
+
 // /**
 //  * Get encoding corrector for strings in data files.
 //  * @return NULL when no encoding corrector is required */
@@ -152,11 +152,11 @@ void setGameVersion(GameVersion ver) {
 //
 // #define STI(LNG, x) LNG "/" x "_" LNG ".sti"
 // #define PCX(LNG, x) LNG "/" x "_" LNG ".pcx"
-//
-// char const *GetMLGFilename(MultiLanguageGraphic const id) {
-//   if ((s_gameVersion == GV_ENGLISH) || (s_gameVersion == GV_FRENCH) ||
-//       (s_gameVersion == GV_RUSSIAN_GOLD)) {
-//     switch (id) {
+
+char const *GetMLGFilename(MultiLanguageGraphic const id) {
+  if ((s_gameVersion == GV_ENGLISH) || (s_gameVersion == GV_FRENCH) ||
+      (s_gameVersion == GV_RUSSIAN_GOLD)) {
+    switch (id) {
 //       case MLG_AIMSYMBOL:
 //         return LAPTOPDIR "/aimsymbol.sti";
 //       case MLG_BOBBYNAME:
@@ -205,8 +205,8 @@ void setGameVersion(GameVersion ver) {
 //         return LAPTOPDIR "/smallsymbol.sti";
 //       case MLG_SMALLTITLE:
 //         return LAPTOPDIR "/smalltitle.sti";
-//       case MLG_SPLASH:
-//         return INTERFACEDIR "/splash.sti";
+      case MLG_SPLASH:
+        return INTERFACEDIR "/splash.sti";
 //       case MLG_STATSBOX:
 //         return LAPTOPDIR "/statsbox.sti";
 //       case MLG_STOREPLAQUE:
@@ -225,8 +225,8 @@ void setGameVersion(GameVersion ver) {
 //         return LAPTOPDIR "/yourad_13.sti";
 //       default:
 //         break;
-//     }
-//   } else if (s_gameVersion == GV_GERMAN) {
+    }
+  } else if (s_gameVersion == GV_GERMAN) {
 //     switch (id) {
 //       case MLG_AIMSYMBOL:
 //         return LAPTOPDIR "/aimsymbol.sti";  // Same graphic (no translation needed)
@@ -325,7 +325,7 @@ void setGameVersion(GameVersion ver) {
 //       default:
 //         break;
 //     }
-//   } else if (s_gameVersion == GV_DUTCH) {
+  } else if (s_gameVersion == GV_DUTCH) {
 //     switch (id) {
 //       case MLG_AIMSYMBOL:
 //         return STI("dutch", "aimsymbol");
@@ -396,7 +396,7 @@ void setGameVersion(GameVersion ver) {
 //       default:
 //         break;
 //     }
-//   } else if (s_gameVersion == GV_ITALIAN) {
+  } else if (s_gameVersion == GV_ITALIAN) {
 //     switch (id) {
 //       case MLG_AIMSYMBOL:
 //         return STI("italian", "aimsymbol");
@@ -467,7 +467,7 @@ void setGameVersion(GameVersion ver) {
 //       default:
 //         break;
 //     }
-//   } else if (s_gameVersion == GV_POLISH) {
+  } else if (s_gameVersion == GV_POLISH) {
 //     switch (id) {
 //       case MLG_AIMSYMBOL:
 //         return STI("polish", "aimsymbol");
@@ -538,7 +538,7 @@ void setGameVersion(GameVersion ver) {
 //       default:
 //         break;
 //     }
-//   } else if (s_gameVersion == GV_RUSSIAN) {
+  } else if (s_gameVersion == GV_RUSSIAN) {
 //     switch (id) {
 //       case MLG_AIMSYMBOL:
 //         return STI("russian", "aimsymbol");
@@ -609,8 +609,8 @@ void setGameVersion(GameVersion ver) {
 //       default:
 //         break;
 //     }
-//   }
-//
-//   throw std::runtime_error(FormattedString("Multilanguage resource %d is not found", id));
-// }
-//
+  }
+
+  throw std::runtime_error(FormattedString("Multilanguage resource %d is not found", id));
+}
+

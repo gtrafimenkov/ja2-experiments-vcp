@@ -7,8 +7,8 @@
 // #include "ScreenIDs.h"
 //
 // char g_filename[200];
-//
-// char gubErrorText[200];
+
+char gubErrorText[200];
 // BOOLEAN gfEditMode = FALSE;
 // BOOLEAN fFirstTimeInGameScreen = TRUE;
 // INT8 gbFPSDisplay = SHOW_MIN_FPS;

@@ -1,8 +1,8 @@
-// #ifndef __MAP_INFORMATION_H
-// #define __MAP_INFORMATION_H
-//
-// #include "JA2Types.h"
-//
+#ifndef __MAP_INFORMATION_H
+#define __MAP_INFORMATION_H
+
+#include "JA2Types.h"
+
 // extern UINT8 gubMinorMapVersion;
 //
 // enum  // for use with MAPCREATE_STRUCT.ubEditorSmoothingType
@@ -46,8 +46,7 @@
 // void LoadMapInformation(HWFILE);
 // void ValidateAndUpdateMapVersionIfNecessary(void);
 // BOOLEAN ValidateEntryPointGridNo(INT16 *sGridNo);
-//
-// extern BOOLEAN gfWorldLoaded;
-//
-// #endif
-//
+
+extern BOOLEAN gfWorldLoaded;
+
+#endif

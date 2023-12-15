@@ -20,7 +20,7 @@ static CursorData *gpCursorDatabase;
 INT16 gsGlobalCursorYOffset = 0;
 UINT16 gsCurMouseHeight = 0;
 UINT16 gsCurMouseWidth = 0;
-// static UINT16 gusNumDataFiles = 0;
+static UINT16 gusNumDataFiles = 0;
 static SGPVObject const *guiExternVo;
 static UINT16 gusExternVoSubIndex;
 static UINT32 guiOldSetCursor = 0;
@@ -45,16 +45,16 @@ static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject, UINT16 usV
                         Get16BPPColor(FROMRGB(0, 255, 0)));
 }
 
-// // THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC
-// // VARIABLES
-// void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
-//                         UINT16 suNumDataFiles) {
-//   // Set global values!
-//   gpCursorFileDatabase = pCursorFileData;
-//   gpCursorDatabase = pCursorData;
-//   gusNumDataFiles = suNumDataFiles;
-//   gfCursorDatabaseInit = TRUE;
-// }
+// THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC
+// VARIABLES
+void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
+                        UINT16 suNumDataFiles) {
+  // Set global values!
+  gpCursorFileDatabase = pCursorFileData;
+  gpCursorDatabase = pCursorData;
+  gusNumDataFiles = suNumDataFiles;
+  gfCursorDatabaseInit = TRUE;
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -149,24 +149,24 @@ static void LoadCursorData(UINT32 uiCursorIndex) {
   }
 }
 
-// static void UnLoadCursorData(UINT32 uiCursorIndex) {
-//   // This function will unload add data used for this cursor
-//   //
-//   // Ok, first we make sure that the video object file is indeed loaded. Once
-//   // this is verified, we will move on to the deletion
-//   const CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
-//
-//   for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
-//     const CursorImage *pCurImage = &pCurData->Composites[cnt];
-//     CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
-//
-//     if (CFData->hVObject != NULL && CFData->Filename != NULL) {
-//       DeleteVideoObject(CFData->hVObject);
-//       CFData->hVObject = NULL;
-//     }
-//   }
-// }
-//
+static void UnLoadCursorData(UINT32 uiCursorIndex) {
+  // This function will unload add data used for this cursor
+  //
+  // Ok, first we make sure that the video object file is indeed loaded. Once
+  // this is verified, we will move on to the deletion
+  const CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
+
+  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+    const CursorImage *pCurImage = &pCurData->Composites[cnt];
+    CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
+
+    if (CFData->hVObject != NULL && CFData->Filename != NULL) {
+      DeleteVideoObject(CFData->hVObject);
+      CFData->hVObject = NULL;
+    }
+  }
+}
+
 // void CursorDatabaseClear(void) {
 //   for (UINT32 uiIndex = 0; uiIndex < gusNumDataFiles; uiIndex++) {
 //     CursorFileData *CFData = &gpCursorFileDatabase[uiIndex];
@@ -282,32 +282,32 @@ BOOLEAN SetCurrentCursorFromDatabase(UINT32 uiCursorIndex) {
   return TRUE;
 }
 
-// void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride) { gMouseBltOverride = pMouseBltOverride; }
-//
-// // Sets an external video object as cursor file data....
-// void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex) {
-//   CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
-//
-//   for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
-//     CursorImage *pCurImage = &pCurData->Composites[cnt];
-//     CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
-//
-//     if (CFData->Filename == NULL) {
-//       // OK, set Video Object here....
-//
-//       // If loaded, unload...
-//       UnLoadCursorData(uiCursorIndex);
-//
-//       // Set extern vo
-//       CFData->hVObject = hVObject;
-//       pCurImage->uiSubIndex = usSubIndex;
-//
-//       // Reload....
-//       LoadCursorData(uiCursorIndex);
-//     }
-//   }
-// }
-//
+void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride) { gMouseBltOverride = pMouseBltOverride; }
+
+// Sets an external video object as cursor file data....
+void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex) {
+  CursorData *pCurData = &gpCursorDatabase[uiCursorIndex];
+
+  for (UINT32 cnt = 0; cnt < pCurData->usNumComposites; cnt++) {
+    CursorImage *pCurImage = &pCurData->Composites[cnt];
+    CursorFileData *CFData = &gpCursorFileDatabase[pCurImage->uiFileIndex];
+
+    if (CFData->Filename == NULL) {
+      // OK, set Video Object here....
+
+      // If loaded, unload...
+      UnLoadCursorData(uiCursorIndex);
+
+      // Set extern vo
+      CFData->hVObject = hVObject;
+      pCurImage->uiSubIndex = usSubIndex;
+
+      // Reload....
+      LoadCursorData(uiCursorIndex);
+    }
+  }
+}
+
 // void SetExternMouseCursor(SGPVObject const &vo, UINT16 const region_idx) {
 //   guiExternVo = &vo;
 //   gusExternVoSubIndex = region_idx;

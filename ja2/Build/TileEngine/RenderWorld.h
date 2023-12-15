@@ -1,8 +1,8 @@
-// #ifndef RENDERWORLD_H
-// #define RENDERWORLD_H
-//
-// #include "SGP/Types.h"
-//
+#ifndef RENDERWORLD_H
+#define RENDERWORLD_H
+
+#include "SGP/Types.h"
+
 // extern BOOLEAN gfDoVideoScroll;
 // extern UINT8 gubCurScrollSpeedID;
 //
@@ -69,9 +69,9 @@
 // extern const INT16 gsVIEWPORT_END_Y;
 // extern INT16 gsVIEWPORT_WINDOW_START_Y;
 // extern INT16 gsVIEWPORT_WINDOW_END_Y;
-//
-// extern INT16 gsRenderCenterX;
-// extern INT16 gsRenderCenterY;
+
+extern INT16 gsRenderCenterX;
+extern INT16 gsRenderCenterY;
 // extern INT16 gsRenderWorldOffsetX;
 // extern INT16 gsRenderWorldOffsetY;
 //
@@ -122,6 +122,6 @@
 // void InvalidateWorldRedundency(void);
 //
 // void SetRenderCenter(INT16 sNewX, INT16 sNewY);
-//
-// #endif
-//
+
+#endif
+

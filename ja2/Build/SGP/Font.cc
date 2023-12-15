@@ -1,19 +1,19 @@
 #include "SGP/Font.h"
 
-// #include <stdarg.h>
-//
-// #include "GameRes.h"
+#include <stdarg.h>
+
+#include "GameRes.h"
 #include "Local.h"
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/TranslationTable.h"
-// #include "SGP/Types.h"
+#include "SGP/MemMan.h"
+#include "SGP/TranslationTable.h"
+#include "SGP/Types.h"
 #include "SGP/VObject.h"
-// #include "SGP/VObjectBlitters.h"
+#include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
 
-// typedef UINT8 GlyphIdx;
+typedef UINT8 GlyphIdx;
 
 // Destination printing parameters
 Font FontDefault = 0;
@@ -86,24 +86,24 @@ Font LoadFontFile(const char *filename) {
 //   Assert(font);
 //   DeleteVideoObject(font);
 // }
-//
-// /* Returns the width of a given character in the font. */
-// static UINT32 GetWidth(HVOBJECT const hSrcVObject, GlyphIdx const ssIndex) {
-//   // Get Offsets from Index into structure
-//   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(ssIndex);
-//   return pTrav.usWidth + pTrav.sOffsetX;
-// }
-//
-// /* Returns the length of a string in pixels, depending on the font given. */
-// INT16 StringPixLength(wchar_t const *const string, Font const font) {
-//   if (!string) return 0;
-//
-//   UINT32 w = 0;
-//   for (wchar_t const *c = string; *c != L'\0'; ++c) {
-//     w += GetCharWidth(font, *c);
-//   }
-//   return w;
-// }
+
+/* Returns the width of a given character in the font. */
+static UINT32 GetWidth(HVOBJECT const hSrcVObject, GlyphIdx const ssIndex) {
+  // Get Offsets from Index into structure
+  ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(ssIndex);
+  return pTrav.usWidth + pTrav.sOffsetX;
+}
+
+/* Returns the length of a string in pixels, depending on the font given. */
+INT16 StringPixLength(wchar_t const *const string, Font const font) {
+  if (!string) return 0;
+
+  UINT32 w = 0;
+  for (wchar_t const *c = string; *c != L'\0'; ++c) {
+    w += GetCharWidth(font, *c);
+  }
+  return w;
+}
 
 /* Saves the current font printing settings into temporary locations. */
 void SaveFontSettings(void) {
@@ -125,32 +125,32 @@ void RestoreFontSettings(void) {
   FontBackground16 = SaveFontBackground16;
 }
 
-// /* Returns the height of a given character in the font. */
-// static UINT32 GetHeight(HVOBJECT hSrcVObject, INT16 ssIndex) {
-//   // Get Offsets from Index into structure
-//   ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(ssIndex);
-//   return pTrav.usHeight + pTrav.sOffsetY;
-// }
-//
-// /* Returns the height of the first character in a font. */
-// UINT16 GetFontHeight(Font const font) { return GetHeight(font, 0); }
-//
+/* Returns the height of a given character in the font. */
+static UINT32 GetHeight(HVOBJECT hSrcVObject, INT16 ssIndex) {
+  // Get Offsets from Index into structure
+  ETRLEObject const &pTrav = hSrcVObject->SubregionProperties(ssIndex);
+  return pTrav.usHeight + pTrav.sOffsetY;
+}
+
+/* Returns the height of the first character in a font. */
+UINT16 GetFontHeight(Font const font) { return GetHeight(font, 0); }
+
 // bool IsPrintableChar(wchar_t const c) {
 //   if (TRANSLATION_TABLE_SIZE <= c) return false;
 //   return TranslationTable[c] != 0 || c == getZeroGlyphChar();
 // }
-//
-// /* Given a wide char, this function returns the index of the glyph. If no glyph
-//  * exists for the requested wide char, the glyph index of '?' is returned. */
-// static GlyphIdx GetGlyphIndex(wchar_t const c) {
-//   if ((0 <= c) && (c < TRANSLATION_TABLE_SIZE)) {
-//     GlyphIdx const idx = TranslationTable[c];
-//     if (idx != 0 || c == getZeroGlyphChar()) return idx;
-//   }
-//   DebugMsg(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error: Invalid character given U+%04X", c));
-//   return TranslationTable[L'?'];
-// }
-//
+
+/* Given a wide char, this function returns the index of the glyph. If no glyph
+ * exists for the requested wide char, the glyph index of '?' is returned. */
+static GlyphIdx GetGlyphIndex(wchar_t const c) {
+  if ((0 <= c) && (c < TRANSLATION_TABLE_SIZE)) {
+    GlyphIdx const idx = TranslationTable[c];
+    if (idx != 0 || c == getZeroGlyphChar()) return idx;
+  }
+  DebugMsg(TOPIC_FONT_HANDLER, DBG_LEVEL_0, String("Error: Invalid character given U+%04X", c));
+  return TranslationTable[L'?'];
+}
+
 // UINT32 GetCharWidth(HVOBJECT Font, wchar_t c) { return GetWidth(Font, GetGlyphIndex(c)); }
 
 /* Sets the current font number. */
@@ -203,17 +203,17 @@ void SetFontDestBuffer(SGPVSurface *const dst) {
 //   *psNewX = xp;
 //   *psNewY = yp;
 // }
-//
-// void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
-//                                const wchar_t *pStr, Font const font, INT16 *psNewX, INT16 *psNewY) {
-//   // Compute the coordinates to center the text
-//   INT16 xp = (sWidth - StringPixLength(pStr, font) + 1) / 2 + sLeft;
-//   INT16 yp = (sHeight - GetFontHeight(font)) / 2 + sTop;
-//
-//   *psNewX = xp;
-//   *psNewY = yp;
-// }
-//
+
+void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
+                               const wchar_t *pStr, Font const font, INT16 *psNewX, INT16 *psNewY) {
+  // Compute the coordinates to center the text
+  INT16 xp = (sWidth - StringPixLength(pStr, font) + 1) / 2 + sLeft;
+  INT16 yp = (sHeight - GetFontHeight(font)) / 2 + sTop;
+
+  *psNewX = xp;
+  *psNewY = yp;
+}
+
 // void gprintf(INT32 x, INT32 const y, wchar_t const *fmt, ...) {
 //   va_list ap;
 //   va_start(ap, fmt);
@@ -243,37 +243,37 @@ void SetFontDestBuffer(SGPVSurface *const dst) {
 //   }
 //   return GetWidth(font, glyph);
 // }
-//
-// void MPrintBuffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32 x, INT32 const y,
-//                   wchar_t const *str) {
-//   Font const font = FontDefault;
-//   for (; *str != L'\0'; ++str) {
-//     GlyphIdx const glyph = GetGlyphIndex(*str);
-//     Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, font, x, y, glyph,
-//                                            &FontDestRegion, FontForeground16, FontBackground16,
-//                                            FontShadow16);
-//     x += GetWidth(font, glyph);
-//   }
-// }
-//
-// void MPrint(INT32 const x, INT32 const y, wchar_t const *const str) {
-//   SGPVSurface::Lock l(FontDestBuffer);
-//   MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), x, y, str);
-// }
-//
-// /* Prints to the currently selected destination buffer, at the X/Y coordinates
-//  * specified, using the currently selected font. Other than the X/Y coordinates,
-//  * the parameters are identical to printf. The resulting string may be no longer
-//  * than 512 word-characters. Uses monochrome font color settings */
-// void mprintf(INT32 const x, INT32 const y, wchar_t const *const fmt, ...) {
-//   wchar_t str[512];
-//   va_list ap;
-//   va_start(ap, fmt);
-//   vswprintf(str, lengthof(str), fmt, ap);
-//   va_end(ap);
-//   MPrint(x, y, str);
-// }
-//
+
+void MPrintBuffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32 x, INT32 const y,
+                  wchar_t const *str) {
+  Font const font = FontDefault;
+  for (; *str != L'\0'; ++str) {
+    GlyphIdx const glyph = GetGlyphIndex(*str);
+    Blt8BPPDataTo16BPPBufferMonoShadowClip(pDestBuf, uiDestPitchBYTES, font, x, y, glyph,
+                                           &FontDestRegion, FontForeground16, FontBackground16,
+                                           FontShadow16);
+    x += GetWidth(font, glyph);
+  }
+}
+
+void MPrint(INT32 const x, INT32 const y, wchar_t const *const str) {
+  SGPVSurface::Lock l(FontDestBuffer);
+  MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), x, y, str);
+}
+
+/* Prints to the currently selected destination buffer, at the X/Y coordinates
+ * specified, using the currently selected font. Other than the X/Y coordinates,
+ * the parameters are identical to printf. The resulting string may be no longer
+ * than 512 word-characters. Uses monochrome font color settings */
+void mprintf(INT32 const x, INT32 const y, wchar_t const *const fmt, ...) {
+  wchar_t str[512];
+  va_list ap;
+  va_start(ap, fmt);
+  vswprintf(str, lengthof(str), fmt, ap);
+  va_end(ap);
+  MPrint(x, y, str);
+}
+
 // void mprintf_buffer(UINT16 *const pDestBuf, UINT32 const uiDestPitchBYTES, INT32 const x,
 //                     INT32 const y, wchar_t const *const fmt, ...) {
 //   wchar_t str[512];

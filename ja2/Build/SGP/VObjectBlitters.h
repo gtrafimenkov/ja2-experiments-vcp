@@ -33,13 +33,13 @@ BOOLEAN BltIsClipped(const SGPVObject *hSrcVObject, INT32 iX, INT32 iY, UINT16 u
 //                                                      UINT16 *zbuf, UINT16 zval,
 //                                                      HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
 //                                                      UINT16 usIndex, SGPRect const *clipregion);
-//
-// void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-//                                             HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
-//                                             UINT16 usIndex, SGPRect *clipregion,
-//                                             UINT16 usForeground, UINT16 usBackground,
-//                                             UINT16 usShadow);
-//
+
+void Blt8BPPDataTo16BPPBufferMonoShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
+                                            HVOBJECT hSrcVObject, INT32 iX, INT32 iY,
+                                            UINT16 usIndex, SGPRect *clipregion,
+                                            UINT16 usForeground, UINT16 usBackground,
+                                            UINT16 usShadow);
+
 // void Blt8BPPDataTo16BPPBufferTransZ(UINT16 *buf, UINT32 uiDestPitchBYTES, UINT16 *zbuf, UINT16 zval,
 //                                     HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex);
 // void Blt8BPPDataTo16BPPBufferTransZNB(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, UINT16 *pZBuffer,
@@ -136,10 +136,10 @@ void Blt16BPPBufferFilterRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, const UI
 //
 // void Blt8BPPDataTo16BPPBuffer(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPVSurface *hSrcVSurface,
 //                               UINT8 *pSrcBuffer, INT32 iX, INT32 iY);
-// void Blt8BPPDataSubTo16BPPBuffer(UINT16 *buf, UINT32 uiDestPitchBYTES, SGPVSurface *hSrcVSurface,
-//                                  UINT8 *pSrcBuffer, UINT32 src_pitch, INT32 iX, INT32 iY,
-//                                  SGPBox const *rect);
-//
+void Blt8BPPDataSubTo16BPPBuffer(UINT16 *buf, UINT32 uiDestPitchBYTES, SGPVSurface *hSrcVSurface,
+                                 UINT8 *pSrcBuffer, UINT32 src_pitch, INT32 iX, INT32 iY,
+                                 SGPBox const *rect);
+
 // // Blits from flat 8bpp source, to 16bpp dest, divides in half
 // void Blt8BPPDataTo16BPPBufferHalf(UINT16 *dst_buf, UINT32 uiDestPitchBYTES,
 //                                   SGPVSurface *src_surface, UINT8 const *src_buf, UINT32 src_pitch,

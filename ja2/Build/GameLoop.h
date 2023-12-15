@@ -1,9 +1,9 @@
 #ifndef GAMELOOP_H
 #define GAMELOOP_H
 
-// #include "MessageBoxScreen.h"
-// #include "SGP/Types.h"
-// #include "ScreenIDs.h"
+#include "MessageBoxScreen.h"
+#include "SGP/Types.h"
+#include "ScreenIDs.h"
 
 void InitializeGame(void);
 // void ShutdownGame(void);

@@ -1,9 +1,9 @@
-// #ifndef _INTERFACE_H
-// #define _INTERFACE_H
-//
-// #include "SGP/MouseSystem.h"
-// #include "Tactical/HandleUI.h"
-//
+#ifndef _INTERFACE_H
+#define _INTERFACE_H
+
+#include "SGP/MouseSystem.h"
+#include "Tactical/HandleUI.h"
+
 // #define MAX_UICOMPOSITES 4
 //
 // #define INTERFACE_START_Y (SCREEN_HEIGHT - 120)
@@ -58,8 +58,8 @@
 // extern SGPVObject *guiDEAD;
 // extern SGPVObject *guiHATCH;
 // extern SGPVObject *guiRADIO;
-//
-// extern MOUSE_REGION gViewportRegion;
+
+extern MOUSE_REGION gViewportRegion;
 // extern MOUSE_REGION gRadarRegion;
 //
 // #define MOVEMENT_MENU_LOOK 1
@@ -163,6 +163,6 @@
 // extern BOOLEAN gfInOpenDoorMenu;
 // extern UINT32 guiUIMessageTimeDelay;
 // extern BOOLEAN gfTopMessageDirty;
-//
-// #endif
-//
+
+#endif
+

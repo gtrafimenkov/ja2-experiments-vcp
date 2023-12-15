@@ -1,11 +1,11 @@
 #include "JA2Splash.h"
 
-// #include "Directories.h"
-// #include "GameRes.h"
-// #include "MainMenuScreen.h"
-// #include "SGP/LibraryDataBase.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
+#include "Directories.h"
+#include "GameRes.h"
+#include "MainMenuScreen.h"
+#include "SGP/LibraryDataBase.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
 #include "Utils/TimerControl.h"
 
 UINT32 guiSplashFrameFade = 10;

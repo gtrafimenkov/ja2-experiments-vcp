@@ -6,8 +6,8 @@
 
 ScreenID ErrorScreenHandle(void);
 
-// ScreenID InitScreenHandle(void);
-//
+ScreenID InitScreenHandle(void);
+
 // ScreenID PalEditScreenHandle(void);
 //
 // ScreenID DebugScreenHandle(void);

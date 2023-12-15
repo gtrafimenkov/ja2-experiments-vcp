@@ -1,32 +1,32 @@
 #include "Screens.h"
 
-// #include "AniViewScreen.h"
-// #include "Credits.h"
-// #include "Editor/EditScreen.h"
-// #include "Editor/LoadScreen.h"
-// #include "FadeScreen.h"
-// #include "GameInitOptionsScreen.h"
-// #include "GameScreen.h"
-// #include "Intro.h"
-// #include "JAScreens.h"
-// #include "Laptop/Laptop.h"
+#include "AniViewScreen.h"
+#include "Credits.h"
+#include "Editor/EditScreen.h"
+#include "Editor/LoadScreen.h"
+#include "FadeScreen.h"
+#include "GameInitOptionsScreen.h"
+#include "GameScreen.h"
+#include "Intro.h"
+#include "JAScreens.h"
+#include "Laptop/Laptop.h"
 #include "MainMenuScreen.h"
-// #include "MessageBoxScreen.h"
+#include "MessageBoxScreen.h"
 #include "OptionsScreen.h"
-// #include "SaveLoadScreen.h"
-// #include "Strategic/AIViewer.h"
-// #include "Strategic/AutoResolve.h"
-// #include "Strategic/MapScreen.h"
-// #include "Strategic/QuestDebugSystem.h"
-// #include "Tactical/ShopKeeperInterface.h"
-// #include "Utils/MapUtility.h"
+#include "SaveLoadScreen.h"
+#include "Strategic/AIViewer.h"
+#include "Strategic/AutoResolve.h"
+#include "Strategic/MapScreen.h"
+#include "Strategic/QuestDebugSystem.h"
+#include "Tactical/ShopKeeperInterface.h"
+#include "Utils/MapUtility.h"
 
 Screens const GameScreens[MAX_SCREENS] = {
 //     {EditScreenInit, EditScreenHandle, EditScreenShutdown},
     {NULL, NULL, NULL},
     {NULL, NULL, NULL},
     {NULL, ErrorScreenHandle, NULL},  // Title Screen
-//     {NULL, InitScreenHandle, NULL},   // Title Screen
+    {NULL, InitScreenHandle, NULL},   // Title Screen
     {MainGameScreenInit, MainGameScreenHandle, MainGameScreenShutdown},
 //     {NULL, AniEditScreenHandle, NULL},
 //     {NULL, PalEditScreenHandle, NULL},

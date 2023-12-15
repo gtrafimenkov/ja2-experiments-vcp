@@ -16,10 +16,10 @@
 // // - A comprehensive automatic blitter which blits the appropriate type based on
 // // the
 // //   image header.
-//
-// // Defines for buffer bit depth
-// #define BUFFER_8BPP 0x1
-// #define BUFFER_16BPP 0x2
+
+// Defines for buffer bit depth
+#define BUFFER_8BPP 0x1
+#define BUFFER_16BPP 0x2
 
 // Defines for image charactoristics
 #define IMAGE_TRLECOMPRESSED 0x0002
@@ -100,10 +100,10 @@ struct SGPImage {
 
 SGPImage *CreateImage(const char *ImageFile, UINT16 fContents);
 
-// // This function will run the appropriate copy function based on the type of
-// // SGPImage object
-// BOOLEAN CopyImageToBuffer(SGPImage const *, UINT32 fBufferType, BYTE *pDestBuf, UINT16 usDestWidth,
-//                           UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPBox const *src_rect);
+// This function will run the appropriate copy function based on the type of
+// SGPImage object
+BOOLEAN CopyImageToBuffer(SGPImage const *, UINT32 fBufferType, BYTE *pDestBuf, UINT16 usDestWidth,
+                          UINT16 usDestHeight, UINT16 usX, UINT16 usY, SGPBox const *src_rect);
 
 // This function will create a buffer in memory of ETRLE data, excluding palette
 void GetETRLEImageData(SGPImage const *, ETRLEData *);

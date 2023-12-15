@@ -58,19 +58,19 @@ struct CursorData {
 };
 
 // extern INT16 gsGlobalCursorYOffset;
-//
-// // Globals for cursor database offset values
-// extern UINT16 gsCurMouseHeight;
-// extern UINT16 gsCurMouseWidth;
-//
+
+// Globals for cursor database offset values
+extern UINT16 gsCurMouseHeight;
+extern UINT16 gsCurMouseWidth;
+
 // void SetExternMouseCursor(SGPVObject const &, UINT16 region_idx);
 
 typedef void (*MOUSEBLT_HOOK)(void);
 
-// void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
-//                         UINT16 suNumDataFiles);
-// void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride);
-//
+void InitCursorDatabase(CursorFileData *pCursorFileData, CursorData *pCursorData,
+                        UINT16 suNumDataFiles);
+void SetMouseBltHook(MOUSEBLT_HOOK pMouseBltOverride);
+
 // void SetExternVOData(UINT32 uiCursorIndex, HVOBJECT hVObject, UINT16 usSubIndex);
 
 #endif

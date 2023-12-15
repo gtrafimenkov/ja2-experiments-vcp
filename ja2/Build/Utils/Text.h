@@ -1,13 +1,13 @@
 #ifndef __TEXT_H
 #define __TEXT_H
 
-// #include "SGP/Types.h"
-// #include "Tactical/ItemTypes.h"
-//
-// extern wchar_t ShortItemNames[MAXITEMS][80];
-// extern wchar_t ItemNames[MAXITEMS][80];
-//
-// extern void LoadAllExternalText(void);
+#include "SGP/Types.h"
+#include "Tactical/ItemTypes.h"
+
+extern wchar_t ShortItemNames[MAXITEMS][80];
+extern wchar_t ItemNames[MAXITEMS][80];
+
+extern void LoadAllExternalText(void);
 // extern const wchar_t *GetWeightUnitString(void);
 // extern FLOAT GetWeightBasedOnMetricOption(UINT32 uiObjectWeight);
 

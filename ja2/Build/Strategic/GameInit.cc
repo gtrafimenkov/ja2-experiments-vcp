@@ -306,8 +306,8 @@
 //   DeleteCreatureDirectives();
 //   KillStrategicAI();
 // }
-//
-// void InitNewGame() {
+
+void InitNewGame() {
 //   uiMeanWhileFlags = 0;
 //   SetSelectedMan(0);
 //
@@ -368,8 +368,8 @@
 //   } else if (gubScreenCount == 1) {
 //     gubScreenCount = 2;
 //   }
-// }
-//
+}
+
 // BOOLEAN AnyMercsHired() {
 //   CFOR_EACH_IN_TEAM(s, OUR_TEAM) { return TRUE; }
 //   return FALSE;

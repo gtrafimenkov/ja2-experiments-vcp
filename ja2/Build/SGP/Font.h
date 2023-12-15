@@ -33,9 +33,9 @@ void SetFontShadow(UINT8 ubBackground);
 // void gprintf(INT32 x, INT32 y, wchar_t const *fmt, ...);
 //
 // UINT32 MPrintChar(INT32 x, INT32 y, wchar_t);
-// void MPrintBuffer(UINT16 *pDestBuf, UINT32 uiDestPitchBYTES, INT32 x, INT32 y, wchar_t const *str);
-// void MPrint(INT32 x, INT32 y, wchar_t const *str);
-// void mprintf(INT32 x, INT32 y, wchar_t const *fmt, ...);
+void MPrintBuffer(UINT16 *pDestBuf, UINT32 uiDestPitchBYTES, INT32 x, INT32 y, wchar_t const *str);
+void MPrint(INT32 x, INT32 y, wchar_t const *str);
+void mprintf(INT32 x, INT32 y, wchar_t const *fmt, ...);
 // void mprintf_buffer(UINT16 *pDestBuf, UINT32 uiDestPitchBYTES, INT32 x, INT32 y, wchar_t const *fmt,
 //                     ...);
 
@@ -53,21 +53,21 @@ void SetFont(Font);
 void SetFontAttributes(Font, UINT8 foreground, UINT8 shadow = DEFAULT_SHADOW, UINT8 background = 0);
 
 Font LoadFontFile(const char *filename);
-// UINT16 GetFontHeight(Font);
+UINT16 GetFontHeight(Font);
 void InitializeFontManager(void);
 // void UnloadFont(Font);
 //
 // UINT32 GetCharWidth(HVOBJECT Font, wchar_t c);
-//
-// INT16 StringPixLength(const wchar_t *string, Font);
+
+INT16 StringPixLength(const wchar_t *string, Font);
 extern void SaveFontSettings(void);
 extern void RestoreFontSettings(void);
 
 // void FindFontRightCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
 //                               const wchar_t *pStr, Font, INT16 *psNewX, INT16 *psNewY);
-// void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
-//                                const wchar_t *pStr, Font, INT16 *psNewX, INT16 *psNewY);
-//
+void FindFontCenterCoordinates(INT16 sLeft, INT16 sTop, INT16 sWidth, INT16 sHeight,
+                               const wchar_t *pStr, Font, INT16 *psNewX, INT16 *psNewY);
+
 // bool IsPrintableChar(wchar_t);
 
 #endif

@@ -59,7 +59,7 @@ void InitializeFonts(void) {
 //   SetFontDestBuffer(FRAME_BUFFER);
 }
 
-// void ShutdownFonts(void) {
+void ShutdownFonts(void) {
 //   UnloadFont(gp10PointArial);
 //   UnloadFont(gp10PointArialBold);
 //   UnloadFont(gp12PointArial);
@@ -86,7 +86,7 @@ void InitializeFonts(void) {
 // void SetFontShade(Font const font, FontShade const shade) {
 //   CHECKV(0 <= shade && shade < 16);
 //   font->CurrentShade(shade);
-// }
+}
 
 static void CreateFontPaletteTables(Font const f) {
   const SGPPaletteEntry *const pal = f->Palette();
