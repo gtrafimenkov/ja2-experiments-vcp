@@ -14,8 +14,8 @@ class GameState {
   /** Set editor mode. */
   void setEditorMode(bool autoLoad);
 
-//   /** Check if we are in the editor mode. */
-//   bool isEditorMode();
+  /** Check if we are in the editor mode. */
+  bool isEditorMode();
 
  private:
   GameMode m_mode;

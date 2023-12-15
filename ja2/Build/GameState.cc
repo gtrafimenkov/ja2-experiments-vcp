@@ -8,11 +8,11 @@ GameState *GameState::getInstance() {
 
 // /** Get current game mode. */
 // GameMode GameState::getMode() { return m_mode; }
-//
-// /** Check if we are in the editor mode. */
-// bool GameState::isEditorMode() {
-//   return (m_mode == GAME_MODE_EDITOR) || (m_mode == GAME_MODE_EDITOR_AUTO);
-// }
+
+/** Check if we are in the editor mode. */
+bool GameState::isEditorMode() {
+  return (m_mode == GAME_MODE_EDITOR) || (m_mode == GAME_MODE_EDITOR_AUTO);
+}
 
 /** Set editor mode. */
 void GameState::setEditorMode(bool autoLoad) {

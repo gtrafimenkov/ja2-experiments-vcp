@@ -1,9 +1,9 @@
-// #ifndef _GAMESCREEN_H
-// #define _GAMESCREEN_H
-//
-// #include "JA2Types.h"
-// #include "ScreenIDs.h"
-//
+#ifndef _GAMESCREEN_H
+#define _GAMESCREEN_H
+
+#include "JA2Types.h"
+#include "ScreenIDs.h"
+
 // #define ARE_IN_FADE_IN() (gfFadeIn || gfFadeInitialized)
 //
 // void FadeInGameScreen(void);
@@ -31,16 +31,15 @@
 // void InternalLeaveTacticalScreen(ScreenID uiNewScreen);
 //
 // extern BOOLEAN gfBeginEndTurn;
-//
-// extern VIDEO_OVERLAY *g_fps_overlay;
-// extern VIDEO_OVERLAY *g_counter_period_overlay;
-//
+
+extern VIDEO_OVERLAY *g_fps_overlay;
+extern VIDEO_OVERLAY *g_counter_period_overlay;
+
 // void EnterTacticalScreen(void);
 // void LeaveTacticalScreen(ScreenID uiNewScreen);
-//
-// void MainGameScreenInit(void);
-// ScreenID MainGameScreenHandle(void);
-// void MainGameScreenShutdown(void);
-//
-// #endif
-//
+
+void MainGameScreenInit(void);
+ScreenID MainGameScreenHandle(void);
+void MainGameScreenShutdown(void);
+
+#endif

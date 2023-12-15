@@ -8,7 +8,7 @@
 
 extern char gubErrorText[200];
 // extern BOOLEAN gfAniEditMode;
-// extern BOOLEAN gfEditMode;
+extern BOOLEAN gfEditMode;
 // extern BOOLEAN fFirstTimeInGameScreen;
 // extern INT8 gbFPSDisplay;
 extern BOOLEAN gfGlobalError;

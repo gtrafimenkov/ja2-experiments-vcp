@@ -2,10 +2,10 @@
 #define MESSAGEBOXSCREEN_H
 
 #include "JA2Types.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/MouseSystem.h"
-// #include "ScreenIDs.h"
-//
+#include "SGP/ButtonSystem.h"
+#include "SGP/MouseSystem.h"
+#include "ScreenIDs.h"
+
 // // Message box flags
 // enum MessageBoxFlags {
 //   MSG_BOX_FLAG_OK,                     // Displays OK button
@@ -102,8 +102,8 @@ enum MessageBoxStyleID {
 
 extern BOOLEAN gfInMsgBox;
 
-// ScreenID MessageBoxScreenHandle(void);
-// void MessageBoxScreenShutdown();
+ScreenID MessageBoxScreenHandle(void);
+void MessageBoxScreenShutdown();
 
 #endif
 

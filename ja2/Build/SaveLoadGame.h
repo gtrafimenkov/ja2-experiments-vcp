@@ -1,17 +1,17 @@
 #ifndef _SAVE_LOAD_GAME_H_
 #define _SAVE_LOAD_GAME_H_
 
-// #include "GameSettings.h"
-// #include "ScreenIDs.h"
-//
+#include "GameSettings.h"
+#include "ScreenIDs.h"
+
 // #define BYTESINMEGABYTE 1048576  // 1024*1024
 #define REQUIRED_FREE_SPACE (20 * BYTESINMEGABYTE)
 
 // #define SIZE_OF_SAVE_GAME_DESC 128
 //
 // #define GAME_VERSION_LENGTH 16
-//
-// #define SAVE__ERROR_NUM 99
+
+#define SAVE__ERROR_NUM 99
 // #define SAVE__END_TURN_NUM 98
 //
 // #define SAVED_GAME_HEADER_ON_DISK_SIZE                                     \
@@ -74,8 +74,8 @@
 // extern ScreenID guiScreenToGotoAfterLoadingSavedGame;
 //
 // void CreateSavedGameFileNameFromNumber(UINT8 ubSaveGameID, char *pzNewFileName);
-//
-// BOOLEAN SaveGame(UINT8 ubSaveGameID, const wchar_t *pGameDesc);
+
+BOOLEAN SaveGame(UINT8 ubSaveGameID, const wchar_t *pGameDesc);
 // void LoadSavedGame(UINT8 save_slot_id);
 //
 // void SaveFilesToSavedGame(char const *pSrcFileName, HWFILE);

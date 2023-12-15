@@ -1,42 +1,42 @@
-// #include "SaveLoadGame.h"
-//
-// #include <stdexcept>
-//
-// #include "Cheats.h"
-// #include "Directories.h"
-// #include "GameLoop.h"
-// #include "GameRes.h"
-// #include "GameSettings.h"
-// #include "GameVersion.h"
-// #include "HelpScreen.h"
-// #include "JAScreens.h"
-// #include "Laptop/BobbyR.h"
-// #include "Laptop/BobbyRMailOrder.h"
-// #include "Laptop/Files.h"
-// #include "Laptop/Finances.h"
-// #include "Laptop/History.h"
-// #include "Laptop/IMPConfirm.h"
-// #include "Laptop/IMPPortraits.h"
-// #include "Laptop/Laptop.h"
-// #include "Laptop/LaptopSave.h"
-// #include "Laptop/Mercs.h"
-// #include "LoadSaveEMail.h"
-// #include "LoadSaveTacticalStatusType.h"
-// #include "LoadingScreen.h"
-// #include "Local.h"
-// #include "OptionsScreen.h"
-// #include "SGP/Buffer.h"
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/Font.h"
-// #include "SGP/LoadSaveData.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/Random.h"
-// #include "SGP/Types.h"
-// #include "SGP/UTF8String.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "SaveLoadScreen.h"
+#include "SaveLoadGame.h"
+
+#include <stdexcept>
+
+#include "Cheats.h"
+#include "Directories.h"
+#include "GameLoop.h"
+#include "GameRes.h"
+#include "GameSettings.h"
+#include "GameVersion.h"
+#include "HelpScreen.h"
+#include "JAScreens.h"
+#include "Laptop/BobbyR.h"
+#include "Laptop/BobbyRMailOrder.h"
+#include "Laptop/Files.h"
+#include "Laptop/Finances.h"
+#include "Laptop/History.h"
+#include "Laptop/IMPConfirm.h"
+#include "Laptop/IMPPortraits.h"
+#include "Laptop/Laptop.h"
+#include "Laptop/LaptopSave.h"
+#include "Laptop/Mercs.h"
+#include "LoadSaveEMail.h"
+#include "LoadSaveTacticalStatusType.h"
+#include "LoadingScreen.h"
+#include "Local.h"
+#include "OptionsScreen.h"
+#include "SGP/Buffer.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/Font.h"
+#include "SGP/LoadSaveData.h"
+#include "SGP/MemMan.h"
+#include "SGP/Random.h"
+#include "SGP/Types.h"
+#include "SGP/UTF8String.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "SaveLoadScreen.h"
 // #include "Strategic/Assignments.h"
 // #include "Strategic/CreatureSpreading.h"
 // #include "Strategic/GameClock.h"
@@ -178,8 +178,8 @@
 // #define InitSaveGameFilePosition(slot) ((void)0)
 // #define InitShutDownMapTempFileTest(init, name, id) ((void)0)
 // #define SaveGameFilePosition(slot, file, msg) ((void)0)
-//
-// BOOLEAN SaveGame(UINT8 const ubSaveGameID, wchar_t const *GameDesc) {
+
+BOOLEAN SaveGame(UINT8 const ubSaveGameID, wchar_t const *GameDesc) {
 //   BOOLEAN fPausedStateBeforeSaving = gfGamePaused;
 //   BOOLEAN fLockPauseStateBeforeSaving = gfLockPauseState;
 //
@@ -498,9 +498,9 @@
 //   InitShutDownMapTempFileTest(FALSE, "SaveMapTempFile", ubSaveGameID);
 //
 //   NextLoopCheckForEnoughFreeHardDriveSpace();
-//   return TRUE;
-// }
-//
+  return TRUE;
+}
+
 // /** Parse binary data and fill SAVED_GAME_HEADER structure.
 //  * @param data Data to be parsed.
 //  * @param h Header structure to be filled.

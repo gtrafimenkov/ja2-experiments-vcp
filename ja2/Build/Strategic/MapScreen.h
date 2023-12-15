@@ -103,11 +103,11 @@ extern BOOLEAN fInMapMode;
 //
 // // create/destroy inventory button as needed
 // void CreateDestroyMapInvButton(void);
-//
-// void MapScreenInit(void);
-// ScreenID MapScreenHandle(void);
-// void MapScreenShutdown(void);
-//
+
+void MapScreenInit(void);
+ScreenID MapScreenHandle(void);
+void MapScreenShutdown(void);
+
 // void LockMapScreenInterface(bool lock);
 // void MakeDialogueEventEnterMapScreen();
 //

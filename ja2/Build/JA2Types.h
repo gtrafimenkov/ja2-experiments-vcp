@@ -9,7 +9,7 @@
 //
 // struct ANIM_PROF;
 // struct ANITILE;
-// struct BACKGROUND_SAVE;
+struct BACKGROUND_SAVE;
 // struct BASIC_SOLDIERCREATE_STRUCT;
 // struct BULLET;
 // struct DB_STRUCTURE_REF;
@@ -31,7 +31,7 @@
 // struct STRUCTURE_FILE_REF;
 // struct TILE_IMAGERY;
 // struct VEHICLETYPE;
-// struct VIDEO_OVERLAY;
+struct VIDEO_OVERLAY;
 
 #endif
 

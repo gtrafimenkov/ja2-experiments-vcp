@@ -1,47 +1,47 @@
-// #include "TileEngine/RenderDirty.h"
-//
-// #include <stdarg.h>
-// #include <stdexcept>
-// #include <vector>
-//
-// #include "Local.h"
-// #include "SGP/Debug.h"
-// #include "SGP/Font.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/WorldDef.h"
-// #include "slog/slog.h"
-// #define TAG "Render"
-//
-// #define BACKGROUND_BUFFERS 500
-//
-// // Struct for backgrounds
-// struct BACKGROUND_SAVE {
-//   BOOLEAN fAllocated;
-//   BOOLEAN fFilled;
-//   BOOLEAN fFreeMemory;
-//   BackgroundFlags uiFlags;
-//   UINT16 *pSaveArea;
-//   UINT16 *pZSaveArea;
-//   INT16 sLeft;
-//   INT16 sTop;
-//   INT16 sRight;
-//   INT16 sBottom;
-//   INT16 sWidth;
-//   INT16 sHeight;
-//   BOOLEAN fPendingDelete;
-//   BOOLEAN fDisabled;
-// };
-//
-// static std::vector<BACKGROUND_SAVE *> gBackSaves;
-// static UINT32 guiNumBackSaves = 0;
-//
-// static VIDEO_OVERLAY *gVideoOverlays;
-//
+#include "TileEngine/RenderDirty.h"
+
+#include <stdarg.h>
+#include <stdexcept>
+#include <vector>
+
+#include "Local.h"
+#include "SGP/Debug.h"
+#include "SGP/Font.h"
+#include "SGP/MemMan.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/WorldDef.h"
+#include "slog/slog.h"
+#define TAG "Render"
+
+#define BACKGROUND_BUFFERS 500
+
+// Struct for backgrounds
+struct BACKGROUND_SAVE {
+  BOOLEAN fAllocated;
+  BOOLEAN fFilled;
+  BOOLEAN fFreeMemory;
+  BackgroundFlags uiFlags;
+  UINT16 *pSaveArea;
+  UINT16 *pZSaveArea;
+  INT16 sLeft;
+  INT16 sTop;
+  INT16 sRight;
+  INT16 sBottom;
+  INT16 sWidth;
+  INT16 sHeight;
+  BOOLEAN fPendingDelete;
+  BOOLEAN fDisabled;
+};
+
+static std::vector<BACKGROUND_SAVE *> gBackSaves;
+static UINT32 guiNumBackSaves = 0;
+
+static VIDEO_OVERLAY *gVideoOverlays;
+
 // #define FOR_EACH_VIDEO_OVERLAY(iter)                                  \
 //   for (VIDEO_OVERLAY *iter = gVideoOverlays; iter; iter = iter->next) \
 //     if (iter->fDisabled)                                              \
@@ -53,9 +53,9 @@
 //     if (iter##__next = iter->next, iter->fDisabled)                                    \
 //       continue;                                                                        \
 //     else
-//
-// SGPRect gDirtyClipRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-//
+
+SGPRect gDirtyClipRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+
 // static BOOLEAN gfViewportDirty = FALSE;
 //
 // void AddBaseDirtyRect(INT32 iLeft, INT32 iTop, INT32 iRight, INT32 iBottom) {
@@ -88,79 +88,79 @@
 //
 //   InvalidateScreen();
 // }
-//
-// static BACKGROUND_SAVE *GetFreeBackgroundBuffer(void) {
-//   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
-//     BACKGROUND_SAVE *const b = gBackSaves[i];
-//     if (!b->fAllocated && !b->fFilled) return b;
-//   }
-//
-//   if (guiNumBackSaves == gBackSaves.size()) {
-//     // out of back saves capacity
-//     // let's add some more
-//     const int increment = 100;
-//     SLOGI(TAG, "Increasing background slots to %d", gBackSaves.size() + increment);
-//     for (int i = 0; i < increment; i++) {
-//       gBackSaves.push_back(new BACKGROUND_SAVE());
-//     }
-//   }
-//
-//   return gBackSaves[guiNumBackSaves++];
-// }
-//
-// BACKGROUND_SAVE *RegisterBackgroundRect(BackgroundFlags const uiFlags, INT16 sLeft, INT16 sTop,
-//                                         INT16 const usWidth, INT16 const usHeight) {
-//   const INT32 ClipX1 = gDirtyClipRect.iLeft;
-//   const INT32 ClipY1 = gDirtyClipRect.iTop;
-//   const INT32 ClipX2 = gDirtyClipRect.iRight;
-//   const INT32 ClipY2 = gDirtyClipRect.iBottom;
-//
-//   INT16 sRight = sLeft + usWidth;
-//   INT16 sBottom = sTop + usHeight;
-//
-//   const INT32 iTempX = sLeft;
-//   const INT32 iTempY = sTop;
-//
-//   // Clip to rect
-//   const INT32 uiLeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth);
-//   const INT32 uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
-//   const INT32 uiRightSkip = __min(MAX(ClipX2, iTempX + (INT32)usWidth) - ClipX2, (INT32)usWidth);
-//   const INT32 uiBottomSkip =
-//       __min(__max(ClipY2, iTempY + (INT32)usHeight) - ClipY2, (INT32)usHeight);
-//
-//   // check if whole thing is clipped
-//   if (uiLeftSkip >= (INT32)usWidth || uiRightSkip >= (INT32)usWidth) return NO_BGND_RECT;
-//   if (uiTopSkip >= (INT32)usHeight || uiBottomSkip >= (INT32)usHeight) return NO_BGND_RECT;
-//
-//   // Set re-set values given based on clipping
-//   sLeft += uiLeftSkip;
-//   sRight -= uiRightSkip;
-//   sTop += uiTopSkip;
-//   sBottom -= uiBottomSkip;
-//
-//   BACKGROUND_SAVE *const b = GetFreeBackgroundBuffer();
-//   memset(b, 0, sizeof(*b));
-//
-//   const UINT32 uiBufSize = (sRight - sLeft) * (sBottom - sTop);
-//   if (uiBufSize == 0) return NO_BGND_RECT;
-//
-//   if (uiFlags & BGND_FLAG_SAVERECT) b->pSaveArea = MALLOCN(UINT16, uiBufSize);
-//   if (uiFlags & BGND_FLAG_SAVE_Z) b->pZSaveArea = MALLOCN(UINT16, uiBufSize);
-//
-//   b->fFreeMemory = TRUE;
-//   b->fAllocated = TRUE;
-//   b->uiFlags = uiFlags;
-//   b->sLeft = sLeft;
-//   b->sTop = sTop;
-//   b->sRight = sRight;
-//   b->sBottom = sBottom;
-//   b->sWidth = sRight - sLeft;
-//   b->sHeight = sBottom - sTop;
-//   b->fFilled = FALSE;
-//
-//   return b;
-// }
-//
+
+static BACKGROUND_SAVE *GetFreeBackgroundBuffer(void) {
+  for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
+    BACKGROUND_SAVE *const b = gBackSaves[i];
+    if (!b->fAllocated && !b->fFilled) return b;
+  }
+
+  if (guiNumBackSaves == gBackSaves.size()) {
+    // out of back saves capacity
+    // let's add some more
+    const int increment = 100;
+    SLOGI(TAG, "Increasing background slots to %d", gBackSaves.size() + increment);
+    for (int i = 0; i < increment; i++) {
+      gBackSaves.push_back(new BACKGROUND_SAVE());
+    }
+  }
+
+  return gBackSaves[guiNumBackSaves++];
+}
+
+BACKGROUND_SAVE *RegisterBackgroundRect(BackgroundFlags const uiFlags, INT16 sLeft, INT16 sTop,
+                                        INT16 const usWidth, INT16 const usHeight) {
+  const INT32 ClipX1 = gDirtyClipRect.iLeft;
+  const INT32 ClipY1 = gDirtyClipRect.iTop;
+  const INT32 ClipX2 = gDirtyClipRect.iRight;
+  const INT32 ClipY2 = gDirtyClipRect.iBottom;
+
+  INT16 sRight = sLeft + usWidth;
+  INT16 sBottom = sTop + usHeight;
+
+  const INT32 iTempX = sLeft;
+  const INT32 iTempY = sTop;
+
+  // Clip to rect
+  const INT32 uiLeftSkip = __min(ClipX1 - MIN(ClipX1, iTempX), (INT32)usWidth);
+  const INT32 uiTopSkip = __min(ClipY1 - __min(ClipY1, iTempY), (INT32)usHeight);
+  const INT32 uiRightSkip = __min(MAX(ClipX2, iTempX + (INT32)usWidth) - ClipX2, (INT32)usWidth);
+  const INT32 uiBottomSkip =
+      __min(__max(ClipY2, iTempY + (INT32)usHeight) - ClipY2, (INT32)usHeight);
+
+  // check if whole thing is clipped
+  if (uiLeftSkip >= (INT32)usWidth || uiRightSkip >= (INT32)usWidth) return NO_BGND_RECT;
+  if (uiTopSkip >= (INT32)usHeight || uiBottomSkip >= (INT32)usHeight) return NO_BGND_RECT;
+
+  // Set re-set values given based on clipping
+  sLeft += uiLeftSkip;
+  sRight -= uiRightSkip;
+  sTop += uiTopSkip;
+  sBottom -= uiBottomSkip;
+
+  BACKGROUND_SAVE *const b = GetFreeBackgroundBuffer();
+  memset(b, 0, sizeof(*b));
+
+  const UINT32 uiBufSize = (sRight - sLeft) * (sBottom - sTop);
+  if (uiBufSize == 0) return NO_BGND_RECT;
+
+  if (uiFlags & BGND_FLAG_SAVERECT) b->pSaveArea = MALLOCN(UINT16, uiBufSize);
+  if (uiFlags & BGND_FLAG_SAVE_Z) b->pZSaveArea = MALLOCN(UINT16, uiBufSize);
+
+  b->fFreeMemory = TRUE;
+  b->fAllocated = TRUE;
+  b->uiFlags = uiFlags;
+  b->sLeft = sLeft;
+  b->sTop = sTop;
+  b->sRight = sRight;
+  b->sBottom = sBottom;
+  b->sWidth = sRight - sLeft;
+  b->sHeight = sBottom - sTop;
+  b->fFilled = FALSE;
+
+  return b;
+}
+
 // void RegisterBackgroundRectSingleFilled(INT16 const x, INT16 const y, INT16 const w,
 //                                         INT16 const h) {
 //   BACKGROUND_SAVE *const b = RegisterBackgroundRect(BGND_FLAG_SINGLE, x, y, w, h);
@@ -255,49 +255,49 @@
 //     b->fFilled = TRUE;
 //   }
 // }
-//
-// void FreeBackgroundRect(BACKGROUND_SAVE *const b) {
-//   if (b == NULL) return;
-//
-//   b->fAllocated = FALSE;
-// }
-//
+
+void FreeBackgroundRect(BACKGROUND_SAVE *const b) {
+  if (b == NULL) return;
+
+  b->fAllocated = FALSE;
+}
+
 // void FreeBackgroundRectPending(BACKGROUND_SAVE *const b) { b->fPendingDelete = TRUE; }
-//
-// static void FreeBackgroundRectNow(BACKGROUND_SAVE *const b) {
-//   if (b->fFreeMemory) {
-//     if (b->pSaveArea) MemFree(b->pSaveArea);
-//     if (b->pZSaveArea) MemFree(b->pZSaveArea);
-//   }
-//
-//   b->fAllocated = FALSE;
-//   b->fFreeMemory = FALSE;
-//   b->fFilled = FALSE;
-//   b->pSaveArea = NULL;
-// }
-//
+
+static void FreeBackgroundRectNow(BACKGROUND_SAVE *const b) {
+  if (b->fFreeMemory) {
+    if (b->pSaveArea) MemFree(b->pSaveArea);
+    if (b->pZSaveArea) MemFree(b->pZSaveArea);
+  }
+
+  b->fAllocated = FALSE;
+  b->fFreeMemory = FALSE;
+  b->fFilled = FALSE;
+  b->pSaveArea = NULL;
+}
+
 // void FreeBackgroundRectType(BackgroundFlags const uiFlags) {
 //   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
 //     BACKGROUND_SAVE *const b = gBackSaves[i];
 //     if (b->uiFlags & uiFlags) FreeBackgroundRectNow(b);
 //   }
 // }
-//
-// void InitializeBackgroundRects(void) { guiNumBackSaves = 0; }
-//
-// void InvalidateBackgroundRects(void) {
-//   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
-//     gBackSaves[i]->fFilled = FALSE;
-//   }
-// }
-//
-// void ShutdownBackgroundRects(void) {
-//   for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
-//     BACKGROUND_SAVE *const b = gBackSaves[i];
-//     if (b->fAllocated) FreeBackgroundRectNow(b);
-//   }
-// }
-//
+
+void InitializeBackgroundRects(void) { guiNumBackSaves = 0; }
+
+void InvalidateBackgroundRects(void) {
+  for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
+    gBackSaves[i]->fFilled = FALSE;
+  }
+}
+
+void ShutdownBackgroundRects(void) {
+  for (UINT32 i = 0; i < guiNumBackSaves; ++i) {
+    BACKGROUND_SAVE *const b = gBackSaves[i];
+    if (b->fAllocated) FreeBackgroundRectNow(b);
+  }
+}
+
 // void UpdateSaveBuffer(void) {
 //   // Update saved buffer - do for the viewport size ony!
 //   BlitBufferToBuffer(FRAME_BUFFER, guiSAVEBUFFER, 0, gsVIEWPORT_WINDOW_START_Y, SCREEN_WIDTH,
@@ -347,14 +347,14 @@
 //   va_end(ap);
 //   GDirtyPrint(x, y, str);
 // }
-//
-// void GPrintDirty(INT16 const x, INT16 const y,
-//                  wchar_t const *const str)  // XXX TODO0017
-// {
-//   MPrint(x, y, str);
-//   GDirty(x, y, str);
-// }
-//
+
+void GPrintDirty(INT16 const x, INT16 const y,
+                 wchar_t const *const str)  // XXX TODO0017
+{
+  MPrint(x, y, str);
+  GDirty(x, y, str);
+}
+
 // void GPrintDirtyF(INT16 const x, INT16 const y, wchar_t const *const fmt, ...) {
 //   wchar_t str[512];
 //   va_list ap;
@@ -382,67 +382,67 @@
 //   va_end(ap);
 //   GPrintInvalidate(x, y, str);
 // }
-//
-// VIDEO_OVERLAY *RegisterVideoOverlay(OVERLAY_CALLBACK const callback, INT16 const x, INT16 const y,
-//                                     INT16 const w, INT16 const h) try {
-//   BACKGROUND_SAVE *const bgs = RegisterBackgroundRect(BGND_FLAG_PERMANENT, x, y, w, h);
-//   if (!bgs) return 0;
-//
-//   VIDEO_OVERLAY *const v = MALLOCZ(VIDEO_OVERLAY);
-//   VIDEO_OVERLAY *const head = gVideoOverlays;
-//   v->prev = 0;
-//   v->next = head;
-//   v->fAllocated = 2;
-//   v->background = bgs;
-//   v->sX = x;
-//   v->sY = y;
-//   v->uiDestBuff = FRAME_BUFFER;
-//   v->BltCallback = callback;
-//
-//   if (head) head->prev = v;
-//   gVideoOverlays = v;
-//   return v;
-// } catch (...) {
-//   return 0;
-// }
-//
-// VIDEO_OVERLAY *RegisterVideoOverlay(OVERLAY_CALLBACK const callback, INT16 const x, INT16 const y,
-//                                     Font const font, UINT8 const foreground, UINT8 const background,
-//                                     wchar_t const *const text) {
-//   INT16 const w = StringPixLength(text, font);
-//   INT16 const h = GetFontHeight(font);
-//   VIDEO_OVERLAY *const v = RegisterVideoOverlay(callback, x, y, w, h);
-//   if (v) {
-//     v->uiFontID = font;
-//     v->ubFontFore = foreground;
-//     v->ubFontBack = background;
-//     wcsncpy(v->zText, text, lengthof(v->zText));
-//   }
-//   return v;
-// }
-//
-// void RemoveVideoOverlay(VIDEO_OVERLAY *const v) {
-//   if (!v) return;
-//
-//   // Check if we are actively scrolling
-//   if (v->fActivelySaving) {
-//     v->fDeletionPending = TRUE;
-//   } else {
-//     // RestoreExternBackgroundRectGivenID(v->background);
-//
-//     FreeBackgroundRect(v->background);
-//
-//     if (v->pSaveArea != NULL) MemFree(v->pSaveArea);
-//     v->pSaveArea = NULL;
-//
-//     VIDEO_OVERLAY *const prev = v->prev;
-//     VIDEO_OVERLAY *const next = v->next;
-//     *(prev ? &prev->next : &gVideoOverlays) = next;
-//     if (next) next->prev = prev;
-//     MemFree(v);
-//   }
-// }
-//
+
+VIDEO_OVERLAY *RegisterVideoOverlay(OVERLAY_CALLBACK const callback, INT16 const x, INT16 const y,
+                                    INT16 const w, INT16 const h) try {
+  BACKGROUND_SAVE *const bgs = RegisterBackgroundRect(BGND_FLAG_PERMANENT, x, y, w, h);
+  if (!bgs) return 0;
+
+  VIDEO_OVERLAY *const v = MALLOCZ(VIDEO_OVERLAY);
+  VIDEO_OVERLAY *const head = gVideoOverlays;
+  v->prev = 0;
+  v->next = head;
+  v->fAllocated = 2;
+  v->background = bgs;
+  v->sX = x;
+  v->sY = y;
+  v->uiDestBuff = FRAME_BUFFER;
+  v->BltCallback = callback;
+
+  if (head) head->prev = v;
+  gVideoOverlays = v;
+  return v;
+} catch (...) {
+  return 0;
+}
+
+VIDEO_OVERLAY *RegisterVideoOverlay(OVERLAY_CALLBACK const callback, INT16 const x, INT16 const y,
+                                    Font const font, UINT8 const foreground, UINT8 const background,
+                                    wchar_t const *const text) {
+  INT16 const w = StringPixLength(text, font);
+  INT16 const h = GetFontHeight(font);
+  VIDEO_OVERLAY *const v = RegisterVideoOverlay(callback, x, y, w, h);
+  if (v) {
+    v->uiFontID = font;
+    v->ubFontFore = foreground;
+    v->ubFontBack = background;
+    wcsncpy(v->zText, text, lengthof(v->zText));
+  }
+  return v;
+}
+
+void RemoveVideoOverlay(VIDEO_OVERLAY *const v) {
+  if (!v) return;
+
+  // Check if we are actively scrolling
+  if (v->fActivelySaving) {
+    v->fDeletionPending = TRUE;
+  } else {
+    // RestoreExternBackgroundRectGivenID(v->background);
+
+    FreeBackgroundRect(v->background);
+
+    if (v->pSaveArea != NULL) MemFree(v->pSaveArea);
+    v->pSaveArea = NULL;
+
+    VIDEO_OVERLAY *const prev = v->prev;
+    VIDEO_OVERLAY *const next = v->next;
+    *(prev ? &prev->next : &gVideoOverlays) = next;
+    if (next) next->prev = prev;
+    MemFree(v);
+  }
+}
+
 // // FUnctions for entrie array of blitters
 // void ExecuteVideoOverlays(void) {
 //   FOR_EACH_VIDEO_OVERLAY(v) {
@@ -574,13 +574,13 @@
 //   SGPBox const r = {usSrcX, usSrcY, usWidth, usHeight};
 //   BltVideoSurface(dst, src, usSrcX, usSrcY, &r);
 // }
-//
-// void EnableVideoOverlay(const BOOLEAN fEnable, VIDEO_OVERLAY *const v) {
-//   if (!v) return;
-//   v->fDisabled = !fEnable;
-//   v->background->fDisabled = !fEnable;
-// }
-//
+
+void EnableVideoOverlay(const BOOLEAN fEnable, VIDEO_OVERLAY *const v) {
+  if (!v) return;
+  v->fDisabled = !fEnable;
+  v->background->fDisabled = !fEnable;
+}
+
 // void SetVideoOverlayTextF(VIDEO_OVERLAY *const v, const wchar_t *Fmt, ...) {
 //   if (!v) return;
 //   va_list Arg;

@@ -1,9 +1,9 @@
-// #ifndef __WORLDDEF_H
-// #define __WORLDDEF_H
-//
-// #include "JA2Types.h"
-// #include "TileEngine/WorldTilesetEnums.h"
-//
+#ifndef __WORLDDEF_H
+#define __WORLDDEF_H
+
+#include "JA2Types.h"
+#include "TileEngine/WorldTilesetEnums.h"
+
 // #define WORLD_TILE_X 40
 // #define WORLD_TILE_Y 20
 // #define WORLD_COLS 160
@@ -225,9 +225,9 @@
 //
 // /* Deletes everything then re-creates the world with simple ground tiles */
 // void NewWorld(void);
-//
-// BOOLEAN SaveWorld(const char *puiFilename);
-//
+
+BOOLEAN SaveWorld(const char *puiFilename);
+
 // void LoadWorld(char const *filename);
 // void CompileWorldMovementCosts(void);
 // void RecompileLocalMovementCosts(INT16 sCentreGridNo);
@@ -257,6 +257,6 @@
 // void SetAllNewTileSurfacesLoaded(BOOLEAN fNew);
 //
 // void RecompileLocalMovementCostsForWall(INT16 sGridNo, UINT8 ubOrientation);
-//
-// #endif
-//
+
+#endif
+

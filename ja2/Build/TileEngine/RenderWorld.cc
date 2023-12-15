@@ -38,8 +38,8 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 
-// UINT16 *gpZBuffer = NULL;
-//
+UINT16 *gpZBuffer = NULL;
+
 // static INT16 gsCurrentGlowFrame = 0;
 // static INT16 gsCurrentItemGlowFrame = 0;
 //
@@ -161,10 +161,10 @@
 //
 // INT16 gsScrollXIncrement;
 // INT16 gsScrollYIncrement;
-//
-// // Rendering flags (full, partial, etc.)
-// static RenderFlags gRenderFlags = RENDER_FLAG_NONE;
-//
+
+// Rendering flags (full, partial, etc.)
+static RenderFlags gRenderFlags = RENDER_FLAG_NONE;
+
 // static SGPRect gClippingRect = {0, 0, SCREEN_WIDTH, 360};
 // static SGPRect gOldClipRect;
 INT16 gsRenderCenterX;
@@ -241,9 +241,9 @@ INT16 gsRenderCenterY;
 // }
 //
 // static void SumAdditiveLayerOptimization() { uiLayerUsedFlags = uiAdditiveLayerUsedFlags; }
-//
-// void SetRenderFlags(RenderFlags const uiFlags) { gRenderFlags |= uiFlags; }
-//
+
+void SetRenderFlags(RenderFlags const uiFlags) { gRenderFlags |= uiFlags; }
+
 // void ClearRenderFlags(RenderFlags const uiFlags) { gRenderFlags &= ~uiFlags; }
 //
 // void RenderSetShadows(BOOLEAN fShadows) {

@@ -6,21 +6,21 @@
 extern SGPRect ClippingRect;
 // extern UINT32 guiTranslucentMask;
 
-// extern void SetClippingRect(SGPRect *clip);
-// void GetClippingRect(SGPRect *clip);
+extern void SetClippingRect(SGPRect *clip);
+void GetClippingRect(SGPRect *clip);
 
 BOOLEAN BltIsClipped(const SGPVObject *hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
                      const SGPRect *clipregion);
 // CHAR8 BltIsClippedOrOffScreen(HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
 //                               SGPRect *clipregion);
-//
-// /* Allocate and initialize a Z-buffer for use with the Z-buffer blitters.
-//  * Doesn't really do much except allocate a chunk of memory, and zero it. */
-// UINT16 *InitZBuffer(UINT32 width, UINT32 height);
-//
-// /* Free the memory allocated for the Z-buffer. */
-// void ShutdownZBuffer(UINT16 *pBuffer);
-//
+
+/* Allocate and initialize a Z-buffer for use with the Z-buffer blitters.
+ * Doesn't really do much except allocate a chunk of memory, and zero it. */
+UINT16 *InitZBuffer(UINT32 width, UINT32 height);
+
+/* Free the memory allocated for the Z-buffer. */
+void ShutdownZBuffer(UINT16 *pBuffer);
+
 // // translucency blitters
 // void Blt8BPPDataTo16BPPBufferTransZTranslucent(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
 //                                                UINT16 *pZBuffer, UINT16 usZValue,

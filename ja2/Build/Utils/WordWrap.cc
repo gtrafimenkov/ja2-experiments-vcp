@@ -1,12 +1,12 @@
-// #include "Utils/WordWrap.h"
-//
-// #include "SGP/Font.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "Utils/FontControl.h"
-//
+#include "Utils/WordWrap.h"
+
+#include "SGP/Font.h"
+#include "SGP/MemMan.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "TileEngine/RenderDirty.h"
+#include "Utils/FontControl.h"
+
 // static WRAPPED_STRING *AllocWrappedString(const wchar_t *start, const wchar_t *end) {
 //   WRAPPED_STRING *const ws = MALLOCE(WRAPPED_STRING, sString, end - start + 1);
 //   ws->pNextWrappedString = NULL;
@@ -71,69 +71,69 @@
 //     }
 //   }
 // }
-//
-// // Pass in, the x,y location for the start of the string,
-// //					the width of the buffer
-// //					the gap in between the lines
-// UINT16 DisplayWrappedString(UINT16 const x, UINT16 y, UINT16 w, UINT8 const gap, Font const font,
-//                             UINT8 const foreground, const wchar_t *const string,
-//                             UINT8 const background, UINT32 const flags) {
-//   UINT16 total_h = 0;
-//   UINT16 const h = GetFontHeight(font) + gap;
-//   for (WRAPPED_STRING *i = LineWrap(font, w, string); i;) {
-//     DrawTextToScreen(i->sString, x, y, w, font, foreground, background, flags);
-//     WRAPPED_STRING *const del = i;
-//     i = i->pNextWrappedString;
-//     MemFree(del);
-//     total_h += h;
-//     y += h;
-//   }
-//   return total_h;
-// }
-//
-// // DrawTextToScreen	Parameters:
-// //			The string,
-// //			X position
-// //			Y position
-// //			The width of the area you are drawing in.  It can be 0 for
-// // left justified 			The font 			the color you want the font
-// // the color of the background 			do you want to display it using dirty rects, TRUE or
-// // FALSE 			flags for either LEFT_JUSTIFIED, CENTER_JUSTIFIED, RIGHT_JUSTIFIED
-// void DrawTextToScreen(wchar_t const *const str, UINT16 x, UINT16 const y, UINT16 const max_w,
-//                       Font const font, UINT8 const foreground, UINT8 const background,
-//                       UINT32 const flags) {
-//   if (flags & DONT_DISPLAY_TEXT) return;
-//
-//   INT16 const w = flags & (CENTER_JUSTIFIED | RIGHT_JUSTIFIED | TEXT_SHADOWED | INVALIDATE_TEXT)
-//                       ? StringPixLength(str, font)
-//                       : 0;
-//
-//   if (flags & CENTER_JUSTIFIED) {
-//     x += (max_w - w) / 2;
-//   } else if (flags & RIGHT_JUSTIFIED) {
-//     x += max_w - w;
-//   }
-//
-//   if (flags & TEXT_SHADOWED) {
-//     UINT16 const h = GetFontHeight(font);
-//     FRAME_BUFFER->ShadowRect(x - 1, y - 1, x + w, y + h);
-//   }
-//
-//   SetFont(font);
-//   SetFontForeground(foreground);
-//   SetFontBackground(background);
-//   if (flags & MARK_DIRTY) {
-//     GPrintDirty(x, y, str);
-//   } else {
-//     MPrint(x, y, str);
-//   }
-//
-//   if (flags & INVALIDATE_TEXT) {
-//     UINT16 const h = GetFontHeight(font);
-//     InvalidateRegion(x, y, x + w, y + h);
-//   }
-// }
-//
+
+// Pass in, the x,y location for the start of the string,
+//					the width of the buffer
+//					the gap in between the lines
+UINT16 DisplayWrappedString(UINT16 const x, UINT16 y, UINT16 w, UINT8 const gap, Font const font,
+                            UINT8 const foreground, const wchar_t *const string,
+                            UINT8 const background, UINT32 const flags) {
+  UINT16 total_h = 0;
+  UINT16 const h = GetFontHeight(font) + gap;
+  for (WRAPPED_STRING *i = LineWrap(font, w, string); i;) {
+    DrawTextToScreen(i->sString, x, y, w, font, foreground, background, flags);
+    WRAPPED_STRING *const del = i;
+    i = i->pNextWrappedString;
+    MemFree(del);
+    total_h += h;
+    y += h;
+  }
+  return total_h;
+}
+
+// DrawTextToScreen	Parameters:
+//			The string,
+//			X position
+//			Y position
+//			The width of the area you are drawing in.  It can be 0 for
+// left justified 			The font 			the color you want the font
+// the color of the background 			do you want to display it using dirty rects, TRUE or
+// FALSE 			flags for either LEFT_JUSTIFIED, CENTER_JUSTIFIED, RIGHT_JUSTIFIED
+void DrawTextToScreen(wchar_t const *const str, UINT16 x, UINT16 const y, UINT16 const max_w,
+                      Font const font, UINT8 const foreground, UINT8 const background,
+                      UINT32 const flags) {
+  if (flags & DONT_DISPLAY_TEXT) return;
+
+  INT16 const w = flags & (CENTER_JUSTIFIED | RIGHT_JUSTIFIED | TEXT_SHADOWED | INVALIDATE_TEXT)
+                      ? StringPixLength(str, font)
+                      : 0;
+
+  if (flags & CENTER_JUSTIFIED) {
+    x += (max_w - w) / 2;
+  } else if (flags & RIGHT_JUSTIFIED) {
+    x += max_w - w;
+  }
+
+  if (flags & TEXT_SHADOWED) {
+    UINT16 const h = GetFontHeight(font);
+    FRAME_BUFFER->ShadowRect(x - 1, y - 1, x + w, y + h);
+  }
+
+  SetFont(font);
+  SetFontForeground(foreground);
+  SetFontBackground(background);
+  if (flags & MARK_DIRTY) {
+    GPrintDirty(x, y, str);
+  } else {
+    MPrint(x, y, str);
+  }
+
+  if (flags & INVALIDATE_TEXT) {
+    UINT16 const h = GetFontHeight(font);
+    InvalidateRegion(x, y, x + w, y + h);
+  }
+}
+
 // static void IanDrawTextToScreen(wchar_t const *const str, wchar_t *const end, UINT16 const x,
 //                                 UINT16 const y, UINT16 const w, Font const font,
 //                                 UINT8 const foreground, UINT8 const background, UINT32 flags,

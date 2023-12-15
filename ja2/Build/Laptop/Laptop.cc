@@ -1,5 +1,5 @@
-// #include "Laptop/Laptop.h"
-//
+#include "Laptop/Laptop.h"
+
 // #include "Cheats.h"
 // #include "Directories.h"
 // #include "GameLoop.h"
@@ -320,9 +320,9 @@
 // }
 //
 // static void InitBookMarkList(void);
-//
-// // This is called only once at game initialization.
-// void LaptopScreenInit(void) {
+
+// This is called only once at game initialization.
+void LaptopScreenInit(void) {
 //   // Memset the whole structure, to make sure of no 'JUNK'
 //   memset(&LaptopSaveInfo, 0, sizeof(LaptopSaveInfoStruct));
 //
@@ -357,8 +357,8 @@
 //   gfAtLeastOneMercWasHired = FALSE;
 //
 //   // No longer inits the laptop screens, now InitLaptopAndLaptopScreens() does
-// }
-//
+}
+
 // void InitLaptopAndLaptopScreens(void) {
 //   GameInitFinances();
 //   GameInitHistory();
@@ -369,15 +369,15 @@
 //   // Reset the flag so that BOBBYR's isnt available at the begining of the game
 //   LaptopSaveInfo.fBobbyRSiteCanBeAccessed = FALSE;
 // }
-//
-// // This is only called once at game shutdown.
-// void LaptopScreenShutdown(void) {
+
+// This is only called once at game shutdown.
+void LaptopScreenShutdown(void) {
 //   InsuranceContractEndGameShutDown();
 //   BobbyRayMailOrderEndGameShutDown();
 //   ShutDownEmailList();
 //   ClearHistoryList();
-// }
-//
+}
+
 // static void CreateDestroyMouseRegionForNewMailIcon(void);
 // static void CreateLapTopMouseRegions(void);
 // static void DrawDeskTopBackground(void);
@@ -1080,8 +1080,8 @@ void ExitLaptop(void) {
 // static void ShouldNewMailBeDisplayed(void);
 // static void ShowLights(void);
 // static void UpdateStatusOfDisplayingBookMarks(void);
-//
-// ScreenID LaptopScreenHandle() {
+
+ScreenID LaptopScreenHandle() {
 //   // User just changed modes.  This is determined by the button callbacks
 //   // created in LaptopScreenInit()
 //
@@ -1329,9 +1329,9 @@ void ExitLaptop(void) {
 //   ExecuteBaseDirtyRectQueue();
 //   ResetInterface();
 //   EndFrameBufferRender();
-//   return (LAPTOP_SCREEN);
-// }
-//
+  return (LAPTOP_SCREEN);
+}
+
 // static void ExitLaptopMode(UINT32 uiMode) {
 //   // Deallocate the previous mode that you were in.
 //   switch (uiMode) {

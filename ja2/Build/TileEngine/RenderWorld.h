@@ -5,20 +5,20 @@
 
 // extern BOOLEAN gfDoVideoScroll;
 // extern UINT8 gubCurScrollSpeedID;
-//
-// enum RenderFlags {
-//   RENDER_FLAG_NONE = 0,
-//   RENDER_FLAG_FULL = 0x00000001,
-//   RENDER_FLAG_SHADOWS = 0x00000002,
-//   RENDER_FLAG_MARKED = 0x00000004,
-//   RENDER_FLAG_SAVEOFF = 0x00000008,
-//   RENDER_FLAG_NOZ = 0x00000010,
-//   RENDER_FLAG_ROOMIDS = 0x00000020,
-//   RENDER_FLAG_CHECKZ = 0x00000040,
-//   RENDER_FLAG_FOVDEBUG = 0x00000200
-// };
-// ENUM_BITSET(RenderFlags)
-//
+
+enum RenderFlags {
+  RENDER_FLAG_NONE = 0,
+  RENDER_FLAG_FULL = 0x00000001,
+  RENDER_FLAG_SHADOWS = 0x00000002,
+  RENDER_FLAG_MARKED = 0x00000004,
+  RENDER_FLAG_SAVEOFF = 0x00000008,
+  RENDER_FLAG_NOZ = 0x00000010,
+  RENDER_FLAG_ROOMIDS = 0x00000020,
+  RENDER_FLAG_CHECKZ = 0x00000040,
+  RENDER_FLAG_FOVDEBUG = 0x00000200
+};
+ENUM_BITSET(RenderFlags)
+
 // #define SCROLL_UP 0x00000001
 // #define SCROLL_DOWN 0x00000002
 // #define SCROLL_RIGHT 0x00000004
@@ -104,13 +104,13 @@ extern INT16 gsRenderCenterY;
 // void RenderWorld(void);
 //
 // void ResetSpecificLayerOptimizing(RenderLayerFlags);
-//
-// void SetRenderFlags(RenderFlags);
+
+void SetRenderFlags(RenderFlags);
 // void ClearRenderFlags(RenderFlags);
 //
 // void RenderSetShadows(BOOLEAN fShadows);
-//
-// extern UINT16 *gpZBuffer;
+
+extern UINT16 *gpZBuffer;
 // extern BOOLEAN gfIgnoreScrolling;
 //
 // extern bool g_scroll_inertia;

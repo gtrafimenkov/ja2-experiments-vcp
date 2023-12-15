@@ -581,12 +581,12 @@
 //   }
 // #endif
 // }
-//
-// UINT16 *InitZBuffer(const UINT32 width, const UINT32 height) {
-//   return MALLOCNZ(UINT16, width * height);
-// }
-//
-// void ShutdownZBuffer(UINT16 *const pBuffer) { MemFree(pBuffer); }
+
+UINT16 *InitZBuffer(const UINT32 width, const UINT32 height) {
+  return MALLOCNZ(UINT16, width * height);
+}
+
+void ShutdownZBuffer(UINT16 *const pBuffer) { MemFree(pBuffer); }
 
 /**********************************************************************************************
  Blt8BPPDataTo16BPPBufferMonoShadowClip
@@ -5013,19 +5013,19 @@ BlitLoop:
 //   }
 // #endif
 // }
-//
-// void SetClippingRect(SGPRect *clip) {
-//   Assert(clip != NULL);
-//   Assert(clip->iLeft < clip->iRight);
-//   Assert(clip->iTop < clip->iBottom);
-//   ClippingRect = *clip;
-// }
-//
-// void GetClippingRect(SGPRect *clip) {
-//   Assert(clip != NULL);
-//   *clip = ClippingRect;
-// }
-//
+
+void SetClippingRect(SGPRect *clip) {
+  Assert(clip != NULL);
+  Assert(clip->iLeft < clip->iRight);
+  Assert(clip->iTop < clip->iBottom);
+  ClippingRect = *clip;
+}
+
+void GetClippingRect(SGPRect *clip) {
+  Assert(clip != NULL);
+  *clip = ClippingRect;
+}
+
 // /**********************************************************************************************
 //         Blt16BPPBufferPixelateRectWithColor
 //

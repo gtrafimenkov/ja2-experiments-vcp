@@ -1,32 +1,32 @@
 #include "MessageBoxScreen.h"
 
-// #include "Directories.h"
-// #include "FadeScreen.h"
-// #include "GameLoop.h"
-// #include "GameSettings.h"
-// #include "JAScreens.h"
-// #include "Laptop/Laptop.h"
-// #include "Local.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/English.h"
-// #include "SGP/Font.h"
-// #include "SGP/Input.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/MapScreen.h"
-// #include "Strategic/MapScreenInterface.h"
-// #include "Tactical/Interface.h"
-// #include "TileEngine/OverheadMap.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/SysUtil.h"
-// #include "Utils/Cursors.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/MercTextBox.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-//
+#include "Directories.h"
+#include "FadeScreen.h"
+#include "GameLoop.h"
+#include "GameSettings.h"
+#include "JAScreens.h"
+#include "Laptop/Laptop.h"
+#include "Local.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/Input.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/MapScreen.h"
+#include "Strategic/MapScreenInterface.h"
+#include "Tactical/Interface.h"
+#include "TileEngine/OverheadMap.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/SysUtil.h"
+#include "Utils/Cursors.h"
+#include "Utils/FontControl.h"
+#include "Utils/MercTextBox.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+
 // #define MSGBOX_DEFAULT_WIDTH 300
 //
 // #define MSGBOX_BUTTON_WIDTH 61
@@ -440,8 +440,8 @@ BOOLEAN gfInMsgBox = FALSE;
 //
 //   return gMsgBox.uiExitScreen;
 // }
-//
-// ScreenID MessageBoxScreenHandle(void) {
+
+ScreenID MessageBoxScreenHandle(void) {
 //   if (gfNewMessageBox) {
 //     // If in game screen....
 //     if (gfStartedFromGameScreen || gfStartedFromMapScreen) {
@@ -563,16 +563,16 @@ BOOLEAN gfInMsgBox = FALSE;
 //     SetRenderFlags(RENDER_FLAG_FULL);
 //     return ExitMsgBox(gMsgBox.bHandled);
 //   }
-//
-//   return MSG_BOX_SCREEN;
-// }
-//
-// void MessageBoxScreenShutdown() {
+
+  return MSG_BOX_SCREEN;
+}
+
+void MessageBoxScreenShutdown() {
 //   if (!gMsgBox.box) return;
 //   RemoveMercPopupBox(gMsgBox.box);
 //   gMsgBox.box = 0;
-// }
-//
+}
+
 // static void DoScreenIndependantMessageBoxWithRect(wchar_t const *msg, MessageBoxFlags,
 //                                                   MSGBOX_CALLBACK, SGPBox const *centering_rect);
 //

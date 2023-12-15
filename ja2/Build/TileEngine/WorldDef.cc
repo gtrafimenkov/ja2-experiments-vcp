@@ -1,24 +1,24 @@
-// #include "TileEngine/WorldDef.h"
-//
-// #include <stdexcept>
-//
-// #include "Directories.h"
-// #include "Editor/EditorBuildings.h"
-// #include "Editor/EditorMapInfo.h"
-// #include "Editor/Smooth.h"
-// #include "Editor/SummaryInfo.h"
-// #include "GameRes.h"
-// #include "GameState.h"
-// #include "JAScreens.h"
-// #include "SGP/Buffer.h"
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/HImage.h"
-// #include "SGP/LoadSaveData.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/MouseSystem.h"
-// #include "SGP/VObject.h"
-// #include "ScreenIDs.h"
+#include "TileEngine/WorldDef.h"
+
+#include <stdexcept>
+
+#include "Directories.h"
+#include "Editor/EditorBuildings.h"
+#include "Editor/EditorMapInfo.h"
+#include "Editor/Smooth.h"
+#include "Editor/SummaryInfo.h"
+#include "GameRes.h"
+#include "GameState.h"
+#include "JAScreens.h"
+#include "SGP/Buffer.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/HImage.h"
+#include "SGP/LoadSaveData.h"
+#include "SGP/MemMan.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/VObject.h"
+#include "ScreenIDs.h"
 // #include "Strategic/GameClock.h"
 // #include "Strategic/Meanwhile.h"
 // #include "Strategic/Scheduling.h"
@@ -1163,8 +1163,8 @@
 //
 // static void RemoveWorldWireFrameTiles();
 // static void SaveMapLights(HWFILE);
-//
-// BOOLEAN SaveWorld(char const *const filename) try {
+
+BOOLEAN SaveWorld(char const *const filename) try {
 //   // Let's save map into Data/maps
 //   std::string path = FileMan::joinPaths(FileMan::getDataDirPath(), MAPSDIR);
 //   FileMan::createDir(path.c_str());
@@ -1393,11 +1393,11 @@
 //   }
 //
 //   strncpy(g_filename, filename, lengthof(g_filename));
-//   return TRUE;
-// } catch (...) {
-//   return FALSE;
-// }
-//
+  return TRUE;
+} catch (...) {
+  return FALSE;
+}
+
 // static void OptimizeMapForShadows() {
 //   INT8 const bDirectionsForShadowSearch[] = {WEST, SOUTHWEST, SOUTH, SOUTHEAST, EAST};
 //

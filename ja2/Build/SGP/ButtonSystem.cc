@@ -1,25 +1,25 @@
 // Rewritten mostly by Kris Morness
 #include "SGP/ButtonSystem.h"
 
-// #include <stdexcept>
-//
-// #include "SGP/ButtonSoundControl.h"
+#include <stdexcept>
+
+#include "SGP/ButtonSoundControl.h"
 #include "SGP/Debug.h"
 #include "SGP/Font.h"
-// #include "SGP/HImage.h"
+#include "SGP/HImage.h"
 #include "SGP/Input.h"
-// #include "SGP/MemMan.h"
+#include "SGP/MemMan.h"
 #include "SGP/Types.h"
 #include "SGP/VObject.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
 #include "SGP/Video.h"
 #include "SGP/WCheck.h"
-// #include "Utils/WordWrap.h"
-//
-// #ifdef _JA2_RENDER_DIRTY
-// #include "Utils/FontControl.h"
-// #endif
+#include "Utils/WordWrap.h"
+
+#ifdef _JA2_RENDER_DIRTY
+#include "Utils/FontControl.h"
+#endif
 
 // Names of the default generic button image files.
 #define DEFAULT_GENERIC_BUTTON_OFF "genbutn.sti"
@@ -79,7 +79,7 @@ static BOOLEAN gfAnchoredState;
 
 static INT8 gbDisabledButtonStyle;
 
-// BOOLEAN gfRenderHilights = TRUE;
+BOOLEAN gfRenderHilights = TRUE;
 
 // Struct definition for the QuickButton pictures.
 struct BUTTON_PICS {
@@ -890,14 +890,14 @@ void MarkAButtonDirty(GUIButtonRef const b) {
 //   if (Area.uiFlags & MSYS_REGION_ENABLED) DrawButtonFromPtr(this);
 //   if (string) RestoreFontSettings();
 // }
-//
-// static void DrawCheckBoxButton(const GUI_BUTTON *b);
-// static void DrawGenericButton(const GUI_BUTTON *b);
-// static void DrawHatchOnButton(const GUI_BUTTON *b);
-// static void DrawIconOnButton(const GUI_BUTTON *b);
+
+static void DrawCheckBoxButton(const GUI_BUTTON *b);
+static void DrawGenericButton(const GUI_BUTTON *b);
+static void DrawHatchOnButton(const GUI_BUTTON *b);
+static void DrawIconOnButton(const GUI_BUTTON *b);
 static void DrawQuickButton(const GUI_BUTTON *b);
-// static void DrawShadeOnButton(const GUI_BUTTON *b);
-// static void DrawTextOnButton(const GUI_BUTTON *b);
+static void DrawShadeOnButton(const GUI_BUTTON *b);
+static void DrawTextOnButton(const GUI_BUTTON *b);
 
 // Given a pointer to a GUI_BUTTON structure, draws the button on the screen.
 static void DrawButtonFromPtr(GUI_BUTTON *b) {
@@ -975,20 +975,20 @@ static void DrawQuickButton(const GUI_BUTTON *b) {
   BltVideoObject(ButtonDestBuffer, pics->vobj, UseImage, b->X(), b->Y());
 }
 
-// static void DrawHatchOnButton(const GUI_BUTTON *b) {
-//   SGPRect ClipRect;
-//   ClipRect.iLeft = b->X();
-//   ClipRect.iRight = b->BottomRightX() - 1;
-//   ClipRect.iTop = b->Y();
-//   ClipRect.iBottom = b->BottomRightY() - 1;
-//   SGPVSurface::Lock l(ButtonDestBuffer);
-//   Blt16BPPBufferHatchRect(l.Buffer<UINT16>(), l.Pitch(), &ClipRect);
-// }
-//
-// static void DrawShadeOnButton(const GUI_BUTTON *b) {
-//   ButtonDestBuffer->ShadowRect(b->X(), b->Y(), b->BottomRightX(), b->BottomRightY());
-// }
-//
+static void DrawHatchOnButton(const GUI_BUTTON *b) {
+  SGPRect ClipRect;
+  ClipRect.iLeft = b->X();
+  ClipRect.iRight = b->BottomRightX() - 1;
+  ClipRect.iTop = b->Y();
+  ClipRect.iBottom = b->BottomRightY() - 1;
+  SGPVSurface::Lock l(ButtonDestBuffer);
+  Blt16BPPBufferHatchRect(l.Buffer<UINT16>(), l.Pitch(), &ClipRect);
+}
+
+static void DrawShadeOnButton(const GUI_BUTTON *b) {
+  ButtonDestBuffer->ShadowRect(b->X(), b->Y(), b->BottomRightX(), b->BottomRightY());
+}
+
 // void GUI_BUTTON::DrawCheckBoxOnOff(BOOLEAN const on) {
 //   BOOLEAN const fLeftButtonState = gfLeftButtonState;
 //
@@ -998,393 +998,393 @@ static void DrawQuickButton(const GUI_BUTTON *b) {
 //
 //   gfLeftButtonState = fLeftButtonState;
 // }
-//
-// static void DrawCheckBoxButton(const GUI_BUTTON *b) {
-//   const BUTTON_PICS *const pics = b->image;
-//
-//   INT32 UseImage = 0;
-//   if (b->Enabled()) {
-//     if (b->Clicked()) {
-//       // Is the mouse over this area, and we have a hilite image?
-//       if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState &&
-//           pics->OnHilite != -1) {
-//         UseImage = pics->OnHilite;
-//       } else if (pics->OnNormal != -1) {
-//         UseImage = pics->OnNormal;
-//       }
-//     } else {
-//       // Is the mouse over the button, and do we have hilite image?
-//       if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState &&
-//           pics->OffHilite != -1) {
-//         UseImage = pics->OffHilite;
-//       } else if (pics->OffNormal != -1) {
-//         UseImage = pics->OffNormal;
-//       }
-//     }
-//   } else if (pics->Grayed != -1) {
-//     // Button is disabled so use the "Grayed-out" image
-//     UseImage = pics->Grayed;
-//   } else  // use the disabled style
-//   {
-//     if (b->Clicked()) {
-//       UseImage = pics->OnHilite;
-//     } else {
-//       UseImage = pics->OffHilite;
-//     }
-//     switch (b->bDisabledStyle) {
-//       case GUI_BUTTON::DISABLED_STYLE_DEFAULT:
-//         gbDisabledButtonStyle = GUI_BUTTON::DISABLED_STYLE_HATCHED;
-//         break;
-//
-//       case GUI_BUTTON::DISABLED_STYLE_HATCHED:
-//       case GUI_BUTTON::DISABLED_STYLE_SHADED:
-//         gbDisabledButtonStyle = b->bDisabledStyle;
-//         break;
-//     }
-//   }
-//
-//   BltVideoObject(ButtonDestBuffer, pics->vobj, UseImage, b->X(), b->Y());
-// }
-//
-// static void DrawIconOnButton(const GUI_BUTTON *b) {
-//   if (!b->icon) return;
-//
-//   // Get width and height of button area
-//   INT32 const width = b->W();
-//   INT32 const height = b->H();
-//
-//   // Compute viewable area (inside borders)
-//   SGPRect NewClip;
-//   NewClip.iLeft = b->X() + 3;
-//   NewClip.iRight = b->X() + width - 3;
-//   NewClip.iTop = b->Y() + 2;
-//   NewClip.iBottom = b->Y() + height - 2;
-//
-//   // Get Icon's blit start coordinates
-//   INT32 IconX = NewClip.iLeft;
-//   INT32 IconY = NewClip.iTop;
-//
-//   // Get current clip area
-//   SGPRect OldClip;
-//   GetClippingRect(&OldClip);
-//
-//   // Clip button's viewable area coords to screen
-//   if (NewClip.iLeft < OldClip.iLeft) NewClip.iLeft = OldClip.iLeft;
-//
-//   // Is button right off the right side of the screen?
-//   if (NewClip.iLeft > OldClip.iRight) return;
-//
-//   if (NewClip.iRight > OldClip.iRight) NewClip.iRight = OldClip.iRight;
-//
-//   // Is button completely off the left side of the screen?
-//   if (NewClip.iRight < OldClip.iLeft) return;
-//
-//   if (NewClip.iTop < OldClip.iTop) NewClip.iTop = OldClip.iTop;
-//
-//   // Are we right off the bottom of the screen?
-//   if (NewClip.iTop > OldClip.iBottom) return;
-//
-//   if (NewClip.iBottom > OldClip.iBottom) NewClip.iBottom = OldClip.iBottom;
-//
-//   // Are we off the top?
-//   if (NewClip.iBottom < OldClip.iTop) return;
-//
-//   // Did we clip the viewable area out of existance?
-//   if (NewClip.iRight <= NewClip.iLeft || NewClip.iBottom <= NewClip.iTop) return;
-//
-//   // Get the width and height of the icon itself
-//   SGPVObject const *const hvObject = b->icon;
-//   ETRLEObject const &pTrav = hvObject->SubregionProperties(b->usIconIndex);
-//
-//   /* Compute coordinates for centering the icon on the button or use the offset
-//    * system.
-//    */
-//   INT32 xp;
-//   if (b->bIconXOffset == -1) {
-//     const INT32 IconW = pTrav.usWidth + pTrav.sOffsetX;
-//     xp = IconX + (width - 6 - IconW) / 2;
-//   } else {
-//     xp = b->X() + b->bIconXOffset;
-//   }
-//
-//   INT32 yp;
-//   if (b->bIconYOffset == -1) {
-//     const INT32 IconH = pTrav.usHeight + pTrav.sOffsetY;
-//     yp = IconY + (height - 4 - IconH) / 2;
-//   } else {
-//     yp = b->Y() + b->bIconYOffset;
-//   }
-//
-//   /* Was the button clicked on? if so, move the image slightly for the illusion
-//    * that the image moved into the screen.
-//    */
-//   if (b->Clicked() && b->fShiftImage) {
-//     xp++;
-//     yp++;
-//   }
-//
-//   // Set the clipping rectangle to the viewable area of the button
-//   SetClippingRect(&NewClip);
-//
-//   BltVideoObject(ButtonDestBuffer, hvObject, b->usIconIndex, xp, yp);
-//
-//   // Restore previous clip region
-//   SetClippingRect(&OldClip);
-// }
-//
-// // If a button has text attached to it, then it'll draw it last.
-// static void DrawTextOnButton(const GUI_BUTTON *b) {
-//   // If this button actually has a string to print
-//   if (b->string == NULL) return;
-//
-//   // Get the width and height of this button
-//   INT32 const width = b->W();
-//   INT32 const height = b->H();
-//
-//   // Compute the viewable area on this button
-//   SGPRect NewClip;
-//   NewClip.iLeft = b->X() + 3;
-//   NewClip.iRight = b->X() + width - 3;
-//   NewClip.iTop = b->Y() + 2;
-//   NewClip.iBottom = b->Y() + height - 2;
-//
-//   // Get the starting coordinates to print
-//   const INT32 TextX = NewClip.iLeft;
-//   const INT32 TextY = NewClip.iTop;
-//
-//   // Get the current clipping area
-//   SGPRect OldClip;
-//   GetClippingRect(&OldClip);
-//
-//   // Clip the button's viewable area to the screen
-//   if (NewClip.iLeft < OldClip.iLeft) NewClip.iLeft = OldClip.iLeft;
-//
-//   // Are we off hte right side?
-//   if (NewClip.iLeft > OldClip.iRight) return;
-//
-//   if (NewClip.iRight > OldClip.iRight) NewClip.iRight = OldClip.iRight;
-//
-//   // Are we off the left side?
-//   if (NewClip.iRight < OldClip.iLeft) return;
-//
-//   if (NewClip.iTop < OldClip.iTop) NewClip.iTop = OldClip.iTop;
-//
-//   // Are we off the bottom of the screen?
-//   if (NewClip.iTop > OldClip.iBottom) return;
-//
-//   if (NewClip.iBottom > OldClip.iBottom) NewClip.iBottom = OldClip.iBottom;
-//
-//   // Are we off the top?
-//   if (NewClip.iBottom < OldClip.iTop) return;
-//
-//   // Did we clip the viewable area out of existance?
-//   if (NewClip.iRight <= NewClip.iLeft || NewClip.iBottom <= NewClip.iTop) return;
-//
-//   // Set the font printing settings to the buttons viewable area
-//   SetFontDestBuffer(ButtonDestBuffer, NewClip.iLeft, NewClip.iTop, NewClip.iRight, NewClip.iBottom);
-//
-//   // Compute the coordinates to center the text
-//   INT32 yp;
-//   if (b->bTextYOffset == -1) {
-//     yp = TextY + (height - GetFontHeight(b->usFont)) / 2 - 1;
-//   } else {
-//     yp = b->Y() + b->bTextYOffset;
-//   }
-//
-//   INT32 xp;
-//   if (b->bTextXOffset == -1) {
-//     switch (b->bJustification) {
-//       case GUI_BUTTON::TEXT_LEFT:
-//         xp = TextX + 3;
-//         break;
-//       case GUI_BUTTON::TEXT_RIGHT:
-//         xp = NewClip.iRight - StringPixLength(b->string, b->usFont) - 3;
-//         break;
-//       default:
-//       case GUI_BUTTON::TEXT_CENTER:
-//         xp = TextX + (width - 6 - StringPixLength(b->string, b->usFont)) / 2;
-//         break;
-//     }
-//   } else {
-//     xp = b->X() + b->bTextXOffset;
-//   }
-//
-//   // print the text
-//
-//   // Override the colors if necessary.
-//   INT16 sForeColor;
-//   if (b->Enabled() && b->Area.uiFlags & MSYS_MOUSE_IN_AREA && b->sForeColorHilited != -1) {
-//     sForeColor = b->sForeColorHilited;
-//   } else if (b->Clicked() && b->sForeColorDown != -1) {
-//     sForeColor = b->sForeColorDown;
-//   } else {
-//     sForeColor = b->sForeColor;
-//   }
-//
-//   UINT8 shadow;
-//   if (b->Enabled() && b->Area.uiFlags & MSYS_MOUSE_IN_AREA && b->sShadowColorHilited != -1) {
-//     shadow = b->sShadowColorHilited;
-//   } else if (b->Clicked() && b->sShadowColorDown != -1) {
-//     shadow = b->sShadowColorDown;
-//   } else if (b->sShadowColor != -1) {
-//     shadow = b->sShadowColor;
-//   } else {
-//     shadow = DEFAULT_SHADOW;
-//   }
-//
-//   SetFontAttributes(b->usFont, sForeColor, shadow);
-//
-//   if (b->Clicked() && b->fShiftText) {
-//     /* Was the button clicked on? if so, move the text slightly for the illusion
-//      * that the text moved into the screen. */
-//     xp++;
-//     yp++;
-//   }
-//
-//   if (b->sWrappedWidth != -1) {
-//     UINT8 bJustified = 0;
-//     switch (b->bJustification) {
-//       case GUI_BUTTON::TEXT_LEFT:
-//         bJustified = LEFT_JUSTIFIED;
-//         break;
-//       case GUI_BUTTON::TEXT_RIGHT:
-//         bJustified = RIGHT_JUSTIFIED;
-//         break;
-//       case GUI_BUTTON::TEXT_CENTER:
-//         bJustified = CENTER_JUSTIFIED;
-//         break;
-//       default:
-//         Assert(0);
-//         break;
-//     }
-//     if (b->bTextXOffset == -1) {
-//       /* Kris:
-//        * There needs to be recalculation of the start positions based on the
-//        * justification and the width specified wrapped width.  I was drawing a
-//        * double lined word on the right side of the button to find it drawing
-//        * way over to the left.  I've added the necessary code for the right and
-//        * center justification.
-//        */
-//       yp = b->Y() + 2;
-//
-//       switch (b->bJustification) {
-//         case GUI_BUTTON::TEXT_RIGHT:
-//           xp = b->BottomRightX() - 3 - b->sWrappedWidth;
-//           if (b->fShiftText && b->Clicked()) {
-//             xp++;
-//             yp++;
-//           }
-//           break;
-//
-//         case GUI_BUTTON::TEXT_CENTER:
-//           xp = b->X() + 3 + b->sWrappedWidth / 2;
-//           if (b->fShiftText && b->Clicked()) {
-//             xp++;
-//             yp++;
-//           }
-//           break;
-//       }
-//     }
-//     yp += b->bTextYSubOffSet;
-//     xp += b->bTextXSubOffSet;
-//     DisplayWrappedString(xp, yp, b->sWrappedWidth, 1, b->usFont, sForeColor, b->string,
-//                          FONT_MCOLOR_BLACK, bJustified);
-//   } else {
-//     yp += b->bTextYSubOffSet;
-//     xp += b->bTextXSubOffSet;
-//     MPrint(xp, yp, b->string);
-//   }
-// }
-//
-// /* This function is called by the DrawIconicButton and DrawTextButton routines
-//  * to draw the borders and background of the buttons.
-//  */
-// static void DrawGenericButton(const GUI_BUTTON *b) {
-//   // Select the graphics to use depending on the current state of the button
-//   HVOBJECT BPic;
-//   if (!b->Enabled()) {
-//     BPic = GenericButtonOffNormal;
-//     switch (b->bDisabledStyle) {
-//       case GUI_BUTTON::DISABLED_STYLE_DEFAULT:
-//         gbDisabledButtonStyle =
-//             b->string ? GUI_BUTTON::DISABLED_STYLE_SHADED : GUI_BUTTON::DISABLED_STYLE_HATCHED;
-//         break;
-//
-//       case GUI_BUTTON::DISABLED_STYLE_HATCHED:
-//       case GUI_BUTTON::DISABLED_STYLE_SHADED:
-//         gbDisabledButtonStyle = b->bDisabledStyle;
-//         break;
-//     }
-//   } else if (b->Clicked()) {
-//     if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && GenericButtonOnHilite != NULL && gfRenderHilights) {
-//       BPic = GenericButtonOnHilite;
-//     } else {
-//       BPic = GenericButtonOnNormal;
-//     }
-//   } else {
-//     if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && GenericButtonOffHilite != NULL &&
-//         gfRenderHilights) {
-//       BPic = GenericButtonOffHilite;
-//     } else {
-//       BPic = GenericButtonOffNormal;
-//     }
-//   }
-//
-//   const INT32 iBorderWidth = 3;
-//   const INT32 iBorderHeight = 2;
-//
-//   // Compute the number of button "chunks" needed to be blitted
-//   INT32 const width = b->W();
-//   INT32 const height = b->H();
-//   const INT32 NumChunksWide = width / iBorderWidth;
-//   INT32 NumChunksHigh = height / iBorderHeight;
-//   const INT32 hremain = height % iBorderHeight;
-//   const INT32 wremain = width % iBorderWidth;
-//
-//   INT32 const bx = b->X();
-//   INT32 const by = b->Y();
-//   INT32 const cx = bx + (NumChunksWide - 1) * iBorderWidth + wremain;
-//   INT32 const cy = by + (NumChunksHigh - 1) * iBorderHeight + hremain;
-//
-//   // Fill the button's area with the button's background color
-//   ColorFillVideoSurfaceArea(ButtonDestBuffer, b->X(), b->Y(), b->BottomRightX(), b->BottomRightY(),
-//                             GenericButtonFillColors);
-//
-//   SGPVSurface::Lock l(ButtonDestBuffer);
-//   UINT16 *const pDestBuf = l.Buffer<UINT16>();
-//   UINT32 const uiDestPitchBYTES = l.Pitch();
-//
-//   SGPRect ClipRect;
-//   GetClippingRect(&ClipRect);
-//
-//   // Draw the button's borders and corners (horizontally)
-//   for (INT32 q = 0; q < NumChunksWide; q++) {
-//     INT32 const ImgNum = (q == 0 ? 0 : 1);
-//     INT32 const x = bx + q * iBorderWidth;
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, x, by, ImgNum,
-//                                             &ClipRect);
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, x, cy, ImgNum + 5,
-//                                             &ClipRect);
-//   }
-//   // Blit the right side corners
-//   Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, by, 2, &ClipRect);
-//   Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, &ClipRect);
-//   // Draw the vertical members of the button's borders
-//   NumChunksHigh--;
-//
-//   if (hremain != 0) {
-//     INT32 const y = by + NumChunksHigh * iBorderHeight - iBorderHeight + hremain;
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, bx, y, 3, &ClipRect);
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, y, 4, &ClipRect);
-//   }
-//
-//   for (INT32 q = 1; q < NumChunksHigh; q++) {
-//     INT32 const y = by + q * iBorderHeight;
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, bx, y, 3, &ClipRect);
-//     Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, y, 4, &ClipRect);
-//   }
-// }
-//
+
+static void DrawCheckBoxButton(const GUI_BUTTON *b) {
+  const BUTTON_PICS *const pics = b->image;
+
+  INT32 UseImage = 0;
+  if (b->Enabled()) {
+    if (b->Clicked()) {
+      // Is the mouse over this area, and we have a hilite image?
+      if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState &&
+          pics->OnHilite != -1) {
+        UseImage = pics->OnHilite;
+      } else if (pics->OnNormal != -1) {
+        UseImage = pics->OnNormal;
+      }
+    } else {
+      // Is the mouse over the button, and do we have hilite image?
+      if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && gfRenderHilights && gfLeftButtonState &&
+          pics->OffHilite != -1) {
+        UseImage = pics->OffHilite;
+      } else if (pics->OffNormal != -1) {
+        UseImage = pics->OffNormal;
+      }
+    }
+  } else if (pics->Grayed != -1) {
+    // Button is disabled so use the "Grayed-out" image
+    UseImage = pics->Grayed;
+  } else  // use the disabled style
+  {
+    if (b->Clicked()) {
+      UseImage = pics->OnHilite;
+    } else {
+      UseImage = pics->OffHilite;
+    }
+    switch (b->bDisabledStyle) {
+      case GUI_BUTTON::DISABLED_STYLE_DEFAULT:
+        gbDisabledButtonStyle = GUI_BUTTON::DISABLED_STYLE_HATCHED;
+        break;
+
+      case GUI_BUTTON::DISABLED_STYLE_HATCHED:
+      case GUI_BUTTON::DISABLED_STYLE_SHADED:
+        gbDisabledButtonStyle = b->bDisabledStyle;
+        break;
+    }
+  }
+
+  BltVideoObject(ButtonDestBuffer, pics->vobj, UseImage, b->X(), b->Y());
+}
+
+static void DrawIconOnButton(const GUI_BUTTON *b) {
+  if (!b->icon) return;
+
+  // Get width and height of button area
+  INT32 const width = b->W();
+  INT32 const height = b->H();
+
+  // Compute viewable area (inside borders)
+  SGPRect NewClip;
+  NewClip.iLeft = b->X() + 3;
+  NewClip.iRight = b->X() + width - 3;
+  NewClip.iTop = b->Y() + 2;
+  NewClip.iBottom = b->Y() + height - 2;
+
+  // Get Icon's blit start coordinates
+  INT32 IconX = NewClip.iLeft;
+  INT32 IconY = NewClip.iTop;
+
+  // Get current clip area
+  SGPRect OldClip;
+  GetClippingRect(&OldClip);
+
+  // Clip button's viewable area coords to screen
+  if (NewClip.iLeft < OldClip.iLeft) NewClip.iLeft = OldClip.iLeft;
+
+  // Is button right off the right side of the screen?
+  if (NewClip.iLeft > OldClip.iRight) return;
+
+  if (NewClip.iRight > OldClip.iRight) NewClip.iRight = OldClip.iRight;
+
+  // Is button completely off the left side of the screen?
+  if (NewClip.iRight < OldClip.iLeft) return;
+
+  if (NewClip.iTop < OldClip.iTop) NewClip.iTop = OldClip.iTop;
+
+  // Are we right off the bottom of the screen?
+  if (NewClip.iTop > OldClip.iBottom) return;
+
+  if (NewClip.iBottom > OldClip.iBottom) NewClip.iBottom = OldClip.iBottom;
+
+  // Are we off the top?
+  if (NewClip.iBottom < OldClip.iTop) return;
+
+  // Did we clip the viewable area out of existance?
+  if (NewClip.iRight <= NewClip.iLeft || NewClip.iBottom <= NewClip.iTop) return;
+
+  // Get the width and height of the icon itself
+  SGPVObject const *const hvObject = b->icon;
+  ETRLEObject const &pTrav = hvObject->SubregionProperties(b->usIconIndex);
+
+  /* Compute coordinates for centering the icon on the button or use the offset
+   * system.
+   */
+  INT32 xp;
+  if (b->bIconXOffset == -1) {
+    const INT32 IconW = pTrav.usWidth + pTrav.sOffsetX;
+    xp = IconX + (width - 6 - IconW) / 2;
+  } else {
+    xp = b->X() + b->bIconXOffset;
+  }
+
+  INT32 yp;
+  if (b->bIconYOffset == -1) {
+    const INT32 IconH = pTrav.usHeight + pTrav.sOffsetY;
+    yp = IconY + (height - 4 - IconH) / 2;
+  } else {
+    yp = b->Y() + b->bIconYOffset;
+  }
+
+  /* Was the button clicked on? if so, move the image slightly for the illusion
+   * that the image moved into the screen.
+   */
+  if (b->Clicked() && b->fShiftImage) {
+    xp++;
+    yp++;
+  }
+
+  // Set the clipping rectangle to the viewable area of the button
+  SetClippingRect(&NewClip);
+
+  BltVideoObject(ButtonDestBuffer, hvObject, b->usIconIndex, xp, yp);
+
+  // Restore previous clip region
+  SetClippingRect(&OldClip);
+}
+
+// If a button has text attached to it, then it'll draw it last.
+static void DrawTextOnButton(const GUI_BUTTON *b) {
+  // If this button actually has a string to print
+  if (b->string == NULL) return;
+
+  // Get the width and height of this button
+  INT32 const width = b->W();
+  INT32 const height = b->H();
+
+  // Compute the viewable area on this button
+  SGPRect NewClip;
+  NewClip.iLeft = b->X() + 3;
+  NewClip.iRight = b->X() + width - 3;
+  NewClip.iTop = b->Y() + 2;
+  NewClip.iBottom = b->Y() + height - 2;
+
+  // Get the starting coordinates to print
+  const INT32 TextX = NewClip.iLeft;
+  const INT32 TextY = NewClip.iTop;
+
+  // Get the current clipping area
+  SGPRect OldClip;
+  GetClippingRect(&OldClip);
+
+  // Clip the button's viewable area to the screen
+  if (NewClip.iLeft < OldClip.iLeft) NewClip.iLeft = OldClip.iLeft;
+
+  // Are we off hte right side?
+  if (NewClip.iLeft > OldClip.iRight) return;
+
+  if (NewClip.iRight > OldClip.iRight) NewClip.iRight = OldClip.iRight;
+
+  // Are we off the left side?
+  if (NewClip.iRight < OldClip.iLeft) return;
+
+  if (NewClip.iTop < OldClip.iTop) NewClip.iTop = OldClip.iTop;
+
+  // Are we off the bottom of the screen?
+  if (NewClip.iTop > OldClip.iBottom) return;
+
+  if (NewClip.iBottom > OldClip.iBottom) NewClip.iBottom = OldClip.iBottom;
+
+  // Are we off the top?
+  if (NewClip.iBottom < OldClip.iTop) return;
+
+  // Did we clip the viewable area out of existance?
+  if (NewClip.iRight <= NewClip.iLeft || NewClip.iBottom <= NewClip.iTop) return;
+
+  // Set the font printing settings to the buttons viewable area
+  SetFontDestBuffer(ButtonDestBuffer, NewClip.iLeft, NewClip.iTop, NewClip.iRight, NewClip.iBottom);
+
+  // Compute the coordinates to center the text
+  INT32 yp;
+  if (b->bTextYOffset == -1) {
+    yp = TextY + (height - GetFontHeight(b->usFont)) / 2 - 1;
+  } else {
+    yp = b->Y() + b->bTextYOffset;
+  }
+
+  INT32 xp;
+  if (b->bTextXOffset == -1) {
+    switch (b->bJustification) {
+      case GUI_BUTTON::TEXT_LEFT:
+        xp = TextX + 3;
+        break;
+      case GUI_BUTTON::TEXT_RIGHT:
+        xp = NewClip.iRight - StringPixLength(b->string, b->usFont) - 3;
+        break;
+      default:
+      case GUI_BUTTON::TEXT_CENTER:
+        xp = TextX + (width - 6 - StringPixLength(b->string, b->usFont)) / 2;
+        break;
+    }
+  } else {
+    xp = b->X() + b->bTextXOffset;
+  }
+
+  // print the text
+
+  // Override the colors if necessary.
+  INT16 sForeColor;
+  if (b->Enabled() && b->Area.uiFlags & MSYS_MOUSE_IN_AREA && b->sForeColorHilited != -1) {
+    sForeColor = b->sForeColorHilited;
+  } else if (b->Clicked() && b->sForeColorDown != -1) {
+    sForeColor = b->sForeColorDown;
+  } else {
+    sForeColor = b->sForeColor;
+  }
+
+  UINT8 shadow;
+  if (b->Enabled() && b->Area.uiFlags & MSYS_MOUSE_IN_AREA && b->sShadowColorHilited != -1) {
+    shadow = b->sShadowColorHilited;
+  } else if (b->Clicked() && b->sShadowColorDown != -1) {
+    shadow = b->sShadowColorDown;
+  } else if (b->sShadowColor != -1) {
+    shadow = b->sShadowColor;
+  } else {
+    shadow = DEFAULT_SHADOW;
+  }
+
+  SetFontAttributes(b->usFont, sForeColor, shadow);
+
+  if (b->Clicked() && b->fShiftText) {
+    /* Was the button clicked on? if so, move the text slightly for the illusion
+     * that the text moved into the screen. */
+    xp++;
+    yp++;
+  }
+
+  if (b->sWrappedWidth != -1) {
+    UINT8 bJustified = 0;
+    switch (b->bJustification) {
+      case GUI_BUTTON::TEXT_LEFT:
+        bJustified = LEFT_JUSTIFIED;
+        break;
+      case GUI_BUTTON::TEXT_RIGHT:
+        bJustified = RIGHT_JUSTIFIED;
+        break;
+      case GUI_BUTTON::TEXT_CENTER:
+        bJustified = CENTER_JUSTIFIED;
+        break;
+      default:
+        Assert(0);
+        break;
+    }
+    if (b->bTextXOffset == -1) {
+      /* Kris:
+       * There needs to be recalculation of the start positions based on the
+       * justification and the width specified wrapped width.  I was drawing a
+       * double lined word on the right side of the button to find it drawing
+       * way over to the left.  I've added the necessary code for the right and
+       * center justification.
+       */
+      yp = b->Y() + 2;
+
+      switch (b->bJustification) {
+        case GUI_BUTTON::TEXT_RIGHT:
+          xp = b->BottomRightX() - 3 - b->sWrappedWidth;
+          if (b->fShiftText && b->Clicked()) {
+            xp++;
+            yp++;
+          }
+          break;
+
+        case GUI_BUTTON::TEXT_CENTER:
+          xp = b->X() + 3 + b->sWrappedWidth / 2;
+          if (b->fShiftText && b->Clicked()) {
+            xp++;
+            yp++;
+          }
+          break;
+      }
+    }
+    yp += b->bTextYSubOffSet;
+    xp += b->bTextXSubOffSet;
+    DisplayWrappedString(xp, yp, b->sWrappedWidth, 1, b->usFont, sForeColor, b->string,
+                         FONT_MCOLOR_BLACK, bJustified);
+  } else {
+    yp += b->bTextYSubOffSet;
+    xp += b->bTextXSubOffSet;
+    MPrint(xp, yp, b->string);
+  }
+}
+
+/* This function is called by the DrawIconicButton and DrawTextButton routines
+ * to draw the borders and background of the buttons.
+ */
+static void DrawGenericButton(const GUI_BUTTON *b) {
+  // Select the graphics to use depending on the current state of the button
+  HVOBJECT BPic;
+  if (!b->Enabled()) {
+    BPic = GenericButtonOffNormal;
+    switch (b->bDisabledStyle) {
+      case GUI_BUTTON::DISABLED_STYLE_DEFAULT:
+        gbDisabledButtonStyle =
+            b->string ? GUI_BUTTON::DISABLED_STYLE_SHADED : GUI_BUTTON::DISABLED_STYLE_HATCHED;
+        break;
+
+      case GUI_BUTTON::DISABLED_STYLE_HATCHED:
+      case GUI_BUTTON::DISABLED_STYLE_SHADED:
+        gbDisabledButtonStyle = b->bDisabledStyle;
+        break;
+    }
+  } else if (b->Clicked()) {
+    if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && GenericButtonOnHilite != NULL && gfRenderHilights) {
+      BPic = GenericButtonOnHilite;
+    } else {
+      BPic = GenericButtonOnNormal;
+    }
+  } else {
+    if (b->Area.uiFlags & MSYS_MOUSE_IN_AREA && GenericButtonOffHilite != NULL &&
+        gfRenderHilights) {
+      BPic = GenericButtonOffHilite;
+    } else {
+      BPic = GenericButtonOffNormal;
+    }
+  }
+
+  const INT32 iBorderWidth = 3;
+  const INT32 iBorderHeight = 2;
+
+  // Compute the number of button "chunks" needed to be blitted
+  INT32 const width = b->W();
+  INT32 const height = b->H();
+  const INT32 NumChunksWide = width / iBorderWidth;
+  INT32 NumChunksHigh = height / iBorderHeight;
+  const INT32 hremain = height % iBorderHeight;
+  const INT32 wremain = width % iBorderWidth;
+
+  INT32 const bx = b->X();
+  INT32 const by = b->Y();
+  INT32 const cx = bx + (NumChunksWide - 1) * iBorderWidth + wremain;
+  INT32 const cy = by + (NumChunksHigh - 1) * iBorderHeight + hremain;
+
+  // Fill the button's area with the button's background color
+  ColorFillVideoSurfaceArea(ButtonDestBuffer, b->X(), b->Y(), b->BottomRightX(), b->BottomRightY(),
+                            GenericButtonFillColors);
+
+  SGPVSurface::Lock l(ButtonDestBuffer);
+  UINT16 *const pDestBuf = l.Buffer<UINT16>();
+  UINT32 const uiDestPitchBYTES = l.Pitch();
+
+  SGPRect ClipRect;
+  GetClippingRect(&ClipRect);
+
+  // Draw the button's borders and corners (horizontally)
+  for (INT32 q = 0; q < NumChunksWide; q++) {
+    INT32 const ImgNum = (q == 0 ? 0 : 1);
+    INT32 const x = bx + q * iBorderWidth;
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, x, by, ImgNum,
+                                            &ClipRect);
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, x, cy, ImgNum + 5,
+                                            &ClipRect);
+  }
+  // Blit the right side corners
+  Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, by, 2, &ClipRect);
+  Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, cy, 7, &ClipRect);
+  // Draw the vertical members of the button's borders
+  NumChunksHigh--;
+
+  if (hremain != 0) {
+    INT32 const y = by + NumChunksHigh * iBorderHeight - iBorderHeight + hremain;
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, bx, y, 3, &ClipRect);
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, y, 4, &ClipRect);
+  }
+
+  for (INT32 q = 1; q < NumChunksHigh; q++) {
+    INT32 const y = by + q * iBorderHeight;
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, bx, y, 3, &ClipRect);
+    Blt8BPPDataTo16BPPBufferTransparentClip(pDestBuf, uiDestPitchBYTES, BPic, cx, y, 4, &ClipRect);
+  }
+}
+
 // GUIButtonRef CreateCheckBoxButton(INT16 x, INT16 y, const char *filename, INT16 Priority,
 //                                   GUI_CALLBACK ClickCallback) {
 //   Assert(filename != NULL);

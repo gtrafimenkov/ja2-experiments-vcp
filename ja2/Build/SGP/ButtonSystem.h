@@ -43,10 +43,10 @@ struct GUI_BUTTON {
              GUI_CALLBACK click, GUI_CALLBACK move);
   ~GUI_BUTTON();
 
-//   bool Clicked() const { return uiFlags & BUTTON_CLICKED_ON; }
-//
-//   bool Enabled() const { return uiFlags & BUTTON_ENABLED; }
-//
+  bool Clicked() const { return uiFlags & BUTTON_CLICKED_ON; }
+
+  bool Enabled() const { return uiFlags & BUTTON_ENABLED; }
+
 //   // Set the text that will be displayed as the FastHelp
 //   void SetFastHelpText(wchar_t const *text);
 //
@@ -58,8 +58,8 @@ struct GUI_BUTTON {
 //
 //   void SpecifyDownTextColors(INT16 fore_colour_down, INT16 shadow_colour_down);
 //   void SpecifyHilitedTextColors(INT16 fore_colour_highlighted, INT16 shadow_colour_highlighted);
-//
-//   enum Justification { TEXT_LEFT = -1, TEXT_CENTER = 0, TEXT_RIGHT = 1 };
+
+  enum Justification { TEXT_LEFT = -1, TEXT_CENTER = 0, TEXT_RIGHT = 1 };
 //   void SpecifyTextJustification(Justification);
 //
 //   void SpecifyText(wchar_t const *text);
@@ -140,20 +140,20 @@ struct GUI_BUTTON {
 //   INT8 bJustification;  // BUTTON_TEXT_LEFT, BUTTON_TEXT_CENTER, BUTTON_TEXT_RIGHT
 //   INT8 bTextXOffset;
 //   INT8 bTextYOffset;
-//   INT8 bTextXSubOffSet;
-//   INT8 bTextYSubOffSet;
+  INT8 bTextXSubOffSet;
+  INT8 bTextYSubOffSet;
 //   BOOLEAN fShiftText;
-//   INT16 sWrappedWidth;
-//
-//   // For buttons with icons (don't confuse this with quickbuttons which have up
-//   // to 5 states)
-//   const SGPVObject *icon;
-//   INT16 usIconIndex;
-//   INT8 bIconXOffset;  // -1 means horizontally centered
-//   INT8 bIconYOffset;  // -1 means vertically centered
-//   BOOLEAN
-//   fShiftImage;  // if true, icon is shifted +1,+1 when button state is down.
-//
+  INT16 sWrappedWidth;
+
+  // For buttons with icons (don't confuse this with quickbuttons which have up
+  // to 5 states)
+  const SGPVObject *icon;
+  INT16 usIconIndex;
+  INT8 bIconXOffset;  // -1 means horizontally centered
+  INT8 bIconYOffset;  // -1 means vertically centered
+  BOOLEAN
+  fShiftImage;  // if true, icon is shifted +1,+1 when button state is down.
+
 //   UINT8 ubToggleButtonActivated;
 //
 //   UINT8 ubSoundSchemeID;
@@ -239,8 +239,8 @@ void UnloadButtonImage(BUTTON_PICS *);
 
 void RenderButtons(void);
 
-// extern BOOLEAN gfRenderHilights;
-//
+extern BOOLEAN gfRenderHilights;
+
 // /* Creates a QuickButton. QuickButtons only have graphics associated with them.
 //  * They cannot be re-sized, nor can the graphic be changed.  Providing you have
 //  * allocated your own image, this is a somewhat simplified function.

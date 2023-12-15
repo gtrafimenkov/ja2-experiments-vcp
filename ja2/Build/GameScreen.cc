@@ -1,74 +1,74 @@
-// #include "GameScreen.h"
-//
-// #include "Editor/EditScreen.h"
-// #include "FadeScreen.h"
-// #include "GameLoop.h"
-// #include "GameState.h"
-// #include "HelpScreen.h"
-// #include "JAScreens.h"
-// #include "Local.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/Font.h"
-// #include "SGP/Input.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "Screens.h"
-// #include "Strategic/Assignments.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/GameInit.h"
-// #include "Strategic/Meanwhile.h"
-// #include "Strategic/PreBattleInterface.h"
-// #include "Strategic/StrategicAI.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Strategic/StrategicMovement.h"
-// #include "Strategic/StrategicTurns.h"
-// #include "SysGlobals.h"
-// #include "Tactical/AirRaid.h"
-// #include "Tactical/AutoBandage.h"
-// #include "Tactical/Bullets.h"
-// #include "Tactical/DialogueControl.h"
-// #include "Tactical/Faces.h"
-// #include "Tactical/HandleUI.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/InterfaceControl.h"
-// #include "Tactical/InterfaceDialogue.h"
-// #include "Tactical/InterfacePanels.h"
-// #include "Tactical/MapInformation.h"
-// #include "Tactical/MercEntering.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/SoldierCreate.h"
-// #include "Tactical/SoldierInitList.h"
-// #include "Tactical/SoldierMacros.h"
-// #include "Tactical/Squads.h"
-// #include "Tactical/StrategicExitGUI.h"
-// #include "TileEngine/Environment.h"
-// #include "TileEngine/OverheadMap.h"
-// #include "TileEngine/Physics.h"
-// #include "TileEngine/RadarScreen.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/TacticalPlacementGUI.h"
-// #include "TileEngine/WorldDef.h"
-// #include "Utils/Cursors.h"
-// #include "Utils/EventPump.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-//
+#include "GameScreen.h"
+
+#include "Editor/EditScreen.h"
+#include "FadeScreen.h"
+#include "GameLoop.h"
+#include "GameState.h"
+#include "HelpScreen.h"
+#include "JAScreens.h"
+#include "Local.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/Font.h"
+#include "SGP/Input.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "Screens.h"
+#include "Strategic/Assignments.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/GameInit.h"
+#include "Strategic/Meanwhile.h"
+#include "Strategic/PreBattleInterface.h"
+#include "Strategic/StrategicAI.h"
+#include "Strategic/StrategicMap.h"
+#include "Strategic/StrategicMovement.h"
+#include "Strategic/StrategicTurns.h"
+#include "SysGlobals.h"
+#include "Tactical/AirRaid.h"
+#include "Tactical/AutoBandage.h"
+#include "Tactical/Bullets.h"
+#include "Tactical/DialogueControl.h"
+#include "Tactical/Faces.h"
+#include "Tactical/HandleUI.h"
+#include "Tactical/Interface.h"
+#include "Tactical/InterfaceControl.h"
+#include "Tactical/InterfaceDialogue.h"
+#include "Tactical/InterfacePanels.h"
+#include "Tactical/MapInformation.h"
+#include "Tactical/MercEntering.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/SoldierCreate.h"
+#include "Tactical/SoldierInitList.h"
+#include "Tactical/SoldierMacros.h"
+#include "Tactical/Squads.h"
+#include "Tactical/StrategicExitGUI.h"
+#include "TileEngine/Environment.h"
+#include "TileEngine/OverheadMap.h"
+#include "TileEngine/Physics.h"
+#include "TileEngine/RadarScreen.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/TacticalPlacementGUI.h"
+#include "TileEngine/WorldDef.h"
+#include "Utils/Cursors.h"
+#include "Utils/EventPump.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/SoundControl.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+
 // #define ARE_IN_FADE_IN() (gfFadeIn || gfFadeInitialized)
 //
 // BOOLEAN gfTacticalDoHeliRun = FALSE;
-//
-// // VIDEO OVERLAYS
-// VIDEO_OVERLAY *g_fps_overlay = NULL;
-// VIDEO_OVERLAY *g_counter_period_overlay = NULL;
-//
+
+// VIDEO OVERLAYS
+VIDEO_OVERLAY *g_fps_overlay = NULL;
+VIDEO_OVERLAY *g_counter_period_overlay = NULL;
+
 // BOOLEAN gfGameScreenLocateToSoldier = FALSE;
 // BOOLEAN gfEnteringMapScreen = FALSE;
 // SOLDIERTYPE *gPreferredInitialSelectedGuy = NULL;
@@ -88,43 +88,43 @@
 // static ScreenID guiTacticalLeaveScreenID =
 //     ERROR_SCREEN;  // XXX TODO001A had no explicit initialisation
 // static BOOLEAN guiTacticalLeaveScreen = FALSE;
-//
-// static void BlitMFont(VIDEO_OVERLAY *const ovr) {
-//   SetFontAttributes(ovr->uiFontID, ovr->ubFontFore, DEFAULT_SHADOW, ovr->ubFontBack);
-//   SGPVSurface::Lock l(ovr->uiDestBuff);
-//   MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), ovr->sX, ovr->sY, ovr->zText);
-// }
-//
-// void MainGameScreenInit(void) {
-//   gpZBuffer = InitZBuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
-//   InitializeBackgroundRects();
-//
-//   // EnvSetTimeInHours(ENV_TIME_12);
-//
-//   SetRenderFlags(RENDER_FLAG_FULL);
-//
-//   // Init Video Overlays
-//   // FIRST, FRAMERATE
-//   g_fps_overlay = RegisterVideoOverlay(BlitMFont, 0, 0, SMALLFONT1, FONT_MCOLOR_DKGRAY,
-//                                        FONT_MCOLOR_BLACK, L"90");
-//   EnableVideoOverlay(false, g_fps_overlay);
-//
-//   // SECOND, PERIOD COUNTER
-//   g_counter_period_overlay = RegisterVideoOverlay(BlitMFont, 30, 0, SMALLFONT1, FONT_MCOLOR_DKGRAY,
-//                                                   FONT_MCOLOR_BLACK, L"Levelnodes: 100000");
-//   EnableVideoOverlay(false, g_counter_period_overlay);
-// }
-//
-// // The ShutdownGame function will free up/undo all things that were started in
-// // InitializeGame() It will also be responsible to making sure that all Gaming
-// // Engine tasks exit properly
-// void MainGameScreenShutdown(void) {
-//   ShutdownZBuffer(gpZBuffer);
-//   ShutdownBackgroundRects();
-//   RemoveVideoOverlay(g_fps_overlay);
-//   RemoveVideoOverlay(g_counter_period_overlay);
-// }
-//
+
+static void BlitMFont(VIDEO_OVERLAY *const ovr) {
+  SetFontAttributes(ovr->uiFontID, ovr->ubFontFore, DEFAULT_SHADOW, ovr->ubFontBack);
+  SGPVSurface::Lock l(ovr->uiDestBuff);
+  MPrintBuffer(l.Buffer<UINT16>(), l.Pitch(), ovr->sX, ovr->sY, ovr->zText);
+}
+
+void MainGameScreenInit(void) {
+  gpZBuffer = InitZBuffer(SCREEN_WIDTH, SCREEN_HEIGHT);
+  InitializeBackgroundRects();
+
+  // EnvSetTimeInHours(ENV_TIME_12);
+
+  SetRenderFlags(RENDER_FLAG_FULL);
+
+  // Init Video Overlays
+  // FIRST, FRAMERATE
+  g_fps_overlay = RegisterVideoOverlay(BlitMFont, 0, 0, SMALLFONT1, FONT_MCOLOR_DKGRAY,
+                                       FONT_MCOLOR_BLACK, L"90");
+  EnableVideoOverlay(false, g_fps_overlay);
+
+  // SECOND, PERIOD COUNTER
+  g_counter_period_overlay = RegisterVideoOverlay(BlitMFont, 30, 0, SMALLFONT1, FONT_MCOLOR_DKGRAY,
+                                                  FONT_MCOLOR_BLACK, L"Levelnodes: 100000");
+  EnableVideoOverlay(false, g_counter_period_overlay);
+}
+
+// The ShutdownGame function will free up/undo all things that were started in
+// InitializeGame() It will also be responsible to making sure that all Gaming
+// Engine tasks exit properly
+void MainGameScreenShutdown(void) {
+  ShutdownZBuffer(gpZBuffer);
+  ShutdownBackgroundRects();
+  RemoveVideoOverlay(g_fps_overlay);
+  RemoveVideoOverlay(g_counter_period_overlay);
+}
+
 // void FadeInGameScreen() {
 //   fFirstTimeInGameScreen = TRUE;
 //

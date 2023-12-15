@@ -189,33 +189,33 @@ SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *const Filename) {
 //   Blt8BPPDataTo16BPPBufferHalf(DestBuf, DestPitchBYTES, src, SrcBuf, SrcPitchBYTES, DestX, DestY,
 //                                src_rect);
 // }
-//
-// void ColorFillVideoSurfaceArea(SGPVSurface *const dst, INT32 iDestX1, INT32 iDestY1, INT32 iDestX2,
-//                                INT32 iDestY2, const UINT16 Color16BPP) {
-//   SGPRect Clip;
-//   GetClippingRect(&Clip);
-//
-//   if (iDestX1 < Clip.iLeft) iDestX1 = Clip.iLeft;
-//   if (iDestX1 > Clip.iRight) return;
-//
-//   if (iDestX2 > Clip.iRight) iDestX2 = Clip.iRight;
-//   if (iDestX2 < Clip.iLeft) return;
-//
-//   if (iDestY1 < Clip.iTop) iDestY1 = Clip.iTop;
-//   if (iDestY1 > Clip.iBottom) return;
-//
-//   if (iDestY2 > Clip.iBottom) iDestY2 = Clip.iBottom;
-//   if (iDestY2 < Clip.iTop) return;
-//
-//   if (iDestX2 <= iDestX1 || iDestY2 <= iDestY1) return;
-//
-//   SDL_Rect Rect;
-//   Rect.x = iDestX1;
-//   Rect.y = iDestY1;
-//   Rect.w = iDestX2 - iDestX1;
-//   Rect.h = iDestY2 - iDestY1;
-//   SDL_FillRect(dst->surface_, &Rect, Color16BPP);
-// }
+
+void ColorFillVideoSurfaceArea(SGPVSurface *const dst, INT32 iDestX1, INT32 iDestY1, INT32 iDestX2,
+                               INT32 iDestY2, const UINT16 Color16BPP) {
+  SGPRect Clip;
+  GetClippingRect(&Clip);
+
+  if (iDestX1 < Clip.iLeft) iDestX1 = Clip.iLeft;
+  if (iDestX1 > Clip.iRight) return;
+
+  if (iDestX2 > Clip.iRight) iDestX2 = Clip.iRight;
+  if (iDestX2 < Clip.iLeft) return;
+
+  if (iDestY1 < Clip.iTop) iDestY1 = Clip.iTop;
+  if (iDestY1 > Clip.iBottom) return;
+
+  if (iDestY2 > Clip.iBottom) iDestY2 = Clip.iBottom;
+  if (iDestY2 < Clip.iTop) return;
+
+  if (iDestX2 <= iDestX1 || iDestY2 <= iDestY1) return;
+
+  SDL_Rect Rect;
+  Rect.x = iDestX1;
+  Rect.y = iDestY1;
+  Rect.w = iDestX2 - iDestX1;
+  Rect.h = iDestY2 - iDestY1;
+  SDL_FillRect(dst->surface_, &Rect, Color16BPP);
+}
 
 // Will drop down into user-defined blitter if 8->16 BPP blitting is being done
 void BltVideoSurface(SGPVSurface *const dst, SGPVSurface *const src, INT32 const iDestX,

@@ -49,9 +49,9 @@ class SGPVSurface {
   void ShadowRect(INT32 x1, INT32 y1, INT32 x2, INT32 y2);
   void ShadowRectUsingLowPercentTable(INT32 x1, INT32 y1, INT32 x2, INT32 y2);
 
-//   /* Fills an rectangular area with a specified color value. */
-//   friend void ColorFillVideoSurfaceArea(SGPVSurface *, INT32 iDestX1, INT32 iDestY1, INT32 iDestX2,
-//                                         INT32 iDestY2, UINT16 Color16BPP);
+  /* Fills an rectangular area with a specified color value. */
+  friend void ColorFillVideoSurfaceArea(SGPVSurface *, INT32 iDestX1, INT32 iDestY1, INT32 iDestX2,
+                                        INT32 iDestY2, UINT16 Color16BPP);
 
   // Blits a video Surface to another video Surface
   friend void BltVideoSurface(SGPVSurface *dst, SGPVSurface *src, INT32 iDestX, INT32 iDestY,

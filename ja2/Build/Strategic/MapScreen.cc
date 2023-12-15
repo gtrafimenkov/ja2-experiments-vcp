@@ -1,34 +1,34 @@
 #include "Strategic/MapScreen.h"
 
-// #include "Cheats.h"
-// #include "Directories.h"
-// #include "FadeScreen.h"
-// #include "GameLoop.h"
-// #include "GameScreen.h"
-// #include "GameSettings.h"
-// #include "HelpScreen.h"
-// #include "JAScreens.h"
-// #include "Laptop/EMail.h"
-// #include "Laptop/Finances.h"
-// #include "Laptop/LaptopSave.h"
-// #include "Laptop/Personnel.h"
-// #include "Local.h"
-// #include "OptionsScreen.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/English.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Input.h"
-// #include "SGP/Line.h"
-// #include "SGP/Random.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "SaveLoadScreen.h"
-// #include "Screens.h"
+#include "Cheats.h"
+#include "Directories.h"
+#include "FadeScreen.h"
+#include "GameLoop.h"
+#include "GameScreen.h"
+#include "GameSettings.h"
+#include "HelpScreen.h"
+#include "JAScreens.h"
+#include "Laptop/EMail.h"
+#include "Laptop/Finances.h"
+#include "Laptop/LaptopSave.h"
+#include "Laptop/Personnel.h"
+#include "Local.h"
+#include "OptionsScreen.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Input.h"
+#include "SGP/Line.h"
+#include "SGP/Random.h"
+#include "SGP/VObject.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "SaveLoadScreen.h"
+#include "Screens.h"
 // #include "Strategic/Assignments.h"
 // #include "Strategic/AutoResolve.h"
 // #include "Strategic/CreatureSpreading.h"
@@ -1237,10 +1237,10 @@ BOOLEAN fInMapMode = FALSE;
 //    * over top of the team list */
 //   MarkAllBoxesAsAltered();
 // }
-//
-// // THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL
-// // STARTUP
-// void MapScreenInit(void) {
+
+// THIS IS STUFF THAT RUNS *ONCE* DURING APPLICATION EXECUTION, AT INITIAL
+// STARTUP
+void MapScreenInit(void) {
 //   // init palettes for big map
 //   InitializePalettesForMap();
 //
@@ -1248,9 +1248,9 @@ BOOLEAN fInMapMode = FALSE;
 //   InitLeaveList();
 //
 //   guiUpdatePanelTactical = AddVideoObjectFromFile(INTERFACEDIR "/group_confirm_tactical.sti");
-// }
-//
-// void MapScreenShutdown(void) {
+}
+
+void MapScreenShutdown(void) {
 //   // free up alloced mapscreen messages
 //   FreeGlobalMessageList();
 //
@@ -1260,8 +1260,8 @@ BOOLEAN fInMapMode = FALSE;
 //   ShutDownLeaveList();
 //
 //   DeleteVideoObject(guiUpdatePanelTactical);
-// }
-//
+}
+
 // static void AddTeamPanelSortButtonsForMapScreen(void);
 // static void BlitBackgroundToSaveBuffer(void);
 // static void CheckForAndRenderNewMailOverlay(void);
@@ -1307,8 +1307,8 @@ BOOLEAN fInMapMode = FALSE;
 // static void UpdatePausedStatesDueToTimeCompression(void);
 // static void UpdateStatusOfMapSortButtons(void);
 // static void UpdateTheStateOfTheNextPrevMapScreenCharacterButtons(void);
-//
-// ScreenID MapScreenHandle(void) try {
+
+ScreenID MapScreenHandle(void) try {
 //   UINT32 uiNewScreen;
 //   INT32 iCounter = 0;
 //
@@ -1935,12 +1935,12 @@ BOOLEAN fInMapMode = FALSE;
 //     // equivalents
 //     HandleExitsFromMapScreen();
 //   }
-//
-//   return (MAP_SCREEN);
-// } catch (...) {
-//   return ERROR_SCREEN; /* XXX TODO001A originally returned FALSE */
-// }
-//
+
+  return (MAP_SCREEN);
+} catch (...) {
+  return ERROR_SCREEN; /* XXX TODO001A originally returned FALSE */
+}
+
 // static void DrawString(const wchar_t *pString, UINT16 uiX, UINT16 uiY, Font const font) {
 //   // draw monochrome string
 //   SetFont(font);
