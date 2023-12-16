@@ -128,9 +128,9 @@ BOOLEAN CheckAndHandleUnloadingOfCurrentWorld(void);
 //
 // // is there a FUNCTIONAL SAM site in this sector?
 // bool IsThereAFunctionalSAMSiteInSector(INT16 x, INT16 y, INT8 z);
-//
-// bool IsSectorDesert(INT16 x, INT16 y);
-//
+
+bool IsSectorDesert(INT16 x, INT16 y);
+
 // INT8 GetSAMIdFromSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 //
 // void SetupProfileInsertionDataForSoldier(const SOLDIERTYPE *s);

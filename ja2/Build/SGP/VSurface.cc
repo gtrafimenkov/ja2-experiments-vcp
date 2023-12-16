@@ -64,27 +64,27 @@ void SGPVSurface::SetPalette(const SGPPaletteEntry *const src_pal) {
   p16BPPPalette = Create16BPPPalette(src_pal);
 }
 
-// void SGPVSurface::SetTransparency(const COLORVAL colour) {
-//   Uint32 colour_key;
-//   switch (BPP()) {
-//     case 8:
-//       colour_key = colour;
-//       break;
-//     case 16:
-//       colour_key = Get16BPPColor(colour);
-//       break;
-//
-//     default:
-//       abort();  // HACK000E
-//   }
-//   SDL_SetColorKey(surface_, SDL_TRUE, colour_key);
-// }
-//
-// void SGPVSurface::Fill(const UINT16 colour) { SDL_FillRect(surface_, NULL, colour); }
-//
-// SGPVSurfaceAuto::SGPVSurfaceAuto(UINT16 w, UINT16 h, UINT8 bpp) : SGPVSurface(w, h, bpp) {}
-//
-// SGPVSurfaceAuto::SGPVSurfaceAuto(SDL_Surface *surface) : SGPVSurface(surface) {}
+void SGPVSurface::SetTransparency(const COLORVAL colour) {
+  Uint32 colour_key;
+  switch (BPP()) {
+    case 8:
+      colour_key = colour;
+      break;
+    case 16:
+      colour_key = Get16BPPColor(colour);
+      break;
+
+    default:
+      abort();  // HACK000E
+  }
+  SDL_SetColorKey(surface_, SDL_TRUE, colour_key);
+}
+
+void SGPVSurface::Fill(const UINT16 colour) { SDL_FillRect(surface_, NULL, colour); }
+
+SGPVSurfaceAuto::SGPVSurfaceAuto(UINT16 w, UINT16 h, UINT8 bpp) : SGPVSurface(w, h, bpp) {}
+
+SGPVSurfaceAuto::SGPVSurfaceAuto(SDL_Surface *surface) : SGPVSurface(surface) {}
 
 SGPVSurfaceAuto::~SGPVSurfaceAuto() {
   if (surface_) {
@@ -137,10 +137,10 @@ SGPVSurfaceAuto *g_mouse_buffer;
 #undef AddVideoSurface
 #undef AddVideoSurfaceFromFile
 
-// SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth) {
-//   SGPVSurfaceAuto *const vs = new SGPVSurfaceAuto(Width, Height, BitDepth);
-//   return vs;
-// }
+SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth) {
+  SGPVSurfaceAuto *const vs = new SGPVSurfaceAuto(Width, Height, BitDepth);
+  return vs;
+}
 
 SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *const Filename) {
   AutoSGPImage img(CreateImage(Filename, IMAGE_ALLIMAGEDATA));
@@ -176,19 +176,19 @@ SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *const Filename) {
   return vs;
 }
 
-// #define RECORD(cs, name) ((void)0)
-//
-// void BltVideoSurfaceHalf(SGPVSurface *const dst, SGPVSurface *const src, INT32 const DestX,
-//                          INT32 const DestY, SGPBox const *const src_rect) {
-//   SGPVSurface::Lock lsrc(src);
-//   SGPVSurface::Lock ldst(dst);
-//   UINT8 *const SrcBuf = lsrc.Buffer<UINT8>();
-//   UINT32 const SrcPitchBYTES = lsrc.Pitch();
-//   UINT16 *const DestBuf = ldst.Buffer<UINT16>();
-//   UINT32 const DestPitchBYTES = ldst.Pitch();
-//   Blt8BPPDataTo16BPPBufferHalf(DestBuf, DestPitchBYTES, src, SrcBuf, SrcPitchBYTES, DestX, DestY,
-//                                src_rect);
-// }
+#define RECORD(cs, name) ((void)0)
+
+void BltVideoSurfaceHalf(SGPVSurface *const dst, SGPVSurface *const src, INT32 const DestX,
+                         INT32 const DestY, SGPBox const *const src_rect) {
+  SGPVSurface::Lock lsrc(src);
+  SGPVSurface::Lock ldst(dst);
+  UINT8 *const SrcBuf = lsrc.Buffer<UINT8>();
+  UINT32 const SrcPitchBYTES = lsrc.Pitch();
+  UINT16 *const DestBuf = ldst.Buffer<UINT16>();
+  UINT32 const DestPitchBYTES = ldst.Pitch();
+  Blt8BPPDataTo16BPPBufferHalf(DestBuf, DestPitchBYTES, src, SrcBuf, SrcPitchBYTES, DestX, DestY,
+                               src_rect);
+}
 
 void ColorFillVideoSurfaceArea(SGPVSurface *const dst, INT32 iDestX1, INT32 iDestY1, INT32 iDestX2,
                                INT32 iDestY2, const UINT16 Color16BPP) {
@@ -335,11 +335,11 @@ void BltVideoSurfaceOnce(SGPVSurface *const dst, const char *const filename, INT
   BltVideoSurface(dst, src, x, y, NULL);
 }
 
-// /** Draw image on the video surface stretching the image if necessary. */
-// void BltVideoSurfaceOnceWithStretch(SGPVSurface *const dst, const char *const filename) {
-//   SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));
-//   FillVideoSurfaceWithStretch(dst, src);
-// }
+/** Draw image on the video surface stretching the image if necessary. */
+void BltVideoSurfaceOnceWithStretch(SGPVSurface *const dst, const char *const filename) {
+  SGP::AutoPtr<SGPVSurfaceAuto> src(AddVideoSurfaceFromFile(filename));
+  FillVideoSurfaceWithStretch(dst, src);
+}
 
 /** Fill video surface with another one with stretch. */
 void FillVideoSurfaceWithStretch(SGPVSurface *const dst, SGPVSurface *const src) {

@@ -1,49 +1,49 @@
-// #include "TileEngine/TacticalPlacementGUI.h"
-//
-// #include <stdexcept>
-//
-// #include "Directories.h"
-// #include "GameLoop.h"
-// #include "JAScreens.h"
-// #include "Local.h"
-// #include "MercPortrait.h"
-// #include "MessageBoxScreen.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/English.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Input.h"
-// #include "SGP/Line.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/MouseSystem.h"
-// #include "SGP/Types.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "Strategic/Assignments.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/PreBattleInterface.h"
-// #include "Strategic/Strategic.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/MapInformation.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/SoldierAdd.h"
-// #include "Tactical/SoldierProfile.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/MapEdgepoints.h"
-// #include "TileEngine/OverheadMap.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/SysUtil.h"
-// #include "Utils/Cursors.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/Text.h"
-// #include "Utils/WordWrap.h"
-//
+#include "TileEngine/TacticalPlacementGUI.h"
+
+#include <stdexcept>
+
+#include "Directories.h"
+#include "GameLoop.h"
+#include "JAScreens.h"
+#include "Local.h"
+#include "MercPortrait.h"
+#include "MessageBoxScreen.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Input.h"
+#include "SGP/Line.h"
+#include "SGP/MemMan.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/Types.h"
+#include "SGP/VObject.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "Strategic/Assignments.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/PreBattleInterface.h"
+#include "Strategic/Strategic.h"
+#include "Strategic/StrategicMap.h"
+#include "Tactical/Interface.h"
+#include "Tactical/MapInformation.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/SoldierAdd.h"
+#include "Tactical/SoldierProfile.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/MapEdgepoints.h"
+#include "TileEngine/OverheadMap.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/SysUtil.h"
+#include "Utils/Cursors.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/Text.h"
+#include "Utils/WordWrap.h"
+
 // struct MERCPLACEMENT {
 //   SOLDIERTYPE *pSoldier;
 //   SGPVObject *uiVObjectID;
@@ -63,14 +63,14 @@
 // GUIButtonRef iTPButtons[NUM_TP_BUTTONS];
 //
 // UINT8 gubDefaultButton = CLEAR_BUTTON;
-// BOOLEAN gfTacticalPlacementGUIActive = FALSE;
+BOOLEAN gfTacticalPlacementGUIActive = FALSE;
 // BOOLEAN gfTacticalPlacementFirstTime = FALSE;
 // BOOLEAN gfEnterTacticalPlacementGUI = FALSE;
 // BOOLEAN gfKillTacticalGUI = FALSE;
 // static SGPVObject *giOverheadPanelImage;
 // static BUTTON_PICS *giOverheadButtonImages[NUM_TP_BUTTONS];
 // SGPVObject *giMercPanelImage = 0;
-// BOOLEAN gfTacticalPlacementGUIDirty = FALSE;
+BOOLEAN gfTacticalPlacementGUIDirty = FALSE;
 // BOOLEAN gfValidLocationsChanged = FALSE;
 // BOOLEAN gfValidCursor = FALSE;
 // BOOLEAN gfEveryonePlaced = FALSE;

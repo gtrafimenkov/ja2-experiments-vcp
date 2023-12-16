@@ -323,7 +323,7 @@
 //
 // static BOOLEAN fFlashAssignDone = FALSE;
 BOOLEAN fInMapMode = FALSE;
-// BOOLEAN fMapPanelDirty = TRUE;
+BOOLEAN fMapPanelDirty = TRUE;
 // BOOLEAN fTeamPanelDirty = TRUE;
 // BOOLEAN fCharacterInfoPanelDirty = TRUE;
 // BOOLEAN fReDrawFace = FALSE;

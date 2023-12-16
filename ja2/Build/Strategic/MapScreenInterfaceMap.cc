@@ -1,53 +1,53 @@
-// #include "Strategic/MapScreenInterfaceMap.h"
-//
-// #include <stdexcept>
-//
-// #include "Directories.h"
-// #include "Laptop/Finances.h"
-// #include "Local.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/Debug.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Line.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VObjectBlitters.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "Strategic/Assignments.h"
-// #include "Strategic/CampaignTypes.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/MapScreen.h"
-// #include "Strategic/MapScreenHelicopter.h"
-// #include "Strategic/MapScreenInterface.h"
-// #include "Strategic/MapScreenInterfaceBorder.h"
-// #include "Strategic/PlayerCommand.h"
-// #include "Strategic/PreBattleInterface.h"
-// #include "Strategic/QueenCommand.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Strategic/StrategicMines.h"
-// #include "Strategic/StrategicMovement.h"
-// #include "Strategic/StrategicPathing.h"
-// #include "Strategic/StrategicTownLoyalty.h"
-// #include "Strategic/TownMilitia.h"
-// #include "Tactical/AirRaid.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/MapInformation.h"
-// #include "Tactical/MercHiring.h"
-// #include "Tactical/MilitiaControl.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/SoldierProfile.h"
-// #include "Tactical/Squads.h"
-// #include "Tactical/TacticalSave.h"
-// #include "Tactical/Vehicles.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/SysUtil.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-//
+#include "Strategic/MapScreenInterfaceMap.h"
+
+#include <stdexcept>
+
+#include "Directories.h"
+#include "Laptop/Finances.h"
+#include "Local.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/Debug.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Line.h"
+#include "SGP/MemMan.h"
+#include "SGP/VObject.h"
+#include "SGP/VObjectBlitters.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "Strategic/Assignments.h"
+#include "Strategic/CampaignTypes.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/MapScreen.h"
+#include "Strategic/MapScreenHelicopter.h"
+#include "Strategic/MapScreenInterface.h"
+#include "Strategic/MapScreenInterfaceBorder.h"
+#include "Strategic/PlayerCommand.h"
+#include "Strategic/PreBattleInterface.h"
+#include "Strategic/QueenCommand.h"
+#include "Strategic/StrategicMap.h"
+#include "Strategic/StrategicMines.h"
+#include "Strategic/StrategicMovement.h"
+#include "Strategic/StrategicPathing.h"
+#include "Strategic/StrategicTownLoyalty.h"
+#include "Strategic/TownMilitia.h"
+#include "Tactical/AirRaid.h"
+#include "Tactical/Interface.h"
+#include "Tactical/MapInformation.h"
+#include "Tactical/MercHiring.h"
+#include "Tactical/MilitiaControl.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/SoldierProfile.h"
+#include "Tactical/Squads.h"
+#include "Tactical/TacticalSave.h"
+#include "Tactical/Vehicles.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/SysUtil.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+
 // // zoom x and y coords for map scrolling
 // INT32 iZoomX = 0;
 // INT32 iZoomY = 0;
@@ -3935,22 +3935,22 @@
 //
 //   return (iNumberInSector);
 // }
-//
-// // There is a special case flag used when players encounter enemies in a sector,
-// // then retreat.  The number of enemies will display on mapscreen until time is
-// // compressed.  When time is compressed, the flag is cleared, and a question mark
-// // is displayed to reflect that the player no longer knows.  This is the function
-// // that clears that flag.
-// void ClearAnySectorsFlashingNumberOfEnemies() {
-//   INT32 i;
-//   for (i = 0; i < 256; i++) {
-//     SectorInfo[i].uiFlags &= ~SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
-//   }
-//
-//   // redraw map
-//   fMapPanelDirty = TRUE;
-// }
-//
+
+// There is a special case flag used when players encounter enemies in a sector,
+// then retreat.  The number of enemies will display on mapscreen until time is
+// compressed.  When time is compressed, the flag is cleared, and a question mark
+// is displayed to reflect that the player no longer knows.  This is the function
+// that clears that flag.
+void ClearAnySectorsFlashingNumberOfEnemies() {
+  // INT32 i;
+  // for (i = 0; i < 256; i++) {
+  //   SectorInfo[i].uiFlags &= ~SF_PLAYER_KNOWS_ENEMIES_ARE_HERE;
+  // }
+
+  // // redraw map
+  // fMapPanelDirty = TRUE;
+}
+
 // static BOOLEAN CanMercsScoutThisSector(INT16 sSectorX, INT16 sSectorY, INT8 bSectorZ);
 //
 // UINT32 WhatPlayerKnowsAboutEnemiesInSector(INT16 sSectorX, INT16 sSectorY) {

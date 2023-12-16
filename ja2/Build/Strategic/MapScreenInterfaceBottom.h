@@ -1,9 +1,9 @@
-// #ifndef __MAP_INTERFACE_BOTTOM
-// #define __MAP_INTERFACE_BOTTOM
-//
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/Types.h"
-//
+#ifndef __MAP_INTERFACE_BOTTOM
+#define __MAP_INTERFACE_BOTTOM
+
+#include "SGP/ButtonSystem.h"
+#include "SGP/Types.h"
+
 // #define MAX_MESSAGES_ON_MAP_BOTTOM 9
 //
 // enum ExitToWhere {
@@ -36,10 +36,10 @@
 //
 // // load bottom graphics
 // void HandleLoadOfMapBottomGraphics(void);
-//
-// // allowed to time compress?
-// BOOLEAN AllowedToTimeCompress(void);
-//
+
+// allowed to time compress?
+BOOLEAN AllowedToTimeCompress(void);
+
 // void EnableDisAbleMapScreenOptionsButton(BOOLEAN fEnable);
 //
 // // create and destroy masks to cover the time compression buttons as needed
@@ -61,6 +61,6 @@
 //
 // // the dirty state of the mapscreen interface bottom
 // extern BOOLEAN fMapScreenBottomDirty;
-//
-// #endif
-//
+
+#endif
+

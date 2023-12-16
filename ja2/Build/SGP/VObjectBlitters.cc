@@ -933,81 +933,81 @@ BlitDone:
 #endif
 }
 
-// /**********************************************************************************************
-//         Blt16BPPTo16BPP
-//
-//         Copies a rect of 16 bit data from a video buffer to a buffer position of
-// the brush in the data area, for later blitting. Used to copy background
-// information for mercs etc. to their unblit buffer, for later reblitting. Does
-// NOT clip.
-//
-// **********************************************************************************************/
-// void Blt16BPPTo16BPP(UINT16 *pDest, UINT32 uiDestPitch, UINT16 *pSrc, UINT32 uiSrcPitch,
-//                      INT32 iDestXPos, INT32 iDestYPos, INT32 iSrcXPos, INT32 iSrcYPos,
-//                      UINT32 uiWidth, UINT32 uiHeight) {
-// #if 1  // XXX TODO
-//   UINT32 i;
-//
-//   for (i = 0; i < uiHeight; i++) {
-//     memcpy((UINT8 *)pDest + uiDestPitch * (iDestYPos + i) + 2 * iDestXPos,
-//            (UINT8 *)pSrc + uiSrcPitch * (iSrcYPos + i) + 2 * iSrcXPos, uiWidth * 2);
-//   }
-// #else
-//   UINT16 *pSrcPtr, *pDestPtr;
-//   UINT32 uiLineSkipDest, uiLineSkipSrc;
-//
-//   Assert(pDest != NULL);
-//   Assert(pSrc != NULL);
-//
-//   pSrcPtr = (UINT16 *)((UINT8 *)pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos * 2));
-//   pDestPtr = (UINT16 *)((UINT8 *)pDest + (iDestYPos * uiDestPitch) + (iDestXPos * 2));
-//   uiLineSkipDest = uiDestPitch - (uiWidth * 2);
-//   uiLineSkipSrc = uiSrcPitch - (uiWidth * 2);
-//
-//   __asm {
-// 	mov		esi, pSrcPtr
-// 	mov		edi, pDestPtr
-// 	mov		ebx, uiHeight
-// 	cld
-//
-// 	mov		ecx, uiWidth
-// 	test	ecx, 1
-// 	jz		BlitDwords
-//
-// BlitNewLine:
-//
-// 	mov		ecx, uiWidth
-// 	shr		ecx, 1
-// 	movsw
-//
-//         // BlitNL2:
-//
-// 	rep		movsd
-//
-// 	add		edi, uiLineSkipDest
-// 	add		esi, uiLineSkipSrc
-// 	dec		ebx
-// 	jnz		BlitNewLine
-//
-// 	jmp		BlitDone
-//
-//
-// BlitDwords:
-// 	mov		ecx, uiWidth
-// 	shr		ecx, 1
-// 	rep		movsd
-//
-// 	add		edi, uiLineSkipDest
-// 	add		esi, uiLineSkipSrc
-// 	dec		ebx
-// 	jnz		BlitDwords
-//
-// BlitDone:
-//
-//   }
-// #endif
-// }
-//
+/**********************************************************************************************
+        Blt16BPPTo16BPP
+
+        Copies a rect of 16 bit data from a video buffer to a buffer position of
+the brush in the data area, for later blitting. Used to copy background
+information for mercs etc. to their unblit buffer, for later reblitting. Does
+NOT clip.
+
+**********************************************************************************************/
+void Blt16BPPTo16BPP(UINT16 *pDest, UINT32 uiDestPitch, UINT16 *pSrc, UINT32 uiSrcPitch,
+                     INT32 iDestXPos, INT32 iDestYPos, INT32 iSrcXPos, INT32 iSrcYPos,
+                     UINT32 uiWidth, UINT32 uiHeight) {
+#if 1  // XXX TODO
+  UINT32 i;
+
+  for (i = 0; i < uiHeight; i++) {
+    memcpy((UINT8 *)pDest + uiDestPitch * (iDestYPos + i) + 2 * iDestXPos,
+           (UINT8 *)pSrc + uiSrcPitch * (iSrcYPos + i) + 2 * iSrcXPos, uiWidth * 2);
+  }
+#else
+  UINT16 *pSrcPtr, *pDestPtr;
+  UINT32 uiLineSkipDest, uiLineSkipSrc;
+
+  Assert(pDest != NULL);
+  Assert(pSrc != NULL);
+
+  pSrcPtr = (UINT16 *)((UINT8 *)pSrc + (iSrcYPos * uiSrcPitch) + (iSrcXPos * 2));
+  pDestPtr = (UINT16 *)((UINT8 *)pDest + (iDestYPos * uiDestPitch) + (iDestXPos * 2));
+  uiLineSkipDest = uiDestPitch - (uiWidth * 2);
+  uiLineSkipSrc = uiSrcPitch - (uiWidth * 2);
+
+  __asm {
+	mov		esi, pSrcPtr
+	mov		edi, pDestPtr
+	mov		ebx, uiHeight
+	cld
+
+	mov		ecx, uiWidth
+	test	ecx, 1
+	jz		BlitDwords
+
+BlitNewLine:
+
+	mov		ecx, uiWidth
+	shr		ecx, 1
+	movsw
+
+        // BlitNL2:
+
+	rep		movsd
+
+	add		edi, uiLineSkipDest
+	add		esi, uiLineSkipSrc
+	dec		ebx
+	jnz		BlitNewLine
+
+	jmp		BlitDone
+
+
+BlitDwords:
+	mov		ecx, uiWidth
+	shr		ecx, 1
+	rep		movsd
+
+	add		edi, uiLineSkipDest
+	add		esi, uiLineSkipSrc
+	dec		ebx
+	jnz		BlitDwords
+
+BlitDone:
+
+  }
+#endif
+}
+
 // /**********************************************************************************************
 //  Blt8BPPDataTo16BPPBufferTransZPixelateObscured
 //
@@ -4921,98 +4921,98 @@ BlitLoop:
 //   }
 // #endif
 // }
-//
-// /* Blit from a flat surface to a 16-bit buffer, dividing the source image into
-//  * exactly half the size, optionally from a sub-region.
-//  * - Source rect is in source units.
-//  * - In order to make sure the same pixels are skipped, always align the top and
-//  *   left coordinates to the same factor of two.
-//  * - A rect specifying an odd number of pixels will divide out to an even number
-//  *   of pixels blitted to the destination. */
-// void Blt8BPPDataTo16BPPBufferHalf(UINT16 *const dst_buf, UINT32 const uiDestPitchBYTES,
-//                                   SGPVSurface *const src_surface, UINT8 const *const src_buf,
-//                                   UINT32 const src_pitch, INT32 const x, INT32 const y,
-//                                   SGPBox const *const rect) {
-//   Assert(src_surface);
-//   Assert(src_buf);
-//   Assert(dst_buf);
-//
-//   CHECKV(x >= 0);
-//   CHECKV(y >= 0);
-//
-//   UINT8 const *src = src_buf;
-//   UINT32 width;
-//   UINT32 height;
-//   if (rect) {
-//     width = rect->w;
-//     height = rect->h;
-//     CHECKV(0 < width && width <= src_surface->Width());
-//     CHECKV(0 < height && height <= src_surface->Height());
-//
-//     src += src_pitch * rect->y + rect->x;
-//   } else {
-//     width = src_surface->Width();
-//     height = src_surface->Height();
-//   }
-//
-//   UINT16 *dst = dst_buf + uiDestPitchBYTES / 2 * y + x;
-//   UINT32 const src_skip = (src_pitch - width / 2) * 2;
-//   UINT32 const dst_skip = uiDestPitchBYTES / 2 - width / 2;
-//   UINT16 const *const pal = src_surface->p16BPPPalette;
-//
-// #if 1  // XXX TODO
-//   height /= 2;
-//   do {
-//     UINT32 w = width / 2;
-//     do {
-//       *dst++ = pal[*src];
-//       src += 2;
-//     } while (--w > 0);
-//     src += src_skip;
-//     dst += dst_skip;
-//   } while (--height > 0);
-// #else
-//   __asm {
-//
-// 		mov		esi, src  // pointer to current line start address in source
-// 		mov		edi, dst  // pointer to current line start address in destination
-// 		mov		ebx, height  // line counter (goes top to bottom)
-// 		shr		ebx, 1  // half the rows
-// 		mov		edx, pal
-//
-// 		xor		eax, eax
-//
-// BlitSetup:
-// 		mov		ecx, width
-// 		shr		ecx, 1  // divide the width by 2
-//
-// ReadMask:
-// 		mov		al, [esi]
-// 		xor		ah, ah
-// 		inc		esi  // skip one source byte
-// 		inc		esi
-//
-// 		shl		eax, 1  // make it into a word index
-// 		mov		ax, [edx+eax]  // get 16-bit version of 8-bit pixel
-// 		mov		[edi], ax  // store it in destination buffer
-// 		inc		edi  // next pixel
-// 		inc		edi
-//
-// 		dec		ecx
-// 		jnz		ReadMask
-//
-//                     // DoneRow:
-//
-// 		add		esi, src_skip  // move source pointer down one line
-// 		add		edi, dst_skip
-//
-// 		dec		ebx  // check line counter
-// 		jnz		BlitSetup  // done blitting, exit
-//
-//     // DoneBlit: // finished blit
-//   }
-// #endif
-// }
+
+/* Blit from a flat surface to a 16-bit buffer, dividing the source image into
+ * exactly half the size, optionally from a sub-region.
+ * - Source rect is in source units.
+ * - In order to make sure the same pixels are skipped, always align the top and
+ *   left coordinates to the same factor of two.
+ * - A rect specifying an odd number of pixels will divide out to an even number
+ *   of pixels blitted to the destination. */
+void Blt8BPPDataTo16BPPBufferHalf(UINT16 *const dst_buf, UINT32 const uiDestPitchBYTES,
+                                  SGPVSurface *const src_surface, UINT8 const *const src_buf,
+                                  UINT32 const src_pitch, INT32 const x, INT32 const y,
+                                  SGPBox const *const rect) {
+  Assert(src_surface);
+  Assert(src_buf);
+  Assert(dst_buf);
+
+  CHECKV(x >= 0);
+  CHECKV(y >= 0);
+
+  UINT8 const *src = src_buf;
+  UINT32 width;
+  UINT32 height;
+  if (rect) {
+    width = rect->w;
+    height = rect->h;
+    CHECKV(0 < width && width <= src_surface->Width());
+    CHECKV(0 < height && height <= src_surface->Height());
+
+    src += src_pitch * rect->y + rect->x;
+  } else {
+    width = src_surface->Width();
+    height = src_surface->Height();
+  }
+
+  UINT16 *dst = dst_buf + uiDestPitchBYTES / 2 * y + x;
+  UINT32 const src_skip = (src_pitch - width / 2) * 2;
+  UINT32 const dst_skip = uiDestPitchBYTES / 2 - width / 2;
+  UINT16 const *const pal = src_surface->p16BPPPalette;
+
+#if 1  // XXX TODO
+  height /= 2;
+  do {
+    UINT32 w = width / 2;
+    do {
+      *dst++ = pal[*src];
+      src += 2;
+    } while (--w > 0);
+    src += src_skip;
+    dst += dst_skip;
+  } while (--height > 0);
+#else
+  __asm {
+
+		mov		esi, src  // pointer to current line start address in source
+		mov		edi, dst  // pointer to current line start address in destination
+		mov		ebx, height  // line counter (goes top to bottom)
+		shr		ebx, 1  // half the rows
+		mov		edx, pal
+
+		xor		eax, eax
+
+BlitSetup:
+		mov		ecx, width
+		shr		ecx, 1  // divide the width by 2
+
+ReadMask:
+		mov		al, [esi]
+		xor		ah, ah
+		inc		esi  // skip one source byte
+		inc		esi
+
+		shl		eax, 1  // make it into a word index
+		mov		ax, [edx+eax]  // get 16-bit version of 8-bit pixel
+		mov		[edi], ax  // store it in destination buffer
+		inc		edi  // next pixel
+		inc		edi
+
+		dec		ecx
+		jnz		ReadMask
+
+                    // DoneRow:
+
+		add		esi, src_skip  // move source pointer down one line
+		add		edi, dst_skip
+
+		dec		ebx  // check line counter
+		jnz		BlitSetup  // done blitting, exit
+
+    // DoneBlit: // finished blit
+  }
+#endif
+}
 
 void SetClippingRect(SGPRect *clip) {
   Assert(clip != NULL);

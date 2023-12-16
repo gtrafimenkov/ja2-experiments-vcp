@@ -35,7 +35,7 @@ Screens const GameScreens[MAX_SCREENS] = {
     {LaptopScreenInit, LaptopScreenHandle, LaptopScreenShutdown},
 //     {NULL, LoadSaveScreenHandle, NULL},
 //     {NULL, MapUtilScreenHandle, NULL},
-//     {NULL, FadeScreenHandle, NULL},
+    {NULL, FadeScreenHandle, NULL},
     {NULL, MessageBoxScreenHandle, MessageBoxScreenShutdown},
     {NULL, MainMenuScreenHandle, NULL},
 //     {NULL, AutoResolveScreenHandle, NULL},

@@ -49,7 +49,7 @@ struct TacticalStatusType {
 //   UINT8 ubLastBattleSectorY;
 //   BOOLEAN fLastBattleWon;
 //   BOOLEAN fVirginSector;
-//   BOOLEAN fEnemyInSector;
+  BOOLEAN fEnemyInSector;
 //   BOOLEAN fInterruptOccurred;
 //   INT8 bRealtimeSpeed;
 //   SOLDIERTYPE *enemy_sighting_on_their_turn_enemy;
@@ -85,7 +85,7 @@ struct TacticalStatusType {
 //   INT16 sCantGetThroughGridNo;
 //   INT16 sCantGetThroughSoldierGridNo;
 //   SOLDIERTYPE *cant_get_through;
-//   BOOLEAN fDidGameJustStart;
+  BOOLEAN fDidGameJustStart;
 //   UINT8 ubLastRequesterTargetID;
 //   UINT8 ubNumCrowsPossible;
 //   BOOLEAN fUnLockUIAfterHiddenInterrupt;

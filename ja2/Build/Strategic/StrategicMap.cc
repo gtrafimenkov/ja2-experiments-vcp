@@ -3004,11 +3004,12 @@ INT8 gbWorldSectorZ = -1;
 //     MakeCharacterDialogueEventContractEndingNoAskEquip(*pSoldier);
 //   }
 // }
-//
-// bool IsSectorDesert(INT16 const x, INT16 const y) {
-//   return SectorInfo[SECTOR(x, y)].ubTraversability[THROUGH_STRATEGIC_MOVE] == SAND;
-// }
-//
+
+bool IsSectorDesert(INT16 const x, INT16 const y) {
+  // return SectorInfo[SECTOR(x, y)].ubTraversability[THROUGH_STRATEGIC_MOVE] == SAND;
+  return FALSE;
+}
+
 // static void HandleDefiniteUnloadingOfWorld(UINT8 const ubUnloadCode) {
 //   // clear tactical queue
 //   ClearEventQueue();

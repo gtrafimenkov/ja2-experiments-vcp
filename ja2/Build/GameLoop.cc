@@ -31,6 +31,7 @@
 #include "Tactical/ShopKeeperInterface.h"
 #include "Tactical/TacticalSave.h"
 #include "TileEngine/TacticalPlacementGUI.h"
+#include "TileEngine/WorldDef.h"
 #include "Utils/Cursors.h"
 #include "Utils/FontControl.h"
 #include "Utils/MusicControl.h"
@@ -331,19 +332,19 @@ void HandleShortCutExitState() {
   }
 }
 
-// void EndGameMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
-//   // yes, so start over, else stay here and do nothing for now
-//   if (bExitValue == MSG_BOX_RETURN_YES) {
-//     requestGameExit();
-//   }
-//
-//   // If we are in the tactical placement gui, we need this flag set so the
-//   // interface is updated.
-//   if (gfTacticalPlacementGUIActive) {
-//     gfTacticalPlacementGUIDirty = TRUE;
-//     gfValidLocationsChanged = TRUE;
-//   }
-// }
-//
-// void NextLoopCheckForEnoughFreeHardDriveSpace() { gubCheckForFreeSpaceOnHardDriveCount = 0; }
-//
+void EndGameMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
+  // yes, so start over, else stay here and do nothing for now
+  if (bExitValue == MSG_BOX_RETURN_YES) {
+    requestGameExit();
+  }
+
+  // If we are in the tactical placement gui, we need this flag set so the
+  // interface is updated.
+  if (gfTacticalPlacementGUIActive) {
+    gfTacticalPlacementGUIDirty = TRUE;
+    gfValidLocationsChanged = TRUE;
+  }
+}
+
+void NextLoopCheckForEnoughFreeHardDriveSpace() { gubCheckForFreeSpaceOnHardDriveCount = 0; }
+

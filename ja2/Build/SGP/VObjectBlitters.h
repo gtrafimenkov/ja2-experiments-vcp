@@ -117,11 +117,11 @@ void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *buf, UINT32 uiDestPitchBYTES,
 // void Blt8BPPDataTo16BPPBufferShadowClip(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
 //                                         HVOBJECT hSrcVObject, INT32 iX, INT32 iY, UINT16 usIndex,
 //                                         SGPRect *clipregion);
-//
-// void Blt16BPPTo16BPP(UINT16 *pDest, UINT32 uiDestPitch, UINT16 *pSrc, UINT32 uiSrcPitch,
-//                      INT32 iDestXPos, INT32 iDestYPos, INT32 iSrcXPos, INT32 iSrcYPos,
-//                      UINT32 uiWidth, UINT32 uiHeight);
-//
+
+void Blt16BPPTo16BPP(UINT16 *pDest, UINT32 uiDestPitch, UINT16 *pSrc, UINT32 uiSrcPitch,
+                     INT32 iDestXPos, INT32 iDestYPos, INT32 iSrcXPos, INT32 iSrcYPos,
+                     UINT32 uiWidth, UINT32 uiHeight);
+
 void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area);
 // void Blt16BPPBufferLooseHatchRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area,
 //                                            UINT16 usColor);
@@ -140,10 +140,10 @@ void Blt8BPPDataSubTo16BPPBuffer(UINT16 *buf, UINT32 uiDestPitchBYTES, SGPVSurfa
                                  UINT8 *pSrcBuffer, UINT32 src_pitch, INT32 iX, INT32 iY,
                                  SGPBox const *rect);
 
-// // Blits from flat 8bpp source, to 16bpp dest, divides in half
-// void Blt8BPPDataTo16BPPBufferHalf(UINT16 *dst_buf, UINT32 uiDestPitchBYTES,
-//                                   SGPVSurface *src_surface, UINT8 const *src_buf, UINT32 src_pitch,
-//                                   INT32 x, INT32 y, SGPBox const *rect);
+// Blits from flat 8bpp source, to 16bpp dest, divides in half
+void Blt8BPPDataTo16BPPBufferHalf(UINT16 *dst_buf, UINT32 uiDestPitchBYTES,
+                                  SGPVSurface *src_surface, UINT8 const *src_buf, UINT32 src_pitch,
+                                  INT32 x, INT32 y, SGPBox const *rect);
 
 // ATE: New blitters for showing an outline at color 254
 void Blt8BPPDataTo16BPPBufferOutline(UINT16 *buf, UINT32 uiDestPitchBYTES,

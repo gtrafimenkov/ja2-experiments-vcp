@@ -1,15 +1,15 @@
-// #include "Strategic/GameEvents.h"
-//
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/LoadSaveData.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/Types.h"
-// #include "Strategic/GameClock.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/Text.h"
-//
+#include "Strategic/GameEvents.h"
+
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/LoadSaveData.h"
+#include "SGP/MemMan.h"
+#include "SGP/Types.h"
+#include "Strategic/GameClock.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/Text.h"
+
 // STRATEGICEVENT *gpEventList = NULL;
 //
 // extern UINT32 guiGameClock;
@@ -18,12 +18,13 @@
 //
 // static BOOLEAN gfProcessingGameEvents = FALSE;
 // UINT32 guiTimeStampOfCurrentlyExecutingEvent = 0;
-//
-// bool GameEventsPending(UINT32 const adjustment) {
-//   STRATEGICEVENT *const e = gpEventList;
-//   return e && e->uiTimeStamp <= GetWorldTotalSeconds() + adjustment;
-// }
-//
+
+bool GameEventsPending(UINT32 const adjustment) {
+  // STRATEGICEVENT *const e = gpEventList;
+  // return e && e->uiTimeStamp <= GetWorldTotalSeconds() + adjustment;
+  return false;
+}
+
 // static void DeleteEventsWithDeletionPending() {
 //   if (!gfEventDeletionPending) return;
 //   gfEventDeletionPending = FALSE;
@@ -55,8 +56,8 @@
 //   swprintf(WORLDTIMESTR, lengthof(WORLDTIMESTR), L"%ls %d, %02d:%02d", gpGameClockString, guiDay,
 //            guiHour, guiMin);
 // }
-//
-// void ProcessPendingGameEvents(UINT32 uiAdjustment, const UINT8 ubWarpCode) {
+
+void ProcessPendingGameEvents(UINT32 uiAdjustment, const UINT8 ubWarpCode) {
 //   STRATEGICEVENT *curr, *pEvent, *prev, *temp;
 //   BOOLEAN fDeleteEvent = FALSE, fDeleteQueuedEvent = FALSE;
 //
@@ -150,8 +151,8 @@
 //   DeleteEventsWithDeletionPending();
 //
 //   if (uiAdjustment && !gfTimeInterrupt) guiGameClock += uiAdjustment;
-// }
-//
+}
+
 // BOOLEAN AddSameDayStrategicEvent(StrategicEventKind const ubCallbackID, UINT32 const uiMinStamp,
 //                                  UINT32 const uiParam) {
 //   return (AddStrategicEvent(ubCallbackID, uiMinStamp + GetWorldDayInMinutes(), uiParam));

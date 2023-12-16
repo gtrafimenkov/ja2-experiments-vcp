@@ -3,10 +3,10 @@
 
 #include <SDL.h>
 
-// #include "SGP/AutoObj.h"
-// #include "SGP/AutoPtr.h"
+#include "SGP/AutoObj.h"
+#include "SGP/AutoPtr.h"
 #include "SGP/Buffer.h"
-// #include "SGP/Types.h"
+#include "SGP/Types.h"
 
 #define BACKBUFFER g_back_buffer
 #define FRAME_BUFFER g_frame_buffer
@@ -38,10 +38,10 @@ class SGPVSurface {
   // Set palette, also sets 16BPP palette
   void SetPalette(const SGPPaletteEntry *src_pal);
 
-//   // Get the RGB palette entry values
-//   SGPPaletteEntry const *GetPalette() const { return palette_; }
-//
-//   void SetTransparency(COLORVAL);
+  // Get the RGB palette entry values
+  SGPPaletteEntry const *GetPalette() const { return palette_; }
+
+  void SetTransparency(COLORVAL);
 
   /* Fill an entire surface with a colour */
   void Fill(UINT16 colour);
@@ -121,25 +121,25 @@ class SGPVSurfaceAuto : public SGPVSurface {
   virtual ~SGPVSurfaceAuto();
 };
 
-// SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth);
+SGPVSurfaceAuto *AddVideoSurface(UINT16 Width, UINT16 Height, UINT8 BitDepth);
 SGPVSurfaceAuto *AddVideoSurfaceFromFile(const char *Filename);
 
-// /* Blits a video surface in half size to another video surface.
-//  * If SrcRect is NULL the entire source surface is blitted.
-//  * Only blitting from 8bbp surfaces to 16bpp surfaces is supported. */
-// void BltVideoSurfaceHalf(SGPVSurface *dst, SGPVSurface *src, INT32 DestX, INT32 DestY,
-//                          SGPBox const *src_rect);
-//
-// // Deletes all data, including palettes
-// static inline void DeleteVideoSurface(SGPVSurface *const vs) { delete vs; }
+/* Blits a video surface in half size to another video surface.
+ * If SrcRect is NULL the entire source surface is blitted.
+ * Only blitting from 8bbp surfaces to 16bpp surfaces is supported. */
+void BltVideoSurfaceHalf(SGPVSurface *dst, SGPVSurface *src, INT32 DestX, INT32 DestY,
+                         SGPBox const *src_rect);
+
+// Deletes all data, including palettes
+static inline void DeleteVideoSurface(SGPVSurface *const vs) { delete vs; }
 
 void BltVideoSurfaceOnce(SGPVSurface *dst, const char *filename, INT32 x, INT32 y);
 
-// /** Draw image on the video surface stretching the image if necessary. */
-// void BltVideoSurfaceOnceWithStretch(SGPVSurface *const dst, const char *const filename);
-//
-// /** Fill video surface with another one with stretch. */
-// void FillVideoSurfaceWithStretch(SGPVSurface *const dst, SGPVSurface *const src);
+/** Draw image on the video surface stretching the image if necessary. */
+void BltVideoSurfaceOnceWithStretch(SGPVSurface *const dst, const char *const filename);
+
+/** Fill video surface with another one with stretch. */
+void FillVideoSurfaceWithStretch(SGPVSurface *const dst, SGPVSurface *const src);
 
 #endif
 

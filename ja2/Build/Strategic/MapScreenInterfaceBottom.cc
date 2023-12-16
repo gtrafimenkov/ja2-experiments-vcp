@@ -1,55 +1,55 @@
-// #include "Strategic/MapScreenInterfaceBottom.h"
-//
-// #include "Directories.h"
-// #include "GameLoop.h"
-// #include "GameSettings.h"
-// #include "JAScreens.h"
-// #include "Laptop/Finances.h"
-// #include "Laptop/LaptopSave.h"
-// #include "Local.h"
-// #include "MessageBoxScreen.h"
-// #include "OptionsScreen.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/Font.h"
-// #include "SGP/MouseSystem.h"
-// #include "SGP/Types.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "SaveLoadScreen.h"
-// #include "ScreenIDs.h"
-// #include "Strategic/CampaignTypes.h"
-// #include "Strategic/CreatureSpreading.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/MapScreen.h"
-// #include "Strategic/MapScreenHelicopter.h"
-// #include "Strategic/MapScreenInterface.h"
-// #include "Strategic/MapScreenInterfaceBorder.h"
-// #include "Strategic/MapScreenInterfaceMap.h"
-// #include "Strategic/MapScreenInterfaceMapInventory.h"
-// #include "Strategic/MapScreenInterfaceTownMineInfo.h"
-// #include "Strategic/Meanwhile.h"
-// #include "Strategic/MercContract.h"
-// #include "Strategic/PreBattleInterface.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Tactical/DialogueControl.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/InterfaceItems.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/SoldierMacros.h"
-// #include "Tactical/TacticalSave.h"
-// #include "TacticalAI/AI.h"
-// #include "TileEngine/ExplosionControl.h"
-// #include "TileEngine/RadarScreen.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/SysUtil.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-// #include "Utils/WordWrap.h"
-//
+#include "Strategic/MapScreenInterfaceBottom.h"
+
+#include "Directories.h"
+#include "GameLoop.h"
+#include "GameSettings.h"
+#include "JAScreens.h"
+#include "Laptop/Finances.h"
+#include "Laptop/LaptopSave.h"
+#include "Local.h"
+#include "MessageBoxScreen.h"
+#include "OptionsScreen.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/Font.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/Types.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SaveLoadScreen.h"
+#include "ScreenIDs.h"
+#include "Strategic/CampaignTypes.h"
+#include "Strategic/CreatureSpreading.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/MapScreen.h"
+#include "Strategic/MapScreenHelicopter.h"
+#include "Strategic/MapScreenInterface.h"
+#include "Strategic/MapScreenInterfaceBorder.h"
+#include "Strategic/MapScreenInterfaceMap.h"
+#include "Strategic/MapScreenInterfaceMapInventory.h"
+#include "Strategic/MapScreenInterfaceTownMineInfo.h"
+#include "Strategic/Meanwhile.h"
+#include "Strategic/MercContract.h"
+#include "Strategic/PreBattleInterface.h"
+#include "Strategic/StrategicMap.h"
+#include "Tactical/DialogueControl.h"
+#include "Tactical/Interface.h"
+#include "Tactical/InterfaceItems.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/SoldierMacros.h"
+#include "Tactical/TacticalSave.h"
+#include "TacticalAI/AI.h"
+#include "TileEngine/ExplosionControl.h"
+#include "TileEngine/RadarScreen.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/SysUtil.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+#include "Utils/WordWrap.h"
+
 // #define MAP_BOTTOM_X 0
 // #define MAP_BOTTOM_Y 359
 //
@@ -669,101 +669,101 @@
 // void EnableDisAbleMapScreenOptionsButton(BOOLEAN fEnable) {
 //   EnableButton(guiMapBottomExitButtons[MAP_EXIT_TO_OPTIONS], fEnable);
 // }
-//
-// BOOLEAN AllowedToTimeCompress(void) {
-//   // if already leaving, disallow any other attempts to exit
-//   if (fLeavingMapScreen) {
-//     return (FALSE);
-//   }
-//
-//   // if already going someplace
-//   if (gbExitingMapScreenToWhere != MAP_EXIT_TO_INVALID) return FALSE;
-//
-//   // if we're locked into paused time compression by some event that enforces
-//   // that
-//   if (PauseStateLocked()) {
-//     return (FALSE);
-//   }
-//
-//   // meanwhile coming up
-//   if (gfMeanwhileTryingToStart) {
-//     return (FALSE);
-//   }
-//
-//   // someone has something to say
-//   if (!DialogueQueueIsEmpty()) {
-//     return (FALSE);
-//   }
-//
-//   // moving / confirming movement
-//   if ((bSelectedDestChar != -1) || fPlotForHelicopter || gfInConfirmMapMoveMode ||
-//       fShowMapScreenMovementList) {
-//     return (FALSE);
-//   }
-//
-//   if (fShowAssignmentMenu || fShowTrainingMenu || fShowAttributeMenu || fShowSquadMenu ||
-//       fShowContractMenu) {
-//     return (FALSE);
-//   }
-//
-//   if (fShowUpdateBox || fShowTownInfo || (sSelectedMilitiaTown != 0)) {
-//     return (FALSE);
-//   }
-//
-//   // renewing contracts
-//   if (gfContractRenewalSquenceOn) {
-//     return (FALSE);
-//   }
-//
-//   // disabled due to battle?
-//   if ((fDisableMapInterfaceDueToBattle) || (fDisableDueToBattleRoster)) {
-//     return (FALSE);
-//   }
-//
-//   // if holding an inventory item
-//   if (fMapInventoryItem) {
-//     return (FALSE);
-//   }
-//
-//   // show the inventory pool?
-//   if (fShowMapInventoryPool) {
-//     // prevent time compress (items get stolen over time, etc.)
-//     return (FALSE);
-//   }
-//
-//   // no mercs have ever been hired
-//   if (!gfAtLeastOneMercWasHired) return FALSE;
-//
-//   /*
-//           //in air raid
-//           if (InAirRaid())
-//           {
-//                   return( FALSE );
-//           }
-//   */
-//
-//   // no usable mercs on team!
-//   if (!AnyUsableRealMercenariesOnTeam()) {
-//     return (FALSE);
-//   }
-//
-//   // must wait till bombs go off
-//   if (ActiveTimedBombExists()) {
-//     return (FALSE);
-//   }
-//
-//   // hostile sector / in battle
-//   if ((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector)) {
-//     return (FALSE);
-//   }
-//
-//   if (PlayerGroupIsInACreatureInfestedMine()) {
-//     return FALSE;
-//   }
-//
-//   return (TRUE);
-// }
-//
+
+BOOLEAN AllowedToTimeCompress(void) {
+  // // if already leaving, disallow any other attempts to exit
+  // if (fLeavingMapScreen) {
+  //   return (FALSE);
+  // }
+
+  // // if already going someplace
+  // if (gbExitingMapScreenToWhere != MAP_EXIT_TO_INVALID) return FALSE;
+
+  // // if we're locked into paused time compression by some event that enforces
+  // // that
+  // if (PauseStateLocked()) {
+  //   return (FALSE);
+  // }
+
+  // // meanwhile coming up
+  // if (gfMeanwhileTryingToStart) {
+  //   return (FALSE);
+  // }
+
+  // // someone has something to say
+  // if (!DialogueQueueIsEmpty()) {
+  //   return (FALSE);
+  // }
+
+  // // moving / confirming movement
+  // if ((bSelectedDestChar != -1) || fPlotForHelicopter || gfInConfirmMapMoveMode ||
+  //     fShowMapScreenMovementList) {
+  //   return (FALSE);
+  // }
+
+  // if (fShowAssignmentMenu || fShowTrainingMenu || fShowAttributeMenu || fShowSquadMenu ||
+  //     fShowContractMenu) {
+  //   return (FALSE);
+  // }
+
+  // if (fShowUpdateBox || fShowTownInfo || (sSelectedMilitiaTown != 0)) {
+  //   return (FALSE);
+  // }
+
+  // // renewing contracts
+  // if (gfContractRenewalSquenceOn) {
+  //   return (FALSE);
+  // }
+
+  // // disabled due to battle?
+  // if ((fDisableMapInterfaceDueToBattle) || (fDisableDueToBattleRoster)) {
+  //   return (FALSE);
+  // }
+
+  // // if holding an inventory item
+  // if (fMapInventoryItem) {
+  //   return (FALSE);
+  // }
+
+  // // show the inventory pool?
+  // if (fShowMapInventoryPool) {
+  //   // prevent time compress (items get stolen over time, etc.)
+  //   return (FALSE);
+  // }
+
+  // // no mercs have ever been hired
+  // if (!gfAtLeastOneMercWasHired) return FALSE;
+
+  // /*
+  //         //in air raid
+  //         if (InAirRaid())
+  //         {
+  //                 return( FALSE );
+  //         }
+  // */
+
+  // // no usable mercs on team!
+  // if (!AnyUsableRealMercenariesOnTeam()) {
+  //   return (FALSE);
+  // }
+
+  // // must wait till bombs go off
+  // if (ActiveTimedBombExists()) {
+  //   return (FALSE);
+  // }
+
+  // // hostile sector / in battle
+  // if ((gTacticalStatus.uiFlags & INCOMBAT) || (gTacticalStatus.fEnemyInSector)) {
+  //   return (FALSE);
+  // }
+
+  // if (PlayerGroupIsInACreatureInfestedMine()) {
+  //   return FALSE;
+  // }
+
+  return (TRUE);
+}
+
 // static void DisplayCurrentBalanceTitleForMapBottom(void) {
 //   const wchar_t *sString;
 //   INT16 sFontX, sFontY;

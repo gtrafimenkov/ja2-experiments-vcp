@@ -1,8 +1,8 @@
-// #ifndef __GAME_EVENTS_H
-// #define __GAME_EVENTS_H
-//
-// #include "Strategic/GameEventHook.h"
-//
+#ifndef __GAME_EVENTS_H
+#define __GAME_EVENTS_H
+
+#include "Strategic/GameEventHook.h"
+
 // #define SEF_DELETION_PENDING 0x02
 //
 // struct STRATEGICEVENT {
@@ -34,15 +34,14 @@
 // BOOLEAN ExecuteStrategicEvent(STRATEGICEVENT *pEvent);
 //
 // extern STRATEGICEVENT *gpEventList;
-//
-// /* Determines if there are any events that will be processed between the current
-//  * global time, and the beginning of the next global time. */
-// bool GameEventsPending(UINT32 adjustment);
-//
-// /* If there are any events pending, they are processed, until the time limit is
-//  * reached, or a major event is processed (one that requires the player's
-//  * attention). */
-// void ProcessPendingGameEvents(UINT32 uiAdjustment, UINT8 ubWarpCode);
-//
-// #endif
-//
+
+/* Determines if there are any events that will be processed between the current
+ * global time, and the beginning of the next global time. */
+bool GameEventsPending(UINT32 adjustment);
+
+/* If there are any events pending, they are processed, until the time limit is
+ * reached, or a major event is processed (one that requires the player's
+ * attention). */
+void ProcessPendingGameEvents(UINT32 uiAdjustment, UINT8 ubWarpCode);
+
+#endif

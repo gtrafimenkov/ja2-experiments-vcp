@@ -2,11 +2,11 @@
 #define __MAPSCREEN_H
 
 #include "JA2Types.h"
-// #include "MessageBoxScreen.h"
-// #include "SGP/ButtonSystem.h"
-// #include "ScreenIDs.h"
-// #include "Tactical/ItemTypes.h"
-//
+#include "MessageBoxScreen.h"
+#include "SGP/ButtonSystem.h"
+#include "ScreenIDs.h"
+#include "Tactical/ItemTypes.h"
+
 // // Sector name identifiers
 // enum Towns {
 //   BLANK_SECTOR = 0,
@@ -29,8 +29,8 @@
 //
 // extern BOOLEAN fCharacterInfoPanelDirty;
 // extern BOOLEAN fTeamPanelDirty;
-// extern BOOLEAN fMapPanelDirty;
-//
+extern BOOLEAN fMapPanelDirty;
+
 // extern BOOLEAN fMapInventoryItem;
 // extern BOOLEAN gfInConfirmMapMoveMode;
 // extern BOOLEAN gfInChangeArrivalSectorMode;
