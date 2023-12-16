@@ -74,26 +74,26 @@ extern INT16 gsRenderCenterX;
 extern INT16 gsRenderCenterY;
 // extern INT16 gsRenderWorldOffsetX;
 // extern INT16 gsRenderWorldOffsetY;
-//
-// // CURRENT VIEWPORT IN WORLD COORDS
-// extern INT16 gsTopLeftWorldX;
-// extern INT16 gsTopLeftWorldY;
-// extern INT16 gsBottomRightWorldX;
-// extern INT16 gsBottomRightWorldY;
-//
-// // GLOBAL COORDINATES
-// extern INT16 gCenterWorldX;
-// extern INT16 gCenterWorldY;
-// extern INT16 gsTLX;
-// extern INT16 gsTLY;
+
+// CURRENT VIEWPORT IN WORLD COORDS
+extern INT16 gsTopLeftWorldX;
+extern INT16 gsTopLeftWorldY;
+extern INT16 gsBottomRightWorldX;
+extern INT16 gsBottomRightWorldY;
+
+// GLOBAL COORDINATES
+extern INT16 gCenterWorldX;
+extern INT16 gCenterWorldY;
+extern INT16 gsTLX;
+extern INT16 gsTLY;
 // extern INT16 gsTRX;
 // extern INT16 gsTRY;
 // extern INT16 gsBLX;
 // extern INT16 gsBLY;
 // extern INT16 gsBRX;
 // extern INT16 gsBRY;
-// extern INT16 gsCX;
-// extern INT16 gsCY;
+extern INT16 gsCX;
+extern INT16 gsCY;
 // extern double gdScaleX;
 // extern double gdScaleY;
 //

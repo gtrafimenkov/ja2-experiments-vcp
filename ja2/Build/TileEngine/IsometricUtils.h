@@ -1,15 +1,15 @@
-// #ifndef __ISOMETRIC_UTILSH
-// #define __ISOMETRIC_UTILSH
-//
-// #include "Tactical/OverheadTypes.h"
-// #include "TileEngine/WorldDef.h"
-//
-// #define MAXCOL WORLD_COLS
-// #define MAXROW WORLD_ROWS
-// #define GRIDSIZE (MAXCOL * MAXROW)
+#ifndef __ISOMETRIC_UTILSH
+#define __ISOMETRIC_UTILSH
+
+#include "Tactical/OverheadTypes.h"
+#include "TileEngine/WorldDef.h"
+
+#define MAXCOL WORLD_COLS
+#define MAXROW WORLD_ROWS
+#define GRIDSIZE (MAXCOL * MAXROW)
 // #define RIGHTMOSTGRID (MAXCOL - 1)
 // #define LASTROWSTART (GRIDSIZE - MAXCOL)
-// #define NOWHERE (GRIDSIZE + 1)
+#define NOWHERE (GRIDSIZE + 1)
 // #define MAPWIDTH (WORLD_COLS)
 // #define MAPHEIGHT (WORLD_ROWS)
 // #define MAPLENGTH (MAPHEIGHT * MAPWIDTH)
@@ -36,7 +36,7 @@
 //   ((INT16)(r / CELL_X_SIZE)) * WORLD_COLS + ((INT16)(c / CELL_Y_SIZE))
 //
 // void ConvertGridNoToXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
-// void ConvertGridNoToCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
+void ConvertGridNoToCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
 // void ConvertGridNoToCenterCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos);
 //
 // // GRID NO MANIPULATION FUNCTIONS
@@ -50,8 +50,8 @@
 // /* Returns the GridNo of the tile the mouse cursor is currently over or NOWHERE
 //  * if the cursor is not over any tile. */
 // GridNo GetMouseMapPos(void);
-//
-// void GetAbsoluteScreenXYFromMapPos(GridNo pos, INT16 *psWorldScreenX, INT16 *psWorldScreenY);
+
+void GetAbsoluteScreenXYFromMapPos(GridNo pos, INT16 *psWorldScreenX, INT16 *psWorldScreenY);
 // GridNo GetMapPosFromAbsoluteScreenXY(INT16 sWorldScreenX, INT16 sWorldScreenY);
 //
 // void FromCellToScreenCoordinates(INT16 sCellX, INT16 sCellY, INT16 *psScreenX, INT16 *psScreenY);
@@ -97,6 +97,6 @@
 // extern UINT32 guiForceRefreshMousePositionCalculation;
 //
 // extern const INT16 DirIncrementer[8];
-//
-// #endif
-//
+
+#endif
+

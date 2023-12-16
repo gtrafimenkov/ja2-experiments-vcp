@@ -1,9 +1,9 @@
-// #ifndef __OVERHEAD_H
-// #define __OVERHEAD_H
-//
-// #include "SGP/Debug.h"
-// #include "Tactical/SoldierControl.h"
-//
+#ifndef __OVERHEAD_H
+#define __OVERHEAD_H
+
+#include "SGP/Debug.h"
+#include "Tactical/SoldierControl.h"
+
 // #define MAX_REALTIME_SPEED_VAL 10
 //
 // // Enums for waiting for mercs to finish codes
@@ -32,9 +32,9 @@
 // #define NUM_PANIC_TRIGGERS 3
 //
 // #define ENEMY_OFFERED_SURRENDER 0x01
-//
-// struct TacticalStatusType {
-//   UINT32 uiFlags;
+
+struct TacticalStatusType {
+  UINT32 uiFlags;
 //   TacticalTeamType Team[MAXTEAMS];
 //   UINT8 ubCurrentTeam;
 //   INT16 sSlideTarget;
@@ -109,8 +109,8 @@
 //   BOOLEAN fDontAddNewCrows;
 //   UINT16 sCreatureTenseQuoteDelay;
 //   UINT32 uiCreatureTenseQuoteLastUpdate;
-// };
-//
+};
+
 // static inline bool IsOnOurTeam(SOLDIERTYPE const &s) { return s.bTeam == OUR_TEAM; }
 //
 // extern SOLDIERTYPE *g_selected_man;
@@ -158,9 +158,9 @@
 //     if (Assert(!*iter || (*iter)->bActive), !*iter)                                       \
 //       continue;                                                                           \
 //     else
-//
-// extern TacticalStatusType gTacticalStatus;
-//
+
+extern TacticalStatusType gTacticalStatus;
+
 // static inline BOOLEAN IsTeamActive(const UINT team) {
 //   return gTacticalStatus.Team[team].bMenInSector > 0;
 // }
@@ -345,6 +345,6 @@
 // void InitializeTacticalStatusAtBattleStart(void);
 //
 // void MakeCharacterDialogueEventSignalItemLocatorStart(SOLDIERTYPE &, GridNo location);
-//
-// #endif
-//
+
+#endif
+

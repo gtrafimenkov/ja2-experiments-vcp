@@ -1,6 +1,6 @@
-// #ifndef __SOLDER_CONTROL_H
-// #define __SOLDER_CONTROL_H
-//
+#ifndef __SOLDER_CONTROL_H
+#define __SOLDER_CONTROL_H
+
 // // Kris:  November 10, 1997
 // // Please don't change this value from 10.  It will invalidate all of the maps
 // // and soldiers.
@@ -283,8 +283,8 @@
 //   HIT_BY_MUSTARDGAS = 0x02,
 //   HIT_BY_CREATUREGAS = 0x04,
 // };
-//
-// struct SOLDIERTYPE {
+
+struct SOLDIERTYPE {
 //   // ID
 //   UINT8 ubID;
 //
@@ -321,9 +321,9 @@
 //   // traits
 //   INT16 sWeightCarriedAtTurnStart;
 //   wchar_t name[10];
-//
-//   INT8 bVisible;  // to render or not to render...
-//
+
+  INT8 bVisible;  // to render or not to render...
+
 //   INT8 bActive;
 //
 //   INT8 bTeam;  // Team identifier
@@ -342,7 +342,7 @@
 //   FLOAT dXPos;
 //   FLOAT dYPos;
 //   INT16 sInitialGridNo;
-//   INT16 sGridNo;
+  INT16 sGridNo;
 //   INT8 bDirection;
 //   INT16 sHeightAdjustment;
 //   INT16 sDesiredHeight;
@@ -782,8 +782,8 @@
 //   BOOLEAN fComplainedThatTired;
 //   INT16 sLastTwoLocations[2];
 //   INT32 uiTimeSinceLastBleedGrunt;
-// };
-//
+};
+
 // #define BASE_FOR_EACH_SOLDIER_INV_SLOT(type, iter, soldier)                                        \
 //   for (type *iter = (soldier).inv, *const iter##__end = endof((soldier).inv); iter != iter##__end; \
 //        ++iter)
@@ -1021,6 +1021,6 @@
 // static inline bool IsWearingHeadGear(SOLDIERTYPE const &s, UINT16 const item) {
 //   return s.inv[HEAD1POS].usItem == item || s.inv[HEAD2POS].usItem == item;
 // }
-//
-// #endif
-//
+
+#endif
+

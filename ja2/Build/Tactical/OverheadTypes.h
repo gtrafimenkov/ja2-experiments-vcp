@@ -1,9 +1,9 @@
-// #ifndef __OVERHEAD_TYPES_H
-// #define __OVERHEAD_TYPES_H
-// // GLOBAL HEADER FOR DATA, TYPES FOR TACTICAL ENGINE
-//
-// #include "SGP/Types.h"
-//
+#ifndef __OVERHEAD_TYPES_H
+#define __OVERHEAD_TYPES_H
+// GLOBAL HEADER FOR DATA, TYPES FOR TACTICAL ENGINE
+
+#include "SGP/Types.h"
+
 // #define REFINE_AIM_1 0
 // #define REFINE_AIM_MID1 1
 // #define REFINE_AIM_2 2
@@ -48,7 +48,7 @@
 // #define SHOW_Z_BUFFER 0x000200000
 // #define SLOW_ANIMATION 0x000400000
 // #define ENGAGED_IN_CONV 0x000800000
-// #define LOADING_SAVED_GAME 0x001000000
+#define LOADING_SAVED_GAME 0x001000000
 // #define OUR_MERCS_AUTO_MOVE 0x002000000
 // #define SHOW_ALL_ROOFS 0x004000000
 // #define RED_ITEM_GLOW_ON 0x010000000
@@ -275,6 +275,6 @@
 // // MACROS
 // // This will set an animation ID
 // #define SET_PALETTEREP_ID(a, b) (strcpy(a, b))
-//
-// #endif
-//
+
+#endif
+

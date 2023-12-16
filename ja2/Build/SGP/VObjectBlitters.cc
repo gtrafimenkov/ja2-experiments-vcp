@@ -5026,114 +5026,114 @@ void GetClippingRect(SGPRect *clip) {
   *clip = ClippingRect;
 }
 
-// /**********************************************************************************************
-//         Blt16BPPBufferPixelateRectWithColor
-//
-//                 Given an 8x8 pattern and a color, pixelates an area by
-// repeatedly "applying the color" to pixels whereever there is a non-zero value in
-// the pattern.
-//
-//                 KM:  Added Nov. 23, 1998
-//                 This is all the code that I moved from
-// Blt16BPPBufferPixelateRect(). This function now takes a color field (which
-// previously was always black.  The 3rd assembler line in this function:
-//
-//                                 mov		ax, usColor
-// // color of pixel
-//
-//                 used to be:
-//
-//                                 xor   eax, eax
-// // color of pixel (black or 0)
-//
-//           This was the only internal modification I made other than adding the
-// usColor argument.
-//
-// *********************************************************************************************/
-// static void Blt16BPPBufferPixelateRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
-//                                                 SGPRect *area, const UINT8 Pattern[8][8],
-//                                                 UINT16 usColor) {
-//   INT32 width, height;
-//   UINT32 LineSkip;
-//   UINT16 *DestPtr;
-//   INT32 iLeft, iTop, iRight, iBottom;
-//
-//   // Assertions
-//   Assert(pBuffer != NULL);
-//   Assert(Pattern != NULL);
-//
-//   iLeft = __max(ClippingRect.iLeft, area->iLeft);
-//   iTop = __max(ClippingRect.iTop, area->iTop);
-//   iRight = __min(ClippingRect.iRight - 1, area->iRight);
-//   iBottom = __min(ClippingRect.iBottom - 1, area->iBottom);
-//
-//   DestPtr = (pBuffer + (iTop * (uiDestPitchBYTES / 2)) + iLeft);
-//   width = iRight - iLeft + 1;
-//   height = iBottom - iTop + 1;
-//   LineSkip = (uiDestPitchBYTES - (width * 2));
-//
-//   CHECKV(width >= 1);
-//   CHECKV(height >= 1);
-//
-// #if 1  // XXX TODO
-//   UINT32 row = 0;
-//   do {
-//     UINT32 col = 0;
-//     UINT32 w = width;
-//
-//     do {
-//       if (Pattern[row][col] != 0) *DestPtr = usColor;
-//       DestPtr++;
-//       col = (col + 1) % 8;
-//     } while (--w > 0);
-//     DestPtr += LineSkip / 2;
-//     row = (row + 1) % 8;
-//   } while (--height > 0);
-// #else
-//   __asm {
-// 		mov		esi, Pattern  // Pointer to pixel pattern
-// 		mov		edi, DestPtr  // Pointer to top left of rect area
-// 		mov		ax, usColor  // color of pixel
-// 		xor		ebx, ebx  // pattern column index
-// 		xor		edx, edx  // pattern row index
-//
-//
-// BlitNewLine:
-// 		mov		ecx, width
-//
-// BlitLine:
-// 		cmp	[esi+ebx], 0
-// 		je	BlitLine2
-//
-// 		mov		[edi], ax
-//
-// BlitLine2:
-// 		add		edi, 2
-// 		inc		ebx
-// 		and		ebx, 07H
-// 		or		ebx, edx
-// 		dec		ecx
-// 		jnz		BlitLine
-//
-// 		add		edi, LineSkip
-// 		xor		ebx, ebx
-// 		add		edx, 08H
-// 		and		edx, 38H
-// 		dec		height
-// 		jnz		BlitNewLine
-//   }
-// #endif
-// }
-//
-// // Uses black hatch color
-// void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area) {
-//   const UINT8 Pattern[8][8] = {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
-//                                {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
-//                                {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
-//                                {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}};
-//   Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
-// }
-//
+/**********************************************************************************************
+        Blt16BPPBufferPixelateRectWithColor
+
+                Given an 8x8 pattern and a color, pixelates an area by
+repeatedly "applying the color" to pixels whereever there is a non-zero value in
+the pattern.
+
+                KM:  Added Nov. 23, 1998
+                This is all the code that I moved from
+Blt16BPPBufferPixelateRect(). This function now takes a color field (which
+previously was always black.  The 3rd assembler line in this function:
+
+                                mov		ax, usColor
+// color of pixel
+
+                used to be:
+
+                                xor   eax, eax
+// color of pixel (black or 0)
+
+          This was the only internal modification I made other than adding the
+usColor argument.
+
+*********************************************************************************************/
+static void Blt16BPPBufferPixelateRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES,
+                                                SGPRect *area, const UINT8 Pattern[8][8],
+                                                UINT16 usColor) {
+  INT32 width, height;
+  UINT32 LineSkip;
+  UINT16 *DestPtr;
+  INT32 iLeft, iTop, iRight, iBottom;
+
+  // Assertions
+  Assert(pBuffer != NULL);
+  Assert(Pattern != NULL);
+
+  iLeft = __max(ClippingRect.iLeft, area->iLeft);
+  iTop = __max(ClippingRect.iTop, area->iTop);
+  iRight = __min(ClippingRect.iRight - 1, area->iRight);
+  iBottom = __min(ClippingRect.iBottom - 1, area->iBottom);
+
+  DestPtr = (pBuffer + (iTop * (uiDestPitchBYTES / 2)) + iLeft);
+  width = iRight - iLeft + 1;
+  height = iBottom - iTop + 1;
+  LineSkip = (uiDestPitchBYTES - (width * 2));
+
+  CHECKV(width >= 1);
+  CHECKV(height >= 1);
+
+#if 1  // XXX TODO
+  UINT32 row = 0;
+  do {
+    UINT32 col = 0;
+    UINT32 w = width;
+
+    do {
+      if (Pattern[row][col] != 0) *DestPtr = usColor;
+      DestPtr++;
+      col = (col + 1) % 8;
+    } while (--w > 0);
+    DestPtr += LineSkip / 2;
+    row = (row + 1) % 8;
+  } while (--height > 0);
+#else
+  __asm {
+		mov		esi, Pattern  // Pointer to pixel pattern
+		mov		edi, DestPtr  // Pointer to top left of rect area
+		mov		ax, usColor  // color of pixel
+		xor		ebx, ebx  // pattern column index
+		xor		edx, edx  // pattern row index
+
+
+BlitNewLine:
+		mov		ecx, width
+
+BlitLine:
+		cmp	[esi+ebx], 0
+		je	BlitLine2
+
+		mov		[edi], ax
+
+BlitLine2:
+		add		edi, 2
+		inc		ebx
+		and		ebx, 07H
+		or		ebx, edx
+		dec		ecx
+		jnz		BlitLine
+
+		add		edi, LineSkip
+		xor		ebx, ebx
+		add		edx, 08H
+		and		edx, 38H
+		dec		height
+		jnz		BlitNewLine
+  }
+#endif
+}
+
+// Uses black hatch color
+void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area) {
+  const UINT8 Pattern[8][8] = {{1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
+                               {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
+                               {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1},
+                               {1, 0, 1, 0, 1, 0, 1, 0}, {0, 1, 0, 1, 0, 1, 0, 1}};
+  Blt16BPPBufferPixelateRectWithColor(pBuffer, uiDestPitchBYTES, area, Pattern, 0);
+}
+
 // void Blt16BPPBufferLooseHatchRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area,
 //                                            UINT16 usColor) {
 //   const UINT8 Pattern[8][8] = {{1, 0, 0, 0, 1, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 0},

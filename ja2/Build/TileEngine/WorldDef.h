@@ -6,14 +6,14 @@
 
 // #define WORLD_TILE_X 40
 // #define WORLD_TILE_Y 20
-// #define WORLD_COLS 160
-// #define WORLD_ROWS 160
+#define WORLD_COLS 160
+#define WORLD_ROWS 160
 // #define WORLD_COORD_COLS 1600
 // #define WORLD_COORD_ROWS 1600
 // #define WORLD_MAX 25600
-// #define CELL_X_SIZE 10
-// #define CELL_Y_SIZE 10
-//
+#define CELL_X_SIZE 10
+#define CELL_Y_SIZE 10
+
 // #define CENTER_GRIDNO (WORLD_ROWS / 2 * WORLD_COLS + WORLD_COLS / 2)
 //
 // #define WORLD_CLIFF_HEIGHT 80

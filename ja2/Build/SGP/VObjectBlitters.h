@@ -122,7 +122,7 @@ void Blt8BPPDataTo16BPPBufferTransparent(UINT16 *buf, UINT32 uiDestPitchBYTES,
 //                      INT32 iDestXPos, INT32 iDestYPos, INT32 iSrcXPos, INT32 iSrcYPos,
 //                      UINT32 uiWidth, UINT32 uiHeight);
 //
-// void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area);
+void Blt16BPPBufferHatchRect(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area);
 // void Blt16BPPBufferLooseHatchRectWithColor(UINT16 *pBuffer, UINT32 uiDestPitchBYTES, SGPRect *area,
 //                                            UINT16 usColor);
 

@@ -111,28 +111,28 @@ UINT16 *gpZBuffer = NULL;
 // const INT16 gsVIEWPORT_END_Y = SCREEN_HEIGHT - 120;
 // INT16 gsVIEWPORT_WINDOW_START_Y = 0;
 // INT16 gsVIEWPORT_WINDOW_END_Y = SCREEN_HEIGHT - 120;
-//
-// INT16 gsTopLeftWorldX;
-// INT16 gsTopLeftWorldY;
-// INT16 gsBottomRightWorldX;
-// INT16 gsBottomRightWorldY;
+
+INT16 gsTopLeftWorldX;
+INT16 gsTopLeftWorldY;
+INT16 gsBottomRightWorldX;
+INT16 gsBottomRightWorldY;
 // BOOLEAN gfIgnoreScrolling = FALSE;
 //
 // BOOLEAN gfIgnoreScrollDueToCenterAdjust = FALSE;
-//
-// // GLOBAL SCROLLING PARAMS
-// INT16 gCenterWorldX;
-// INT16 gCenterWorldY;
-// INT16 gsTLX;
-// INT16 gsTLY;
+
+// GLOBAL SCROLLING PARAMS
+INT16 gCenterWorldX;
+INT16 gCenterWorldY;
+INT16 gsTLX;
+INT16 gsTLY;
 // INT16 gsTRX;
 // INT16 gsTRY;
 // INT16 gsBLX;
 // INT16 gsBLY;
 // INT16 gsBRX;
 // INT16 gsBRY;
-// INT16 gsCX;
-// INT16 gsCY;
+INT16 gsCX;
+INT16 gsCY;
 // double gdScaleX;
 // double gdScaleY;
 //

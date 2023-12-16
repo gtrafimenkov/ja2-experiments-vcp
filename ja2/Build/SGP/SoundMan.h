@@ -16,8 +16,8 @@ void InitializeSoundManager(void);
  * releases the sound hardware. */
 void ShutdownSoundManager(void);
 
-// UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
-//                            void (*end_callback)(void *), void *data);
+UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
+                           void (*end_callback)(void *), void *data);
 
 /* Starts a sample playing. If the sample is not loaded in the cache, it will
  * be found and loaded.
@@ -38,16 +38,16 @@ UINT32 SoundPlay(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
 UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
                              void (*end_callback)(void *), void *data);
 
-// /* Registers a sample to be played randomly within the specified parameters.
-//  *
-//  * * Samples designated "random" are ALWAYS loaded into the cache, and locked
-//  * in place. They are never double-buffered, and this call will fail if they
-//  * cannot be loaded. *
-//  *
-//  * Returns: If successful, it returns the sample index it is loaded to, else
-//  *          SOUND_ERROR is returned. */
-// UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
-//                        UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances);
+/* Registers a sample to be played randomly within the specified parameters.
+ *
+ * * Samples designated "random" are ALWAYS loaded into the cache, and locked
+ * in place. They are never double-buffered, and this call will fail if they
+ * cannot be loaded. *
+ *
+ * Returns: If successful, it returns the sample index it is loaded to, else
+ *          SOUND_ERROR is returned. */
+UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
+                       UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances);
 
 /* Can be polled in tight loops where sound buffers might starve due to heavy
  * hardware use, etc. Streams DO NOT normally need to be serviced manually, but
@@ -86,25 +86,25 @@ BOOLEAN SoundIsPlaying(UINT32 uiSoundID);
  *          sample had already expired or couldn't be found */
 BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume);
 
-// /* Sets the pan on a currently playing sound.
-//  *
-//  * Returns: TRUE if the pan was actually set on the sample, FALSE if the sample
-//  *          had already expired or couldn't be found */
-// BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan);
+/* Sets the pan on a currently playing sound.
+ *
+ * Returns: TRUE if the pan was actually set on the sample, FALSE if the sample
+ *          had already expired or couldn't be found */
+BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan);
 
 /* Returns the current volume setting of a sound that is playing. If the sound
  * has expired, or could not be found, SOUND_ERROR is returned. */
 UINT32 SoundGetVolume(UINT32 uiSoundID);
 
-// /* Reports the current time position of the sample.
-//  * Note: You should be checking SoundIsPlaying very carefully while calling
-//  * this function.
-//  *
-//  * Returns: The current time of the sample in milliseconds. */
-// UINT32 SoundGetPosition(UINT32 uiSoundID);
-//
-// // Allows or disallows the startup of the sound hardware.
-// void SoundEnableSound(BOOLEAN fEnable);
+/* Reports the current time position of the sample.
+ * Note: You should be checking SoundIsPlaying very carefully while calling
+ * this function.
+ *
+ * Returns: The current time of the sample in milliseconds. */
+UINT32 SoundGetPosition(UINT32 uiSoundID);
+
+// Allows or disallows the startup of the sound hardware.
+void SoundEnableSound(BOOLEAN fEnable);
 
 #endif
 

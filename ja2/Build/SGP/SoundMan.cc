@@ -18,8 +18,8 @@
 #include "SGP/Random.h"
 #include "SGP/Timer.h"
 
-// // Uncomment this to disable the startup of sound hardware
-// //#define SOUND_DISABLE
+// Uncomment this to disable the startup of sound hardware
+//#define SOUND_DISABLE
 
 #ifdef WITH_SOUND_DEBUG
 #define SNDDBG(fmt, ...) (void)fprintf(stderr, ">>>> SND: " fmt, __VA_ARGS__)
@@ -57,8 +57,8 @@ enum {
 #define SOUND_MAX_CHANNELS 16  // number of mixer channels
 
 #define SOUND_DEFAULT_MEMORY (16 * 1024 * 1024)  // default memory limit
-// #define SOUND_DEFAULT_THRESH (2 * 1024 * 1024)   // size for sample to be double-buffered
-// #define SOUND_DEFAULT_STREAM (64 * 1024)         // double-buffered buffer size
+#define SOUND_DEFAULT_THRESH (2 * 1024 * 1024)   // size for sample to be double-buffered
+#define SOUND_DEFAULT_STREAM (64 * 1024)         // double-buffered buffer size
 
 // Struct definition for sample slots in the cache
 // Holds the regular sample data, as well as the data for the random samples
@@ -100,10 +100,10 @@ struct SOUNDTAG {
   UINT32 Pan;
 };
 
-// static const UINT32 guiSoundDefaultVolume = MAXVOLUME;
+static const UINT32 guiSoundDefaultVolume = MAXVOLUME;
 static const UINT32 guiSoundMemoryLimit = SOUND_DEFAULT_MEMORY;  // Maximum memory used for sounds
 static UINT32 guiSoundMemoryUsed = 0;                            // Memory currently in use
-// static const UINT32 guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;  // Double-buffered threshold
+static const UINT32 guiSoundCacheThreshold = SOUND_DEFAULT_THRESH;  // Double-buffered threshold
 
 static BOOLEAN fSoundSystemInit = FALSE;  // Startup called
 static BOOLEAN gfEnableStartup = TRUE;    // Allow hardware to start up
@@ -181,31 +181,31 @@ static BOOLEAN SoundCleanCache(void);
 // static SAMPLETAG *SoundGetEmptySample(void);
 static size_t GetSampleSize(const SAMPLETAG *const s);
 
-// UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
-//                            void (*end_callback)(void *), void *data) {
-//   // SoundCleanCache();
-//   SAMPLETAG *buffertag = SoundGetEmptySample();
-//   if (buffertag == NULL) {
-//     SoundCleanCache();
-//     buffertag = SoundGetEmptySample();
-//   }
-//   sprintf(buffertag->pName, "SmackBuff %p - SampleSize %u", pbuffer, size);
-//   buffertag->uiSpeed = 22050;
-//   buffertag->n_samples = size;
-//   buffertag->pData = pbuffer;
-//   buffertag->uiFlags = SAMPLE_16BIT | SAMPLE_STEREO | SAMPLE_ALLOCATED;
-//   buffertag->uiPanMax = 64;
-//   buffertag->uiMaxInstances = 1;
-//   guiSoundMemoryUsed += size * GetSampleSize(buffertag);
-//
-//   SOUNDTAG *const channel = SoundGetFreeChannel();
-//   if (channel == NULL) return SOUND_ERROR;
-//
-//   return SoundStartSample(buffertag, channel, volume, pan, loop, end_callback, data);
-// }
-//
-// static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
-//                                UINT32 loop, void (*end_callback)(void *), void *data);
+UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,
+                           void (*end_callback)(void *), void *data) {
+  // SoundCleanCache();
+  SAMPLETAG *buffertag = SoundGetEmptySample();
+  if (buffertag == NULL) {
+    SoundCleanCache();
+    buffertag = SoundGetEmptySample();
+  }
+  sprintf(buffertag->pName, "SmackBuff %p - SampleSize %u", pbuffer, size);
+  buffertag->uiSpeed = 22050;
+  buffertag->n_samples = size;
+  buffertag->pData = pbuffer;
+  buffertag->uiFlags = SAMPLE_16BIT | SAMPLE_STEREO | SAMPLE_ALLOCATED;
+  buffertag->uiPanMax = 64;
+  buffertag->uiMaxInstances = 1;
+  guiSoundMemoryUsed += size * GetSampleSize(buffertag);
+
+  SOUNDTAG *const channel = SoundGetFreeChannel();
+  if (channel == NULL) return SOUND_ERROR;
+
+  return SoundStartSample(buffertag, channel, volume, pan, loop, end_callback, data);
+}
+
+static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
+                               UINT32 loop, void (*end_callback)(void *), void *data);
 
 UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
                              void (*end_callback)(void *), void *data) try {
@@ -257,28 +257,28 @@ UINT32 SoundPlayStreamedFile(const char *pFilename, UINT32 volume, UINT32 pan, U
   return SOUND_ERROR;
 }
 
-// UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
-//                        UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances) {
-//   SNDDBG("RAND \"%s\"\n", pFilename);
-//
-//   if (!fSoundSystemInit) return SOUND_ERROR;
-//
-//   SAMPLETAG *const s = SoundLoadSample(pFilename);
-//   if (s == NULL) return SOUND_ERROR;
-//
-//   s->uiFlags |= SAMPLE_RANDOM | SAMPLE_LOCKED;
-//   s->uiTimeMin = time_min;
-//   s->uiTimeMax = time_max;
-//   s->uiVolMin = vol_min;
-//   s->uiVolMax = vol_max;
-//   s->uiPanMin = pan_min;
-//   s->uiPanMax = pan_max;
-//   s->uiMaxInstances = max_instances;
-//
-//   s->uiTimeNext = GetClock() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
-//
-//   return (UINT32)(s - pSampleList);
-// }
+UINT32 SoundPlayRandom(const char *pFilename, UINT32 time_min, UINT32 time_max, UINT32 vol_min,
+                       UINT32 vol_max, UINT32 pan_min, UINT32 pan_max, UINT32 max_instances) {
+  SNDDBG("RAND \"%s\"\n", pFilename);
+
+  if (!fSoundSystemInit) return SOUND_ERROR;
+
+  SAMPLETAG *const s = SoundLoadSample(pFilename);
+  if (s == NULL) return SOUND_ERROR;
+
+  s->uiFlags |= SAMPLE_RANDOM | SAMPLE_LOCKED;
+  s->uiTimeMin = time_min;
+  s->uiTimeMax = time_max;
+  s->uiVolMin = vol_min;
+  s->uiVolMax = vol_max;
+  s->uiPanMin = pan_min;
+  s->uiPanMax = pan_max;
+  s->uiMaxInstances = max_instances;
+
+  s->uiTimeNext = GetClock() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
+
+  return (UINT32)(s - pSampleList);
+}
 
 static SOUNDTAG *SoundGetChannelByID(UINT32 uiSoundID);
 
@@ -328,15 +328,15 @@ BOOLEAN SoundSetVolume(UINT32 uiSoundID, UINT32 uiVolume) {
   return TRUE;
 }
 
-// BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
-//   if (!fSoundSystemInit) return FALSE;
-//
-//   SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
-//   if (channel == NULL) return FALSE;
-//
-//   channel->Pan = __min(uiPan, 127);
-//   return TRUE;
-// }
+BOOLEAN SoundSetPan(UINT32 uiSoundID, UINT32 uiPan) {
+  if (!fSoundSystemInit) return FALSE;
+
+  SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
+  if (channel == NULL) return FALSE;
+
+  channel->Pan = __min(uiPan, 127);
+  return TRUE;
+}
 
 UINT32 SoundGetVolume(UINT32 uiSoundID) {
   if (!fSoundSystemInit) return SOUND_ERROR;
@@ -382,22 +382,22 @@ static UINT32 SoundStartRandom(SAMPLETAG *s) {
   return uiSoundID;
 }
 
-// void SoundStopAllRandom(void) {
-//   // Stop all currently playing random sounds
-//   FOR_EACH(SOUNDTAG, i, pSoundList) {
-//     if (i->State == CHANNEL_PLAY && i->pSample->uiFlags & SAMPLE_RANDOM) {
-//       SoundStopChannel(i);
-//     }
-//   }
-//
-//   // Unlock all random sounds so they can be dumped from the cache, and
-//   // take the random flag off so they won't be serviced/played
-//   FOR_EACH(SAMPLETAG, i, pSampleList) {
-//     if (i->uiFlags & SAMPLE_RANDOM) {
-//       i->uiFlags &= ~(SAMPLE_RANDOM | SAMPLE_LOCKED);
-//     }
-//   }
-// }
+void SoundStopAllRandom(void) {
+  // Stop all currently playing random sounds
+  FOR_EACH(SOUNDTAG, i, pSoundList) {
+    if (i->State == CHANNEL_PLAY && i->pSample->uiFlags & SAMPLE_RANDOM) {
+      SoundStopChannel(i);
+    }
+  }
+
+  // Unlock all random sounds so they can be dumped from the cache, and
+  // take the random flag off so they won't be serviced/played
+  FOR_EACH(SAMPLETAG, i, pSampleList) {
+    if (i->uiFlags & SAMPLE_RANDOM) {
+      i->uiFlags &= ~(SAMPLE_RANDOM | SAMPLE_LOCKED);
+    }
+  }
+}
 
 void SoundServiceStreams(void) {
   if (!fSoundSystemInit) return;
@@ -417,15 +417,15 @@ void SoundServiceStreams(void) {
   }
 }
 
-// UINT32 SoundGetPosition(UINT32 uiSoundID) {
-//   if (!fSoundSystemInit) return 0;
-//
-//   const SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
-//   if (channel == NULL) return 0;
-//
-//   const UINT32 now = GetClock();
-//   return now - channel->uiTimeStamp;
-// }
+UINT32 SoundGetPosition(UINT32 uiSoundID) {
+  if (!fSoundSystemInit) return 0;
+
+  const SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
+  if (channel == NULL) return 0;
+
+  const UINT32 now = GetClock();
+  return now - channel->uiTimeStamp;
+}
 
 // Zeros out the structures of the sample list.
 static void SoundInitCache(void) { memset(pSampleList, 0, sizeof(pSampleList)); }
@@ -924,50 +924,50 @@ static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volu
   return uiSoundID;
 }
 
-// /* Starts up a stream on the specified channel. Override parameters are passed
-//  * in through the structure pointer pParms. Any entry with a value of 0xffffffff
-//  * will be filled in by the system.
-//  *
-//  * Returns: Unique sound ID if successful, SOUND_ERROR if not. */
-// static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
-//                                UINT32 loop, void (*end_callback)(void *), void *data) {
-// #if 1  // XXX TODO
-//   FIXME
-//   return SOUND_ERROR;
-// #else
-//   if (!fSoundSystemInit) return SOUND_ERROR;
-//
-//   channel->hMSSStream = AIL_open_stream(hSoundDriver, pFilename,
-//                                         SOUND_DEFAULT_STREAM) if (channel->hMSSStream == NULL) {
-//     SoundCleanCache();
-//     channel->hMSSStream = AIL_open_stream(hSoundDriver, pFilename, SOUND_DEFAULT_STREAM);
-//   }
-//
-//   if (channel->hMSSStream == NULL) {
-//     char AILString[200];
-//     sprintf(AILString, "Stream Error: %s", AIL_last_error());
-//     DebugMsg(TOPIC_GAME, DBG_LEVEL_0, AILString);
-//     return SOUND_ERROR;
-//   }
-//
-//   AIL_set_stream_volume(channel->hMSSStream, volume);
-//   AIL_set_stream_loop_count(channel->hMSSStream, loop);
-//   AIL_set_stream_pan(channel->hMSSStream, pan);
-//
-//   AIL_start_stream(channel->hMSSStream);
-//
-//   UINT32 uiSoundID = SoundGetUniqueID();
-//   channel->uiSoundID = uiSoundID;
-//
-//   channel->EOSCallback = end_callback;
-//   channel->pCallbackData = data;
-//
-//   channel->uiTimeStamp = GetClock();
-//   channel->uiFadeVolume = SoundGetVolumeIndex(uiChannel);
-//
-//   return uiSoundID;
-// #endif
-// }
+/* Starts up a stream on the specified channel. Override parameters are passed
+ * in through the structure pointer pParms. Any entry with a value of 0xffffffff
+ * will be filled in by the system.
+ *
+ * Returns: Unique sound ID if successful, SOUND_ERROR if not. */
+static UINT32 SoundStartStream(const char *pFilename, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
+                               UINT32 loop, void (*end_callback)(void *), void *data) {
+#if 1  // XXX TODO
+  FIXME
+  return SOUND_ERROR;
+#else
+  if (!fSoundSystemInit) return SOUND_ERROR;
+
+  channel->hMSSStream = AIL_open_stream(hSoundDriver, pFilename,
+                                        SOUND_DEFAULT_STREAM) if (channel->hMSSStream == NULL) {
+    SoundCleanCache();
+    channel->hMSSStream = AIL_open_stream(hSoundDriver, pFilename, SOUND_DEFAULT_STREAM);
+  }
+
+  if (channel->hMSSStream == NULL) {
+    char AILString[200];
+    sprintf(AILString, "Stream Error: %s", AIL_last_error());
+    DebugMsg(TOPIC_GAME, DBG_LEVEL_0, AILString);
+    return SOUND_ERROR;
+  }
+
+  AIL_set_stream_volume(channel->hMSSStream, volume);
+  AIL_set_stream_loop_count(channel->hMSSStream, loop);
+  AIL_set_stream_pan(channel->hMSSStream, pan);
+
+  AIL_start_stream(channel->hMSSStream);
+
+  UINT32 uiSoundID = SoundGetUniqueID();
+  channel->uiSoundID = uiSoundID;
+
+  channel->EOSCallback = end_callback;
+  channel->pCallbackData = data;
+
+  channel->uiTimeStamp = GetClock();
+  channel->uiFadeVolume = SoundGetVolumeIndex(uiChannel);
+
+  return uiSoundID;
+#endif
+}
 
 /* Returns a unique ID number with every call. Basically it's just a 32-bit
  * static value that is incremented each time. */
@@ -979,17 +979,17 @@ static UINT32 SoundGetUniqueID(void) {
   return uiNextID++;
 }
 
-// /* Returns TRUE/FALSE whether a sound file should be played as a streamed
-//  * sample, or loaded into the cache. The decision is based on the size of the
-//  * file compared to the guiSoundCacheThreshold.
-//  *
-//  * Returns: TRUE if it should be streamed, FALSE if loaded. */
-// static BOOLEAN SoundPlayStreamed(const char *pFilename) try {
-//   AutoSGPFile hDisk(FileMan::openForReadingSmart(pFilename, true));
-//   return FileGetSize(hDisk) >= guiSoundCacheThreshold;
-// } catch (...) {
-//   return FALSE;
-// }
+/* Returns TRUE/FALSE whether a sound file should be played as a streamed
+ * sample, or loaded into the cache. The decision is based on the size of the
+ * file compared to the guiSoundCacheThreshold.
+ *
+ * Returns: TRUE if it should be streamed, FALSE if loaded. */
+static BOOLEAN SoundPlayStreamed(const char *pFilename) try {
+  AutoSGPFile hDisk(FileMan::openForReadingSmart(pFilename, true));
+  return FileGetSize(hDisk) >= guiSoundCacheThreshold;
+} catch (...) {
+  return FALSE;
+}
 
 /* Stops a sound referred to by its channel.  This function is the only one
  * that should be deallocating sample handles. The random sounds have to have
@@ -1007,11 +1007,11 @@ static BOOLEAN SoundStopChannel(SOUNDTAG *channel) {
   return TRUE;
 }
 
-// void SoundStopRandom(UINT32 uiSample) {
-//   // CHECK FOR VALID SAMPLE
-//   SAMPLETAG *const s = &pSampleList[uiSample];
-//   if (s->uiFlags & SAMPLE_ALLOCATED) {
-//     s->uiFlags &= ~SAMPLE_RANDOM;
-//   }
-// }
-//
+void SoundStopRandom(UINT32 uiSample) {
+  // CHECK FOR VALID SAMPLE
+  SAMPLETAG *const s = &pSampleList[uiSample];
+  if (s->uiFlags & SAMPLE_ALLOCATED) {
+    s->uiFlags &= ~SAMPLE_RANDOM;
+  }
+}
+

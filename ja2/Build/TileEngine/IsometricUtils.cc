@@ -1,18 +1,18 @@
-// #include "TileEngine/IsometricUtils.h"
-//
-// #include "SGP/MouseSystem.h"
-// #include "SGP/Random.h"
-// #include "SysGlobals.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/PathAI.h"
-// #include "Tactical/StructureWrap.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/Structure.h"
-// #include "TileEngine/WorldDef.h"
-// #include "TileEngine/WorldMan.h"
-// #include "math.h"
-//
+#include "TileEngine/IsometricUtils.h"
+
+#include "SGP/MouseSystem.h"
+#include "SGP/Random.h"
+#include "SysGlobals.h"
+#include "Tactical/Interface.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/PathAI.h"
+#include "Tactical/StructureWrap.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/WorldMan.h"
+#include "math.h"
+
 // UINT32 guiForceRefreshMousePositionCalculation = 0;
 //
 // // GLOBALS
@@ -197,34 +197,34 @@
 //   sSameCursorPos = pos;
 //   return pos;
 // }
-//
-// void GetAbsoluteScreenXYFromMapPos(const GridNo pos, INT16 *const psWorldScreenX,
-//                                    INT16 *const psWorldScreenY) {
-//   INT16 sScreenCenterX, sScreenCenterY;
-//
-//   INT16 sWorldCellX;
-//   INT16 sWorldCellY;
-//   ConvertGridNoToCellXY(pos, &sWorldCellX, &sWorldCellY);
-//
-//   // Find the diustance from render center to true world center
-//   const INT16 sDistToCenterX = sWorldCellX - gCenterWorldX;
-//   const INT16 sDistToCenterY = sWorldCellY - gCenterWorldY;
-//
-//   // From render center in world coords, convert to render center in "screen"
-//   // coords
-//
-//   // ATE: We should call the fowllowing function but I'm putting it here
-//   // verbatim for speed
-//   // FromCellToScreenCoordinates( sDistToCenterX , sDistToCenterY,
-//   // &sScreenCenterX, &sScreenCenterY );
-//   sScreenCenterX = (2 * sDistToCenterX) - (2 * sDistToCenterY);
-//   sScreenCenterY = sDistToCenterX + sDistToCenterY;
-//
-//   // Subtract screen center
-//   *psWorldScreenX = sScreenCenterX + gsCX - gsTLX;
-//   *psWorldScreenY = sScreenCenterY + gsCY - gsTLY;
-// }
-//
+
+void GetAbsoluteScreenXYFromMapPos(const GridNo pos, INT16 *const psWorldScreenX,
+                                   INT16 *const psWorldScreenY) {
+  INT16 sScreenCenterX, sScreenCenterY;
+
+  INT16 sWorldCellX;
+  INT16 sWorldCellY;
+  ConvertGridNoToCellXY(pos, &sWorldCellX, &sWorldCellY);
+
+  // Find the diustance from render center to true world center
+  const INT16 sDistToCenterX = sWorldCellX - gCenterWorldX;
+  const INT16 sDistToCenterY = sWorldCellY - gCenterWorldY;
+
+  // From render center in world coords, convert to render center in "screen"
+  // coords
+
+  // ATE: We should call the fowllowing function but I'm putting it here
+  // verbatim for speed
+  // FromCellToScreenCoordinates( sDistToCenterX , sDistToCenterY,
+  // &sScreenCenterX, &sScreenCenterY );
+  sScreenCenterX = (2 * sDistToCenterX) - (2 * sDistToCenterY);
+  sScreenCenterY = sDistToCenterX + sDistToCenterY;
+
+  // Subtract screen center
+  *psWorldScreenX = sScreenCenterX + gsCX - gsTLX;
+  *psWorldScreenY = sScreenCenterY + gsCY - gsTLY;
+}
+
 // GridNo GetMapPosFromAbsoluteScreenXY(const INT16 sWorldScreenX, const INT16 sWorldScreenY) {
 //   INT16 sWorldCenterX, sWorldCenterY;
 //   INT16 sDistToCenterY, sDistToCenterX;
@@ -323,15 +323,15 @@
 //   *sYPos = sGridNo / WORLD_COLS;
 //   *sXPos = (sGridNo - (*sYPos * WORLD_COLS));
 // }
-//
-// void ConvertGridNoToCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos) {
-//   *sYPos = (sGridNo / WORLD_COLS);
-//   *sXPos = sGridNo - (*sYPos * WORLD_COLS);
-//
-//   *sYPos = (*sYPos * CELL_Y_SIZE);
-//   *sXPos = (*sXPos * CELL_X_SIZE);
-// }
-//
+
+void ConvertGridNoToCellXY(INT16 sGridNo, INT16 *sXPos, INT16 *sYPos) {
+  *sYPos = (sGridNo / WORLD_COLS);
+  *sXPos = sGridNo - (*sYPos * WORLD_COLS);
+
+  *sYPos = (*sYPos * CELL_Y_SIZE);
+  *sXPos = (*sXPos * CELL_X_SIZE);
+}
+
 // void ConvertGridNoToCenterCellXY(const INT16 gridno, INT16 *const x, INT16 *const y) {
 //   *x = gridno % WORLD_COLS * CELL_X_SIZE + CELL_X_SIZE / 2;
 //   *y = gridno / WORLD_COLS * CELL_Y_SIZE + CELL_Y_SIZE / 2;

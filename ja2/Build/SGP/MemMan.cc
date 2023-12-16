@@ -7,42 +7,42 @@
 //                    MemAlloc/MemFree, and reporting of any errors
 #include "SGP/MemMan.h"
 
-// #include <new>  // std::bad_alloc
+#include <new>  // std::bad_alloc
 #include <stdexcept>
-// #include <stdlib.h>
-//
-// #include "MessageBoxScreen.h"
-// #include "MouseSystem.h"
+#include <stdlib.h>
+
+#include "MessageBoxScreen.h"
+#include "MouseSystem.h"
 #include "SGP/Debug.h"
-// #include "SGP/Types.h"
-//
-// static const wchar_t *const gzJA2ScreenNames[] = {
-//     L"EDIT_SCREEN",
-//     L"?",
-//     L"?",
-//     L"ERROR_SCREEN",
-//     L"INIT_SCREEN",
-//     L"GAME_SCREEN",
-//     L"ANIEDIT_SCREEN",
-//     L"PALEDIT_SCREEN",
-//     L"DEBUG_SCREEN",
-//     L"MAP_SCREEN",
-//     L"LAPTOP_SCREEN",
-//     L"LOADSAVE_SCREEN",
-//     L"MAPUTILITY_SCREEN",
-//     L"FADE_SCREEN",
-//     L"MSG_BOX_SCREEN",
-//     L"MAINMENU_SCREEN",
-//     L"AUTORESOLVE_SCREEN",
-//     L"SAVE_LOAD_SCREEN",
-//     L"OPTIONS_SCREEN",
-//     L"SHOPKEEPER_SCREEN",
-//     L"SEX_SCREEN",
-//     L"GAME_INIT_OPTIONS_SCREEN",
-//     L"DEMO_EXIT_SCREEN",
-//     L"INTRO_SCREEN",
-//     L"CREDIT_SCREEN",
-// };
+#include "SGP/Types.h"
+
+static const wchar_t *const gzJA2ScreenNames[] = {
+    L"EDIT_SCREEN",
+    L"?",
+    L"?",
+    L"ERROR_SCREEN",
+    L"INIT_SCREEN",
+    L"GAME_SCREEN",
+    L"ANIEDIT_SCREEN",
+    L"PALEDIT_SCREEN",
+    L"DEBUG_SCREEN",
+    L"MAP_SCREEN",
+    L"LAPTOP_SCREEN",
+    L"LOADSAVE_SCREEN",
+    L"MAPUTILITY_SCREEN",
+    L"FADE_SCREEN",
+    L"MSG_BOX_SCREEN",
+    L"MAINMENU_SCREEN",
+    L"AUTORESOLVE_SCREEN",
+    L"SAVE_LOAD_SCREEN",
+    L"OPTIONS_SCREEN",
+    L"SHOPKEEPER_SCREEN",
+    L"SEX_SCREEN",
+    L"GAME_INIT_OPTIONS_SCREEN",
+    L"DEMO_EXIT_SCREEN",
+    L"INTRO_SCREEN",
+    L"CREDIT_SCREEN",
+};
 
 // debug variable for total memory currently allocated
 static size_t guiMemTotal = 0;
@@ -93,9 +93,9 @@ void *XMalloc(size_t const size) {
   return p;
 }
 
-// void *XRealloc(void *const ptr, size_t const size) {
-//   void *const p = realloc(ptr, size);
-//   if (!p) throw std::bad_alloc();
-//   return p;
-// }
-//
+void *XRealloc(void *const ptr, size_t const size) {
+  void *const p = realloc(ptr, size);
+  if (!p) throw std::bad_alloc();
+  return p;
+}
+
