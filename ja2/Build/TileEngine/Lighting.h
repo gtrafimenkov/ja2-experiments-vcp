@@ -1,8 +1,8 @@
-// #ifndef _LIGHTING_H_
-// #define _LIGHTING_H_
-//
-// #include "JA2Types.h"
-//
+#ifndef _LIGHTING_H_
+#define _LIGHTING_H_
+
+#include "JA2Types.h"
+
 // /****************************************************************************************
 //  * JA2 Lighting Module
 //  *
@@ -137,10 +137,10 @@
 //   else
 // #define FOR_EACH_LIGHT_SPRITE(iter) BASE_FOR_EACH_LIGHT_SPRITE(LIGHT_SPRITE, iter)
 // #define CFOR_EACH_LIGHT_SPRITE(iter) BASE_FOR_EACH_LIGHT_SPRITE(const LIGHT_SPRITE, iter)
-//
-// // Lighting system general data
-// extern UINT8 ubAmbientLightLevel;
-//
+
+// Lighting system general data
+extern UINT8 ubAmbientLightLevel;
+
 // // Lighting color
 // extern SGPPaletteEntry g_light_color;
 //
@@ -152,6 +152,6 @@
 // void CreateBiasedShadedPalettes(UINT16 *Shades[16], const SGPPaletteEntry ShadePal[256]);
 //
 // void LoadShadeTablesFromTextFile(void);
-//
-// #endif
-//
+
+#endif
+

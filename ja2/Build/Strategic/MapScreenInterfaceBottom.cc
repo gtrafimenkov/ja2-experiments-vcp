@@ -86,9 +86,9 @@
 //   MAP_TIME_COMPRESS_MORE = 0,
 //   MAP_TIME_COMPRESS_LESS,
 // };
-//
-// BOOLEAN fMapScreenBottomDirty = TRUE;
-//
+
+BOOLEAN fMapScreenBottomDirty = TRUE;
+
 // static BOOLEAN fMapBottomDirtied = FALSE;
 //
 // // Used to flag the transition animation from mapscreen to laptop.

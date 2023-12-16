@@ -11,10 +11,10 @@
 #include "SGP/VSurface.h"
 #include "SGP/WCheck.h"
 
-// SGPRect ClippingRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
-// // 555      565
-// UINT32 guiTranslucentMask = 0x3def;  // 0x7bef;		// mask for halving 5,6,5
-//
+SGPRect ClippingRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
+// 555      565
+UINT32 guiTranslucentMask = 0x3def;  // 0x7bef;		// mask for halving 5,6,5
+
 // /* Difference or Zero */
 // template <typename T>
 // static inline T DoZ(T const a, T const b) {

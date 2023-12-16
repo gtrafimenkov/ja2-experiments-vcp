@@ -1,26 +1,26 @@
-// #include "Strategic/MapScreenInterface.h"
-//
-// #include "Directories.h"
-// #include "GameSettings.h"
-// #include "JAScreens.h"
-// #include "Laptop/EMail.h"
-// #include "Laptop/Finances.h"
-// #include "Local.h"
-// #include "MercPortrait.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Line.h"
-// #include "SGP/LoadSaveData.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/Random.h"
-// #include "SGP/SoundMan.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
+#include "Strategic/MapScreenInterface.h"
+
+#include "Directories.h"
+#include "GameSettings.h"
+#include "JAScreens.h"
+#include "Laptop/EMail.h"
+#include "Laptop/Finances.h"
+#include "Local.h"
+#include "MercPortrait.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Line.h"
+#include "SGP/LoadSaveData.h"
+#include "SGP/MemMan.h"
+#include "SGP/Random.h"
+#include "SGP/SoundMan.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
 // #include "Strategic/Assignments.h"
 // #include "Strategic/CampaignTypes.h"
 // #include "Strategic/GameClock.h"
@@ -1123,16 +1123,16 @@
 //     }
 //   }
 // }
-//
-// void HandleMAPUILoseCursorFromOtherScreen(void) {
+
+void HandleMAPUILoseCursorFromOtherScreen(void) {
 //   // rerender map without cursors
 //   fMapPanelDirty = TRUE;
 //
 //   if (fInMapMode) {
 //     RenderMapRegionBackground();
 //   }
-// }
-//
+}
+
 // void UpdateMapScreenAssignmentPositions(void) {
 //   // set the position of the pop up boxes
 //
@@ -3116,8 +3116,8 @@
 //     fCreated = FALSE;
 //   }
 // }
-//
-// BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo(void) {
+
+BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo(void) {
 //   // check a team is ready to go
 //   if (!(AnyMercsHired())) {
 //     // no mercs, leave
@@ -3156,9 +3156,9 @@
 //   // Add e-mail message
 //   AddEmail(ENRICO_CONGRATS, ENRICO_CONGRATS_LENGTH, MAIL_ENRICO, GetWorldTotalMin());
 //
-//   return (TRUE);
-// }
-//
+  return (TRUE);
+}
+
 // void NotifyPlayerWhenEnemyTakesControlOfImportantSector(INT16 const x, INT16 const y,
 //                                                         INT8 const z) {
 //   // There is nothing important to player below ground

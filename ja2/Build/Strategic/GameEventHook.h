@@ -1,8 +1,8 @@
-// #ifndef __GAME_EVENT_HOOK_H
-// #define __GAME_EVENT_HOOK_H
-//
-// #include "SGP/Types.h"
-//
+#ifndef __GAME_EVENT_HOOK_H
+#define __GAME_EVENT_HOOK_H
+
+#include "SGP/Types.h"
+
 // enum StrategicEventKind {
 //   EVENT_CHANGELIGHTVAL = 1,
 //   EVENT_CHECKFORQUESTS = 4,
@@ -120,6 +120,6 @@
 // void DeleteStrategicEvent(StrategicEventKind, UINT32 param);
 // void DeleteAllStrategicEventsOfType(StrategicEventKind);
 // void DeleteAllStrategicEvents(void);
-//
-// #endif
-//
+
+#endif
+

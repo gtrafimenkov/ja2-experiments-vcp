@@ -1,31 +1,31 @@
-// #include "Utils/Message.h"
-//
-// #include <stdarg.h>
-//
-// #include "Directories.h"
-// #include "JAScreens.h"
-// #include "SGP/Buffer.h"
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/Font.h"
-// #include "SGP/LoadSaveData.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/PODObj.h"
-// #include "SGP/SoundMan.h"
-// #include "SGP/Types.h"
-// #include "SGP/VSurface.h"
-// #include "ScreenIDs.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/MapScreenInterfaceBottom.h"
-// #include "Tactical/DialogueControl.h"
-// #include "Tactical/Interface.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/TimerControl.h"
-// #include "Utils/WordWrap.h"
-//
+#include "Utils/Message.h"
+
+#include <stdarg.h>
+
+#include "Directories.h"
+#include "JAScreens.h"
+#include "SGP/Buffer.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/Font.h"
+#include "SGP/LoadSaveData.h"
+#include "SGP/MemMan.h"
+#include "SGP/PODObj.h"
+#include "SGP/SoundMan.h"
+#include "SGP/Types.h"
+#include "SGP/VSurface.h"
+#include "ScreenIDs.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/MapScreenInterfaceBottom.h"
+#include "Tactical/DialogueControl.h"
+#include "Tactical/Interface.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/RenderWorld.h"
+#include "Utils/FontControl.h"
+#include "Utils/SoundControl.h"
+#include "Utils/TimerControl.h"
+#include "Utils/WordWrap.h"
+
 // struct ScrollStringSt {
 //   wchar_t *pString;
 //   VIDEO_OVERLAY *video_overlay;
@@ -256,11 +256,11 @@
 //     }
 //   }
 // }
-//
+
 // static void TacticalScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...);
-//
-// // new screen message
-// void ScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...) {
+
+// new screen message
+void ScreenMsg(UINT16 usColor, UINT8 ubPriority, const wchar_t *pStringA, ...) {
 //   if (fDisableJustForIan) {
 //     switch (ubPriority) {
 //       case MSG_BETAVERSION:
@@ -296,8 +296,8 @@
 //   } else {
 //     fOkToBeepNewMessage = TRUE;
 //   }
-// }
-//
+}
+
 // // clear up a linked list of wrapped strings
 // static void ClearWrappedStrings(WRAPPED_STRING *pStringWrapperHead) {
 //   WRAPPED_STRING *i = pStringWrapperHead;
@@ -637,8 +637,8 @@
 //   }
 //   return iCounter;
 // }
-//
-// void ClearTacticalMessageQueue(void) {
+
+void ClearTacticalMessageQueue(void) {
 //   ClearDisplayedListOfTacticalStrings();
 //
 //   // now run through all the tactical messages
@@ -650,8 +650,8 @@
 //   }
 //
 //   pStringS = NULL;
-// }
-//
+}
+
 // static void WriteMessageToFile(const wchar_t *pString) {}
 //
 // void FreeGlobalMessageList(void) {

@@ -4099,8 +4099,8 @@ INT16 gsCurrentActionPoints = 1;
 //   }
 //   return false;
 // }
-//
-// void HandleTacticalUILoseCursorFromOtherScreen() {
+
+void HandleTacticalUILoseCursorFromOtherScreen() {
 //   SetUICursor(NO_UICURSOR);
 //
 //   gfTacticalForceNoCursor = TRUE;
@@ -4112,8 +4112,8 @@ INT16 gsCurrentActionPoints = 1;
 //   gfTacticalForceNoCursor = FALSE;
 //
 //   SetUICursor(guiCurrentUICursor);
-// }
-//
+}
+
 // BOOLEAN SelectedGuyInBusyAnimation() {
 //   const SOLDIERTYPE *const sel = GetSelectedMan();
 //   if (sel == NULL) return FALSE;

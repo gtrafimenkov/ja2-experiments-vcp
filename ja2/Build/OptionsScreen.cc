@@ -116,8 +116,8 @@
 // static BOOLEAN gfOptionsScreenEntry = TRUE;
 // static BOOLEAN gfOptionsScreenExit = FALSE;
 // static BOOLEAN gfRedrawOptionsScreen = TRUE;
-//
-// static ScreenID guiOptionsScreen = OPTIONS_SCREEN;
+
+static ScreenID guiOptionsScreen = OPTIONS_SCREEN;
 ScreenID guiPreviousOptionScreen = OPTIONS_SCREEN;
 
 // static BOOLEAN gfExitOptionsDueToMessageBox = FALSE;
@@ -203,7 +203,7 @@ ScreenID OptionsScreenHandle() {
 //     UnPauseGame();
 //   }
 //
-//   return (guiOptionsScreen);
+  return (guiOptionsScreen);
 }
 
 // static GUIButtonRef MakeButton(INT16 x, GUI_CALLBACK click, const wchar_t *text) {

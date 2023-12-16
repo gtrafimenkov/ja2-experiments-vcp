@@ -27,10 +27,10 @@
 //
 // #define LANDHEAD 0
 // #define MAXDIR 8
-//
-// // Defines for shade levels
-// #define DEFAULT_SHADE_LEVEL 4
-//
+
+// Defines for shade levels
+#define DEFAULT_SHADE_LEVEL 4
+
 // // DEFINES FOR LEVELNODE FLAGS
 // enum LevelnodeFlags {
 //   LEVELNODE_NONE = 0,

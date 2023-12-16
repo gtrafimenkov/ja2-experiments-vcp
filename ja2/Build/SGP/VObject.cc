@@ -171,13 +171,13 @@ void SGPVObject::DestroyPalettes() {
 //     pShades[i] = other->pShades[i];
 //   }
 // }
-//
-// void InitializeVideoObjectManager(void) {
-//   // Shouldn't be calling this if the video object manager already exists.
-//   // Call shutdown first...
-//   Assert(gpVObjectHead == NULL);
-//   gpVObjectHead = NULL;
-// }
+
+void InitializeVideoObjectManager(void) {
+  // Shouldn't be calling this if the video object manager already exists.
+  // Call shutdown first...
+  Assert(gpVObjectHead == NULL);
+  gpVObjectHead = NULL;
+}
 
 void ShutdownVideoObjectManager(void) {
   while (gpVObjectHead) {

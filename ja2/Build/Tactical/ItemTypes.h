@@ -1,8 +1,8 @@
-// #ifndef ITEM_TYPES_H
-// #define ITEM_TYPES_H
-//
-// #include "SGP/Types.h"
-//
+#ifndef ITEM_TYPES_H
+#define ITEM_TYPES_H
+
+#include "SGP/Types.h"
+
 // enum ItemCursor {
 //   INVALIDCURS = 0,
 //   QUESTCURS = 1,
@@ -611,6 +611,6 @@ enum ITEMDEFINE {
 // #define LAST_HEAD_ITEM SUNGOGGLES
 //
 // extern const INVTYPE Item[];
-//
-// #endif
-//
+
+#endif
+

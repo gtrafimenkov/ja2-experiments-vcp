@@ -40,33 +40,33 @@ enum {
 extern const INT32 giTimerIntervals[NUMTIMERS];
 extern INT32 giTimerCounters[NUMTIMERS];
 
-// // GLOBAL SYNC TEMP TIME
-// extern INT32 giClockTimer;
-//
-// extern INT32 giTimerDiag;
-//
-// extern INT32 giTimerTeamTurnUpdate;
+// GLOBAL SYNC TEMP TIME
+extern INT32 giClockTimer;
+
+extern INT32 giTimerDiag;
+
+extern INT32 giTimerTeamTurnUpdate;
 
 void InitializeJA2Clock(void);
 // void ShutdownJA2Clock(void);
 
 #define GetJA2Clock() guiBaseJA2Clock
 
-// void PauseTime(BOOLEAN fPaused);
-//
-// void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback,
-//                                           BOOLEAN fReplace);
-// void CheckCustomizableTimer(void);
-//
+void PauseTime(BOOLEAN fPaused);
+
+void SetCustomizableTimerCallbackAndDelay(INT32 iDelay, CUSTOMIZABLE_TIMER_CALLBACK pCallback,
+                                          BOOLEAN fReplace);
+void CheckCustomizableTimer(void);
+
 // Don't modify this value
 extern UINT32 guiBaseJA2Clock;
 extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 
-// // MACROS
-// //																CHeck
-// // if new counter < 0
-// //| set to 0 |
-// // Decrement
+// MACROS
+//																CHeck
+// if new counter < 0
+//| set to 0 |
+// Decrement
 
 #ifdef CALLBACKTIMER
 
@@ -79,14 +79,14 @@ extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 #define UPDATETIMECOUNTER(c) ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE)
 #define RESETTIMECOUNTER(c, d) (c = d)
 
-// #ifdef BOUNDS_CHECKER
-// #define TIMECOUNTERDONE(c, d) true
-// #else
-// #define TIMECOUNTERDONE(c, d) (c == 0)
-// #endif
-//
-// #define SYNCTIMECOUNTER() (void)0
-// #define ZEROTIMECOUNTER(c) (c = 0)
+#ifdef BOUNDS_CHECKER
+#define TIMECOUNTERDONE(c, d) true
+#else
+#define TIMECOUNTERDONE(c, d) (c == 0)
+#endif
+
+#define SYNCTIMECOUNTER() (void)0
+#define ZEROTIMECOUNTER(c) (c = 0)
 
 #else
 

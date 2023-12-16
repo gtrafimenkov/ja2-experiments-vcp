@@ -1,51 +1,51 @@
-// /****************************************************************************************
-//  * JA2 Lighting Module
-//  *
-//  *		Tile-based, ray-casted lighting system.
-//  *
-//  *		Lights are precalculated into linked lists containing offsets from
-//  *0,0, and a light level to add at that tile. Lists are constructed by casting a
-//  *ray from the origin of the light, and each tile stopped at is stored as a node
-//  *in the list. To draw the light during runtime, you traverse the list, checking
-//  *at each tile that it isn't of the type that can obscure light. If it is, you
-//  *keep traversing the list until you hit a node with a marker LIGHT_NEW_RAY,
-//  *which means you're back at the origin, and have skipped the remainder of the
-//  *last ray.
-//  *
-//  * Written by Derek Beland, April 14, 1997
-//  *
-//  ***************************************************************************************/
-// #include "TileEngine/Lighting.h"
-//
-// #include <stdexcept>
-//
-// #include "Editor/EditSys.h"
-// #include "SGP/Buffer.h"
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Input.h"
-// #include "SGP/Line.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/VObject.h"
-// #include "SGP/WCheck.h"
-// #include "SysGlobals.h"
-// #include "Tactical/AnimationData.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/PathAI.h"
-// #include "Tactical/RottingCorpses.h"
-// #include "Tactical/StructureWrap.h"
-// #include "TileEngine/Environment.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/RadarScreen.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/Structure.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/TileDef.h"
-// #include "TileEngine/WorldDef.h"
-// #include "math.h"
-//
+/****************************************************************************************
+ * JA2 Lighting Module
+ *
+ *		Tile-based, ray-casted lighting system.
+ *
+ *		Lights are precalculated into linked lists containing offsets from
+ *0,0, and a light level to add at that tile. Lists are constructed by casting a
+ *ray from the origin of the light, and each tile stopped at is stored as a node
+ *in the list. To draw the light during runtime, you traverse the list, checking
+ *at each tile that it isn't of the type that can obscure light. If it is, you
+ *keep traversing the list until you hit a node with a marker LIGHT_NEW_RAY,
+ *which means you're back at the origin, and have skipped the remainder of the
+ *last ray.
+ *
+ * Written by Derek Beland, April 14, 1997
+ *
+ ***************************************************************************************/
+#include "TileEngine/Lighting.h"
+
+#include <stdexcept>
+
+#include "Editor/EditSys.h"
+#include "SGP/Buffer.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/HImage.h"
+#include "SGP/Input.h"
+#include "SGP/Line.h"
+#include "SGP/MemMan.h"
+#include "SGP/VObject.h"
+#include "SGP/WCheck.h"
+#include "SysGlobals.h"
+#include "Tactical/AnimationData.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/PathAI.h"
+#include "Tactical/RottingCorpses.h"
+#include "Tactical/StructureWrap.h"
+#include "TileEngine/Environment.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/RadarScreen.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/Structure.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldDef.h"
+#include "math.h"
+
 // #define MAX_LIGHT_TEMPLATES 32  // maximum number of light types
 //
 // // stucture of node in linked list for lights
@@ -76,10 +76,10 @@
 //
 // // Sprite data
 // LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
-//
-// // Lighting system general data
-// UINT8 ubAmbientLightLevel = DEFAULT_SHADE_LEVEL;
-//
+
+// Lighting system general data
+UINT8 ubAmbientLightLevel = DEFAULT_SHADE_LEVEL;
+
 // SGPPaletteEntry g_light_color = {0, 0, 0, 0};
 //
 // static SGPPaletteEntry gpOrigLight = {0, 0, 0, 0};

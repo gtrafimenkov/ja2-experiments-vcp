@@ -149,8 +149,8 @@ struct MOUSE_REGION {
 #define MSYS_CALLBACK_REASON_WHEEL_UP 0x0800
 #define MSYS_CALLBACK_REASON_WHEEL_DOWN 0x1000
 
-// // Internal Functions
-// void MSYS_SetCurrentCursor(UINT16 Cursor);
+// Internal Functions
+void MSYS_SetCurrentCursor(UINT16 Cursor);
 
 // External
 void MSYS_Init(void);

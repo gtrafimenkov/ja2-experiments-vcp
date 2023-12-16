@@ -58,9 +58,9 @@ BOOLEAN AllowedToTimeCompress(void);
 //
 // void ChangeCurrentMapscreenMessageIndex(UINT8 ubNewMessageIndex);
 // void MoveToEndOfMapScreenMessageList(void);
-//
-// // the dirty state of the mapscreen interface bottom
-// extern BOOLEAN fMapScreenBottomDirty;
+
+// the dirty state of the mapscreen interface bottom
+extern BOOLEAN fMapScreenBottomDirty;
 
 #endif
 

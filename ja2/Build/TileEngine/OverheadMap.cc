@@ -1,5 +1,5 @@
-// #include "TileEngine/OverheadMap.h"
-//
+#include "TileEngine/OverheadMap.h"
+
 // #include "Directories.h"
 // #include "GameLoop.h"
 // #include "GameState.h"
@@ -66,7 +66,7 @@
 // static SMALL_TILE_SURF gSmTileSurf[NUMBEROFTILETYPES];
 // static SMALL_TILE_DB gSmTileDB[NUMBEROFTILES];
 // static TileSetID gubSmTileNum = TILESET_INVALID;
-// static BOOLEAN gfInOverheadMap = FALSE;
+static BOOLEAN gfInOverheadMap = FALSE;
 // static MOUSE_REGION OverheadRegion;
 // static MOUSE_REGION OverheadBackgroundRegion;
 // static SGPVObject *uiOVERMAP;
@@ -315,9 +315,9 @@
 //   EndFrameBufferRender();
 //   fInterfacePanelDirty = DIRTYLEVEL0;
 // }
-//
-// BOOLEAN InOverheadMap() { return (gfInOverheadMap); }
-//
+
+BOOLEAN InOverheadMap() { return (gfInOverheadMap); }
+
 // static void ClickOverheadRegionCallback(MOUSE_REGION *reg, INT32 reason);
 //
 // void GoIntoOverheadMap() {

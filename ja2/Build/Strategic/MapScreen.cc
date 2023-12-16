@@ -324,7 +324,7 @@
 // static BOOLEAN fFlashAssignDone = FALSE;
 BOOLEAN fInMapMode = FALSE;
 BOOLEAN fMapPanelDirty = TRUE;
-// BOOLEAN fTeamPanelDirty = TRUE;
+BOOLEAN fTeamPanelDirty = TRUE;
 // BOOLEAN fCharacterInfoPanelDirty = TRUE;
 // BOOLEAN fReDrawFace = FALSE;
 // BOOLEAN fShowInventoryFlag = FALSE;
@@ -5708,8 +5708,8 @@ void EndMapScreen(BOOLEAN fDuringFade) {
 //     fCreated = FALSE;
 //   }
 // }
-//
-// void TellPlayerWhyHeCantCompressTime(void) {
+
+void TellPlayerWhyHeCantCompressTime(void) {
 //   // if we're locked into paused time compression by some event that enforces
 //   // that
 //   if (PauseStateLocked()) {
@@ -5754,8 +5754,8 @@ void EndMapScreen(BOOLEAN fDuringFade) {
 //     DoMapMessageBox(MSG_BOX_BASIC_STYLE, gzLateLocalizedString[STR_LATE_28], MAP_SCREEN,
 //                     MSG_BOX_FLAG_OK, MapScreenDefaultOkBoxCallback);
 //   }
-// }
-//
+}
+
 // void MapScreenDefaultOkBoxCallback(MessageBoxReturnValue const bExitValue) {
 //   if (bExitValue == MSG_BOX_RETURN_OK) {
 //     fMapPanelDirty = TRUE;

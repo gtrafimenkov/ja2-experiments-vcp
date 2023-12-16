@@ -84,8 +84,8 @@ class SGPVObject {
 };
 ENUM_BITSET(SGPVObject::Flags)
 
-// // Creates a list to contain video objects
-// void InitializeVideoObjectManager(void);
+// Creates a list to contain video objects
+void InitializeVideoObjectManager(void);
 
 // Deletes any video object placed into list
 void ShutdownVideoObjectManager(void);

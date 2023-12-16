@@ -142,9 +142,9 @@ void ShutdownSoundManager(void) {
   fSoundSystemInit = FALSE;
 }
 
-// static SOUNDTAG *SoundGetFreeChannel(void);
+static SOUNDTAG *SoundGetFreeChannel(void);
 static SAMPLETAG *SoundLoadSample(const char *pFilename);
-// static BOOLEAN SoundPlayStreamed(const char *pFilename);
+static BOOLEAN SoundPlayStreamed(const char *pFilename);
 static UINT32 SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, UINT32 volume, UINT32 pan,
                                UINT32 loop, void (*end_callback)(void *), void *data);
 
@@ -176,9 +176,9 @@ UINT32 SoundPlay(const char *pFilename, UINT32 volume, UINT32 pan, UINT32 loop,
   return SoundStartSample(sample, channel, volume, pan, loop, end_callback, data);
 }
 
-// static SAMPLETAG *SoundGetEmptySample(void);
+static SAMPLETAG *SoundGetEmptySample(void);
 static BOOLEAN SoundCleanCache(void);
-// static SAMPLETAG *SoundGetEmptySample(void);
+static SAMPLETAG *SoundGetEmptySample(void);
 static size_t GetSampleSize(const SAMPLETAG *const s);
 
 UINT32 SoundPlayFromBuffer(INT16 *pbuffer, UINT32 size, UINT32 volume, UINT32 pan, UINT32 loop,

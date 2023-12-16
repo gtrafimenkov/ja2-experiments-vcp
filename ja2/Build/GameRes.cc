@@ -1,16 +1,16 @@
 #include "GameRes.h"
 
-// #include <locale.h>
+#include <locale.h>
 #include <stdexcept>
 
 #include "Directories.h"
-// #include "GameState.h"
-// #include "SGP/EncodingCorrectors.h"
-// #include "SGP/LibraryDataBase.h"
-// #include "SGP/Logger.h"
+#include "GameState.h"
+#include "SGP/EncodingCorrectors.h"
+#include "SGP/LibraryDataBase.h"
+#include "SGP/Logger.h"
 #include "SGP/StrUtils.h"
 #include "SGP/TranslationTable.h"
-// #include "Utils/MultiLanguageGraphicUtils.h"
+#include "Utils/MultiLanguageGraphicUtils.h"
 #include "Utils/Text.h"
 //
 // extern LanguageRes g_LanguageResDutch;
@@ -113,45 +113,45 @@ bool isRussianGoldVersion() { return s_gameVersion == GV_RUSSIAN_GOLD; }
 //   // game!
 //   return (s_gameVersion == GV_RUSSIAN) ? 6.00 : 5.00;
 // }
-//
-// void InitGameResources(void) {
-//   std::vector<std::string> libraries =
-//       FindFilesInDir(FileMan::getDataDirPath(), ".slf", true, true);
-//
-//   // for (int i = 0; i < libraries.size(); i++)
-//   // {
-//   //   LOG_WARNING("%s\n", libraries[i].c_str());
-//   // }
-//
-//   switch (s_gameVersion) {
-//     case GV_DUTCH:
-//       libraries.push_back("dutch.slf");
-//       break;
-//     case GV_GERMAN:
-//       libraries.push_back("german.slf");
-//       break;
-//     case GV_ITALIAN:
-//       libraries.push_back("italian.slf");
-//       break;
-//     case GV_POLISH:
-//       libraries.push_back("polish.slf");
-//       break;
-//     case GV_RUSSIAN:
-//       libraries.push_back("russian.slf");
-//       break;
-//     default:
-//       break;
-//   }
-//
-//   if (GameState::getInstance()->isEditorMode()) {
-//     libraries.push_back("editor.slf");
-//   }
-//
-//   InitializeFileDatabase(libraries);
-// }
-//
-// #define STI(LNG, x) LNG "/" x "_" LNG ".sti"
-// #define PCX(LNG, x) LNG "/" x "_" LNG ".pcx"
+
+void InitGameResources(void) {
+  std::vector<std::string> libraries =
+      FindFilesInDir(FileMan::getDataDirPath(), ".slf", true, true);
+
+  // for (int i = 0; i < libraries.size(); i++)
+  // {
+  //   LOG_WARNING("%s\n", libraries[i].c_str());
+  // }
+
+  switch (s_gameVersion) {
+    case GV_DUTCH:
+      libraries.push_back("dutch.slf");
+      break;
+    case GV_GERMAN:
+      libraries.push_back("german.slf");
+      break;
+    case GV_ITALIAN:
+      libraries.push_back("italian.slf");
+      break;
+    case GV_POLISH:
+      libraries.push_back("polish.slf");
+      break;
+    case GV_RUSSIAN:
+      libraries.push_back("russian.slf");
+      break;
+    default:
+      break;
+  }
+
+  if (GameState::getInstance()->isEditorMode()) {
+    libraries.push_back("editor.slf");
+  }
+
+  InitializeFileDatabase(libraries);
+}
+
+#define STI(LNG, x) LNG "/" x "_" LNG ".sti"
+#define PCX(LNG, x) LNG "/" x "_" LNG ".pcx"
 
 char const *GetMLGFilename(MultiLanguageGraphic const id) {
   if ((s_gameVersion == GV_ENGLISH) || (s_gameVersion == GV_FRENCH) ||

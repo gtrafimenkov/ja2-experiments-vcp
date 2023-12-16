@@ -59,13 +59,13 @@ char const *GetMLGFilename(MultiLanguageGraphic);
 /** Choose game version. */
 void setGameVersion(GameVersion ver);
 
-// /** Initialize game resources for the current version. */
-// void InitGameResources(void);
-//
-// /**
-//  * Get encoding corrector for strings in data files.
-//  * @return NULL when no encoding corrector is required */
-// const IEncodingCorrector *getDataFilesEncodingCorrector();
+/** Initialize game resources for the current version. */
+void InitGameResources(void);
+
+/**
+ * Get encoding corrector for strings in data files.
+ * @return NULL when no encoding corrector is required */
+const IEncodingCorrector *getDataFilesEncodingCorrector();
 
 /** Check if this is English version of the game. */
 bool isEnglishVersion();

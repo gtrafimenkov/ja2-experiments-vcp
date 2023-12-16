@@ -1,15 +1,15 @@
-// #include "Utils/EventPump.h"
-//
-// #include <stdexcept>
-//
-// #include "SGP/Debug.h"
-// #include "Tactical/OppList.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/SoldierControl.h"
-// #include "Tactical/Weapons.h"
-// #include "Utils/EventManager.h"
-// #include "Utils/TimerControl.h"
-//
+#include "Utils/EventPump.h"
+
+#include <stdexcept>
+
+#include "SGP/Debug.h"
+#include "Tactical/OppList.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/SoldierControl.h"
+#include "Tactical/Weapons.h"
+#include "Utils/EventManager.h"
+#include "Utils/TimerControl.h"
+
 // static void AddGameEventToQueue(UINT32 uiEvent, UINT16 usDelay, PTR pEventData,
 //                                 EventQueueID ubQueueID);
 //
@@ -266,15 +266,15 @@
 //
 //   return TRUE;
 // }
-//
-// BOOLEAN ClearEventQueue(void) {
-//   // clear out the event queue
-//   while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
-//     EVENT *Event = RemoveEvent(0, PRIMARY_EVENT_QUEUE);
-//     if (Event == NULL) return FALSE;
-//     FreeEvent(Event);
-//   }
-//
-//   return TRUE;
-// }
-//
+
+BOOLEAN ClearEventQueue(void) {
+  // // clear out the event queue
+  // while (EventQueueSize(PRIMARY_EVENT_QUEUE) > 0) {
+  //   EVENT *Event = RemoveEvent(0, PRIMARY_EVENT_QUEUE);
+  //   if (Event == NULL) return FALSE;
+  //   FreeEvent(Event);
+  // }
+
+  return TRUE;
+}
+

@@ -1,4 +1,3 @@
-
 //=================================================================================================
 //	MouseSystem.c
 //
@@ -13,26 +12,26 @@
 
 #include "SGP/MouseSystem.h"
 
-// #include <stdexcept>
-//
-// #include "JAScreens.h"
-// #include "Local.h"
+#include <stdexcept>
+
+#include "JAScreens.h"
+#include "Local.h"
 #include "SGP/ButtonSystem.h"
 #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
+#include "SGP/Debug.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
 #include "SGP/Input.h"
-// #include "SGP/Line.h"
+#include "SGP/Line.h"
 #include "SGP/MemMan.h"
 #include "SGP/Timer.h"
-// #include "SGP/Types.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "ScreenIDs.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "Utils/FontControl.h"
+#include "SGP/Types.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "ScreenIDs.h"
+#include "TileEngine/RenderDirty.h"
+#include "Utils/FontControl.h"
 
 // Kris:	Nov 31, 1999 -- Added support for double clicking
 //
@@ -217,18 +216,18 @@ static void MSYS_AddRegionToList(MOUSE_REGION *const r) {
   }
 }
 
-// // Removes a region from the current list.
-// static void MSYS_DeleteRegionFromList(MOUSE_REGION *const r) {
-//   MOUSE_REGION *const prev = r->prev;
-//   MOUSE_REGION *const next = r->next;
-//   if (prev) prev->next = next;
-//   if (next) next->prev = prev;
-//
-//   if (MSYS_RegList == r) MSYS_RegList = next;
-//
-//   r->prev = 0;
-//   r->next = 0;
-// }
+// Removes a region from the current list.
+static void MSYS_DeleteRegionFromList(MOUSE_REGION *const r) {
+  MOUSE_REGION *const prev = r->prev;
+  MOUSE_REGION *const next = r->next;
+  if (prev) prev->next = next;
+  if (next) next->prev = prev;
+
+  if (MSYS_RegList == r) MSYS_RegList = next;
+
+  r->prev = 0;
+  r->next = 0;
+}
 
 /* Searches the list for the highest priority region and updates its info.  It
  * also dispatches the callback functions */

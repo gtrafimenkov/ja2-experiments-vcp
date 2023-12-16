@@ -4,7 +4,7 @@
 #include "SGP/Types.h"
 
 extern SGPRect ClippingRect;
-// extern UINT32 guiTranslucentMask;
+extern UINT32 guiTranslucentMask;
 
 extern void SetClippingRect(SGPRect *clip);
 void GetClippingRect(SGPRect *clip);

@@ -28,7 +28,7 @@
 // #define FIRST_TOWN OMERTA
 //
 // extern BOOLEAN fCharacterInfoPanelDirty;
-// extern BOOLEAN fTeamPanelDirty;
+extern BOOLEAN fTeamPanelDirty;
 extern BOOLEAN fMapPanelDirty;
 
 // extern BOOLEAN fMapInventoryItem;
@@ -47,9 +47,9 @@ void EndMapScreen(BOOLEAN fDuringFade);
 // void ChangeSelectedMapSector(INT16 sMapX, INT16 sMapY, INT8 bMapZ);
 //
 // BOOLEAN CanExtendContractForSoldier(const SOLDIERTYPE *s);
-//
-// void TellPlayerWhyHeCantCompressTime(void);
-//
+
+void TellPlayerWhyHeCantCompressTime(void);
+
 // // the info character
 // extern INT8 bSelectedInfoChar;
 //

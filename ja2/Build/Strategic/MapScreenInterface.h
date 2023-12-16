@@ -1,12 +1,12 @@
-// #ifndef MAP_SCREEN_INTERFACE_H
-// #define MAP_SCREEN_INTERFACE_H
-//
-// #include "JA2Types.h"
-// #include "MessageBoxScreen.h"
-// #include "SGP/MouseSystem.h"
-// #include "ScreenIDs.h"
-// #include "Tactical/ItemTypes.h"
-//
+#ifndef MAP_SCREEN_INTERFACE_H
+#define MAP_SCREEN_INTERFACE_H
+
+#include "JA2Types.h"
+#include "MessageBoxScreen.h"
+#include "SGP/MouseSystem.h"
+#include "ScreenIDs.h"
+#include "Tactical/ItemTypes.h"
+
 // // char breath and life position
 // #define BAR_INFO_X 66
 // #define BAR_INFO_Y 61
@@ -326,10 +326,10 @@
 //
 // // find this soldier in mapscreen character list and set as contract
 // void FindAndSetThisContractSoldier(SOLDIERTYPE *pSoldier);
-//
-// // lose the cursor, re-render
-// void HandleMAPUILoseCursorFromOtherScreen(void);
-//
+
+// lose the cursor, re-render
+void HandleMAPUILoseCursorFromOtherScreen(void);
+
 // void RenderMapRegionBackground(void);
 //
 // // update mapscreen assignment positions
@@ -406,10 +406,10 @@
 // // help text to show user merc has insurance
 // void UpdateHelpTextForMapScreenMercIcons(void);
 // void CreateDestroyInsuranceMouseRegionForMercs(BOOLEAN fCreate);
-//
-// // stuff to deal with player just starting the game
-// BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo(void);
-//
+
+// stuff to deal with player just starting the game
+BOOLEAN HandleTimeCompressWithTeamJackedInAndGearedToGo(void);
+
 // // handle sector being taken over uncontested
 // void NotifyPlayerWhenEnemyTakesControlOfImportantSector(INT16 x, INT16 y, INT8 z);
 //
@@ -472,6 +472,6 @@
 //
 // void LoadMapScreenInterfaceGraphics();
 // void DeleteMapScreenInterfaceGraphics();
-//
-// #endif
-//
+
+#endif
+

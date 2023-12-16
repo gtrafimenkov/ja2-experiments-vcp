@@ -288,9 +288,9 @@ extern TacticalStatusType gTacticalStatus;
 // void CommonEnterCombatModeCode(void);
 //
 // void CheckForPotentialAddToBattleIncrement(SOLDIERTYPE *pSoldier);
-//
-// void CencelAllActionsForTimeCompression(void);
-//
+
+void CencelAllActionsForTimeCompression(void);
+
 // BOOLEAN CheckForEndOfBattle(BOOLEAN fAnEnemyRetreated);
 //
 // void AddManToTeam(INT8 bTeam);

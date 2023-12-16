@@ -1,5 +1,5 @@
-// #include "Tactical/Overhead.h"
-//
+#include "Tactical/Overhead.h"
+
 // #include "Editor/EditorMercs.h"
 // #include "GameSettings.h"
 // #include "JAScreens.h"
@@ -5058,8 +5058,8 @@
 //     }
 //   }
 // }
-//
-// void CencelAllActionsForTimeCompression(void) {
+
+void CencelAllActionsForTimeCompression(void) {
 //   FOR_EACH_SOLDIER(s) {
 //     if (!s->bInSector) continue;
 //
@@ -5069,8 +5069,8 @@
 //     // END AI actions
 //     CancelAIAction(s);
 //   }
-// }
-//
+}
+
 // void AddManToTeam(INT8 bTeam) {
 //   // ATE: If not loading game!
 //   if (!(gTacticalStatus.uiFlags & LOADING_SAVED_GAME)) {

@@ -69,7 +69,7 @@ static SDL_Rect DirtyRegions[MAX_DIRTY_REGIONS];
 static UINT32 guiDirtyRegionCount;
 static BOOLEAN gfForceFullScreenRefresh;
 
-// static SDL_Rect DirtyRegionsEx[MAX_DIRTY_REGIONS];
+static SDL_Rect DirtyRegionsEx[MAX_DIRTY_REGIONS];
 static UINT32 guiDirtyRegionExCount;
 
 // Screen output stuff
