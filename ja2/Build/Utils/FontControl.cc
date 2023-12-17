@@ -33,9 +33,9 @@ static void CreateFontPaletteTables(Font);
 
 void InitializeFonts(void) {
 #define M(var, file) (CreateFontPaletteTables((var) = LoadFontFile((file))))
-//   M(gp10PointArial, FONTSDIR "/font10arial.sti");
+  M(gp10PointArial, FONTSDIR "/font10arial.sti");
   M(gp10PointArialBold, FONTSDIR "/font10arialbold.sti");
-//   M(gp12PointArial, FONTSDIR "/font12arial.sti");
+  M(gp12PointArial, FONTSDIR "/font12arial.sti");
 //   M(gp12PointArialFixedFont, FONTSDIR "/font12arialfixedwidth.sti");
 //   M(gp12PointFont1, FONTSDIR "/font12point1.sti");
 //   M(gp14PointArial, FONTSDIR "/font14arial.sti");
@@ -48,7 +48,7 @@ void InitializeFonts(void) {
   M(gpLargeFontType1, FONTSDIR "/largefont1.sti");
 //   M(gpSmallCompFont, FONTSDIR "/smallcompfont.sti");
   M(gpSmallFontType1, FONTSDIR "/smallfont1.sti");
-//   M(gpTinyFontType1, FONTSDIR "/tinyfont1.sti");
+  M(gpTinyFontType1, FONTSDIR "/tinyfont1.sti");
 //
 //   if (GameState::getInstance()->isEditorMode() && isEnglishVersion()) {
 //     M(gpHugeFont, FONTSDIR "/hugefont.sti");
@@ -60,9 +60,9 @@ void InitializeFonts(void) {
 }
 
 void ShutdownFonts(void) {
-//   UnloadFont(gp10PointArial);
+  UnloadFont(gp10PointArial);
   UnloadFont(gp10PointArialBold);
-//   UnloadFont(gp12PointArial);
+  UnloadFont(gp12PointArial);
 //   UnloadFont(gp12PointArialFixedFont);
 //   UnloadFont(gp12PointFont1);
 //   UnloadFont(gp14PointArial);
@@ -72,10 +72,10 @@ void ShutdownFonts(void) {
 //   UnloadFont(gpBlockyFont);
 //   UnloadFont(gpBlockyFont2);
   UnloadFont(gpCompFont);
-//   UnloadFont(gpLargeFontType1);
+  UnloadFont(gpLargeFontType1);
 //   UnloadFont(gpSmallCompFont);
   UnloadFont(gpSmallFontType1);
-//   UnloadFont(gpTinyFontType1);
+  UnloadFont(gpTinyFontType1);
 //
 //   if (GameState::getInstance()->isEditorMode() && isEnglishVersion()) {
 //     UnloadFont(gpHugeFont);

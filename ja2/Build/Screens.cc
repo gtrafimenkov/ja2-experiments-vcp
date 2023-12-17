@@ -22,32 +22,32 @@
 #include "Utils/MapUtility.h"
 
 Screens const GameScreens[MAX_SCREENS] = {
-//     {EditScreenInit, EditScreenHandle, EditScreenShutdown},
+    {NULL, NULL, NULL},//     {EditScreenInit, EditScreenHandle, EditScreenShutdown},
     {NULL, NULL, NULL},
     {NULL, NULL, NULL},
     {NULL, ErrorScreenHandle, NULL},  // Title Screen
     {NULL, InitScreenHandle, NULL},   // Title Screen
     {MainGameScreenInit, MainGameScreenHandle, MainGameScreenShutdown},
-//     {NULL, AniEditScreenHandle, NULL},
-//     {NULL, PalEditScreenHandle, NULL},
-//     {NULL, DebugScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, AniEditScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, PalEditScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, DebugScreenHandle, NULL},
     {MapScreenInit, MapScreenHandle, MapScreenShutdown},
     {LaptopScreenInit, LaptopScreenHandle, LaptopScreenShutdown},
-//     {NULL, LoadSaveScreenHandle, NULL},
-//     {NULL, MapUtilScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, LoadSaveScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, MapUtilScreenHandle, NULL},
     {NULL, FadeScreenHandle, NULL},
     {NULL, MessageBoxScreenHandle, MessageBoxScreenShutdown},
     {NULL, MainMenuScreenHandle, NULL},
-//     {NULL, AutoResolveScreenHandle, NULL},
-//     {NULL, SaveLoadScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, AutoResolveScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, SaveLoadScreenHandle, NULL},
     {NULL, OptionsScreenHandle, NULL},
-//     {ShopKeeperScreenInit, ShopKeeperScreenHandle, ShopKeeperScreenShutdown},
-//     {NULL, SexScreenHandle, NULL},
-//     {NULL, GameInitOptionsScreenHandle, NULL},
-//     {NULL, NULL, NULL},
-//     {NULL, IntroScreenHandle, NULL},
-//     {NULL, CreditScreenHandle, NULL},
-//     {QuestDebugScreenInit, QuestDebugScreenHandle, NULL}
+    {NULL, NULL, NULL},//     {ShopKeeperScreenInit, ShopKeeperScreenHandle, ShopKeeperScreenShutdown},
+    {NULL, NULL, NULL},//     {NULL, SexScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, GameInitOptionsScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, NULL, NULL},
+    {NULL, NULL, NULL},//     {NULL, IntroScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {NULL, CreditScreenHandle, NULL},
+    {NULL, NULL, NULL},//     {QuestDebugScreenInit, QuestDebugScreenHandle, NULL}
 };
 
 #include "gtest/gtest.h"
