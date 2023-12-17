@@ -245,6 +245,7 @@ void GameLoop(void) try {
     guiPendingScreen = NO_PENDING_SCREEN;
   }
 
+  printf("guiCurrentScreen: %d\n", guiCurrentScreen);
   uiOldScreen = (*(GameScreens[guiCurrentScreen].HandleScreen))();
 
   // if the screen has chnaged

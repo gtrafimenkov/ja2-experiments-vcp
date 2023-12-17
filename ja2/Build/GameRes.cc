@@ -211,8 +211,8 @@ char const *GetMLGFilename(MultiLanguageGraphic const id) {
 //         return LAPTOPDIR "/statsbox.sti";
 //       case MLG_STOREPLAQUE:
 //         return LAPTOPDIR "/bobbystoreplaque.sti";
-//       case MLG_TITLETEXT:
-//         return LOADSCREENSDIR "/titletext.sti";
+      case MLG_TITLETEXT:
+        return LOADSCREENSDIR "/titletext.sti";
 //       case MLG_TOALUMNI:
 //         return LAPTOPDIR "/toalumni.sti";
 //       case MLG_TOMUGSHOTS:
