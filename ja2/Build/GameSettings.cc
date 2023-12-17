@@ -1,33 +1,33 @@
-// #include "GameSettings.h"
-//
-// #include "Cheats.h"
-// #include "GameRes.h"
-// #include "GameVersion.h"
-// #include "HelpScreen.h"
-// #include "OptionsScreen.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/LibraryDataBase.h"
-// #include "SGP/LoadSaveData.h"
-// #include "SGP/Random.h"
-// #include "SGP/SGP.h"
-// #include "SGP/Types.h"
-// #include "SaveLoadGame.h"
-// #include "SaveLoadScreen.h"
-// #include "ScreenIDs.h"
-// #include "Strategic/Meanwhile.h"
-// #include "Strategic/QueenCommand.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Tactical/Campaign.h"
-// #include "Tactical/Overhead.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/MusicControl.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/Text.h"
-//
-// #define GAME_SETTINGS_FILE "../Ja2.set"
-//
-// GAME_SETTINGS gGameSettings;
+#include "GameSettings.h"
+
+#include "Cheats.h"
+#include "GameRes.h"
+#include "GameVersion.h"
+#include "HelpScreen.h"
+#include "OptionsScreen.h"
+#include "SGP/FileMan.h"
+#include "SGP/LibraryDataBase.h"
+#include "SGP/LoadSaveData.h"
+#include "SGP/Random.h"
+#include "SGP/SGP.h"
+#include "SGP/Types.h"
+#include "SaveLoadGame.h"
+#include "SaveLoadScreen.h"
+#include "ScreenIDs.h"
+#include "Strategic/Meanwhile.h"
+#include "Strategic/QueenCommand.h"
+#include "Strategic/StrategicMap.h"
+#include "Tactical/Campaign.h"
+#include "Tactical/Overhead.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/MusicControl.h"
+#include "Utils/SoundControl.h"
+#include "Utils/Text.h"
+
+#define GAME_SETTINGS_FILE "../Ja2.set"
+
+GAME_SETTINGS gGameSettings;
 // GAME_OPTIONS gGameOptions;
 //
 // // Change this number when we want any who gets the new build to reset the
@@ -164,8 +164,8 @@
 //   // Since we just set the settings, save them
 //   SaveGameSettings();
 // }
-//
-// void InitGameOptions() {
+
+void InitGameOptions() {
 //   memset(&gGameOptions, 0, sizeof(GAME_OPTIONS));
 //
 //   // Init the game options
@@ -174,8 +174,8 @@
 //   gGameOptions.ubDifficultyLevel = DIF_LEVEL_EASY;
 //   // gGameOptions.fTurnTimeLimit		 = FALSE;
 //   gGameOptions.fIronManMode = FALSE;
-// }
-//
+}
+
 // void CDromEjectionErrorMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
 //   if (bExitValue == MSG_BOX_RETURN_OK) {
 //     guiPreviousOptionScreen = GAME_SCREEN;

@@ -276,8 +276,8 @@ void MainGameScreenShutdown(void) {
 //
 // static void HandleModalTactical(void);
 // static void TacticalScreenLocateToSoldier(void);
-//
-// ScreenID MainGameScreenHandle(void) {
+
+ScreenID MainGameScreenHandle(void) {
 //   // DO NOT MOVE THIS FUNCTION CALL!!!
 //   // This determines if the help screen should be active
 //   //	if( ( !gfTacticalDoHeliRun && !gfFirstHeliRun ) &&
@@ -538,8 +538,8 @@ void MainGameScreenShutdown(void) {
 //   }
 //
 //   return (GAME_SCREEN);
-// }
-//
+}
+
 // void SetRenderHook(RENDER_HOOK pRenderOverride) { gRenderOverride = pRenderOverride; }
 //
 // void EnableFPSOverlay(BOOLEAN fEnable) {

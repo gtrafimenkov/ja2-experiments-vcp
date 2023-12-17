@@ -1,25 +1,25 @@
-// #include "Tactical/MapInformation.h"
-//
-// #include "Editor/EditorMercs.h"
-// #include "Editor/RoadSmoothing.h"
-// #include "SGP/Debug.h"
-// #include "SGP/FileMan.h"
-// #include "SGP/Random.h"
-// #include "SGP/Types.h"
-// #include "Tactical/AnimationData.h"
-// #include "Tactical/SoldierInitList.h"
-// #include "Tactical/Weapons.h"
-// #include "Tactical/WorldItems.h"
-// #include "TileEngine/Environment.h"
-// #include "TileEngine/ExitGrids.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/Lighting.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/WorldDef.h"
-// #include "Utils/AnimatedProgressBar.h"
-//
-// BOOLEAN gfWorldLoaded;
-//
+#include "Tactical/MapInformation.h"
+
+#include "Editor/EditorMercs.h"
+#include "Editor/RoadSmoothing.h"
+#include "SGP/Debug.h"
+#include "SGP/FileMan.h"
+#include "SGP/Random.h"
+#include "SGP/Types.h"
+#include "Tactical/AnimationData.h"
+#include "Tactical/SoldierInitList.h"
+#include "Tactical/Weapons.h"
+#include "Tactical/WorldItems.h"
+#include "TileEngine/Environment.h"
+#include "TileEngine/ExitGrids.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/Lighting.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/WorldDef.h"
+#include "Utils/AnimatedProgressBar.h"
+
+BOOLEAN gfWorldLoaded;
+
 // struct MAPCREATE_STRUCT;
 // MAPCREATE_STRUCT gMapInformation;
 //

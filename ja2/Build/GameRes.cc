@@ -25,8 +25,8 @@ extern LanguageRes g_LanguageResEnglish;
 /** Game version. */
 static GameVersion s_gameVersion = GV_ENGLISH;
 
-// /** Current language resources. */
-// const LanguageRes *g_langRes = &g_LanguageResEnglish;
+/** Current language resources. */
+const LanguageRes *g_langRes = &g_LanguageResEnglish;
 
 /** Character->Glyph translation table for the current language. */
 unsigned char const *TranslationTable = g_en_TranslationTable->m_table;

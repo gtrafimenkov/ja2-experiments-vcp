@@ -286,7 +286,7 @@ void GameLoop(void) try {
   throw std::runtime_error(msg);
 }
 
-// void SetPendingNewScreen(ScreenID const uiNewScreen) { guiPendingScreen = uiNewScreen; }
+void SetPendingNewScreen(ScreenID const uiNewScreen) { guiPendingScreen = uiNewScreen; }
 
 // Gets called when the screen changes, place any needed in code in here
 static void HandleNewScreenChange(UINT32 uiNewScreen, UINT32 uiOldScreen) {

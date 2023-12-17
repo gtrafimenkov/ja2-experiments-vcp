@@ -45,7 +45,7 @@ enum MultiLanguageGraphic {
   MLG_SPLASH,
 //   MLG_STATSBOX,
 //   MLG_STOREPLAQUE,
-//   MLG_TITLETEXT,
+  MLG_TITLETEXT,
 //   MLG_TOALUMNI,
 //   MLG_TOMUGSHOTS,
 //   MLG_TOSTATS,

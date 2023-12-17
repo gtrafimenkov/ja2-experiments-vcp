@@ -121,9 +121,9 @@
 //
 // SOLDIERTYPE *MercSlots[TOTAL_SOLDIERS];
 // UINT32 guiNumMercSlots = 0;
-//
-// TacticalStatusType gTacticalStatus;
-//
+
+TacticalStatusType gTacticalStatus;
+
 // static SOLDIERTYPE *AwaySlots[TOTAL_SOLDIERS];
 // static UINT32 guiNumAwaySlots = 0;
 //

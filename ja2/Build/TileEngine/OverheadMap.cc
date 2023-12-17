@@ -71,7 +71,7 @@ static BOOLEAN gfInOverheadMap = FALSE;
 // static MOUSE_REGION OverheadBackgroundRegion;
 // static SGPVObject *uiOVERMAP;
 // static SGPVObject *uiPERSONS;
-// BOOLEAN gfOverheadMapDirty = FALSE;
+BOOLEAN gfOverheadMapDirty = FALSE;
 // extern BOOLEAN gfRadarCurrentGuyFlash;
 // static INT16 gsStartRestrictedX;
 // static INT16 gsStartRestrictedY;

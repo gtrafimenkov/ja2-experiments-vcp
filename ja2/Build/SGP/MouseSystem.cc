@@ -476,12 +476,12 @@ void MSYS_DefineRegion(MOUSE_REGION *const r, UINT16 const tlx, UINT16 const tly
   gfRefreshUpdate = TRUE;
 }
 
-// void MOUSE_REGION::ChangeCursor(UINT16 const crsr) {
-//   Cursor = crsr;
-//   if (crsr != MSYS_NO_CURSOR && uiFlags & MSYS_MOUSE_IN_AREA) {
-//     MSYS_SetCurrentCursor(crsr);
-//   }
-// }
+void MOUSE_REGION::ChangeCursor(UINT16 const crsr) {
+  Cursor = crsr;
+  if (crsr != MSYS_NO_CURSOR && uiFlags & MSYS_MOUSE_IN_AREA) {
+    MSYS_SetCurrentCursor(crsr);
+  }
+}
 
 void MSYS_RemoveRegion(MOUSE_REGION *const r) {
 #ifdef MOUSESYSTEM_DEBUGGING
@@ -539,32 +539,32 @@ void RefreshMouseRegions() {
   MSYS_UpdateMouseRegion();
 }
 
-// void MOUSE_REGION::SetFastHelpText(wchar_t const *const text) {
-//   if (FastHelpText) {
-//     MemFree(FastHelpText);
-//     FastHelpText = 0;
-//   }
-//
-//   if (!(uiFlags & MSYS_REGION_EXISTS)) return;
-//
-//   if (!text || text[0] == L'\0') return;
-//
-//   FastHelpText = MALLOCN(wchar_t, wcslen(text) + 1);
-//   wcscpy(FastHelpText, text);
-//
-//   /* ATE: We could be replacing already existing, active text so let's remove
-//    * the region so it be rebuilt */
-//
-//   if (guiCurrentScreen == MAP_SCREEN) return;
-//
-// #ifdef _JA2_RENDER_DIRTY
-//   if (uiFlags & MSYS_GOT_BACKGROUND) FreeBackgroundRectPending(FastHelpRect);
-// #endif
-//
-//   uiFlags &= ~MSYS_GOT_BACKGROUND;
-//   uiFlags &= ~MSYS_FASTHELP_RESET;
-// }
-//
+void MOUSE_REGION::SetFastHelpText(wchar_t const *const text) {
+  if (FastHelpText) {
+    MemFree(FastHelpText);
+    FastHelpText = 0;
+  }
+
+  if (!(uiFlags & MSYS_REGION_EXISTS)) return;
+
+  if (!text || text[0] == L'\0') return;
+
+  FastHelpText = MALLOCN(wchar_t, wcslen(text) + 1);
+  wcscpy(FastHelpText, text);
+
+  /* ATE: We could be replacing already existing, active text so let's remove
+   * the region so it be rebuilt */
+
+  if (guiCurrentScreen == MAP_SCREEN) return;
+
+#ifdef _JA2_RENDER_DIRTY
+  if (uiFlags & MSYS_GOT_BACKGROUND) FreeBackgroundRectPending(FastHelpRect);
+#endif
+
+  uiFlags &= ~MSYS_GOT_BACKGROUND;
+  uiFlags &= ~MSYS_FASTHELP_RESET;
+}
+
 // static UINT32 GetNumberOfLinesInHeight(const wchar_t *String) {
 //   UINT32 Lines = 1;
 //   for (const wchar_t *i = String; *i != L'\0'; i++) {

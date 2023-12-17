@@ -381,13 +381,13 @@ BOOLEAN fTeamPanelDirty = TRUE;
 // GUIButtonRef giMapContractButton;
 //
 // INT32 giSortStateForMapScreenList = 0;
-//
-// INT32 giCommonGlowBaseTime = 0;
-// INT32 giFlashAssignBaseTime = 0;
-// INT32 giFlashContractBaseTime = 0;
-// UINT32 guiFlashCursorBaseTime = 0;
-// INT32 giPotCharPathBaseTime = 0;
-//
+
+INT32 giCommonGlowBaseTime = 0;
+INT32 giFlashAssignBaseTime = 0;
+INT32 giFlashContractBaseTime = 0;
+UINT32 guiFlashCursorBaseTime = 0;
+INT32 giPotCharPathBaseTime = 0;
+
 // static SGPVObject *guiCHARLIST;
 // static SGPVObject *guiCHARINFO;
 // static SGPVObject *guiSleepIcon;

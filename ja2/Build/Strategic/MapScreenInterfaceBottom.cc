@@ -109,9 +109,9 @@ BOOLEAN fMapScreenBottomDirty = TRUE;
 // static ExitToWhere gbExitingMapScreenToWhere = MAP_EXIT_TO_INVALID;
 //
 // static UINT8 gubFirstMapscreenMessageIndex = 0;
-//
-// UINT32 guiCompressionStringBaseTime = 0;
-//
+
+UINT32 guiCompressionStringBaseTime = 0;
+
 // // graphics
 // static SGPVObject *guiMAPBOTTOMPANEL;
 // static SGPVObject *guiSliderBar;

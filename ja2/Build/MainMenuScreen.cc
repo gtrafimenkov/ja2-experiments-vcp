@@ -2,6 +2,7 @@
 
 #include "Directories.h"
 #include "GameLoop.h"
+#include "GameRes.h"
 #include "GameSettings.h"
 #include "JA2Splash.h"
 #include "JAScreens.h"
@@ -141,8 +142,8 @@ static void HandleMainMenuScreen(void) {
       // Select the game which is to be restored
       guiPreviousOptionScreen = guiCurrentScreen;
       gbHandledMainMenu = 0;
-      gfSaveGame = FALSE;
-      SetMainMenuExitScreen(SAVE_LOAD_SCREEN);
+      // gfSaveGame = FALSE;
+      // SetMainMenuExitScreen(SAVE_LOAD_SCREEN);
       break;
 
     case PREFERENCES:
@@ -153,7 +154,7 @@ static void HandleMainMenuScreen(void) {
 
     case CREDITS:
       gbHandledMainMenu = 0;
-      SetMainMenuExitScreen(CREDIT_SCREEN);
+      // SetMainMenuExitScreen(CREDIT_SCREEN);
       break;
   }
 }
@@ -198,7 +199,7 @@ static void MenuButtonCallback(GUI_BUTTON *btn, INT32 reason) {
 
     switch (gbHandledMainMenu) {
       case NEW_GAME:
-        SetMainMenuExitScreen(GAME_INIT_OPTIONS_SCREEN);
+        // SetMainMenuExitScreen(GAME_INIT_OPTIONS_SCREEN);
         break;
       case LOAD_GAME:
         if (_KeyDown(ALT)) gfLoadGameUponEntry = TRUE;

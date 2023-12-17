@@ -1,59 +1,59 @@
-// #include "Tactical/Interface.h"
-//
-// #include <stdexcept>
-//
-// #include "Directories.h"
-// #include "GameSettings.h"
-// #include "Local.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/Input.h"
-// #include "SGP/Line.h"
-// #include "SGP/MouseSystem.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/MapScreen.h"
-// #include "Strategic/MapScreenInterfaceMap.h"
-// #include "Tactical/AnimationControl.h"
-// #include "Tactical/AnimationData.h"
-// #include "Tactical/Faces.h"
-// #include "Tactical/HandleDoors.h"
-// #include "Tactical/HandleUI.h"
-// #include "Tactical/InterfaceControl.h"
-// #include "Tactical/InterfaceCursors.h"
-// #include "Tactical/InterfaceItems.h"
-// #include "Tactical/InterfacePanels.h"
-// #include "Tactical/Items.h"
-// #include "Tactical/Keys.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/PathAI.h"
-// #include "Tactical/Points.h"
-// #include "Tactical/SoldierFind.h"
-// #include "Tactical/SoldierFunctions.h"
-// #include "Tactical/SoldierMacros.h"
-// #include "Tactical/SoldierProfile.h"
-// #include "Tactical/Squads.h"
-// #include "Tactical/Vehicles.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/RadarScreen.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/RenderWorld.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/TileDef.h"
-// #include "TileEngine/WorldMan.h"
-// #include "Utils/Cursors.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/MercTextBox.h"
-// #include "Utils/Message.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-//
+#include "Tactical/Interface.h"
+
+#include <stdexcept>
+
+#include "Directories.h"
+#include "GameSettings.h"
+#include "Local.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/Input.h"
+#include "SGP/Line.h"
+#include "SGP/MouseSystem.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/MapScreen.h"
+#include "Strategic/MapScreenInterfaceMap.h"
+#include "Tactical/AnimationControl.h"
+#include "Tactical/AnimationData.h"
+#include "Tactical/Faces.h"
+#include "Tactical/HandleDoors.h"
+#include "Tactical/HandleUI.h"
+#include "Tactical/InterfaceControl.h"
+#include "Tactical/InterfaceCursors.h"
+#include "Tactical/InterfaceItems.h"
+#include "Tactical/InterfacePanels.h"
+#include "Tactical/Items.h"
+#include "Tactical/Keys.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/PathAI.h"
+#include "Tactical/Points.h"
+#include "Tactical/SoldierFind.h"
+#include "Tactical/SoldierFunctions.h"
+#include "Tactical/SoldierMacros.h"
+#include "Tactical/SoldierProfile.h"
+#include "Tactical/Squads.h"
+#include "Tactical/Vehicles.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/RadarScreen.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/RenderWorld.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/TileDef.h"
+#include "TileEngine/WorldMan.h"
+#include "Utils/Cursors.h"
+#include "Utils/FontControl.h"
+#include "Utils/MercTextBox.h"
+#include "Utils/Message.h"
+#include "Utils/SoundControl.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+
 // #define ARROWS_X_OFFSET 10
 // #define ARROWS_HEIGHT 20
 // #define ARROWS_WIDTH 20
@@ -161,9 +161,9 @@
 // static SGPVObject *guiBUTTONBORDER;
 // SGPVObject *guiRADIO;
 // static SGPVObject *guiRADIO2;
-//
-// // UI Globals
-// MOUSE_REGION gViewportRegion;
+
+// UI Globals
+MOUSE_REGION gViewportRegion;
 // MOUSE_REGION gRadarRegion;
 //
 // static UINT16 gsUpArrowX;

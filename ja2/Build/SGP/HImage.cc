@@ -297,26 +297,26 @@ void ConvertRGBDistribution565To556(UINT16 *p16BPPData, UINT32 uiNumberOfPixels)
   }
 }
 
-// void ConvertRGBDistribution565ToAny(UINT16 *const p16BPPData, UINT32 const uiNumberOfPixels) {
-//   UINT16 *px = p16BPPData;
-//   for (size_t n = uiNumberOfPixels; n != 0; --n) {
-//     // put the 565 RGB 16-bit value into a 32-bit RGB value
-//     UINT32 const r = (*px) >> 11;
-//     UINT32 const g = (*px & 0x07E0) >> 5;
-//     UINT32 const b = (*px & 0x001F);
-//     UINT32 const rgb = FROMRGB(r, g, b);
-//     // then convert the 32-bit RGB value to whatever 16 bit format is used
-//     *px++ = Get16BPPColor(rgb);
-//   }
-// }
-//
-// #undef FAIL
-// #include "gtest/gtest.h"
-//
-// TEST(HImage, asserts) {
-//   EXPECT_EQ(sizeof(AuxObjectData), 16);
-//   EXPECT_EQ(sizeof(RelTileLoc), 2);
-//   EXPECT_EQ(sizeof(ETRLEObject), 16);
-//   EXPECT_EQ(sizeof(SGPPaletteEntry), 4);
-// }
-//
+void ConvertRGBDistribution565ToAny(UINT16 *const p16BPPData, UINT32 const uiNumberOfPixels) {
+  UINT16 *px = p16BPPData;
+  for (size_t n = uiNumberOfPixels; n != 0; --n) {
+    // put the 565 RGB 16-bit value into a 32-bit RGB value
+    UINT32 const r = (*px) >> 11;
+    UINT32 const g = (*px & 0x07E0) >> 5;
+    UINT32 const b = (*px & 0x001F);
+    UINT32 const rgb = FROMRGB(r, g, b);
+    // then convert the 32-bit RGB value to whatever 16 bit format is used
+    *px++ = Get16BPPColor(rgb);
+  }
+}
+
+#undef FAIL
+#include "gtest/gtest.h"
+
+TEST(HImage, asserts) {
+  EXPECT_EQ(sizeof(AuxObjectData), 16);
+  // EXPECT_EQ(sizeof(RelTileLoc), 2);
+  EXPECT_EQ(sizeof(ETRLEObject), 16);
+  EXPECT_EQ(sizeof(SGPPaletteEntry), 4);
+}
+

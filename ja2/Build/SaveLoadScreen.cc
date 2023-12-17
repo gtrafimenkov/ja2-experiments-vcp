@@ -1,5 +1,5 @@
-// #include "SaveLoadScreen.h"
-//
+#include "SaveLoadScreen.h"
+
 // #include <exception>
 //
 // #include "Directories.h"
@@ -154,9 +154,9 @@
 //
 // BOOLEAN gfLoadedGame = FALSE;  // Used to know when a game has been loaded, the flag in
 //                                // gtacticalstatus might have been reset already
-//
-// BOOLEAN gfLoadGameUponEntry = FALSE;
-//
+
+BOOLEAN gfLoadGameUponEntry = FALSE;
+
 // static BOOLEAN gfHadToMakeBasementLevels = FALSE;
 //
 // //
@@ -1288,16 +1288,16 @@
 //   StartFadeOutForSaveLoadScreen();
 //   gfDoingQuickLoad = TRUE;
 // }
-//
-// bool AreThereAnySavedGameFiles() {
+
+bool AreThereAnySavedGameFiles() {
 //   for (INT8 i = 0; i != NUM_SAVE_GAMES; ++i) {
 //     char filename[512];
 //     CreateSavedGameFileNameFromNumber(i, filename);
 //     if (FileExists(filename)) return true;
 //   }
-//   return false;
-// }
-//
+  return false;
+}
+
 // static void RedrawSaveLoadScreenAfterMessageBox(MessageBoxReturnValue const bExitValue) {
 //   gfRedrawSaveLoadScreen = TRUE;
 // }

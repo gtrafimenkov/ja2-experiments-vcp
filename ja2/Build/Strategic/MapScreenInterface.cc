@@ -190,10 +190,10 @@
 // static MOUSE_REGION gContractIconRegion;
 // static MOUSE_REGION gInsuranceIconRegion;
 // static MOUSE_REGION gDepositIconRegion;
-//
-// // general line..current and old
-// INT32 giHighLine = -1;
-//
+
+// general line..current and old
+INT32 giHighLine = -1;
+
 // // assignment's line...glow box
 // INT32 giAssignHighLine = -1;
 //
@@ -234,9 +234,9 @@
 //
 // // timers for double click
 // static INT32 giDblClickTimersForMoveBoxMouseRegions[MAX_POPUP_BOX_STRING_COUNT];
-//
-// UINT32 guiSectorLocatorBaseTime = 0;
-//
+
+UINT32 guiSectorLocatorBaseTime = 0;
+
 // // which menus are we showing
 // BOOLEAN fShowAssignmentMenu = FALSE;
 // BOOLEAN fShowTrainingMenu = FALSE;
@@ -709,15 +709,15 @@
 //   // enable team info panel
 //   fDisableDueToBattleRoster = FALSE;
 // }
-//
-// void DoMapMessageBoxWithRect(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
-//                              ScreenID const uiExitScreen, MessageBoxFlags const usFlags,
-//                              MSGBOX_CALLBACK const ReturnCallback,
-//                              SGPBox const *const centering_rect) {  // reset the highlighted line
-//   giHighLine = -1;
-//   DoMessageBox(ubStyle, zString, uiExitScreen, usFlags, ReturnCallback, centering_rect);
-// }
-//
+
+void DoMapMessageBoxWithRect(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
+                             ScreenID const uiExitScreen, MessageBoxFlags const usFlags,
+                             MSGBOX_CALLBACK const ReturnCallback,
+                             SGPBox const *const centering_rect) {  // reset the highlighted line
+  giHighLine = -1;
+  DoMessageBox(ubStyle, zString, uiExitScreen, usFlags, ReturnCallback, centering_rect);
+}
+
 // void DoMapMessageBox(MessageBoxStyleID const ubStyle, wchar_t const *const zString,
 //                      ScreenID const uiExitScreen, MessageBoxFlags const usFlags,
 //                      MSGBOX_CALLBACK const ReturnCallback) {

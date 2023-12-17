@@ -1,48 +1,48 @@
-// #include "Strategic/MapScreenInterfaceMapInventory.h"
-//
-// #include "Directories.h"
-// #include "MessageBoxScreen.h"
-// #include "SGP/Buffer.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/CursorControl.h"
-// #include "SGP/Debug.h"
-// #include "SGP/English.h"
-// #include "SGP/Font.h"
-// #include "SGP/HImage.h"
-// #include "SGP/MemMan.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "ScreenIDs.h"
-// #include "Strategic/AutoResolve.h"
-// #include "Strategic/MapScreen.h"
-// #include "Strategic/MapScreenInterface.h"
-// #include "Strategic/MapScreenInterfaceBorder.h"
-// #include "Strategic/MapScreenInterfaceBottom.h"
-// #include "Strategic/MapScreenInterfaceMap.h"
-// #include "Strategic/StrategicMap.h"
-// #include "Tactical/ArmsDealerInvInit.h"
-// #include "Tactical/HandleItems.h"
-// #include "Tactical/Interface.h"
-// #include "Tactical/InterfaceItems.h"
-// #include "Tactical/InterfacePanels.h"
-// #include "Tactical/InterfaceUtils.h"
-// #include "Tactical/Items.h"
-// #include "Tactical/Overhead.h"
-// #include "Tactical/ShopKeeperInterface.h"
-// #include "Tactical/SoldierControl.h"
-// #include "Tactical/TacticalSave.h"
-// #include "Tactical/WorldItems.h"
-// #include "TileEngine/IsometricUtils.h"
-// #include "TileEngine/RadarScreen.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/SysUtil.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/MultiLanguageGraphicUtils.h"
-// #include "Utils/Text.h"
-// #include "Utils/TimerControl.h"
-// #include "Utils/WordWrap.h"
-//
+#include "Strategic/MapScreenInterfaceMapInventory.h"
+
+#include "Directories.h"
+#include "MessageBoxScreen.h"
+#include "SGP/Buffer.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/CursorControl.h"
+#include "SGP/Debug.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/HImage.h"
+#include "SGP/MemMan.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "ScreenIDs.h"
+#include "Strategic/AutoResolve.h"
+#include "Strategic/MapScreen.h"
+#include "Strategic/MapScreenInterface.h"
+#include "Strategic/MapScreenInterfaceBorder.h"
+#include "Strategic/MapScreenInterfaceBottom.h"
+#include "Strategic/MapScreenInterfaceMap.h"
+#include "Strategic/StrategicMap.h"
+#include "Tactical/ArmsDealerInvInit.h"
+#include "Tactical/HandleItems.h"
+#include "Tactical/Interface.h"
+#include "Tactical/InterfaceItems.h"
+#include "Tactical/InterfacePanels.h"
+#include "Tactical/InterfaceUtils.h"
+#include "Tactical/Items.h"
+#include "Tactical/Overhead.h"
+#include "Tactical/ShopKeeperInterface.h"
+#include "Tactical/SoldierControl.h"
+#include "Tactical/TacticalSave.h"
+#include "Tactical/WorldItems.h"
+#include "TileEngine/IsometricUtils.h"
+#include "TileEngine/RadarScreen.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/SysUtil.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/MultiLanguageGraphicUtils.h"
+#include "Utils/Text.h"
+#include "Utils/TimerControl.h"
+#include "Utils/WordWrap.h"
+
 // // status bar colors
 // #define DESC_STATUS_BAR FROMRGB(201, 172, 133)
 // #define DESC_STATUS_BAR_SHADOW FROMRGB(140, 136, 119)
@@ -100,10 +100,10 @@
 //
 // // the unseen items list...have to save this
 // static WORLDITEM *pUnSeenItems = NULL;
-//
-// INT32 giFlashHighlightedItemBaseTime = 0;
-// INT32 giCompatibleItemBaseTime = 0;
-//
+
+INT32 giFlashHighlightedItemBaseTime = 0;
+INT32 giCompatibleItemBaseTime = 0;
+
 // static GUIButtonRef guiMapInvenButton[3];
 //
 // static BOOLEAN gfCheckForCursorOverMapSectorInventoryItem = FALSE;

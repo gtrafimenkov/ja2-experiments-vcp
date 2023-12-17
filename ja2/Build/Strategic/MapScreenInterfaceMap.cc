@@ -448,10 +448,10 @@
 // static UINT16 gusUndergroundNearBlack;
 //
 // BOOLEAN gfMilitiaPopupCreated = FALSE;
-//
-// INT32 giAnimateRouteBaseTime = 0;
-// INT32 giPotHeliPathBaseTime = 0;
-//
+
+INT32 giAnimateRouteBaseTime = 0;
+INT32 giPotHeliPathBaseTime = 0;
+
 // // sam and mine icons
 // static SGPVObject *guiSAMICON;
 //

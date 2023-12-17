@@ -91,8 +91,8 @@ UINT16 *gpZBuffer = NULL;
 //
 // static INT16 gusNormalItemOutlineColor;
 // static INT16 gusYellowItemOutlineColor;
-//
-// INT16 gsRenderHeight = 0;
+
+INT16 gsRenderHeight = 0;
 // BOOLEAN gfRenderFullThisFrame = 0;
 //
 // UINT8 gubCurScrollSpeedID = 1;
@@ -104,21 +104,21 @@ UINT16 *gpZBuffer = NULL;
 //
 // static const UINT8 gsGlowFrames[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 //                                      0, 0, 0, 0, 0, 2, 4, 6, 8, 9, 8, 6, 4, 2, 0};
-//
-// const INT16 gsVIEWPORT_START_X = 0;
-// const INT16 gsVIEWPORT_START_Y = 0;
-// const INT16 gsVIEWPORT_END_X = SCREEN_WIDTH;
-// const INT16 gsVIEWPORT_END_Y = SCREEN_HEIGHT - 120;
-// INT16 gsVIEWPORT_WINDOW_START_Y = 0;
-// INT16 gsVIEWPORT_WINDOW_END_Y = SCREEN_HEIGHT - 120;
+
+const INT16 gsVIEWPORT_START_X = 0;
+const INT16 gsVIEWPORT_START_Y = 0;
+const INT16 gsVIEWPORT_END_X = SCREEN_WIDTH;
+const INT16 gsVIEWPORT_END_Y = SCREEN_HEIGHT - 120;
+INT16 gsVIEWPORT_WINDOW_START_Y = 0;
+INT16 gsVIEWPORT_WINDOW_END_Y = SCREEN_HEIGHT - 120;
 
 INT16 gsTopLeftWorldX;
 INT16 gsTopLeftWorldY;
 INT16 gsBottomRightWorldX;
 INT16 gsBottomRightWorldY;
-// BOOLEAN gfIgnoreScrolling = FALSE;
-//
-// BOOLEAN gfIgnoreScrollDueToCenterAdjust = FALSE;
+BOOLEAN gfIgnoreScrolling = FALSE;
+
+BOOLEAN gfIgnoreScrollDueToCenterAdjust = FALSE;
 
 // GLOBAL SCROLLING PARAMS
 INT16 gCenterWorldX;
@@ -137,9 +137,9 @@ INT16 gsCY;
 // double gdScaleY;
 //
 // #define FASTMAPROWCOLTOPOS(r, c) ((r)*WORLD_COLS + (c))
-//
-// bool g_scroll_inertia = false;
-//
+
+bool g_scroll_inertia = false;
+
 // // GLOBALS FOR CALCULATING STARTING PARAMETERS
 // static INT16 gsStartPointX_W;
 // static INT16 gsStartPointY_W;
@@ -158,9 +158,9 @@ INT16 gsCY;
 // static INT16 gsLStartPointY_M;
 // static INT16 gsLEndXS;
 // static INT16 gsLEndYS;
-//
-// INT16 gsScrollXIncrement;
-// INT16 gsScrollYIncrement;
+
+INT16 gsScrollXIncrement;
+INT16 gsScrollYIncrement;
 
 // Rendering flags (full, partial, etc.)
 static RenderFlags gRenderFlags = RENDER_FLAG_NONE;
@@ -1508,12 +1508,12 @@ void SetRenderFlags(RenderFlags const uiFlags) { gRenderFlags |= uiFlags; }
 //
 // static void CalcRenderParameters(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom);
 // static void ResetRenderParameters(void);
-//
-// // Start with a center X,Y,Z world coordinate and render direction
-// // Determine WorldIntersectionPoint and the starting block from these
-// // Then render away!
-// void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom,
-//                            BOOLEAN fDynamicsToo) {
+
+// Start with a center X,Y,Z world coordinate and render direction
+// Determine WorldIntersectionPoint and the starting block from these
+// Then render away!
+void RenderStaticWorldRect(INT16 sLeft, INT16 sTop, INT16 sRight, INT16 sBottom,
+                           BOOLEAN fDynamicsToo) {
 //   RenderLayerID sLevelIDs[10];
 //
 //   // Calculate render starting parameters
@@ -1570,8 +1570,8 @@ void SetRenderFlags(RenderFlags const uiFlags) { gRenderFlags |= uiFlags; }
 //   ResetRenderParameters();
 //
 //   if (!gfDoVideoScroll) AddBaseDirtyRect(sLeft, sTop, sRight, sBottom);
-// }
-//
+}
+
 // static void RenderStaticWorld(void) {
 //   RenderLayerID sLevelIDs[9];
 //

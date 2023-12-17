@@ -279,7 +279,7 @@ BOOLEAN OpenFileFromLibrary(const char *const pName, LibraryFile *const f) {
   return TRUE;
 }
 
-// void CloseLibraryFile(LibraryFile *const f) { --f->lib->iNumFilesOpen; }
+void CloseLibraryFile(LibraryFile *const f) { --f->lib->iNumFilesOpen; }
 
 BOOLEAN LibraryFileSeek(LibraryFile *const f, INT32 distance, const FileSeekMode how) {
   UINT32 pos;

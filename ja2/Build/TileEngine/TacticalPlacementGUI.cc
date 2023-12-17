@@ -71,7 +71,7 @@ BOOLEAN gfTacticalPlacementGUIActive = FALSE;
 // static BUTTON_PICS *giOverheadButtonImages[NUM_TP_BUTTONS];
 // SGPVObject *giMercPanelImage = 0;
 BOOLEAN gfTacticalPlacementGUIDirty = FALSE;
-// BOOLEAN gfValidLocationsChanged = FALSE;
+BOOLEAN gfValidLocationsChanged = FALSE;
 // BOOLEAN gfValidCursor = FALSE;
 // BOOLEAN gfEveryonePlaced = FALSE;
 //

@@ -1,45 +1,45 @@
 #include "OptionsScreen.h"
 
-// #include "Directories.h"
-// #include "GameScreen.h"
-// #include "GameSettings.h"
-// #include "Local.h"
-// #include "MessageBoxScreen.h"
-// #include "SGP/ButtonSystem.h"
-// #include "SGP/English.h"
-// #include "SGP/Font.h"
-// #include "SGP/SoundMan.h"
-// #include "SGP/Types.h"
-// #include "SGP/VObject.h"
-// #include "SGP/VSurface.h"
-// #include "SGP/Video.h"
-// #include "SaveLoadScreen.h"
-// #include "Strategic/GameClock.h"
-// #include "Strategic/GameInit.h"
-// #include "Tactical/Gap.h"
-// #include "Tactical/HandleItems.h"
-// #include "Tactical/MapInformation.h"
-// #include "Tactical/Overhead.h"
-// #include "TileEngine/AmbientControl.h"
-// #include "TileEngine/ExitGrids.h"
-// #include "TileEngine/RenderDirty.h"
-// #include "TileEngine/SmokeEffects.h"
-// #include "TileEngine/SysUtil.h"
-// #include "TileEngine/WorldDat.h"
-// #include "TileEngine/WorldDef.h"
-// #include "TileEngine/WorldMan.h"
-// #include "Utils/Cursors.h"
-// #include "Utils/FontControl.h"
-// #include "Utils/Message.h"
-// #include "Utils/MultiLanguageGraphicUtils.h"
-// #include "Utils/MusicControl.h"
-// #include "Utils/Slider.h"
-// #include "Utils/SoundControl.h"
-// #include "Utils/Text.h"
-// #include "Utils/TextInput.h"
-// #include "Utils/TimerControl.h"
-// #include "Utils/WordWrap.h"
-//
+#include "Directories.h"
+#include "GameScreen.h"
+#include "GameSettings.h"
+#include "Local.h"
+#include "MessageBoxScreen.h"
+#include "SGP/ButtonSystem.h"
+#include "SGP/English.h"
+#include "SGP/Font.h"
+#include "SGP/SoundMan.h"
+#include "SGP/Types.h"
+#include "SGP/VObject.h"
+#include "SGP/VSurface.h"
+#include "SGP/Video.h"
+#include "SaveLoadScreen.h"
+#include "Strategic/GameClock.h"
+#include "Strategic/GameInit.h"
+#include "Tactical/Gap.h"
+#include "Tactical/HandleItems.h"
+#include "Tactical/MapInformation.h"
+#include "Tactical/Overhead.h"
+#include "TileEngine/AmbientControl.h"
+#include "TileEngine/ExitGrids.h"
+#include "TileEngine/RenderDirty.h"
+#include "TileEngine/SmokeEffects.h"
+#include "TileEngine/SysUtil.h"
+#include "TileEngine/WorldDat.h"
+#include "TileEngine/WorldDef.h"
+#include "TileEngine/WorldMan.h"
+#include "Utils/Cursors.h"
+#include "Utils/FontControl.h"
+#include "Utils/Message.h"
+#include "Utils/MultiLanguageGraphicUtils.h"
+#include "Utils/MusicControl.h"
+#include "Utils/Slider.h"
+#include "Utils/SoundControl.h"
+#include "Utils/Text.h"
+#include "Utils/TextInput.h"
+#include "Utils/TimerControl.h"
+#include "Utils/WordWrap.h"
+
 // #define OPT_MAIN_FONT FONT12ARIAL
 // #define OPT_MAIN_COLOR OPT_BUTTON_ON_COLOR     // FONT_MCOLOR_WHITE
 // #define OPT_HIGHLIGHT_COLOR FONT_MCOLOR_WHITE  // FONT_MCOLOR_LTYELLOW
@@ -120,7 +120,7 @@
 static ScreenID guiOptionsScreen = OPTIONS_SCREEN;
 ScreenID guiPreviousOptionScreen = OPTIONS_SCREEN;
 
-// static BOOLEAN gfExitOptionsDueToMessageBox = FALSE;
+static BOOLEAN gfExitOptionsDueToMessageBox = FALSE;
 // static BOOLEAN gfExitOptionsAfterMessageBox = FALSE;
 //
 // static UINT32 guiSoundFxSliderMoving = 0xFFFFFFFF;
@@ -620,18 +620,18 @@ ScreenID OptionsScreenHandle() {
 // }
 //
 // static void MusicSliderChangeCallBack(INT32 iNewValue) { MusicSetVolume(iNewValue); }
-//
-// void DoOptionsMessageBoxWithRect(wchar_t const *const zString, ScreenID const uiExitScreen,
-//                                  MessageBoxFlags const usFlags,
-//                                  MSGBOX_CALLBACK const ReturnCallback,
-//                                  SGPBox const *const centering_rect) {
-//   // reset exit mode
-//   gfExitOptionsDueToMessageBox = TRUE;
-//
-//   // do message box and return
-//   DoMessageBox(MSG_BOX_BASIC_STYLE, zString, uiExitScreen, usFlags, ReturnCallback, centering_rect);
-// }
-//
+
+void DoOptionsMessageBoxWithRect(wchar_t const *const zString, ScreenID const uiExitScreen,
+                                 MessageBoxFlags const usFlags,
+                                 MSGBOX_CALLBACK const ReturnCallback,
+                                 SGPBox const *const centering_rect) {
+  // reset exit mode
+  gfExitOptionsDueToMessageBox = TRUE;
+
+  // do message box and return
+  DoMessageBox(MSG_BOX_BASIC_STYLE, zString, uiExitScreen, usFlags, ReturnCallback, centering_rect);
+}
+
 // static void DoOptionsMessageBox(wchar_t const *const zString, ScreenID const uiExitScreen,
 //                                 MessageBoxFlags const usFlags,
 //                                 MSGBOX_CALLBACK const ReturnCallback) {
