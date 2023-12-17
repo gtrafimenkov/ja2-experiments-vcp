@@ -183,3 +183,8 @@ format:
 format-modified:
 	git status --porcelain | egrep -e '[.](c|cc|cpp|h)$$' | awk '{print $$2}' \
 		| xargs $(CLANG_FORMATTER) -i --style=file
+
+########################################################
+
+copy-data:
+	test -d build/Data || cp -r ../../data/gold-english/Data build
