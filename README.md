@@ -1,25 +1,7 @@
-# Jagged Alliance 2 Vanilla Cross-Platform
+# Experimenting with ja2-vanilla-cp sources
 
-This project is for maintaining Jagged Alliance 2 source codes
-in buildable and workable state.  This project has
-the same goal as [gtrafimenkov/ja2-vanilla](https://github.com/gtrafimenkov/ja2-vanilla),
-but is based on [ja2-stracciatella](https://github.com/ja2-stracciatella/ja2-stracciatella)
-codebase.
-
-Goals:
-- keep the sources buildable with modern development tools
-- keep the game playable reasonably well on modern versions of Windows and Linux
-
-These sources are very easy to change, but it's even easier to introduce
-bugs by doing it.
-
-Hence, the rules:
-- keep changes to the minimum
-- fix only critial bugs and issues
-- don't change sources for the sake of it
-- don't introduce any new features
-
-This project is only for maintaining the vanilla game.
+This project is based on [ja2-vanilla-cp](https://github.com/gtrafimenkov/ja2-vanilla-cp)
+and it is used for experimenting with the sources.
 
 ## Project structure
 
