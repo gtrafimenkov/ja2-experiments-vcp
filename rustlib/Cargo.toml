@@ -1,0 +1,25 @@
+[package]
+name = "rustlib"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "rustlib"
+crate-type = ["staticlib"]
+
+# [build]
+# rustflags = ["-C", "target-feature=+crt-static"]
+
+# [target.i686-pc-windows-msvc]
+# rustflags = ["-C", "target-feature=+crt-static"]
+
+# [target.x86_64-pc-windows-msvc]
+# rustflags = ["-C", "target-feature=+crt-static"]
+
+[build-dependencies]
+cbindgen = { git = "https://github.com/gtrafimenkov/cbindgen-ggstd.git", branch="main" }
+
+[dependencies]
+ggstd = "0.0"
