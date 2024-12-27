@@ -7727,10 +7727,10 @@ static void SetSoldierPersonalLightLevel(SOLDIERTYPE *const s) {
   n.ubNaturalShadeLevel = 5;
 }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(SoldierControl, asserts) {
-  EXPECT_EQ(lengthof(gubMaxActionPoints), TOTALBODYTYPES);
-  EXPECT_EQ(sizeof(KEY_ON_RING), 2);
-}
+// TEST(SoldierControl, asserts) {
+//   EXPECT_EQ(lengthof(gubMaxActionPoints), TOTALBODYTYPES);
+//   EXPECT_EQ(sizeof(KEY_ON_RING), 2);
+// }

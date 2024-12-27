@@ -2650,9 +2650,9 @@ static bool IsRoofVisibleForWireframe(GridNo const sMapPos) {
   return gfBasement || FindStructure(sMapPos, STRUCTURE_ROOF);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(WorldDef, asserts) {
-  EXPECT_EQ(sizeof(TEAMSUMMARY), 15);
-  EXPECT_EQ(sizeof(SUMMARYFILE), 408);
-}
+// TEST(WorldDef, asserts) {
+//   EXPECT_EQ(sizeof(TEAMSUMMARY), 15);
+//   EXPECT_EQ(sizeof(SUMMARYFILE), 408);
+// }

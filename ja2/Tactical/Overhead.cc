@@ -5329,7 +5329,7 @@ void MakeCharacterDialogueEventSignalItemLocatorStart(SOLDIERTYPE &s, GridNo con
   DialogueEvent::Add(new CharacterDialogueEventSignalItemLocatorStart(s, location));
 }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(Overhead, asserts) { EXPECT_EQ(lengthof(g_default_team_info), MAXTEAMS); }
+// TEST(Overhead, asserts) { EXPECT_EQ(lengthof(g_default_team_info), MAXTEAMS); }

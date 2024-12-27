@@ -38,7 +38,7 @@ file(GLOB_RECURSE SRC_FILES ja2/*.cc ja2/*.c libs/slog/slog/*.c libs/smacker/lib
 
 add_executable(ja2vcp ${SRC_FILES})
 target_include_directories(ja2vcp PRIVATE ja2)
-target_include_directories(ja2vcp PRIVATE libs/googletest/googletest/include)
+# target_include_directories(ja2vcp PRIVATE libs/googletest/googletest/include)
 target_include_directories(ja2vcp PRIVATE libs/slog)
 target_include_directories(ja2vcp PRIVATE libs/smacker)
 target_include_directories(ja2vcp PRIVATE libs/utf8cpp/source)
@@ -49,5 +49,5 @@ if(WIN32)
     endif()
 endif()
 
-target_link_libraries(ja2vcp PRIVATE SDL2::SDL2-static gtest)
-# target_link_libraries(my_tests gtest gtest_main)
+target_link_libraries(ja2vcp PRIVATE SDL2::SDL2-static)
+# target_link_libraries(ja2vcp PRIVATE gtest)

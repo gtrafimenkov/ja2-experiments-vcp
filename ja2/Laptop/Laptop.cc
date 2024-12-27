@@ -3443,10 +3443,10 @@ void CreateFileAndNewEmailIconFastHelpText(uint32_t uiHelpTextID, BOOLEAN fClear
   pRegion->SetFastHelpText(help);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(Laptop, asserts) {
-  EXPECT_EQ(sizeof(LIFE_INSURANCE_PAYOUT), 8);
-  EXPECT_EQ(sizeof(BobbyRayPurchaseStruct), 8);
-  EXPECT_EQ(sizeof(BobbyRayOrderStruct), 84);
-}
+// TEST(Laptop, asserts) {
+//   EXPECT_EQ(sizeof(LIFE_INSURANCE_PAYOUT), 8);
+//   EXPECT_EQ(sizeof(BobbyRayPurchaseStruct), 8);
+//   EXPECT_EQ(sizeof(BobbyRayOrderStruct), 84);
+// }

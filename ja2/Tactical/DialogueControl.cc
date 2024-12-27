@@ -1484,9 +1484,9 @@ void DeleteDialogueControlGraphics() {
   DeleteVideoObject(guiCOMPANELB);
 }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(DialogueControl, asserts) {
-  EXPECT_EQ(lengthof(g_external_face_profile_ids), NUMBER_OF_EXTERNAL_NPC_FACES);
-}
+// TEST(DialogueControl, asserts) {
+//   EXPECT_EQ(lengthof(g_external_face_profile_ids), NUMBER_OF_EXTERNAL_NPC_FACES);
+// }

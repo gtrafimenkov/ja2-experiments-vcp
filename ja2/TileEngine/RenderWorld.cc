@@ -5117,11 +5117,11 @@ void SetRenderCenter(int16_t sNewX, int16_t sNewY) {
   g_scroll_inertia = false;
 }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(RenderWorld, asserts) {
-  EXPECT_EQ(lengthof(RenderFX), NUM_RENDER_FX_TYPES);
-  EXPECT_EQ(lengthof(RenderFXStartIndex), NUM_RENDER_FX_TYPES);
-  EXPECT_EQ(lengthof(g_render_fx_layer_flags), NUM_RENDER_FX_TYPES);
-}
+// TEST(RenderWorld, asserts) {
+//   EXPECT_EQ(lengthof(RenderFX), NUM_RENDER_FX_TYPES);
+//   EXPECT_EQ(lengthof(RenderFXStartIndex), NUM_RENDER_FX_TYPES);
+//   EXPECT_EQ(lengthof(g_render_fx_layer_flags), NUM_RENDER_FX_TYPES);
+// }

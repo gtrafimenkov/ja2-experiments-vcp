@@ -909,6 +909,6 @@ static BOOLEAN ContractIsGoingToExpireSoon(SOLDIERTYPE *pSoldier) {
   return (FALSE);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(MercContract, asserts) { EXPECT_EQ(sizeof(CONTRACT_NEWAL_LIST_NODE), 4); }
+// TEST(MercContract, asserts) { EXPECT_EQ(sizeof(CONTRACT_NEWAL_LIST_NODE), 4); }

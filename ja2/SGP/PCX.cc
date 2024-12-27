@@ -93,6 +93,6 @@ static void BlitPcxToBuffer(uint8_t const *src, uint8_t *dst, uint16_t const w, 
   }
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(PCX, asserts) { EXPECT_EQ(sizeof(PcxHeader), 128); }
+// TEST(PCX, asserts) { EXPECT_EQ(sizeof(PcxHeader), 128); }

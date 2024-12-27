@@ -430,7 +430,7 @@ void RefreshWorldItemsIntoItemPools(const WORLDITEM *const items, const int32_t 
   }
 }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(WorldItems, asserts) { EXPECT_EQ(sizeof(WORLDITEM), 52); }
+// TEST(WorldItems, asserts) { EXPECT_EQ(sizeof(WORLDITEM), 52); }

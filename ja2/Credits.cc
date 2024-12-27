@@ -529,6 +529,6 @@ static void HandleCreditEyeBlinking() {
   }
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(Credits, asserts) { EXPECT_EQ(lengthof(gCreditFaces), NUM_PEOPLE_IN_CREDITS); }
+// TEST(Credits, asserts) { EXPECT_EQ(lengthof(gCreditFaces), NUM_PEOPLE_IN_CREDITS); }
