@@ -7,6 +7,11 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+struct SGPPoint {
+  int32_t iX;
+  int32_t iY;
+};
+
 /**
  * Copy of SGPRect from the C codebase.
  */
@@ -30,6 +35,10 @@ struct Rect {
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+struct SGPPoint SGPPoint_new(int32_t x, int32_t y);
+
+void SGPPoint_set(struct SGPPoint *r, int32_t x, int32_t y);
 
 /**
  * Create new GRect structure

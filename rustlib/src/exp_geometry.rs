@@ -23,6 +23,26 @@ pub struct Rect {
     bottom: i32,
 }
 
+#[repr(C)]
+#[allow(non_snake_case)]
+pub struct SGPPoint {
+    iX: i32,
+    iY: i32,
+}
+
+#[no_mangle]
+pub extern "C" fn SGPPoint_new(x: i32, y: i32) -> SGPPoint {
+    SGPPoint { iX: x, iY: y }
+}
+
+#[no_mangle]
+pub extern "C" fn SGPPoint_set(r: *mut SGPPoint, x: i32, y: i32) {
+    unsafe {
+        (*r).iX = x;
+        (*r).iY = y;
+    }
+}
+
 // struct Box {
 //     left: u16,
 //     top: u16,
