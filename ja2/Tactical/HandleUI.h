@@ -11,6 +11,7 @@
 #include "ScreenIDs.h"
 #include "Tactical/InterfaceCursors.h"
 #include "Tactical/SoldierFind.h"
+#include "rust_geometry.h"
 
 #define UIEVENT_SINGLEEVENT 0x00000002
 #define UIEVENT_SNAPMOUSE 0x00000008

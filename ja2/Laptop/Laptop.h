@@ -9,6 +9,7 @@
 #include "SGP/MouseSystem.h"
 #include "SGP/Types.h"
 #include "ScreenIDs.h"
+#include "rust_geometry.h"
 
 void ExitLaptop();
 void HandleLapTopESCKey();

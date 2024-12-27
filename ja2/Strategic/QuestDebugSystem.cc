@@ -53,6 +53,7 @@
 #include "Utils/WordWrap.h"
 #include "jplatform.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 // #ifdef JA2BETAVERSION
 

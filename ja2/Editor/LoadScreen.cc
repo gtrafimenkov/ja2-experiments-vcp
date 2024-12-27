@@ -62,6 +62,7 @@
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
 #include "jplatform_time.h"
+#include "rust_colors.h"
 
 static BOOLEAN gfErrorCatch = FALSE;
 static wchar_t gzErrorCatchString[256] = L"";

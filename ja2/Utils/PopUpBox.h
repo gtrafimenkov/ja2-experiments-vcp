@@ -6,6 +6,7 @@
 #define __POPUP_BOX
 
 #include "JA2Types.h"
+#include "rust_geometry.h"
 
 #define MAX_POPUP_BOX_STRING_COUNT \
   50  // worst case = 45: move menu with 20 soldiers, each on different squad +

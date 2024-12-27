@@ -10,6 +10,7 @@
 #include "SGP/MouseSystem.h"
 #include "ScreenIDs.h"
 #include "Tactical/ItemTypes.h"
+#include "rust_geometry.h"
 
 // char breath and life position
 #define BAR_INFO_X 66

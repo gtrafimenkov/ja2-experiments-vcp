@@ -77,6 +77,8 @@
 #include "jplatform_input.h"
 #include "jplatform_time.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #ifdef JA2BETAVERSION
 #include "Cheats.h"

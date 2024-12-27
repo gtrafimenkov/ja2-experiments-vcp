@@ -16,6 +16,7 @@
 #include "Tactical/OverheadTypes.h"
 #include "Utils/FontControl.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
 
 BOOLEAN CreateSGPPaletteFromCOLFile(struct JColor *const pal, const char *const col_file) try {
   AutoSGPFile f(FileMan::openForReadingSmart(col_file, true));

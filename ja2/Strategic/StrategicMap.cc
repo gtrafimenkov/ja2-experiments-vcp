@@ -114,6 +114,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_time.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // Used by PickGridNoToWalkIn
 #define MAX_ATTEMPTS 200

@@ -7,9 +7,23 @@
 #include <stdint.h>
 #include <stdlib.h>
 
+struct SGPRect {
+  int32_t iLeft;
+  int32_t iTop;
+  int32_t iRight;
+  int32_t iBottom;
+};
+
 struct SGPPoint {
   int32_t iX;
   int32_t iY;
+};
+
+struct SGPBox {
+  int32_t x;
+  int32_t y;
+  int32_t w;
+  int32_t h;
 };
 
 /**
@@ -36,9 +50,15 @@ struct Rect {
 extern "C" {
 #endif // __cplusplus
 
+struct SGPRect SGPRect_new(int32_t left, int32_t top, int32_t right, int32_t bottom);
+
+void SGPRect_set(struct SGPRect *r, int32_t left, int32_t top, int32_t right, int32_t bottom);
+
 struct SGPPoint SGPPoint_new(int32_t x, int32_t y);
 
 void SGPPoint_set(struct SGPPoint *r, int32_t x, int32_t y);
+
+void SGPBox_set(struct SGPBox *r, int32_t x, int32_t y, int32_t w, int32_t h);
 
 /**
  * Create new GRect structure

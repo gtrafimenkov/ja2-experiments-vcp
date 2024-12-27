@@ -13,6 +13,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
 
 #define BROKEN_LINK__FONT FONT12ARIAL
 #define BROKEN_LINK__COLOR FONT_MCOLOR_BLACK

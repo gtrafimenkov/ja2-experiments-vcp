@@ -10,6 +10,7 @@
 #include "SGP/Buffer.h"
 #include "SGP/Types.h"
 #include "jplatform_video.h"
+#include "rust_geometry.h"
 
 #define BACKBUFFER g_back_buffer
 #define FRAME_BUFFER g_frame_buffer

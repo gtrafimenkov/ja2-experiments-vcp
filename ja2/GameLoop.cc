@@ -40,6 +40,7 @@
 #include "Utils/MusicControl.h"
 #include "Utils/Text.h"
 #include "jplatform.h"
+#include "rust_geometry.h"
 
 #ifdef JA2BETAVERSION
 #include "PreBattle_Interface.h"

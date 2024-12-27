@@ -45,6 +45,8 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 uint16_t *gpZBuffer = NULL;
 

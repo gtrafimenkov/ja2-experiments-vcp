@@ -9,6 +9,7 @@
 #include "SGP/AutoPtr.h"
 #include "SGP/Buffer.h"
 #include "SGP/Types.h"
+#include "rust_geometry.h"
 
 // The HIMAGE module provides a common interface for managing image data. This
 // module includes:

@@ -37,6 +37,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/PopUpBox.h"
 #include "Utils/Text.h"
+#include "rust_geometry.h"
 
 #define BOX_BUTTON_HEIGHT 20
 

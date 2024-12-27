@@ -21,6 +21,8 @@
 #include "Utils/FontControl.h"
 #include "Utils/MusicControl.h"
 #include "Utils/TimerControl.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define MAX_PROGRESSBARS 4
 

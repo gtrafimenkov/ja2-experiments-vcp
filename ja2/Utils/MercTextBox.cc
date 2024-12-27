@@ -18,6 +18,8 @@
 #include "TileEngine/RenderDirty.h"
 #include "Utils/FontControl.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define TEXT_POPUP_GAP_BN_LINES 10
 #define TEXT_POPUP_FONT FONT12ARIAL

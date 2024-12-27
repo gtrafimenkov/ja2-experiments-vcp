@@ -1,13 +1,21 @@
-# Experimenting with ja2-vanilla-cp sources
+# Jagged Alliance 2 Cross-Platform in Rust
 
-This project is based on [ja2-vanilla-cp](https://github.com/gtrafimenkov/ja2-vanilla-cp)
-and it is used for experimenting with the sources.
+This is a rewrite of [ja2-vanilla](https://github.com/gtrafimenkov/ja2-vanilla-cp) project
+in Rust.
+
+Project goals:
+- full rewrite in Rust
+
+Non-goals:
+- adding new functionality
+- supporting game mods
 
 ## Project structure
 
 ```
 ja2                - game sources
 libs               - third-party libraries
+rustlib            - Rust code compiled to a static library
 ```
 
 ## Build requirements
@@ -15,17 +23,19 @@ libs               - third-party libraries
 - CMake
 - GCC or Clang for Linux
 - Visual Studio Community 2022 for Windows
+- Rust v1.67.0 or later
+
 
 ## How to build, test, and run
 
 ```
-python xx.py build-debug test-debug copy-data run
+python xx.py build-debug copy-data run
 ```
 
 ## How to play the game
 
 - install the original version of the game (from the original game CDs, Steam, gog.com, etc.)
-- `python xx.py build-debug test-debug`
+- `python xx.py build-debug`
 - `python xx.py copy-data run` or copy `build/Debug/ja2vcp.exe` to the game directory
    alongside the original ja2.exe and run `ja2vcp.exe`
 

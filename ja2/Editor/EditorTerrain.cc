@@ -25,6 +25,7 @@
 #include "TileEngine/TileDef.h"
 #include "TileEngine/WorldDef.h"
 #include "Utils/FontControl.h"
+#include "rust_colors.h"
 
 BOOLEAN gfShowTerrainTileButtons;
 uint8_t ubTerrainTileButtonWeight[NUM_TERRAIN_TILE_REGIONS];

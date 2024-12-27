@@ -7,8 +7,6 @@
 
 #include <stdint.h>
 
-#include "SGP/SGPBox.h"
-
 template <typename T>
 static inline void Swap(T &a, T &b) {
   T t(a);
@@ -37,31 +35,6 @@ typedef char SGPFILENAME[100];
 #define NULL 0
 #endif
 
-struct SGPRect {
-  int32_t iLeft;
-  int32_t iTop;
-  int32_t iRight;
-  int32_t iBottom;
-
-  void set(int32_t left, int32_t top, int32_t right, int32_t bottom) {
-    iLeft = left;
-    iTop = top;
-    iRight = right;
-    iBottom = bottom;
-  }
-};
-
-struct SGPPoint {
-  int32_t iX;
-  int32_t iY;
-
-  void set(int32_t x, int32_t y) {
-    iX = x;
-    iY = y;
-  }
-};
-
-// That can be anything depending on usage: palette index, RGB565 (16 bit), RGB32 (32 bit)
 typedef uint32_t COLORVAL;
 
 struct AuxObjectData;

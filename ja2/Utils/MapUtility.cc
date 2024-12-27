@@ -33,6 +33,7 @@
 #include "jplatform.h"
 #include "jplatform_input.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
 
 #define MINIMAP_X_SIZE 88
 #define MINIMAP_Y_SIZE 44

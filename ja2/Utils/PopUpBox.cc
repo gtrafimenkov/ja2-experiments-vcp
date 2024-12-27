@@ -15,6 +15,7 @@
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
 #include "TileEngine/SysUtil.h"
+#include "rust_geometry.h"
 
 #define MAX_POPUP_BOX_COUNT 20
 

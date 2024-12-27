@@ -6,6 +6,7 @@
 #define __RENDER_DIRTY_H
 
 #include "JA2Types.h"
+#include "rust_geometry.h"
 
 #define NO_BGND_RECT NULL
 

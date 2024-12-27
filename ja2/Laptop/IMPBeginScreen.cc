@@ -38,6 +38,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 #define FULL_NAME_CURSOR_Y LAPTOP_SCREEN_WEB_UL_Y + 138
 #define NICK_NAME_CURSOR_Y LAPTOP_SCREEN_WEB_UL_Y + 195

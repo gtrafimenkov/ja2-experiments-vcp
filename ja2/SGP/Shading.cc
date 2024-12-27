@@ -9,6 +9,7 @@
 #include "SGP/HImage.h"
 #include "SGP/VObject.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
 
 uint16_t IntensityTable[65536];
 uint16_t ShadeTable[65536];

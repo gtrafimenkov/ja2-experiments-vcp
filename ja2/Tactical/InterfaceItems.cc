@@ -81,6 +81,8 @@
 #include "Utils/TextUtils.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define ITEMDESC_FONT BLOCKFONT2
 #define ITEMDESC_FONTSHADOW2 32

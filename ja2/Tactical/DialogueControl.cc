@@ -62,6 +62,7 @@
 #include "Utils/MercTextBox.h"
 #include "Utils/Message.h"
 #include "Utils/WordWrap.h"
+#include "rust_geometry.h"
 
 #define DIALOGUESIZE 240
 #define QUOTE_MESSAGE_SIZE 520

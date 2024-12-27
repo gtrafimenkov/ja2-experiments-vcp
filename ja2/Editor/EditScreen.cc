@@ -87,6 +87,8 @@
 #include "Utils/TimerControl.h"
 #include "jplatform.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 static BOOLEAN gfCorruptMap = FALSE;
 static BOOLEAN gfCorruptSchedules = FALSE;

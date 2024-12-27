@@ -26,6 +26,7 @@
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 static uint16_t *szClipboard;
 BOOLEAN gfNoScroll = FALSE;

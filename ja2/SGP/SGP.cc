@@ -28,7 +28,6 @@
 #include "SGP/Video.h"
 #include "SaveLoadGame.h"
 #include "Utils/TimerControl.h"
-#include "gtest/gtest.h"
 #include "jplatform.h"
 #include "jplatform_events.h"
 #include "jplatform_input.h"

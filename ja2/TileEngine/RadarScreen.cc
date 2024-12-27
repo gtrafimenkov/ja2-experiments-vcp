@@ -39,6 +39,7 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
 
 extern int32_t iCurrentMapSectorZ;
 

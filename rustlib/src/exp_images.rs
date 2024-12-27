@@ -199,7 +199,7 @@ mod tests {
     #[test]
     fn load_stci() {
         exp_fileman::get_db()
-            .load_slf_from_dir("../tools/editor")
+            .load_slf_from_dir("test-data/editor")
             .unwrap();
         let file_id = exp_fileman::get_db()
             .open_for_reading("Editor\\CANCEL.STI")

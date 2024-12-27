@@ -73,6 +73,7 @@
 #include "Utils/Utilities.h"
 #include "jplatform_input.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
 
 #if defined JA2BETAVERSION
 #include "Strategic_AI.h"

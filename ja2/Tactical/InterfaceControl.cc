@@ -48,6 +48,8 @@
 #include "Utils/FontControl.h"
 #include "Utils/PopUpBox.h"
 #include "Utils/TimerControl.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 static SGPRect gOldClippingRect;
 static SGPRect gOldDirtyClippingRect;

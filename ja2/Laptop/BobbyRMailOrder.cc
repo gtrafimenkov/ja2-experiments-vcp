@@ -41,6 +41,7 @@
 #include "Utils/MultiLanguageGraphicUtils.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
 
 struct BobbyROrderLocationStruct {
   uint16_t usOverNightExpress;

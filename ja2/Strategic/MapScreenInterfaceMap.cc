@@ -56,6 +56,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // zoom x and y coords for map scrolling
 int32_t iZoomX = 0;

@@ -25,6 +25,35 @@ pub struct Rect {
 
 #[repr(C)]
 #[allow(non_snake_case)]
+pub struct SGPRect {
+    iLeft: i32,
+    iTop: i32,
+    iRight: i32,
+    iBottom: i32,
+}
+
+#[no_mangle]
+pub extern "C" fn SGPRect_new(left: i32, top: i32, right: i32, bottom: i32) -> SGPRect {
+    SGPRect {
+        iLeft: left,
+        iTop: top,
+        iRight: right,
+        iBottom: bottom,
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn SGPRect_set(r: *mut SGPRect, left: i32, top: i32, right: i32, bottom: i32) {
+    unsafe {
+        (*r).iLeft = left;
+        (*r).iTop = top;
+        (*r).iRight = right;
+        (*r).iBottom = bottom;
+    }
+}
+
+#[repr(C)]
+#[allow(non_snake_case)]
 pub struct SGPPoint {
     iX: i32,
     iY: i32,
@@ -43,12 +72,24 @@ pub extern "C" fn SGPPoint_set(r: *mut SGPPoint, x: i32, y: i32) {
     }
 }
 
-// struct Box {
-//     left: u16,
-//     top: u16,
-//     width: u16,
-//     height: u16,
-// }
+#[repr(C)]
+#[allow(non_snake_case)]
+pub struct SGPBox {
+    x: i32,
+    y: i32,
+    w: i32,
+    h: i32,
+}
+
+#[no_mangle]
+pub extern "C" fn SGPBox_set(r: *mut SGPBox, x: i32, y: i32, w: i32, h: i32) {
+    unsafe {
+        (*r).x = x;
+        (*r).y = y;
+        (*r).w = w;
+        (*r).h = h;
+    }
+}
 
 #[no_mangle]
 /// Create new GRect structure

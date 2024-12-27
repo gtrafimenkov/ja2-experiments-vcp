@@ -46,6 +46,7 @@
 #include "Utils/Utilities.h"
 #include "jplatform_input.h"
 #include "jplatform_time.h"
+#include "rust_colors.h"
 
 #define MAX_DEBUG_PAGES 4
 

@@ -43,6 +43,8 @@
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
 #include "jplatform.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define NUMBER_TRIGGERS 27
 #define PRESSURE_ACTION_ID (NUMBER_TRIGGERS - 1)
