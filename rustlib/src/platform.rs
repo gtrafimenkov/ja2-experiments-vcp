@@ -1,7 +1,3 @@
-// This is not free software.
-// This file may contain code derived from the code released under the terms
-// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
-
 #[cfg(not(target_os = "windows"))]
 use std::os::unix::prelude::PermissionsExt;
 use std::path::PathBuf;
