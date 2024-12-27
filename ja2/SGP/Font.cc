@@ -19,6 +19,8 @@
 #include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 typedef uint8_t GlyphIdx;
 

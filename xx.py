@@ -14,13 +14,14 @@ Usage:
   python xx.py COMMAND [COMMAND...]
 
 Commands:
-  build                 - build debug version
+  build                 - build all versions
   build-debug           - build debug version
   build-release         - build release version
   format-modified       - format modified files using clang-format
   copy-data             - find and copy game data to the debug build localtion
   clean                 - cleanup repository from all unwanted files
-  run                   - run debug build
+  run                   - run builded program
+  test                  - run unit test
 
 Examples:
   python xx.py build copy-data run
@@ -75,10 +76,22 @@ def copy_ja2_data_files(dest_dir):
             shutil.copytree(source, dest_dir)
 
 
+def get_release_build_location():
+    if platform.system() == "Windows":
+        return "build/RelWithDebInfo"
+    return "build-release"
+
+
 def get_debug_build_location():
     if platform.system() == "Windows":
         return "build/Debug"
     return "build"
+
+
+def get_release_build_exe():
+    if platform.system() == "Windows":
+        return "build/RelWithDebInfo/ja2vcp.exe"
+    return "build-release/ja2vcp"
 
 
 def get_debug_build_exe():
@@ -101,42 +114,90 @@ def test_release():
         subprocess.run(["./build-release/ja2vcp", "--unittests"], check=True)
 
 
-def run_command(command):
-    if command in ["build", "build-debug"]:
-        if platform.system() == "Windows":
-            subprocess.run(["cmake", "-B", "build"], check=True)
-            subprocess.run(
-                ["cmake", "--build", "build", "--parallel", "--config", "Debug"],
-                check=True,
-            )
-        else:
-            subprocess.run(
-                ["cmake", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"], check=True
-            )
-            subprocess.run(["cmake", "--build", "build", "--parallel"], check=True)
+def build_debug():
+    if platform.system() == "Windows":
+        subprocess.run(
+            [
+                "cmake",
+                "-G",
+                "Visual Studio 17 2022",
+                "-A",
+                "x64",
+                "-B",
+                "build",
+            ],
+            check=True,
+        )
+        subprocess.run(
+            ["cmake", "--build", "build", "--parallel", "--config", "Debug"],
+            check=True,
+        )
+    else:
+        subprocess.run(["cmake", "-B", "build", "-DCMAKE_BUILD_TYPE=Debug"], check=True)
+        subprocess.run(["cmake", "--build", "build", "--parallel"], check=True)
 
-    elif command == "build-release":
-        if platform.system() == "Windows":
-            subprocess.run(["cmake", "-B", "build"], check=True)
-            subprocess.run(
-                ["cmake", "--build", "build", "--parallel", "--config", "Release"],
-                check=True,
-            )
-        else:
-            subprocess.run(
-                ["cmake", "-B", "build-release", "-DCMAKE_BUILD_TYPE=Release"],
-                check=True,
-            )
-            subprocess.run(
-                ["cmake", "--build", "build-release", "--parallel"], check=True
-            )
+
+def build_release():
+    if platform.system() == "Windows":
+        subprocess.run(
+            [
+                "cmake",
+                "-G",
+                "Visual Studio 17 2022",
+                "-A",
+                "x64",
+                "-B",
+                "build",
+            ],
+            check=True,
+        )
+        subprocess.run(
+            [
+                "cmake",
+                "--build",
+                "build",
+                "--parallel",
+                "--config",
+                "RelWithDebInfo",
+            ],
+            check=True,
+        )
+    else:
+        subprocess.run(
+            [
+                "cmake",
+                "-B",
+                "build-release",
+                "-DCMAKE_BUILD_TYPE=Release",
+                "-DBUILD_UNITTESTER=ON",
+            ],
+            check=True,
+        )
+        subprocess.run(["cmake", "--build", "build-release", "--parallel"], check=True)
+
+
+def build_rustlib():
+    subprocess.run(["cargo", "build"], cwd="rustlib", check=True)
+
+
+def run_command(command):
+    if command in ["build-debug"]:
+        build_debug()
+
+    elif command in ["build-release"]:
+        build_release()
+
+    elif command in ["build"]:
+        build_rustlib()
+        build_debug()
+        build_release()
 
     elif command == "clean":
         subprocess.run(["git", "clean", "-fdx"], check=True)
 
     elif command == "copy-data":
-        dest_dir = os.path.join(get_debug_build_location(), "data")
-        copy_ja2_data_files(dest_dir)
+        copy_ja2_data_files(os.path.join(get_debug_build_location(), "data"))
+        # copy_ja2_data_files(os.path.join(get_release_build_location(), "data"))
 
     elif command == "format-modified":
         modified_files = get_modified_files()
@@ -144,13 +205,17 @@ def run_command(command):
         format_files(source_files)
 
     elif command == "run":
-        subprocess.run([get_debug_build_exe()])
+        subprocess.run([get_debug_build_exe()], check=True)
+        # subprocess.run([get_release_build_exe()])
 
-    elif command == "test-debug":
-        test_debug()
+    elif command == "test":
+        subprocess.run(["cargo", "test"], cwd="rustlib", check=True)
 
-    elif command == "test-release":
-        test_release()
+    # elif command == "test-debug":
+    #     test_debug()
+
+    # elif command == "test-release":
+    #     test_release()
 
     else:
         print(f"Unknown command {command}", file=sys.stderr)

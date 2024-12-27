@@ -23,6 +23,7 @@
 #include "Utils/MultiLanguageGraphicUtils.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
 
 #define INSURANCE_TEXT_SINGLE_FILE BINARYDATADIR "/insurancesingle.edt"
 #define INSURANCE_TEXT_MULTI_FILE BINARYDATADIR "/insurancemulti.edt"

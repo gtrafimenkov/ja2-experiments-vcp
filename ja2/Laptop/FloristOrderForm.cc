@@ -33,6 +33,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 #define FLOWER_ORDEER_TINY_FONT FONT10ARIAL
 #define FLOWER_ORDEER_SMALL_FONT FONT12ARIAL
@@ -251,12 +252,12 @@ void EnterFloristOrderForm() {
   InitFloristDefaults();
 
   // runtime initialization of the checkbox positions
-  g_order_check_box_pos[0].set(FLOWER_ORDER_CHECK_BOX_0_X, FLOWER_ORDER_CHECK_BOX_0_Y);
-  g_order_check_box_pos[1].set(FLOWER_ORDER_CHECK_BOX_1_X, FLOWER_ORDER_CHECK_BOX_1_Y);
-  g_order_check_box_pos[2].set(FLOWER_ORDER_CHECK_BOX_2_X, FLOWER_ORDER_CHECK_BOX_2_Y);
-  g_order_check_box_pos[3].set(FLOWER_ORDER_CHECK_BOX_3_X, FLOWER_ORDER_CHECK_BOX_3_Y);
-  g_order_check_box_pos[4].set(FLOWER_ORDER_CHECK_BOX_4_X, FLOWER_ORDER_CHECK_BOX_4_Y);
-  g_order_check_box_pos[5].set(FLOWER_ORDER_CHECK_BOX_5_X, FLOWER_ORDER_CHECK_BOX_5_Y);
+  SGPPoint_set(&g_order_check_box_pos[0], FLOWER_ORDER_CHECK_BOX_0_X, FLOWER_ORDER_CHECK_BOX_0_Y);
+  SGPPoint_set(&g_order_check_box_pos[1], FLOWER_ORDER_CHECK_BOX_1_X, FLOWER_ORDER_CHECK_BOX_1_Y);
+  SGPPoint_set(&g_order_check_box_pos[2], FLOWER_ORDER_CHECK_BOX_2_X, FLOWER_ORDER_CHECK_BOX_2_Y);
+  SGPPoint_set(&g_order_check_box_pos[3], FLOWER_ORDER_CHECK_BOX_3_X, FLOWER_ORDER_CHECK_BOX_3_Y);
+  SGPPoint_set(&g_order_check_box_pos[4], FLOWER_ORDER_CHECK_BOX_4_X, FLOWER_ORDER_CHECK_BOX_4_Y);
+  SGPPoint_set(&g_order_check_box_pos[5], FLOWER_ORDER_CHECK_BOX_5_X, FLOWER_ORDER_CHECK_BOX_5_Y);
 
   guiDeliveryLocation = AddVideoObjectFromFile(LAPTOPDIR "/deliverylocation.sti");
   guiFlowerFrame = AddVideoObjectFromFile(LAPTOPDIR "/flowerframe.sti");

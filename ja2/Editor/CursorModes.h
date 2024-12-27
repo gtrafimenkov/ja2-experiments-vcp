@@ -6,6 +6,7 @@
 #define __CURSOR_MODES_H
 
 #include "SGP/Types.h"
+#include "rust_geometry.h"
 
 enum {
   SMALLSELECTION,   // 1x1

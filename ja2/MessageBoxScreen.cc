@@ -32,6 +32,7 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
+#include "rust_geometry.h"
 
 #define MSGBOX_DEFAULT_WIDTH 300
 

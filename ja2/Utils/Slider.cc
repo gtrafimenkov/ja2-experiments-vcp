@@ -22,6 +22,8 @@
 #include "SGP/Video.h"
 #include "TileEngine/RenderDirty.h"
 #include "TileEngine/SysUtil.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define WHEEL_MOVE_FRACTION 32
 

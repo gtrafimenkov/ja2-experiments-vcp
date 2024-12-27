@@ -39,6 +39,7 @@
 #include "Utils/Cursors.h"
 #include "Utils/FontControl.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 #define POPUP_ACTIVETYPE_NOT_YET_DETERMINED 0
 #define POPUP_ACTIVETYPE_PERSISTANT 1

@@ -71,6 +71,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define SKI_BUTTON_FONT MILITARYFONT1  // FONT14ARIAL
 #define SKI_BUTTON_COLOR 73

@@ -63,6 +63,7 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_time.h"
+#include "rust_geometry.h"
 
 extern BOOLEAN gfDelayAutoResolveStart;
 

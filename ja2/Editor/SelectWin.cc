@@ -26,6 +26,8 @@
 #include "TileEngine/WorldDat.h"
 #include "TileEngine/WorldDef.h"
 #include "Utils/FontControl.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // defines for DisplaySpec.ubType
 #define DISPLAY_TEXT 1

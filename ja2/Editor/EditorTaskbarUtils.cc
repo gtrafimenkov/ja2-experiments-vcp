@@ -55,6 +55,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
 
 // editor icon storage vars
 int32_t giEditMercDirectionIcons[2];

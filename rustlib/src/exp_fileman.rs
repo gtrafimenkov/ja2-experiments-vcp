@@ -435,14 +435,14 @@ mod tests {
     #[test]
     fn loading_slfs() {
         let mut fdb = DB::new();
-        fdb.load_slf_from_dir("../tools/editor").unwrap();
+        fdb.load_slf_from_dir("test-data/editor").unwrap();
         // assert_eq!(true, fdb.has_library("EDITOR.SLF"));
     }
 
     #[test]
     fn opening_and_closing() {
         let mut fdb = DB::new();
-        fdb.load_slf_from_dir("../tools/editor").unwrap();
+        fdb.load_slf_from_dir("test-data/editor").unwrap();
         let id = fdb.open_for_reading("./Cargo.toml").unwrap();
         assert_eq!(fdb.file_map.len(), 1);
         fdb.close_file(id).unwrap();
@@ -454,7 +454,7 @@ mod tests {
         // get size of a library file
         {
             let mut fdb = DB::new();
-            fdb.load_slf_from_dir("../tools/editor").unwrap();
+            fdb.load_slf_from_dir("test-data/editor").unwrap();
             let file_id = fdb.open_for_reading("Editor\\EXITGRIDBUT.STI").unwrap();
             assert_eq!(5712, fdb.get_size(file_id).unwrap());
             assert_eq!(true, fdb.is_inside_archive(file_id));
@@ -463,8 +463,8 @@ mod tests {
         // get size of a regular file
         {
             let mut fdb = DB::new();
-            fdb.load_slf_from_dir("../tools/editor").unwrap();
-            let file_id = fdb.open_for_reading("../tools/editor/Editor.slf").unwrap();
+            fdb.load_slf_from_dir("test-data/editor").unwrap();
+            let file_id = fdb.open_for_reading("test-data/editor/Editor.slf").unwrap();
             assert_eq!(3444529, fdb.get_size(file_id).unwrap());
             assert_eq!(false, fdb.is_inside_archive(file_id));
         }

@@ -26,6 +26,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
 
 struct FilesUnit {
   uint8_t ubCode;  // the code index in the files code table

@@ -21,6 +21,7 @@
 #include "TileEngine/RenderWorld.h"
 #include "TileEngine/SysUtil.h"
 #include "TileEngine/WorldDef.h"
+#include "rust_geometry.h"
 #include "slog/slog.h"
 #define TAG "Render"
 

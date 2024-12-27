@@ -18,6 +18,7 @@
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/WCheck.h"
+#include "rust_geometry.h"
 
 SGPRect ClippingRect = {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT};
 // 555      565

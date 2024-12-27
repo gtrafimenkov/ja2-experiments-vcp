@@ -49,6 +49,8 @@
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // Defines
 #define NUM_FACE_SLOTS 50

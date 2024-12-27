@@ -7,6 +7,7 @@
 
 #include "Tactical/OverheadTypes.h"
 #include "TileEngine/WorldDef.h"
+#include "rust_geometry.h"
 
 #define MAXCOL WORLD_COLS
 #define MAXROW WORLD_ROWS

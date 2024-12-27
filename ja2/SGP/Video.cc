@@ -92,7 +92,7 @@ void VideoToggleFullScreen() { JVideo_ToggleFullScreen(g_videoState); }
 void InitializeVideoManager() {
   g_videoState = JVideo_Init(APPLICATION_NAME, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-  ClippingRect.set(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+  SGPRect_set(&ClippingRect, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   ScreenBuffer = JSurface_Create16bpp(SCREEN_WIDTH, SCREEN_HEIGHT);
 

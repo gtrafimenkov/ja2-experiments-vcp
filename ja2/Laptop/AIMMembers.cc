@@ -60,6 +60,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define MERCBIOSFILENAME BINARYDATADIR "/aimbios.edt"
 

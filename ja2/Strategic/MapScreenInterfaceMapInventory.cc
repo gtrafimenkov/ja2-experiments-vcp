@@ -51,6 +51,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // status bar colors
 #define DESC_STATUS_BAR FROMRGB(201, 172, 133)

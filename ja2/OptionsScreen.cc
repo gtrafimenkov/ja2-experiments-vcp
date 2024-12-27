@@ -44,6 +44,7 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
+#include "rust_geometry.h"
 
 #define OPT_MAIN_FONT FONT12ARIAL
 #define OPT_MAIN_COLOR OPT_BUTTON_ON_COLOR     // FONT_MCOLOR_WHITE

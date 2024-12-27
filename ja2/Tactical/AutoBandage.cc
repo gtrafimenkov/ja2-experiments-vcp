@@ -43,6 +43,7 @@
 #include "Utils/Message.h"
 #include "Utils/Text.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 // max number of merc faces per row in autobandage box
 #define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4

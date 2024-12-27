@@ -9,6 +9,7 @@
 #include "SGP/ButtonSystem.h"
 #include "SGP/MouseSystem.h"
 #include "ScreenIDs.h"
+#include "rust_geometry.h"
 
 // Message box flags
 enum MessageBoxFlags {

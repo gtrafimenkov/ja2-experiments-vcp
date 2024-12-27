@@ -8,6 +8,7 @@
 #include "InputAtom.h"
 #include "SGP/Types.h"
 #include "jplatform_input.h"
+#include "rust_geometry.h"
 
 #define KEY_DOWN 0x0001
 #define KEY_UP 0x0002

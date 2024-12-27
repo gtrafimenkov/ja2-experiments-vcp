@@ -77,6 +77,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // number of LINKED LISTS for sets of leave items (each slot holds an unlimited
 // # of items)

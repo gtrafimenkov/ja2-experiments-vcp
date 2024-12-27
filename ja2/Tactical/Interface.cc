@@ -61,6 +61,8 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #define ARROWS_X_OFFSET 10
 #define ARROWS_HEIGHT 20

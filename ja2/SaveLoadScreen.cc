@@ -52,6 +52,8 @@
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #if defined JA2BETAVERSION
 #include "Tactical/SoldierInitList.h"

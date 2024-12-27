@@ -95,6 +95,8 @@
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
 #include "jplatform_time.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 // laptop programs
 enum {

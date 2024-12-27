@@ -46,6 +46,7 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "rust_colors.h"
 
 // The InitializeGame function is responsible for setting up all data and Gaming
 // Engine tasks which will run the game

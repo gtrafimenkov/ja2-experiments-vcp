@@ -68,6 +68,8 @@
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 //--------------------------------------------------
 //	NON_CIV_GROUP,

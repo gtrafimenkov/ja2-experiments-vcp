@@ -266,7 +266,7 @@ mod tests {
     #[test]
     fn loading_slfs() {
         let mut fdb = DB::new();
-        fdb.load_slf_from_dir("../tools/editor").unwrap();
+        fdb.load_slf_from_dir("test-data/editor").unwrap();
         assert_eq!(true, fdb.has_library("EDITOR.SLF"));
 
         assert_eq!(true, fdb.has_libfile("editor/exitgridbut.sti"));
@@ -282,7 +282,7 @@ mod tests {
     #[test]
     fn reading_file_from_slf() {
         let mut fdb = DB::new();
-        fdb.load_slf_from_dir("../tools/editor").unwrap();
+        fdb.load_slf_from_dir("test-data/editor").unwrap();
 
         let test_path = "Editor\\EXITGRIDBUT.STI";
         let test_hash = "b7099f0fefcc7cff52081c12d304b84d712fb36c4212407afe921cb4208b7adc";

@@ -78,12 +78,6 @@ void JSurface_BlitRectToPoint(struct JSurface *src, struct JSurface *dst,
 void JSurface_BlitRectToRect(struct JSurface *src, struct JSurface *dst, struct JRect const *srcBox,
                              struct JRect const *destBox);
 
-// Convert from RGB to 16 bit value
-uint16_t rgb32_to_rgb565(uint32_t RGBValue);
-
-// Convert from 16 BPP to RGBvalue
-uint32_t rgb565_to_rgb32(uint16_t Value16BPP);
-
 #ifdef __cplusplus
 }  // extern "C"
 #endif  // __cplusplus

@@ -26,6 +26,7 @@
 #include "TileEngine/RenderDirty.h"
 #include "Utils/FontControl.h"
 #include "jplatform_time.h"
+#include "rust_colors.h"
 
 // Kris:	Nov 31, 1999 -- Added support for double clicking
 //

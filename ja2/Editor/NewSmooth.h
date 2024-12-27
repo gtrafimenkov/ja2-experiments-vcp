@@ -6,6 +6,7 @@
 #define __NEWSMOOTH_H
 
 #include "SGP/Types.h"
+#include "rust_geometry.h"
 
 void AddBuildingSectionToWorld(SGPRect *pSelectRegion);
 void RemoveBuildingSectionFromWorld(SGPRect *pSelectRegion);

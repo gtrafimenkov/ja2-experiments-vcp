@@ -2,6 +2,7 @@
 // This file contains code derived from the code released under the terms
 // of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
+#include "rust_geometry.h"
 #include "TileEngine/InteractiveTiles.h"
 
 #include "GameSettings.h"

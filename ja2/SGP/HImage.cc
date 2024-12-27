@@ -18,6 +18,8 @@
 #include "SGP/VObject.h"
 #include "SGP/WCheck.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 SGPImage *CreateImage(const char *const filename, const uint16_t fContents) {
   // depending on extension of filename, use different image readers

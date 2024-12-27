@@ -38,6 +38,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
+#include "rust_geometry.h"
 
 #ifdef JA2BETAVERSION
 #include "Debug.h"

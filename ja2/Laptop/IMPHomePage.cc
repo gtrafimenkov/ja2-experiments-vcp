@@ -30,6 +30,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "jplatform_input.h"
+#include "rust_colors.h"
 
 const uint32_t GlowColorsList[] = {FROMRGB(0, 0, 0),   FROMRGB(0, 25, 0),  FROMRGB(0, 50, 0),
                                    FROMRGB(0, 75, 0),  FROMRGB(0, 100, 0), FROMRGB(0, 125, 0),

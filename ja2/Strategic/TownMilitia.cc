@@ -35,6 +35,7 @@
 #include "Tactical/SoldierCreate.h"
 #include "Tactical/Squads.h"
 #include "Utils/Text.h"
+#include "rust_geometry.h"
 
 #define SIZE_OF_MILITIA_COMPLETED_TRAINING_LIST 50
 

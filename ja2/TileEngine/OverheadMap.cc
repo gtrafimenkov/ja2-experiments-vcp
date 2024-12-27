@@ -51,6 +51,7 @@
 #include "Utils/FontControl.h"
 #include "jplatform_input.h"
 #include "jplatform_video.h"
+#include "rust_colors.h"
 extern SOLDIERINITNODE *gpSelected;
 
 // OK, these are values that are calculated in InitRenderParams( ) with normal

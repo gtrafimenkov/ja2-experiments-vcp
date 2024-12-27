@@ -16,6 +16,7 @@
 #include "TileEngine/SysUtil.h"
 #include "Utils/MusicControl.h"
 #include "Utils/TimerControl.h"
+#include "rust_colors.h"
 
 static ScreenID guiExitScreen;
 BOOLEAN gfFadeInitialized = FALSE;

@@ -78,6 +78,7 @@
 #include "Utils/Message.h"
 #include "Utils/PopUpBox.h"
 #include "Utils/Text.h"
+#include "rust_geometry.h"
 
 // various reason an assignment can be aborted before completion
 enum AssignmentAbortReason {

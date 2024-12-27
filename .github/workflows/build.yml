@@ -5,6 +5,8 @@ on:
     branches:
       - 'main'
       - 'dev'
+      - 'swordfish'
+      - 'swordfish-dev'
   pull_request:
 
 jobs:
@@ -14,15 +16,17 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - run: python xx.py build-debug
-    - run: python xx.py test-debug
+    # - run: python xx.py test-debug
     - run: python xx.py build-release
-    - run: python xx.py test-release
+    # - run: python xx.py test-release
+    - run: python xx.py test
 
   build-on-windows:
     runs-on: windows-latest
     steps:
     - uses: actions/checkout@v3
     - run: python xx.py build-debug
-    - run: python xx.py test-debug
+    # - run: python xx.py test-debug
     - run: python xx.py build-release
-    - run: python xx.py test-release
+    # - run: python xx.py test-release
+    - run: python xx.py test

@@ -6,6 +6,7 @@
 #define __VOBJECT_BLITTERS
 
 #include "SGP/Types.h"
+#include "rust_geometry.h"
 
 extern SGPRect ClippingRect;
 extern uint32_t guiTranslucentMask;
