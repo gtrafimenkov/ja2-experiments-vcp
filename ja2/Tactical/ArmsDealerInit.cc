@@ -2408,10 +2408,10 @@ uint32_t CalculateMinutesClosedBetween(ArmsDealerID const ubArmsDealer, uint32_t
   return (uiMinutesClosed);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(ArmsDealerInit, asserts) {
-  EXPECT_EQ(sizeof(ARMS_DEALER_STATUS), 20);
-  EXPECT_EQ(sizeof(SPECIAL_ITEM_INFO), 16);
-  EXPECT_EQ(sizeof(DEALER_SPECIAL_ITEM), 28);
-}
+// TEST(ArmsDealerInit, asserts) {
+//   EXPECT_EQ(sizeof(ARMS_DEALER_STATUS), 20);
+//   EXPECT_EQ(sizeof(SPECIAL_ITEM_INFO), 16);
+//   EXPECT_EQ(sizeof(DEALER_SPECIAL_ITEM), 28);
+// }

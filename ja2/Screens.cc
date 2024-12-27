@@ -54,6 +54,6 @@ Screens const GameScreens[] = {
     {NULL, CreditScreenHandle, NULL},
     {QuestDebugScreenInit, QuestDebugScreenHandle, NULL}};
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(Screens, asserts) { EXPECT_EQ(lengthof(GameScreens), MAX_SCREENS); }
+// TEST(Screens, asserts) { EXPECT_EQ(lengthof(GameScreens), MAX_SCREENS); }

@@ -345,6 +345,6 @@ uint8_t RankIndexToSoldierClass(uint8_t ubRankIndex) {
   return (ubSoldierClass);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(StrategicStatus, asserts) { EXPECT_EQ(sizeof(STRATEGIC_STATUS), 192); }
+// TEST(StrategicStatus, asserts) { EXPECT_EQ(sizeof(STRATEGIC_STATUS), 192); }

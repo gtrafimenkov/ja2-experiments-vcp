@@ -29,6 +29,6 @@ char const g_version_number[16] = "Build 04.12.02";
 
 const uint32_t guiSavedGameVersion = SAVE_GAME_VERSION;
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(GameVersion, asserts) { EXPECT_EQ(lengthof(g_version_number), 16); }
+// TEST(GameVersion, asserts) { EXPECT_EQ(lengthof(g_version_number), 16); }

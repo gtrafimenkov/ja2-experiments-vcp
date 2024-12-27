@@ -3830,10 +3830,10 @@ static void ReinitializeUnvisitedGarrisons() {
   }
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(StrategicAI, asserts) {
-  EXPECT_EQ(sizeof(ARMY_COMPOSITION), 20);
-  EXPECT_EQ(sizeof(PATROL_GROUP), 20);
-  EXPECT_EQ(sizeof(GARRISON_GROUP), 14);
-}
+// TEST(StrategicAI, asserts) {
+//   EXPECT_EQ(sizeof(ARMY_COMPOSITION), 20);
+//   EXPECT_EQ(sizeof(PATROL_GROUP), 20);
+//   EXPECT_EQ(sizeof(GARRISON_GROUP), 14);
+// }

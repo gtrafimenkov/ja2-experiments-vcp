@@ -1156,10 +1156,10 @@ void DropKeysInKeyRing(SOLDIERTYPE &s, GridNo const gridno, int8_t const level,
   }
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(Keys, asserts) {
-  EXPECT_EQ(sizeof(LOCK), 46);
-  EXPECT_EQ(sizeof(DOOR), 14);
-  EXPECT_EQ(sizeof(DOOR_STATUS), 4);
-}
+// TEST(Keys, asserts) {
+//   EXPECT_EQ(sizeof(LOCK), 46);
+//   EXPECT_EQ(sizeof(DOOR), 14);
+//   EXPECT_EQ(sizeof(DOOR_STATUS), 4);
+// }

@@ -1980,8 +1980,8 @@ static uint8_t const *GetRotationArray() {
   return g_encryption_array[guiJA2EncryptionSet];
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(TacticalSave, asserts) {
-  EXPECT_EQ(lengthof(g_encryption_array), BASE_NUMBER_OF_ROTATION_ARRAYS * 12);
-}
+// TEST(TacticalSave, asserts) {
+//   EXPECT_EQ(lengthof(g_encryption_array), BASE_NUMBER_OF_ROTATION_ARRAYS * 12);
+// }

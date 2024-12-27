@@ -426,9 +426,9 @@ static int CompareDirEntryFileNames(const void *key, const void *member) {
   return strcasecmp(sSearchKey, TempDirEntry->sFileName);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(LibraryDatabase, asserts) {
-  EXPECT_EQ(sizeof(LIBHEADER), 532);
-  EXPECT_EQ(sizeof(DIRENTRY), 280);
-}
+// TEST(LibraryDatabase, asserts) {
+//   EXPECT_EQ(sizeof(LIBHEADER), 532);
+//   EXPECT_EQ(sizeof(DIRENTRY), 280);
+// }

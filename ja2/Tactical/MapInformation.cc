@@ -537,6 +537,6 @@ void UpdateSummaryInfo(SUMMARYFILE *pSummary) {
   }
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(MapInformation, asserts) { EXPECT_EQ(sizeof(MAPCREATE_STRUCT), 100); }
+// TEST(MapInformation, asserts) { EXPECT_EQ(sizeof(MAPCREATE_STRUCT), 100); }

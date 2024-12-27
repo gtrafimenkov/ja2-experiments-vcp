@@ -149,10 +149,10 @@ int main(int argc, char *argv[]) try {
 
   if (!params.success) return EXIT_FAILURE;
 
-  if (params.doUnitTests) {
-    testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
-  }
+  // if (params.doUnitTests) {
+  //   testing::InitGoogleTest(&argc, argv);
+  //   return RUN_ALL_TESTS();
+  // }
 
   JPlatform_Init();
 

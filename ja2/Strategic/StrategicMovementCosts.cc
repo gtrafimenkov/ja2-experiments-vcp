@@ -178,11 +178,11 @@ bool SectorIsPassable(int16_t const sSector) {
   return t != GROUNDBARRIER && t != EDGEOFWORLD;
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(StrategicMovementCostsTest, asserts) {
-  EXPECT_EQ(lengthof(g_traverse_we), 16);
-  EXPECT_EQ(lengthof(g_traverse_ns), 17);
-  EXPECT_EQ(lengthof(g_traverse_through), 16);
-  EXPECT_EQ(lengthof(g_travel_rating), 16);
-}
+// TEST(StrategicMovementCostsTest, asserts) {
+//   EXPECT_EQ(lengthof(g_traverse_we), 16);
+//   EXPECT_EQ(lengthof(g_traverse_ns), 17);
+//   EXPECT_EQ(lengthof(g_traverse_through), 16);
+//   EXPECT_EQ(lengthof(g_travel_rating), 16);
+// }

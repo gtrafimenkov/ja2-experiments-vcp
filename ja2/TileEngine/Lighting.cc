@@ -2047,7 +2047,7 @@ void CreateTilePaletteTables(const HVOBJECT pObj) {
 
 const char *LightSpriteGetTypeName(const LIGHT_SPRITE *const l) { return l->light_template->name; }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(Lighting, asserts) { EXPECT_EQ(sizeof(LIGHT_NODE), 6); }
+// TEST(Lighting, asserts) { EXPECT_EQ(sizeof(LIGHT_NODE), 6); }

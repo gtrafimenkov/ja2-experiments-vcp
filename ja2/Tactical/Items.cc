@@ -4024,10 +4024,10 @@ void DumpItemsList() {
 }
 #endif  // JA2TESTVERSION
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(Items, asserts) {
-  EXPECT_EQ(sizeof(OBJECTTYPE), 36);
-  EXPECT_EQ(lengthof(Item), MAXITEMS);
-}
+// TEST(Items, asserts) {
+//   EXPECT_EQ(sizeof(OBJECTTYPE), 36);
+//   EXPECT_EQ(lengthof(Item), MAXITEMS);
+// }

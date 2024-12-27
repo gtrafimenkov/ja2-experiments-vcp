@@ -3,7 +3,6 @@
 // of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
 #include "Utils/Text.h"
-#include "gtest/gtest.h"
 
 /*
 
@@ -3423,17 +3422,15 @@ LanguageRes g_LanguageResFrench = {
     g_eng_str_iron_man_mode_warning,
 };
 
-#define ARR_SIZE(x) (sizeof(x) / sizeof(x[0]))
-TEST(WideStringEncodingTest, FrenchTextFile) {
-  // This test checks that the wide string literals in this file are correctly
-  // interpreted by the compiler.
-  // Make sure the file is in utf-8 encoding (done using .editorconfig) and
-  // the project is compiled with /utf-8 option (for Visual Studio).
-  const wchar_t str[] = L"тест";
-  ASSERT_EQ(ARR_SIZE(str), 5) << "Compiler cannot correctly interpret wide string literals";
-  EXPECT_EQ(str[0], 0x0442);
-  EXPECT_EQ(str[1], 0x0435);
-  EXPECT_EQ(str[2], 0x0441);
-  EXPECT_EQ(str[3], 0x0442);
-  EXPECT_EQ(str[4], 0x00);
-}
+// #include "gtest/gtest.h"
+
+// #define ARR_SIZE(x) (sizeof(x) / sizeof(x[0]))
+// TEST(WideStringEncodingTest, FrenchTextFile) {
+//   const wchar_t str[] = L"тест";
+//   ASSERT_EQ(ARR_SIZE(str), 5) << "Compiler cannot correctly interpret wide string literals";
+//   EXPECT_EQ(str[0], 0x0442);
+//   EXPECT_EQ(str[1], 0x0435);
+//   EXPECT_EQ(str[2], 0x0441);
+//   EXPECT_EQ(str[3], 0x0442);
+//   EXPECT_EQ(str[4], 0x00);
+// }

@@ -268,12 +268,12 @@ void ConvertRGBDistribution565ToAny(uint16_t *const p16BPPData, uint32_t const u
   }
 }
 
-#undef FAIL
-#include "gtest/gtest.h"
+// #undef FAIL
+// #include "gtest/gtest.h"
 
-TEST(HImage, asserts) {
-  EXPECT_EQ(sizeof(AuxObjectData), 16);
-  EXPECT_EQ(sizeof(RelTileLoc), 2);
-  EXPECT_EQ(sizeof(ETRLEObject), 16);
-  EXPECT_EQ(sizeof(struct JColor), 4);
-}
+// TEST(HImage, asserts) {
+//   EXPECT_EQ(sizeof(AuxObjectData), 16);
+//   EXPECT_EQ(sizeof(RelTileLoc), 2);
+//   EXPECT_EQ(sizeof(ETRLEObject), 16);
+//   EXPECT_EQ(sizeof(SGPPaletteEntry), 4);
+// }

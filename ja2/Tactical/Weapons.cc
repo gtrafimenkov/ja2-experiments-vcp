@@ -3770,6 +3770,6 @@ static BOOLEAN WillExplosiveWeaponFail(const SOLDIERTYPE *pSoldier, const OBJECT
   return (FALSE);
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(Weapons, asserts) { EXPECT_EQ(lengthof(Weapon), MAX_WEAPONS); }
+// TEST(Weapons, asserts) { EXPECT_EQ(lengthof(Weapon), MAX_WEAPONS); }

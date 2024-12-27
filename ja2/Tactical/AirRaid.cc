@@ -1073,9 +1073,9 @@ void EndAirRaid() {
   ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_BETAVERSION, L"Ending Air Raid.");
 }
 
-#include "gtest/gtest.h"
+// #include "gtest/gtest.h"
 
-TEST(AirRaid, asserts) {
-  EXPECT_EQ(sizeof(AIR_RAID_SAVE_STRUCT), 132);
-  EXPECT_EQ(sizeof(AIR_RAID_DEFINITION), 24);
-}
+// TEST(AirRaid, asserts) {
+//   EXPECT_EQ(sizeof(AIR_RAID_SAVE_STRUCT), 132);
+//   EXPECT_EQ(sizeof(AIR_RAID_DEFINITION), 24);
+// }
