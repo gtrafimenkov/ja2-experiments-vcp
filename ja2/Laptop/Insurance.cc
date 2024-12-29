@@ -314,10 +314,10 @@ void DisplaySmallRedLineWithShadow(uint16_t usStartX, uint16_t usStartY, uint16_
   uint16_t *const pDestBuf = l.Buffer<uint16_t>();
 
   // draw the red line
-  LineDraw(FALSE, usStartX, usStartY, EndX, EndY, Get16BPPColor(FROMRGB(255, 0, 0)), pDestBuf);
+  LineDraw(FALSE, usStartX, usStartY, EndX, EndY, rgb32_to_rgb565(FROMRGB(255, 0, 0)), pDestBuf);
 
   // draw the black shadow line
-  LineDraw(FALSE, usStartX + 1, usStartY + 1, EndX + 1, EndY + 1, Get16BPPColor(FROMRGB(0, 0, 0)),
+  LineDraw(FALSE, usStartX + 1, usStartY + 1, EndX + 1, EndY + 1, rgb32_to_rgb565(FROMRGB(0, 0, 0)),
            pDestBuf);
 }
 

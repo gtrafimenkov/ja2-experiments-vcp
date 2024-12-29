@@ -672,7 +672,7 @@ void RenderSelectionWindow() {
       iEY = std::min(359, iEY);
       iEY = std::max(g_sel_win_box.y, iEY);
 
-      usFillColor = Get16BPPColor(FROMRGB(255, usFillGreen, 0));
+      usFillColor = rgb32_to_rgb565(FROMRGB(255, usFillGreen, 0));
       usFillGreen += usDir;
       if (usFillGreen > 250)
         usDir = 251;

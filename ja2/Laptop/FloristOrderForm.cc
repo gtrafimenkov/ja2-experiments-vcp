@@ -32,8 +32,7 @@
 #include "Utils/Text.h"
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define FLOWER_ORDEER_TINY_FONT FONT10ARIAL
 #define FLOWER_ORDEER_SMALL_FONT FONT12ARIAL
@@ -826,7 +825,7 @@ static BOOLEAN CreateDestroyFlowerOrderDestDropDown(uint8_t ubDropDownMode) {
           FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3,
           FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH,
           FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2,
-          Get16BPPColor(FROMRGB(0, 0, 0)));
+          rgb32_to_rgb565(FROMRGB(0, 0, 0)));
       DrawTextToScreen((pDeliveryLocationStrings[gubCurrentlySelectedFlowerLocation]),
                        FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6,
                        FLOWER_ORDER_DROP_DOWN_CITY_START_Y + 3, 0, FLOWER_ORDEER_DROP_DOWN_FONT,
@@ -852,7 +851,7 @@ static BOOLEAN CreateDestroyFlowerOrderDestDropDown(uint8_t ubDropDownMode) {
       ColorFillVideoSurfaceArea(
           FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X, FLOWER_ORDER_DROP_DOWN_LOCATION_Y,
           FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH,
-          FLOWER_ORDER_DROP_DOWN_LOCATION_Y + usHeight, Get16BPPColor(FROMRGB(0, 0, 0)));
+          FLOWER_ORDER_DROP_DOWN_LOCATION_Y + usHeight, rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
       //
       // Place the border around the background
@@ -927,7 +926,7 @@ static void FlowerOrderDrawSelectedCity(uint8_t ubNumber) {
   ColorFillVideoSurfaceArea(
       FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_CITY_START_X, usPosY + 2,
       FLOWER_ORDER_DROP_DOWN_CITY_START_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH - 9,
-      usPosY + usFontHeight + 4, Get16BPPColor(FROMRGB(255, 255, 255)));
+      usPosY + usFontHeight + 4, rgb32_to_rgb565(FROMRGB(255, 255, 255)));
 
   SetFontShadow(NO_SHADOW);
   DrawTextToScreen((pDeliveryLocationStrings[ubNumber]), FLOWER_ORDER_DROP_DOWN_CITY_START_X + 6,
@@ -944,7 +943,7 @@ static void FlowerOrderDisplayShippingLocationCity() {
       FRAME_BUFFER, FLOWER_ORDER_DROP_DOWN_LOCATION_X + 3, FLOWER_ORDER_DELIVERY_LOCATION_Y + 3,
       FLOWER_ORDER_DROP_DOWN_LOCATION_X + FLOWER_ORDER_DROP_DOWN_LOCATION_WIDTH,
       FLOWER_ORDER_DELIVERY_LOCATION_Y + FLOWER_ORDER_DELIVERY_LOCATION_HEIGHT - 2,
-      Get16BPPColor(FROMRGB(0, 0, 0)));
+      rgb32_to_rgb565(FROMRGB(0, 0, 0)));
   DrawTextToScreen((pDeliveryLocationStrings[gubCurrentlySelectedFlowerLocation]),
                    FLOWER_ORDER_DELIVERY_LOCATION_X + 5, FLOWER_ORDER_DELIVERY_LOCATION_Y + 5, 0,
                    FLOWER_ORDEER_SMALL_FONT, FLOWER_ORDEER_SMALL_COLOR, FONT_MCOLOR_BLACK,
@@ -954,11 +953,11 @@ static void FlowerOrderDisplayShippingLocationCity() {
 static void InitFlowerOrderTextInputBoxes() {
   InitTextInputMode();
   SetTextInputFont(FONT12ARIAL);
-  Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(255, 255, 255)));
-  SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
+  Set16BPPTextFieldColor(rgb32_to_rgb565(FROMRGB(255, 255, 255)));
+  SetBevelColors(rgb32_to_rgb565(FROMRGB(136, 138, 135)), rgb32_to_rgb565(FROMRGB(24, 61, 81)));
   SetTextInputRegularColors(2, FONT_WHITE);
   SetTextInputHilitedColors(FONT_WHITE, 2, 141);
-  SetCursorColor(Get16BPPColor(FROMRGB(0, 0, 0)));
+  SetCursorColor(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   AddUserInputField(NULL);
 
@@ -995,19 +994,18 @@ static void DestroyFlowerOrderTextInputBoxes() { KillTextInputMode(); }
 static void HandleFloristOrderKeyBoardInput() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
-    if (!HandleTextInput(&InputEvent) && InputEvent.usEvent == KEY_DOWN) {
-      switch (InputEvent.usParam) {
-        case SDLK_RETURN:
+    if (!HandleTextInput(&InputEvent) && InputEvent.isKeyDown()) {
+      switch (InputEvent.getKey()) {
+        case JIK_RETURN:
           GetInputText();
           break;
 
-        case SDLK_ESCAPE:
+        case JIK_ESCAPE:
           SetActiveField(0);
           break;
 
         default:
-          HandleKeyBoardShortCutsForLapTop(InputEvent.usEvent, InputEvent.usParam,
-                                           InputEvent.usKeyState);
+          HandleKeyBoardShortCutsForLapTop(&InputEvent);
           break;
       }
     }

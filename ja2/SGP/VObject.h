@@ -5,6 +5,7 @@
 #ifndef __VOBJECT_H
 #define __VOBJECT_H
 
+#include "Color.h"
 #include "SGP/AutoPtr.h"
 #include "SGP/Buffer.h"
 #include "SGP/Types.h"
@@ -36,7 +37,7 @@ class SGPVObject {
 
   uint8_t BPP() const { return bit_depth_; }
 
-  SGPPaletteEntry const *Palette() const { return palette_; }
+  struct JColor const *Palette() const { return palette_; }
 
   uint16_t const *Palette16() const { return palette16_; }
 
@@ -64,10 +65,10 @@ class SGPVObject {
   enum Flags { NONE = 0, SHADETABLE_SHARED = 1U << 0 };
 
  private:
-  Flags flags_;                           // Special flags
-  uint32_t pix_data_size_;                // ETRLE data size
-  SGP::Buffer<SGPPaletteEntry> palette_;  // 8BPP Palette
-  uint16_t *palette16_;                   // A 16BPP palette used for 8->16 blits
+  Flags flags_;                         // Special flags
+  uint32_t pix_data_size_;              // ETRLE data size
+  SGP::Buffer<struct JColor> palette_;  // 8BPP Palette
+  uint16_t *palette16_;                 // A 16BPP palette used for 8->16 blits
 
   uint8_t *pix_data_;          // ETRLE pixel data
   ETRLEObject *etrle_object_;  // Object offset data etc

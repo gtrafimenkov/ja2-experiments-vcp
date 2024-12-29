@@ -278,7 +278,7 @@ static void RenderRubberBanding() {
     time_of_last_update = now;
     if (++flash_colour == lengthof(guiColors)) flash_colour = 0;
   }
-  uint16_t const colour = Get16BPPColor(guiColors[flash_colour]);
+  uint16_t const colour = rgb32_to_rgb565(guiColors[flash_colour]);
 
   // Draw rectangle.....
   SGPVSurface::Lock lock(FRAME_BUFFER);
@@ -331,9 +331,6 @@ void RenderTopmostTacticalInterface() {
   if (gfInMovementMenu) {
     RenderMovementMenu();
   }
-
-  // Syncronize for upcoming soldier counters
-  SYNCTIMECOUNTER();
 
   // Setup system for video overlay (text and blitting) Sets clipping rects, etc
   StartViewportOverlays();

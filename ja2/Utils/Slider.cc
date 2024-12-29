@@ -106,7 +106,7 @@ SLIDER *AddSlider(uint8_t ubStyle, uint16_t usCursor, uint16_t usPosX, uint16_t 
   s->usNumberOfIncrements = usNumberOfIncrements;
   s->SliderChangeCallback = SliderChangeCallback;
   s->usCurrentIncrement = 0;
-  s->usBackGroundColor = Get16BPPColor(FROMRGB(255, 255, 255));
+  s->usBackGroundColor = rgb32_to_rgb565(FROMRGB(255, 255, 255));
 
   uint16_t x = usPosX;
   uint16_t y = usPosY;

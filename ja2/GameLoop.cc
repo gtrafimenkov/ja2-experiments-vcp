@@ -23,7 +23,6 @@
 #include "SGP/Debug.h"
 #include "SGP/LibraryDataBase.h"
 #include "SGP/MemMan.h"
-#include "SGP/SGP.h"
 #include "SGP/Video.h"
 #include "SaveLoadGame.h"
 #include "Screens.h"
@@ -40,6 +39,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/MusicControl.h"
 #include "Utils/Text.h"
+#include "jplatform.h"
 
 #ifdef JA2BETAVERSION
 #include "PreBattle_Interface.h"
@@ -310,7 +310,7 @@ void HandleShortCutExitState() {
     case EDIT_SCREEN:
     case ERROR_SCREEN:
       // Do not prompt if error or editor
-      requestGameExit();
+      JPlatform_RequestExit();
       break;
 
     case LAPTOP_SCREEN:
@@ -340,7 +340,7 @@ void HandleShortCutExitState() {
 void EndGameMessageBoxCallBack(MessageBoxReturnValue const bExitValue) {
   // yes, so start over, else stay here and do nothing for now
   if (bExitValue == MSG_BOX_RETURN_YES) {
-    requestGameExit();
+    JPlatform_RequestExit();
   }
 
   // If we are in the tactical placement gui, we need this flag set so the

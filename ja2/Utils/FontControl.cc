@@ -14,6 +14,7 @@
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/WCheck.h"
+#include "jplatform_video.h"
 
 Font gp10PointArial;
 Font gp10PointArialBold;
@@ -94,7 +95,7 @@ void SetFontShade(Font const font, FontShade const shade) {
 }
 
 static void CreateFontPaletteTables(Font const f) {
-  const SGPPaletteEntry *const pal = f->Palette();
+  const struct JColor *const pal = f->Palette();
   f->pShades[FONT_SHADE_RED] = Create16BPPPaletteShaded(pal, 255, 0, 0, TRUE);
   f->pShades[FONT_SHADE_BLUE] = Create16BPPPaletteShaded(pal, 0, 0, 255, TRUE);
   f->pShades[FONT_SHADE_GREEN] = Create16BPPPaletteShaded(pal, 0, 255, 0, TRUE);

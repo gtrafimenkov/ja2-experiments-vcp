@@ -15,10 +15,9 @@
 #include "Tactical/Overhead.h"
 #include "Tactical/OverheadTypes.h"
 #include "Utils/FontControl.h"
+#include "jplatform_video.h"
 
-#include "SDL_pixels.h"
-
-BOOLEAN CreateSGPPaletteFromCOLFile(SGPPaletteEntry *const pal, const char *const col_file) try {
+BOOLEAN CreateSGPPaletteFromCOLFile(struct JColor *const pal, const char *const col_file) try {
   AutoSGPFile f(FileMan::openForReadingSmart(col_file, true));
 
   uint8_t data[776];
@@ -58,8 +57,8 @@ void DisplayPaletteRep(const PaletteRepID aPalRep, const uint8_t ubXPos, const u
     sBRX = sTLX + 20;
     sBRY = sTLY + 20;
 
-    const SGPPaletteEntry *Clr = &gpPalRep[ubPaletteRep].rgb[cnt1];
-    us16BPPColor = Get16BPPColor(FROMRGB(Clr->r, Clr->g, Clr->b));
+    const struct JColor *Clr = &gpPalRep[ubPaletteRep].rgb[cnt1];
+    us16BPPColor = rgb32_to_rgb565(FROMRGB(Clr->r, Clr->g, Clr->b));
 
     ColorFillVideoSurfaceArea(dst, sTLX, sTLY, sBRX, sBRY, us16BPPColor);
   }

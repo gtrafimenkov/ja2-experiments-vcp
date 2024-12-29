@@ -2,7 +2,6 @@
 // This file contains code derived from the code released under the terms
 // of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
-#include "Macro.h"
 /****************************************************************************************
  * JA2 Lighting Module
  *
@@ -20,10 +19,16 @@
  * Written by Derek Beland, April 14, 1997
  *
  ***************************************************************************************/
+
+#include "TileEngine/Lighting.h"
+
 #include <algorithm>
+#include <cstring>
+#include <math.h>
 #include <stdexcept>
 #include <stdio.h>
 
+#include "Color.h"
 #include "Editor/EditSys.h"
 #include "Macro.h"
 #include "SGP/Buffer.h"
@@ -43,7 +48,6 @@
 #include "Tactical/StructureWrap.h"
 #include "TileEngine/Environment.h"
 #include "TileEngine/IsometricUtils.h"
-#include "TileEngine/Lighting.h"
 #include "TileEngine/RadarScreen.h"
 #include "TileEngine/RenderDirty.h"
 #include "TileEngine/RenderWorld.h"
@@ -51,9 +55,8 @@
 #include "TileEngine/SysUtil.h"
 #include "TileEngine/TileDef.h"
 #include "TileEngine/WorldDef.h"
+#include "jplatform_video.h"
 // #include "math.h"
-
-#include "SDL_pixels.h"
 
 #define MAX_LIGHT_TEMPLATES 32  // maximum number of light types
 
@@ -89,9 +92,9 @@ LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
 // Lighting system general data
 uint8_t ubAmbientLightLevel = DEFAULT_SHADE_LEVEL;
 
-SGPPaletteEntry g_light_color = {0, 0, 0, 0};
+struct JColor g_light_color = {0, 0, 0, 0};
 
-static SGPPaletteEntry gpOrigLight = {0, 0, 0, 0};
+static struct JColor gpOrigLight = {0, 0, 0, 0};
 
 /*
 uint16_t gusShadeLevels[16][3]={{500, 500, 500},				// green
@@ -206,7 +209,7 @@ void InitLightingSystem() {
 
 // THIS MUST BE CALLED ONCE ALL SURFACE VIDEO OBJECTS HAVE BEEN LOADED!
 void SetDefaultWorldLightingColors() {
-  static const SGPPaletteEntry pPal = {0, 0, 0};
+  static const struct JColor pPal = {0, 0, 0};
   LightSetColor(&pPal);
 }
 
@@ -1815,9 +1818,9 @@ static LightTemplate *LightLoadCachedTemplate(const char *pFilename) {
   return LightLoad(pFilename);
 }
 
-const SGPPaletteEntry *LightGetColor() { return &gpOrigLight; }
+const struct JColor *LightGetColor() { return &gpOrigLight; }
 
-void LightSetColor(const SGPPaletteEntry *const pPal) {
+void LightSetColor(const struct JColor *const pPal) {
   Assert(pPal != NULL);
 
   if (pPal->r != g_light_color.r || pPal->g != g_light_color.g ||
@@ -1994,8 +1997,8 @@ static void LightSpriteDirty(LIGHT_SPRITE const *const l) {
   SetRenderFlags(RENDER_FLAG_MARKED);
 }
 
-static void AddSaturatePalette(SGPPaletteEntry Dst[256], const SGPPaletteEntry Src[256],
-                               const SGPPaletteEntry *Bias) {
+static void AddSaturatePalette(struct JColor Dst[256], const struct JColor Src[256],
+                               const struct JColor *Bias) {
   uint8_t r = Bias->r;
   uint8_t g = Bias->g;
   uint8_t b = Bias->b;
@@ -2006,7 +2009,7 @@ static void AddSaturatePalette(SGPPaletteEntry Dst[256], const SGPPaletteEntry S
   }
 }
 
-static void CreateShadedPalettes(uint16_t *Shades[16], const SGPPaletteEntry ShadePal[256]) {
+static void CreateShadedPalettes(uint16_t *Shades[16], const struct JColor ShadePal[256]) {
   const uint16_t *sl0 = gusShadeLevels[0];
   Shades[0] = Create16BPPPaletteShaded(ShadePal, sl0[0], sl0[1], sl0[2], TRUE);
   for (uint32_t i = 1; i < 16; i++) {
@@ -2015,8 +2018,8 @@ static void CreateShadedPalettes(uint16_t *Shades[16], const SGPPaletteEntry Sha
   }
 }
 
-void CreateBiasedShadedPalettes(uint16_t *Shades[16], const SGPPaletteEntry ShadePal[256]) {
-  SGPPaletteEntry LightPal[256];
+void CreateBiasedShadedPalettes(uint16_t *Shades[16], const struct JColor ShadePal[256]) {
+  struct JColor LightPal[256];
   AddSaturatePalette(LightPal, ShadePal, &g_light_color);
   CreateShadedPalettes(Shades, LightPal);
 }

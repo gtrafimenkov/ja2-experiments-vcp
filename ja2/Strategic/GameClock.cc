@@ -40,6 +40,7 @@
 #include "Utils/Message.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "jplatform_video.h"
 
 // #define DEBUG_GAME_CLOCK
 

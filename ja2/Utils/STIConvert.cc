@@ -15,8 +15,7 @@
 #include "SGP/MemMan.h"
 #include "SGP/Types.h"
 #include "SGP/WCheck.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 #define CONVERT_ADD_APPDATA 0x0001
 #define CONVERT_ADD_JA2DATA 0x0003
@@ -68,7 +67,7 @@ static BOOLEAN ConvertToETRLE(uint8_t **ppDest, uint32_t *puiDestLen,
                               uint8_t *p8BPPBuffer, uint16_t usWidth, uint16_t usHeight,
                               uint32_t fFlags);
 
-void WriteSTIFile(uint8_t *const pData, SGPPaletteEntry *const pPalette, const int16_t sWidth,
+void WriteSTIFile(uint8_t *const pData, struct JColor *const pPalette, const int16_t sWidth,
                   const int16_t sHeight, const char *const cOutputName, const uint32_t fFlags,
                   const uint32_t uiAppDataSize) {
   FILE *pOutput;
@@ -80,7 +79,7 @@ void WriteSTIFile(uint8_t *const pData, SGPPaletteEntry *const pPalette, const i
   STCIHeader Header;
   uint32_t uiLoop;
 
-  SGPPaletteEntry *pSGPPaletteEntry;
+  struct JColor *pSGPPaletteEntry;
   STCIPaletteElement STCIPaletteEntry;
 
   STCISubImage *pSubImageBuffer;

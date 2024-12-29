@@ -51,8 +51,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #if defined JA2BETAVERSION
 #include "Tactical/SoldierInitList.h"
@@ -534,8 +533,8 @@ static void GetSaveLoadScreenUserInput() {
     MouseSystemHook(e.usEvent, mouse_pos.iX, mouse_pos.iY);
     if (HandleTextInput(&e)) continue;
 
-    if (e.usEvent == KEY_DOWN) {
-      switch (e.usParam) {
+    if (e.isKeyDown()) {
+      switch (e.getKey()) {
         case '1':
           SetSelection(1);
           break;
@@ -568,7 +567,7 @@ static void GetSaveLoadScreenUserInput() {
           break;
       }
     } else if (e.usEvent == KEY_UP) {
-      switch (e.usParam) {
+      switch (e.getKey()) {
         case 'a':
           if (IsKeyDown(ALT) && !gfSaveGame) {
             int8_t const slot = GetNumberForAutoSave(TRUE);
@@ -591,14 +590,14 @@ static void GetSaveLoadScreenUserInput() {
           }
           break;
 
-        case SDLK_UP:
+        case JIK_UP:
           MoveSelectionUp();
           break;
-        case SDLK_DOWN:
+        case JIK_DOWN:
           MoveSelectionDown();
           break;
 
-        case SDLK_ESCAPE:
+        case JIK_ESCAPE:
           if (gbSelectedSaveLocation == -1) {
             LeaveSaveLoadScreen();
           } else {  // Reset selected slot
@@ -609,7 +608,7 @@ static void GetSaveLoadScreenUserInput() {
           }
           break;
 
-        case SDLK_RETURN:
+        case JIK_RETURN:
           if (!gfSaveGame) {
             SaveLoadGameNumber();
           } else if (GetGameDescription()) {
@@ -1028,11 +1027,11 @@ static void InitSaveLoadScreenTextInputBoxes() {
   InitTextInputMode();
   SetTextInputCursor(CUROSR_IBEAM_WHITE);
   SetTextInputFont(FONT12ARIALFIXEDWIDTH);
-  Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(0, 0, 0)));
-  SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
+  Set16BPPTextFieldColor(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
+  SetBevelColors(rgb32_to_rgb565(FROMRGB(136, 138, 135)), rgb32_to_rgb565(FROMRGB(24, 61, 81)));
   SetTextInputRegularColors(FONT_WHITE, 2);
   SetTextInputHilitedColors(2, FONT_WHITE, FONT_WHITE);
-  SetCursorColor(Get16BPPColor(FROMRGB(255, 255, 255)));
+  SetCursorColor(rgb32_to_rgb565(FROMRGB(255, 255, 255)));
 
   AddUserInputField(NULL);
 

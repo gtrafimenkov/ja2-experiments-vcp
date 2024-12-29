@@ -18,8 +18,7 @@
 #include "SGP/VObject.h"
 #include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 typedef uint8_t GlyphIdx;
 
@@ -57,14 +56,14 @@ void SetFontColors(uint16_t usColors) {
  * currently set to. */
 void SetFontForeground(uint8_t ubForeground) {
   if (!FontDefault) return;
-  const SGPPaletteEntry *const c = &FontDefault->Palette()[ubForeground];
-  FontForeground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
+  const struct JColor *const c = &FontDefault->Palette()[ubForeground];
+  FontForeground16 = rgb32_to_rgb565(FROMRGB(c->r, c->g, c->b));
 }
 
 void SetFontShadow(uint8_t ubShadow) {
   if (!FontDefault) return;
-  const SGPPaletteEntry *const c = &FontDefault->Palette()[ubShadow];
-  FontShadow16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
+  const struct JColor *const c = &FontDefault->Palette()[ubShadow];
+  FontShadow16 = rgb32_to_rgb565(FROMRGB(c->r, c->g, c->b));
 
   if (ubShadow != 0 && FontShadow16 == 0) FontShadow16 = 1;
 }
@@ -77,8 +76,8 @@ void SetFontShadow(uint8_t ubShadow) {
  * currently set to. */
 void SetFontBackground(uint8_t ubBackground) {
   if (!FontDefault) return;
-  const SGPPaletteEntry *const c = &FontDefault->Palette()[ubBackground];
-  FontBackground16 = Get16BPPColor(FROMRGB(c->r, c->g, c->b));
+  const struct JColor *const c = &FontDefault->Palette()[ubBackground];
+  FontBackground16 = rgb32_to_rgb565(FROMRGB(c->r, c->g, c->b));
 }
 
 /* Loads a font from an ETRLE file */

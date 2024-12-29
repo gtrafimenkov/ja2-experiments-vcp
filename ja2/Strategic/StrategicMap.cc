@@ -27,7 +27,6 @@
 #include "SGP/Font.h"
 #include "SGP/HImage.h"
 #include "SGP/Random.h"
-#include "SGP/Timer.h"
 #include "SGP/Types.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
@@ -114,6 +113,7 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "jplatform_time.h"
 
 // Used by PickGridNoToWalkIn
 #define MAX_ATTEMPTS 200
@@ -273,12 +273,12 @@ void BeginLoadScreen() {
     uiTimeRange = 2000;
     iPercentage = 0;
     iLastShadePercentage = 0;
-    uiStartTime = GetClock();
+    uiStartTime = JTime_GetTicks();
     BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
     PlayJA2SampleFromFile(SOUNDSDIR "/final psionic blast 01 (16-44).wav", HIGHVOLUME, 1,
                           MIDDLEPAN);
     while (iPercentage < 100) {
-      uiCurrTime = GetClock();
+      uiCurrTime = JTime_GetTicks();
       iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
       iPercentage = std::min(iPercentage, 100);
 
@@ -312,7 +312,7 @@ void BeginLoadScreen() {
       RefreshScreen();
     }
   }
-  FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+  FRAME_BUFFER->Fill(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
   InvalidateScreen();
   RefreshScreen();
 

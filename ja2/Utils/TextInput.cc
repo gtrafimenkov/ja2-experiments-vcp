@@ -25,9 +25,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keyboard.h"
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 static uint16_t *szClipboard;
 BOOLEAN gfNoScroll = FALSE;
@@ -120,9 +118,9 @@ void SetEditingStatus(bool bIsEditing) {
   if (bIsEditing != gfEditingText) {
     gfEditingText = bIsEditing;
     if (bIsEditing) {
-      SDL_StartTextInput();
+      JInput_StartTextInput();
     } else {
-      SDL_StopTextInput();
+      JInput_StopTextInput();
     }
   }
 }
@@ -164,8 +162,8 @@ void InitTextInputModeWithScheme(uint8_t ubSchemeID) {
   switch (ubSchemeID) {
     case DEFAULT_SCHEME:  // yellow boxes with black text, with bluish bevelling
       SetTextInputFont(FONT12POINT1);
-      Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(250, 240, 188)));
-      SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
+      Set16BPPTextFieldColor(rgb32_to_rgb565(FROMRGB(250, 240, 188)));
+      SetBevelColors(rgb32_to_rgb565(FROMRGB(136, 138, 135)), rgb32_to_rgb565(FROMRGB(24, 61, 81)));
       SetTextInputRegularColors(FONT_BLACK, FONT_BLACK);
       SetTextInputHilitedColors(FONT_GRAY2, FONT_GRAY2, FONT_METALGRAY);
       break;
@@ -532,9 +530,9 @@ BOOLEAN HandleTextInput(InputAtom const *const a) {
   // Not in text input mode
   if (!gfTextInputMode) return FALSE;
   // Unless we are psycho typers, we only want to process these key events.
-  if (a->usEvent != TEXT_INPUT && a->usEvent != KEY_DOWN && a->usEvent != KEY_REPEAT) return FALSE;
+  if (a->usEvent != TEXT_INPUT && !a->isKeyDown() && a->usEvent != KEY_REPEAT) return FALSE;
   // Currently in a user field, so return unless TAB is pressed.
-  if (!gfEditingText && a->usParam != SDLK_TAB) return FALSE;
+  if (!gfEditingText && a->getKey() != JIK_TAB) return FALSE;
 
   if (a->usEvent == TEXT_INPUT) {
     wchar_t const c = a->Char;
@@ -545,125 +543,119 @@ BOOLEAN HandleTextInput(InputAtom const *const a) {
     return TRUE;
   }
 
-  switch (a->usKeyState) {
-    case 0:
-      switch (a->usParam) {
-        /* ESC and ENTER must be handled externally, due to the infinite uses
-         * for them. */
-        case SDLK_ESCAPE:
-          return FALSE;  // ESC is equivalent to cancel
+  if (!a->shift && !a->ctrl && !a->alt) {
+    switch (a->getKey()) {
+      /* ESC and ENTER must be handled externally, due to the infinite uses
+       * for them. */
+      case JIK_ESCAPE:
+        return FALSE;  // ESC is equivalent to cancel
 
-        case SDLK_RETURN:  // ENTER is to confirm.
-          PlayJA2Sample(REMOVING_TEXT, BTNVOLUME, 1, MIDDLEPAN);
-          return FALSE;
+      case JIK_RETURN:  // ENTER is to confirm.
+        PlayJA2Sample(REMOVING_TEXT, BTNVOLUME, 1, MIDDLEPAN);
+        return FALSE;
 
-        case SDLK_TAB:
-          /* Always select the next field, even when a user defined field is
-           * currently selected. The order in which you add your text and user
-           * fields dictates the cycling order when TAB is pressed. */
-          SelectNextField();
+      case JIK_TAB:
+        /* Always select the next field, even when a user defined field is
+         * currently selected. The order in which you add your text and user
+         * fields dictates the cycling order when TAB is pressed. */
+        SelectNextField();
+        return TRUE;
+
+      case JIK_LEFT:
+        gfNoScroll = TRUE;
+        if (gubCursorPos != 0) --gubCursorPos;
+        gubStartHilite = gubCursorPos;
+        return TRUE;
+
+      case JIK_RIGHT:
+        if (gubCursorPos < gpActive->ubStrLen) ++gubCursorPos;
+        gubStartHilite = gubCursorPos;
+        return TRUE;
+
+      case JIK_END:
+        gubCursorPos = gpActive->ubStrLen;
+        gubStartHilite = gubCursorPos;
+        return TRUE;
+
+      case JIK_HOME:
+        gubCursorPos = 0;
+        gubStartHilite = gubCursorPos;
+        return TRUE;
+
+      case JIK_DELETE:
+        /* DEL either deletes the selected text, or the character to the right
+         * of the cursor if applicable. */
+        if (gubStartHilite != gubCursorPos) {
+          DeleteHilitedText();
+        } else if (gubCursorPos < gpActive->ubStrLen) {
+          RemoveChars(gubCursorPos, 1);
+        } else {
           return TRUE;
+        }
+        break;
 
-        case SDLK_LEFT:
-          gfNoScroll = TRUE;
-          if (gubCursorPos != 0) --gubCursorPos;
-          gubStartHilite = gubCursorPos;
+      case JIK_BACKSPACE:
+        /* Delete the selected text, or the character to the left of the
+         * cursor if applicable. */
+        if (gubStartHilite != gubCursorPos) {
+          DeleteHilitedText();
+        } else if (gubCursorPos > 0) {
+          gubStartHilite = --gubCursorPos;
+          RemoveChars(gubCursorPos, 1);
+        } else {
           return TRUE;
+        }
+        break;
 
-        case SDLK_RIGHT:
-          if (gubCursorPos < gpActive->ubStrLen) ++gubCursorPos;
-          gubStartHilite = gubCursorPos;
-          return TRUE;
+      default:
+        return TRUE;
+    }
+  } else if (a->shift) {
+    switch (a->getKey()) {
+      case JIK_TAB:  // See comment for non-shifted TAB above
+        SelectPrevField();
+        return TRUE;
 
-        case SDLK_END:
-          gubCursorPos = gpActive->ubStrLen;
-          gubStartHilite = gubCursorPos;
-          return TRUE;
+      case JIK_LEFT:
+        gfNoScroll = TRUE;
+        if (gubCursorPos != 0) --gubCursorPos;
+        return TRUE;
 
-        case SDLK_HOME:
-          gubCursorPos = 0;
-          gubStartHilite = gubCursorPos;
-          return TRUE;
+      case JIK_RIGHT:
+        if (gubCursorPos < gpActive->ubStrLen) ++gubCursorPos;
+        return TRUE;
 
-        case SDLK_DELETE:
-          /* DEL either deletes the selected text, or the character to the right
-           * of the cursor if applicable. */
-          if (gubStartHilite != gubCursorPos) {
-            DeleteHilitedText();
-          } else if (gubCursorPos < gpActive->ubStrLen) {
-            RemoveChars(gubCursorPos, 1);
-          } else {
-            return TRUE;
-          }
-          break;
+      case JIK_END:
+        gubCursorPos = gpActive->ubStrLen;
+        return TRUE;
 
-        case SDLK_BACKSPACE:
-          /* Delete the selected text, or the character to the left of the
-           * cursor if applicable. */
-          if (gubStartHilite != gubCursorPos) {
-            DeleteHilitedText();
-          } else if (gubCursorPos > 0) {
-            gubStartHilite = --gubCursorPos;
-            RemoveChars(gubCursorPos, 1);
-          } else {
-            return TRUE;
-          }
-          break;
+      case JIK_HOME:
+        gubCursorPos = 0;
+        return TRUE;
 
-        default:
-          return TRUE;
-      }
-      break;
-
-    case SHIFT_DOWN:
-      switch (a->usParam) {
-        case SDLK_TAB:  // See comment for non-shifted TAB above
-          SelectPrevField();
-          return TRUE;
-
-        case SDLK_LEFT:
-          gfNoScroll = TRUE;
-          if (gubCursorPos != 0) --gubCursorPos;
-          return TRUE;
-
-        case SDLK_RIGHT:
-          if (gubCursorPos < gpActive->ubStrLen) ++gubCursorPos;
-          return TRUE;
-
-        case SDLK_END:
-          gubCursorPos = gpActive->ubStrLen;
-          return TRUE;
-
-        case SDLK_HOME:
-          gubCursorPos = 0;
-          return TRUE;
-
-        default:
-          return TRUE;
-      }
-
-    case CTRL_DOWN:
-      switch (a->usParam) {
+      default:
+        return TRUE;
+    }
+  } else if (a->ctrl) {
+    switch (a->getKey()) {
 #if 0
-				case SDLK_c: ExecuteCopyCommand();  return TRUE;
-				case SDLK_x: ExecuteCutCommand();   return TRUE;
-				case SDLK_v: ExecutePasteCommand(); return TRUE;
+				case JIK_c: ExecuteCopyCommand();  return TRUE;
+				case JIK_x: ExecuteCutCommand();   return TRUE;
+				case JIK_v: ExecutePasteCommand(); return TRUE;
 #endif
 
-        case SDLK_DELETE:
-          // Delete the entire text field, regardless of hilighting.
-          gubStartHilite = 0;
-          gubCursorPos = gpActive->ubStrLen;
-          DeleteHilitedText();
-          break;
+      case JIK_DELETE:
+        // Delete the entire text field, regardless of hilighting.
+        gubStartHilite = 0;
+        gubCursorPos = gpActive->ubStrLen;
+        DeleteHilitedText();
+        break;
 
-        default:
-          return FALSE;
-      }
-      break;
-
-    default:
-      return FALSE;
+      default:
+        return FALSE;
+    }
+  } else {
+    return FALSE;
   }
 
   PlayJA2Sample(ENTERING_TEXT, BTNVOLUME, 1, MIDDLEPAN);

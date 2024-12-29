@@ -70,8 +70,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define SKI_BUTTON_FONT MILITARYFONT1  // FONT14ARIAL
 #define SKI_BUTTON_COLOR 73
@@ -1024,20 +1023,20 @@ static void GetShopKeeperInterfaceUserInput() {
   InputAtom Event;
 
   while (DequeueEvent(&Event)) {
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_DOWN) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+    if (!HandleTextInput(&Event) && Event.isKeyDown()) {
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           // clean exits - does quotes, shuts up shopkeeper, etc.
           ExitSKIRequested();
           break;
 
         case 'x':
-          if (Event.usKeyState & ALT_DOWN) {
+          if (Event.alt) {
             HandleShortCutExitState();
           }
           break;
 
-        case SDLK_SPACE: {
+        case JIK_SPACE: {
           DeleteItemDescriptionBox();
 
           // skip Robot and EPCs
@@ -1857,7 +1856,7 @@ static uint32_t DisplayInvSlot(uint8_t const slot_num, uint16_t const item_idx, 
 
   uint16_t outline;
   if (IsGunOrAmmoOfSameTypeSelected(item_o)) {
-    outline = Get16BPPColor(FROMRGB(255, 255, 255));
+    outline = rgb32_to_rgb565(FROMRGB(255, 255, 255));
   } else if (gubSkiDirtyLevel != SKI_DIRTY_LEVEL0) {
     outline = SGP_TRANSPARENT;
   } else {  // The item is not highlighted and we are not rerendering the screen
@@ -1878,7 +1877,7 @@ static uint32_t DisplayInvSlot(uint8_t const slot_num, uint16_t const item_idx, 
   }
 
   {  // Display the status of the item
-    uint16_t const colour = Get16BPPColor(FROMRGB(140, 136, 119));
+    uint16_t const colour = rgb32_to_rgb565(FROMRGB(140, 136, 119));
     DrawItemUIBarEx(item_o, 0, x + 2, y + 21, 20, colour, colour, FRAME_BUFFER);
   }
 

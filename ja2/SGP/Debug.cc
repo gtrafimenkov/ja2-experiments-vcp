@@ -4,12 +4,12 @@
 
 #include "SGP/Debug.h"
 
-#include <SDL.h>
 #include <stdarg.h>
 #include <stdio.h>
 
 #include "Macro.h"
-#include "SGP/Timer.h"
+#include "jplatform.h"
+#include "jplatform_time.h"
 
 #if defined(SGP_DEBUG) || defined(FORCE_ASSERTS_ON)
 
@@ -57,7 +57,7 @@ static void _DebugRecordToDebugger(BOOLEAN gfState) { gfRecordToDebugger = gfSta
 
 void _DebugMessage(const char *pString, uint32_t uiLineNum, const char *pSourceFile) {
   char ubOutputString[512];
-  sprintf(ubOutputString, "{ %ld } %s [Line %d in %s]\n", GetClock(), pString, uiLineNum,
+  sprintf(ubOutputString, "{ %ld } %s [Line %d in %s]\n", JTime_GetTicks(), pString, uiLineNum,
           pSourceFile);
 
   if (gfRecordToDebugger) {
@@ -78,11 +78,11 @@ void _DebugMessage(const char *pString, uint32_t uiLineNum, const char *pSourceF
 void _FailMessage(const char *pString, uint32_t uiLineNum, const char *pSourceFile) {
   char ubOutputString[512];
   if (pString != NULL)
-    sprintf(ubOutputString, "{ %ld } Assertion Failure [Line %d in %s]: %s\n", GetClock(),
+    sprintf(ubOutputString, "{ %ld } Assertion Failure [Line %d in %s]: %s\n", JTime_GetTicks(),
             uiLineNum, pSourceFile, pString);
   else
-    sprintf(ubOutputString, "{ %ld } Assertion Failure [Line %d in %s]\n", GetClock(), uiLineNum,
-            pSourceFile);
+    sprintf(ubOutputString, "{ %ld } Assertion Failure [Line %d in %s]\n", JTime_GetTicks(),
+            uiLineNum, pSourceFile);
 
   // Output to debugger
   if (gfRecordToDebugger) fputs(ubOutputString, stderr);
@@ -98,7 +98,7 @@ void _FailMessage(const char *pString, uint32_t uiLineNum, const char *pSourceFi
   }
 #endif
 
-  SDL_Quit();
+  JPlatform_Exit();
   abort();
 }
 

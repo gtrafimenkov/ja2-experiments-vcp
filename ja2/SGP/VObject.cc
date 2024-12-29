@@ -13,8 +13,7 @@
 #include "SGP/MemMan.h"
 #include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 // ******************************************************************************
 //
@@ -51,10 +50,10 @@ SGPVObject::SGPVObject(SGPImage const *const img)
 
   if (img->ubBitDepth == 8) {
     // create palette
-    const SGPPaletteEntry *const src_pal = img->pPalette;
+    const struct JColor *const src_pal = img->pPalette;
     Assert(src_pal != NULL);
 
-    SGPPaletteEntry *const pal = palette_.Allocate(256);
+    struct JColor *const pal = palette_.Allocate(256);
     memcpy(pal, src_pal, sizeof(*pal) * 256);
 
     palette16_ = Create16BPPPalette(pal);

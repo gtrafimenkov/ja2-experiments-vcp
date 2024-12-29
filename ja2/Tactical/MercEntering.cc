@@ -38,8 +38,7 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define MAX_MERC_IN_HELI 20
 #define MAX_HELI_SCRIPT 30
@@ -268,7 +267,7 @@ void HandleHeliDrop() {
       guiPendingOverrideEvent = LU_BEGINUILOCK;
     }
 
-    if (IsKeyDown(SDLK_ESCAPE)) {
+    if (IsKeyDown(JIK_ESCAPE)) {
       // Loop through all mercs not yet placed
       for (cnt = gbCurDrop; cnt < gbNumHeliSeatsOccupied; cnt++) {
         // Add merc to sector

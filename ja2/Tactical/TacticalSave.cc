@@ -15,7 +15,6 @@
 #include "SGP/FileMan.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"
-#include "SGP/SGP.h"
 #include "SGP/Types.h"
 #include "SaveLoadGame.h"
 #include "ScreenIDs.h"
@@ -57,6 +56,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Message.h"
 #include "Utils/Text.h"
+#include "jplatform.h"
 
 static BOOLEAN gfWasInMeanwhile = FALSE;
 
@@ -873,7 +873,7 @@ void LoadTempNpcQuoteArrayToSaveGameFile(
 }
 
 static void TempFileLoadErrorMessageReturnCallback(MessageBoxReturnValue const ubRetVal) {
-  requestGameExit();
+  JPlatform_RequestExit();
 }
 
 // if you call this function, make sure you return TRUE (if applicable) to make

@@ -38,6 +38,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "jplatform_video.h"
 
 extern int32_t iCurrentMapSectorZ;
 
@@ -88,7 +89,7 @@ void LoadRadarScreenBitmap(const char *const filename) {
   gusRadarImage = radar;
 
   // ATE: Add a shade table!
-  const SGPPaletteEntry *const pal = radar->Palette();
+  const struct JColor *const pal = radar->Palette();
   radar->pShades[0] = Create16BPPPaletteShaded(pal, 255, 255, 255, FALSE);
   radar->pShades[1] = Create16BPPPaletteShaded(pal, 100, 100, 100, FALSE);
 
@@ -254,7 +255,7 @@ void RenderRadarScreen() {
       int16_t const sRadarBRX = sBottomRightWorldX * gdScaleX - sRadarCX + sX + sWidth / 2;
       int16_t const sRadarBRY = sBottomRightWorldY * gdScaleY - sRadarCY + gsRadarY + sHeight / 2;
 
-      uint16_t const line_colour = Get16BPPColor(FROMRGB(0, 255, 0));
+      uint16_t const line_colour = rgb32_to_rgb565(FROMRGB(0, 255, 0));
       RectangleDraw(TRUE, sRadarTLX, sRadarTLY, sRadarBRX, sRadarBRY - 1, line_colour, pDestBuf);
 
       // Re-render radar
@@ -294,7 +295,7 @@ void RenderRadarScreen() {
                 ? FROMRGB(255, 0, 0)
                 : gTacticalStatus.Team[s->bTeam].RadarColor;
 
-        RectangleDraw(TRUE, x, y, x + 1, y + 1, Get16BPPColor(line_colour), pDestBuf);
+        RectangleDraw(TRUE, x, y, x + 1, y + 1, rgb32_to_rgb565(line_colour), pDestBuf);
       }
     } else if (fShowMapInventoryPool) {
       if (iCurrentlyHighLightedItem != -1) {
@@ -311,8 +312,8 @@ void RenderRadarScreen() {
           int16_t const y = sYSoldScreen * gdScaleY + gsRadarY;
 
           uint16_t const line_colour = fFlashHighLightInventoryItemOnradarMap
-                                           ? Get16BPPColor(FROMRGB(0, 255, 0))
-                                           : Get16BPPColor(FROMRGB(255, 255, 255));
+                                           ? rgb32_to_rgb565(FROMRGB(0, 255, 0))
+                                           : rgb32_to_rgb565(FROMRGB(255, 255, 255));
 
           RectangleDraw(TRUE, x, y, x + 1, y + 1, line_colour, pDestBuf);
         }
@@ -431,7 +432,7 @@ static void RenderSquadList() {
 
   RestoreExternBackgroundRect(dx, dy, RADAR_WINDOW_WIDTH, SQUAD_REGION_HEIGHT);
   ColorFillVideoSurfaceArea(FRAME_BUFFER, dx, dy, dx + RADAR_WINDOW_WIDTH, dy + SQUAD_REGION_HEIGHT,
-                            Get16BPPColor(FROMRGB(0, 0, 0)));
+                            rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   SetFont(SQUAD_FONT);
   SetFontBackground(FONT_BLACK);

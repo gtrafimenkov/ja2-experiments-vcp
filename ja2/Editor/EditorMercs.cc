@@ -66,9 +66,8 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform_input.h"
+#include "jplatform_video.h"
 
 //--------------------------------------------------
 //	NON_CIV_GROUP,
@@ -625,8 +624,8 @@ static void ShowEditMercColorSet(uint8_t ubPaletteRep, int16_t sSet) {
   sLeft = 230;
   sRight = 359;
 
-  usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
-  usFillColorLight = Get16BPPColor(FROMRGB(136, 138, 135));
+  usFillColorDark = rgb32_to_rgb565(FROMRGB(24, 61, 81));
+  usFillColorLight = rgb32_to_rgb565(FROMRGB(136, 138, 135));
 
   // Draw color bar window area
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sLeft, sTop, sRight, sBottom, usFillColorDark);
@@ -642,10 +641,10 @@ static void ShowEditMercColorSet(uint8_t ubPaletteRep, int16_t sSet) {
   for (cnt1 = 0; cnt1 < ubSize; cnt1++) {
     if (cnt1 == (ubSize - 1)) sRight = 358;
     if (ubPaletteRep == 0xff)
-      us16BPPColor = Get16BPPColor(FROMRGB((16 - cnt1) * 10, (16 - cnt1) * 10, (16 - cnt1) * 10));
+      us16BPPColor = rgb32_to_rgb565(FROMRGB((16 - cnt1) * 10, (16 - cnt1) * 10, (16 - cnt1) * 10));
     else {
-      const SGPPaletteEntry *Clr = &gpPalRep[ubPaletteRep].rgb[cnt1];
-      us16BPPColor = Get16BPPColor(FROMRGB(Clr->r, Clr->g, Clr->b));
+      const struct JColor *Clr = &gpPalRep[ubPaletteRep].rgb[cnt1];
+      us16BPPColor = rgb32_to_rgb565(FROMRGB(Clr->r, Clr->g, Clr->b));
     }
     ColorFillVideoSurfaceArea(FRAME_BUFFER, sLeft, sTop, sRight, sBottom, us16BPPColor);
 
@@ -1865,7 +1864,7 @@ void UpdateMercsInfo() {
         wchar_t str[255];
         const wchar_t *keyword = L"";
         ColorFillVideoSurfaceArea(FRAME_BUFFER, 431, 388, 590, 450,
-                                  Get16BPPColor(FROMRGB(32, 45, 72)));
+                                  rgb32_to_rgb565(FROMRGB(32, 45, 72)));
         switch (gCurrSchedule.ubAction[gubCurrentScheduleActionIndex]) {
           case SCHEDULE_ACTION_LOCKDOOR:
             keyword = L"lock";
@@ -2161,8 +2160,8 @@ static void RenderMercInventoryPanel() {
     MarkAButtonDirty(iEditorButton[x]);
   }
   RenderButtons();
-  if (gbCurrHilite != -1) DrawRect(&mercRects[gbCurrHilite], Get16BPPColor(FROMRGB(200, 200, 0)));
-  if (gbCurrSelect != -1) DrawRect(&mercRects[gbCurrSelect], Get16BPPColor(FROMRGB(200, 0, 0)));
+  if (gbCurrHilite != -1) DrawRect(&mercRects[gbCurrHilite], rgb32_to_rgb565(FROMRGB(200, 200, 0)));
+  if (gbCurrSelect != -1) DrawRect(&mercRects[gbCurrSelect], rgb32_to_rgb565(FROMRGB(200, 0, 0)));
   RenderSelectedMercsInventory();
   InvalidateRegion(MERCPANEL_X, MERCPANEL_Y, 475, 460);
   UpdateItemStatsPanel();

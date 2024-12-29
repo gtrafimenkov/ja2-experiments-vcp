@@ -97,9 +97,9 @@ BOOLEAN LightDraw(const LIGHT_SPRITE *l);
 void LightSave(LightTemplate const *, char const *filename);
 
 // Sets the light color
-void LightSetColor(const SGPPaletteEntry *pPal);
+void LightSetColor(const struct JColor *pPal);
 // Returns the active color
-const SGPPaletteEntry *LightGetColor();
+const struct JColor *LightGetColor();
 
 // High-Level Sprite Interface
 
@@ -146,14 +146,14 @@ extern LIGHT_SPRITE LightSprites[MAX_LIGHT_SPRITES];
 extern uint8_t ubAmbientLightLevel;
 
 // Lighting color
-extern SGPPaletteEntry g_light_color;
+extern struct JColor g_light_color;
 
 // macros
 #define LightGetAmbient() (ubAmbientLightLevel)
 
 const char *LightSpriteGetTypeName(const LIGHT_SPRITE *);
 
-void CreateBiasedShadedPalettes(uint16_t *Shades[16], const SGPPaletteEntry ShadePal[256]);
+void CreateBiasedShadedPalettes(uint16_t *Shades[16], const struct JColor ShadePal[256]);
 
 void LoadShadeTablesFromTextFile();
 

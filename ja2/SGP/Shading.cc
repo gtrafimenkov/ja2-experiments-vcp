@@ -8,6 +8,7 @@
 
 #include "SGP/HImage.h"
 #include "SGP/VObject.h"
+#include "jplatform_video.h"
 
 uint16_t IntensityTable[65536];
 uint16_t ShadeTable[65536];
@@ -26,8 +27,8 @@ void BuildShadeTable() {
   for (uint16_t red = 0; red < 256; red += 4) {
     for (uint16_t green = 0; green < 256; green += 4) {
       for (uint16_t blue = 0; blue < 256; blue += 4) {
-        uint16_t index = Get16BPPColor(FROMRGB(red, green, blue));
-        ShadeTable[index] = Get16BPPColor(
+        uint16_t index = rgb32_to_rgb565(FROMRGB(red, green, blue));
+        ShadeTable[index] = rgb32_to_rgb565(
             FROMRGB(red * guiShadePercent, green * guiShadePercent, blue * guiShadePercent));
       }
     }
@@ -47,8 +48,8 @@ void BuildIntensityTable() {
   for (uint16_t red = 0; red < 256; red += 4) {
     for (uint16_t green = 0; green < 256; green += 4) {
       for (uint16_t blue = 0; blue < 256; blue += 4) {
-        uint16_t index = Get16BPPColor(FROMRGB(red, green, blue));
-        IntensityTable[index] = Get16BPPColor(
+        uint16_t index = rgb32_to_rgb565(FROMRGB(red, green, blue));
+        IntensityTable[index] = rgb32_to_rgb565(
             FROMRGB(red * dShadedPercent, green * dShadedPercent, blue * dShadedPercent));
       }
     }

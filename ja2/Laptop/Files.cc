@@ -369,7 +369,7 @@ static void DisplayFilesList() {
   int32_t const h = FILES_LIST_H;
   for (FilesUnit const *fu = pFilesListHead; fu; ++i, fu = fu->Next) {
     if (i == iHighLightFileLine) {
-      uint16_t const colour = Get16BPPColor(FROMRGB(240, 240, 200));
+      uint16_t const colour = rgb32_to_rgb565(FROMRGB(240, 240, 200));
       ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + w, y + h, colour);
     }
     MPrint(FILES_SENDER_TEXT_X, y + 2, pFilesSenderList[fu->ubCode]);
@@ -440,7 +440,7 @@ static void HandleSpecialTerroristFile(int32_t file_idx);
 static void DisplayFormattedText() {
   fWaitAFrame = FALSE;
 
-  uint16_t const white = Get16BPPColor(FROMRGB(255, 255, 255));
+  uint16_t const white = rgb32_to_rgb565(FROMRGB(255, 255, 255));
   int32_t const x = FILE_VIEWER_X;
   int32_t const y = FILE_VIEWER_Y;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + FILE_VIEWER_W, y + FILE_VIEWER_H, white);

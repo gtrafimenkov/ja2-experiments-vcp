@@ -2083,7 +2083,7 @@ static void DisplayAmountOnChar(SOLDIERTYPE const &s) {
 static void HandlePersonnelKeyboard() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
-    HandleKeyBoardShortCutsForLapTop(InputEvent.usEvent, InputEvent.usParam, InputEvent.usKeyState);
+    HandleKeyBoardShortCutsForLapTop(&InputEvent);
   }
 }
 

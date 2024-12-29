@@ -700,7 +700,7 @@ static void INVRenderINVPanelItem(SOLDIERTYPE const &s, int16_t const pocket,
     }
 
     // Check for compatibility with magazines
-    if (gbCompatibleAmmo[pocket]) outline = Get16BPPColor(FROMRGB(255, 255, 255));
+    if (gbCompatibleAmmo[pocket]) outline = rgb32_to_rgb565(FROMRGB(255, 255, 255));
   }
 
   int16_t const x = r.X();
@@ -733,7 +733,7 @@ static void INVRenderINVPanelItem(SOLDIERTYPE const &s, int16_t const pocket,
 
   if (o.usItem != NOTHING) {  // Add item status bar
     DrawItemUIBarEx(o, 0, x - INV_BAR_DX, y + INV_BAR_DY, ITEM_BAR_HEIGHT,
-                    Get16BPPColor(STATUS_BAR), Get16BPPColor(STATUS_BAR_SHADOW), guiSAVEBUFFER);
+                    rgb32_to_rgb565(STATUS_BAR), rgb32_to_rgb565(STATUS_BAR_SHADOW), guiSAVEBUFFER);
   }
 }
 
@@ -1892,8 +1892,8 @@ void RenderItemDescriptionBox() {
     int16_t const x = box.x + dx;
     int16_t const y = box.y + dy;
     int16_t const h = box.h;
-    DrawItemUIBarEx(obj, gubItemDescStatusIndex, x, y, h, Get16BPPColor(DESC_STATUS_BAR),
-                    Get16BPPColor(DESC_STATUS_BAR_SHADOW), guiSAVEBUFFER);
+    DrawItemUIBarEx(obj, gubItemDescStatusIndex, x, y, h, rgb32_to_rgb565(DESC_STATUS_BAR),
+                    rgb32_to_rgb565(DESC_STATUS_BAR_SHADOW), guiSAVEBUFFER);
   }
 
   bool hatch_out_attachments = gfItemDescObjectIsAttachment;  // if examining attachment, always
@@ -1925,7 +1925,8 @@ void RenderItemDescriptionBox() {
         int16_t const bar_h = agi.bar_box.h;
         int16_t const bar_y = agi.bar_box.y + y + bar_h - 1;
         DrawItemUIBarEx(obj, DRAW_ITEM_STATUS_ATTACHMENT1 + i, bar_x, bar_y, bar_h,
-                        Get16BPPColor(STATUS_BAR), Get16BPPColor(STATUS_BAR_SHADOW), guiSAVEBUFFER);
+                        rgb32_to_rgb565(STATUS_BAR), rgb32_to_rgb565(STATUS_BAR_SHADOW),
+                        guiSAVEBUFFER);
       }
 
       if (hatch_out_attachments) {
@@ -3332,7 +3333,8 @@ void RenderItemStackPopup(BOOLEAN fFullRender) {
       int16_t sNewX = gsItemPopupX + col * usWidth + 7;
       int16_t sNewY = gsItemPopupY + row * usHeight + INV_BAR_DY + 3;
       DrawItemUIBarEx(*gpItemPopupObject, cnt, sNewX, sNewY, ITEM_BAR_HEIGHT,
-                      Get16BPPColor(STATUS_BAR), Get16BPPColor(STATUS_BAR_SHADOW), FRAME_BUFFER);
+                      rgb32_to_rgb565(STATUS_BAR), rgb32_to_rgb565(STATUS_BAR_SHADOW),
+                      FRAME_BUFFER);
     }
   }
 
@@ -3481,8 +3483,8 @@ void RenderKeyRingPopup(const BOOLEAN fFullRender) {
     o.ubNumberOfObjects = key->ubNumber;
     o.usItem = FIRST_KEY + LockTable[key->ubKeyID].usKeyItem;
 
-    DrawItemUIBarEx(o, 0, x + 7, y + 24, ITEM_BAR_HEIGHT, Get16BPPColor(STATUS_BAR),
-                    Get16BPPColor(STATUS_BAR_SHADOW), FRAME_BUFFER);
+    DrawItemUIBarEx(o, 0, x + 7, y + 24, ITEM_BAR_HEIGHT, rgb32_to_rgb565(STATUS_BAR),
+                    rgb32_to_rgb565(STATUS_BAR_SHADOW), FRAME_BUFFER);
     INVRenderItem(FRAME_BUFFER, NULL, o, x + 8, y, box_w - 8, box_h - 2, DIRTYLEVEL2, 0,
                   SGP_TRANSPARENT);
   }
@@ -4080,7 +4082,7 @@ void RenderItemPickupMenu() {
     uint16_t *const pDestBuf = l.Buffer<uint16_t>();
     uint32_t const uiDestPitchBYTES = l.Pitch();
 
-    uint16_t const outline_col = Get16BPPColor(FROMRGB(255, 255, 0));
+    uint16_t const outline_col = rgb32_to_rgb565(FROMRGB(255, 255, 0));
     for (int32_t cnt = 0; cnt < menu.bNumSlotsPerPage; ++cnt) {
       int32_t const world_item = menu.items[cnt];
       if (world_item == -1) continue;
@@ -4634,7 +4636,7 @@ void LoadInterfaceItemsGraphics() {
   size_t const length = lengthof(us16BPPItemCyclePlacedItemColors);
   for (int32_t i = 0; i != length / 2; ++i) {
     uint32_t const l = 25 * (i + 1);
-    uint16_t const c = Get16BPPColor(FROMRGB(l, l, l));
+    uint16_t const c = rgb32_to_rgb565(FROMRGB(l, l, l));
     us16BPPItemCyclePlacedItemColors[i] = c;
     us16BPPItemCyclePlacedItemColors[length - i - 1] = c;
   }

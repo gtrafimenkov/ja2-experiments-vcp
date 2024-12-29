@@ -7,7 +7,7 @@
 
 #include "SGP/Types.h"
 
-void QuantizeImage(uint8_t *pDest, const SGPPaletteEntry *pSrc, int16_t sWidth, int16_t sHeight,
-                   SGPPaletteEntry *pPalette);
+void QuantizeImage(uint8_t *pDest, const struct JColor *pSrc, int16_t sWidth, int16_t sHeight,
+                   struct JColor *pPalette);
 
 #endif

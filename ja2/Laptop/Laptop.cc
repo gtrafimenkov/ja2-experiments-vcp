@@ -61,7 +61,6 @@
 #include "SGP/LoadSaveData.h"
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"
-#include "SGP/Timer.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
@@ -94,8 +93,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
+#include "jplatform_time.h"
 
 // laptop programs
 enum {
@@ -325,7 +324,7 @@ static void GetLaptopKeyboardInput() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
     MouseSystemHook(InputEvent.usEvent, MousePos.iX, MousePos.iY);
-    HandleKeyBoardShortCutsForLapTop(InputEvent.usEvent, InputEvent.usParam, InputEvent.usKeyState);
+    HandleKeyBoardShortCutsForLapTop(&InputEvent);
   }
 }
 
@@ -1123,12 +1122,12 @@ ScreenID LaptopScreenHandle() {
     const uint32_t uiTimeRange = 1000;
     int32_t iPercentage = 0;
     int32_t iRealPercentage = 0;
-    const uint32_t uiStartTime = GetClock();
+    const uint32_t uiStartTime = JTime_GetTicks();
     BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
     BltVideoSurface(FRAME_BUFFER, guiEXTRABUFFER, 0, 0, NULL);
     PlayJA2SampleFromFile(SOUNDSDIR "/laptop power up (8-11).wav", HIGHVOLUME, 1, MIDDLEPAN);
     while (iRealPercentage < 100) {
-      const uint32_t uiCurrTime = GetClock();
+      const uint32_t uiCurrTime = JTime_GetTicks();
       iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
       iPercentage = std::min(iPercentage, 100);
 
@@ -1176,9 +1175,9 @@ ScreenID LaptopScreenHandle() {
       //	SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH,
       // SCREEN_HEIGHT); 	uint16_t* const pDestBuf = l.Buffer<uint16_t>();
       //	RectangleDraw(TRUE, SrcRect1.iLeft, SrcRect1.iTop,
-      // SrcRect1.iRight, SrcRect1.iBottom, Get16BPPColor(FROMRGB(255, 100, 0)),
+      // SrcRect1.iRight, SrcRect1.iBottom, rgb32_to_rgb565(FROMRGB(255, 100, 0)),
       // pDestBuf); 	RectangleDraw(TRUE, SrcRect2.iLeft, SrcRect2.iTop,
-      // SrcRect2.iRight, SrcRect2.iBottom, Get16BPPColor(FROMRGB(100, 255, 0)),
+      // SrcRect2.iRight, SrcRect2.iBottom, rgb32_to_rgb565(FROMRGB(100, 255, 0)),
       // pDestBuf);
       //}
 
@@ -1555,13 +1554,13 @@ static void LeaveLapTopScreen() {
       const uint32_t uiTimeRange = 1000;
       int32_t iPercentage = 100;
       int32_t iRealPercentage = 100;
-      const uint32_t uiStartTime = GetClock();
+      const uint32_t uiStartTime = JTime_GetTicks();
       BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
       PlayJA2SampleFromFile(SOUNDSDIR "/laptop power down (8-11).wav", HIGHVOLUME, 1, MIDDLEPAN);
       while (iRealPercentage > 0) {
         BltVideoSurface(FRAME_BUFFER, guiEXTRABUFFER, 0, 0, NULL);
 
-        const uint32_t uiCurrTime = GetClock();
+        const uint32_t uiCurrTime = JTime_GetTicks();
         iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
         iPercentage = std::min(iPercentage, 100);
         iPercentage = 100 - iPercentage;
@@ -1610,9 +1609,9 @@ static void LeaveLapTopScreen() {
         //	SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH,
         // SCREEN_HEIGHT); 	uint16_t* const pDestBuf = l.Buffer<uint16_t>();
         //	RectangleDraw(TRUE, SrcRect1.iLeft, SrcRect1.iTop,
-        // SrcRect1.iRight, SrcRect1.iBottom, Get16BPPColor(FROMRGB(255, 100,
+        // SrcRect1.iRight, SrcRect1.iBottom, rgb32_to_rgb565(FROMRGB(255, 100,
         // 0)), pDestBuf); 	RectangleDraw(TRUE, SrcRect2.iLeft, SrcRect2.iTop,
-        // SrcRect2.iRight, SrcRect2.iBottom, Get16BPPColor(FROMRGB(100, 255,
+        // SrcRect2.iRight, SrcRect2.iBottom, rgb32_to_rgb565(FROMRGB(100, 255,
         // 0)), pDestBuf);
         //}
 
@@ -2779,21 +2778,21 @@ static void DisplayTaskBarIcons() {
 static void HandleAltTabKeyInLaptop();
 static void HandleShiftAltTabKeyInLaptop();
 
-void HandleKeyBoardShortCutsForLapTop(uint16_t usEvent, uint32_t usParam, uint16_t usKeyState) {
+void HandleKeyBoardShortCutsForLapTop(struct InputAtom *in) {
   // will handle keyboard shortcuts for the laptop ... to be added to later
   if (fExitingLaptopFlag || fTabHandled) return;
 
-  if (usEvent != KEY_DOWN) return;
+  if (!in->isKeyDown()) return;
 
-  switch (usParam) {
-    case SDLK_ESCAPE:
+  switch (in->getKey()) {
+    case JIK_ESCAPE:
       // esc hit, check to see if boomark list is shown, if so, get rid of it,
       // otherwise, leave
       HandleLapTopESCKey();
       break;
 
-    case SDLK_TAB:
-      if (usKeyState & CTRL_DOWN) {
+    case JIK_TAB:
+      if (in->ctrl) {
         HandleShiftAltTabKeyInLaptop();
       } else {
         HandleAltTabKeyInLaptop();
@@ -2803,19 +2802,19 @@ void HandleKeyBoardShortCutsForLapTop(uint16_t usEvent, uint32_t usParam, uint16
 
     case 'b':
       if (CHEATER_CHEAT_LEVEL()) {
-        if (usKeyState & ALT_DOWN) {
+        if (in->alt) {
           LaptopSaveInfo.fBobbyRSiteCanBeAccessed = TRUE;
-        } else if (usKeyState & CTRL_DOWN) {
+        } else if (in->ctrl) {
           guiCurrentLaptopMode = LAPTOP_MODE_BROKEN_LINK;
         }
       }
       break;
 
     case 'x':
-      if (usKeyState & ALT_DOWN) HandleShortCutExitState();
+      if (in->alt) HandleShortCutExitState();
       break;
 
-    case SDLK_h:
+    case 'h':
       ShouldTheHelpScreenComeUp(HELP_SCREEN_LAPTOP, TRUE);
       break;
 

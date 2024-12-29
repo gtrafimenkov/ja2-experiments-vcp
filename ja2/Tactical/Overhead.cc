@@ -521,9 +521,6 @@ void ExecuteOverhead() {
     for (uint32_t cnt = 0; cnt < guiNumMercSlots; ++cnt) {
       SOLDIERTYPE *pSoldier = MercSlots[cnt];
 
-      // Syncronize for upcoming soldier counters
-      SYNCTIMECOUNTER();
-
       if (pSoldier != NULL) {
         HandlePanelFaceAnimations(pSoldier);
 
@@ -654,11 +651,8 @@ void ExecuteOverhead() {
         // Handle animation update counters
         // ATE: Added additional check here for special value of anispeed that
         // pauses all updates
-#ifndef BOUNDS_CHECKER
         if (TIMECOUNTERDONE(pSoldier->UpdateCounter, pSoldier->sAniDelay) &&
-            pSoldier->sAniDelay != 10000)
-#endif
-        {
+            pSoldier->sAniDelay != 10000) {
           // Check if we need to look for items
           if (pSoldier->uiStatusFlags & SOLDIER_LOOKFOR_ITEMS) {
             RevealRoofsAndItems(pSoldier, FALSE);
@@ -1056,9 +1050,6 @@ void ExecuteOverhead() {
     if (guiNumAwaySlots > 0 && !gfPauseAllAI && !(gTacticalStatus.uiFlags & INCOMBAT) &&
         guiAISlotToHandle == HANDLE_OFF_MAP_MERC &&
         guiAIAwaySlotToHandle != RESET_HANDLE_OF_OFF_MAP_MERCS) {
-      // Syncronize for upcoming soldier counters
-      SYNCTIMECOUNTER();
-
       // the ONLY thing to do with away soldiers is process their schedule if
       // they have one and there is an action for them to do (like go on-sector)
       SOLDIERTYPE *const pSoldier = AwaySlots[guiAIAwaySlotToHandle];

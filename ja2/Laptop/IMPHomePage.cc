@@ -5,6 +5,7 @@
 #include "Laptop/IMPHomePage.h"
 
 #include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
@@ -28,8 +29,7 @@
 #include "Utils/Text.h"
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 const uint32_t GlowColorsList[] = {FROMRGB(0, 0, 0),   FROMRGB(0, 25, 0),  FROMRGB(0, 50, 0),
                                    FROMRGB(0, 75, 0),  FROMRGB(0, 100, 0), FROMRGB(0, 125, 0),
@@ -185,7 +185,7 @@ static void DisplayActivationStringCursor() {
     SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     // draw line in current state
     LineDraw(TRUE, uiCursorPosition, CURSOR_Y, uiCursorPosition, CURSOR_Y + CURSOR_HEIGHT,
-             Get16BPPColor(GlowColorsList[iCurrentState]), l.Buffer<uint16_t>());
+             rgb32_to_rgb565(GlowColorsList[iCurrentState]), l.Buffer<uint16_t>());
   }
 
   InvalidateRegion((uint16_t)uiCursorPosition, CURSOR_Y, (uint16_t)uiCursorPosition + 1,
@@ -199,15 +199,15 @@ static void GetPlayerKeyBoardInputForIMPHomePage() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
     if (!HandleTextInput(&InputEvent) && (InputEvent.usEvent != KEY_UP)) {
-      switch (InputEvent.usParam) {
-        case SDLK_RETURN:
+      switch (InputEvent.getKey()) {
+        case JIK_RETURN:
           // return hit, check to see if current player activation string is a
           // valid one
           ProcessPlayerInputActivationString();
           fNewCharInActivationString = TRUE;
           break;
 
-        case SDLK_ESCAPE:
+        case JIK_ESCAPE:
           HandleLapTopESCKey();
           break;
 
@@ -223,8 +223,8 @@ static void HandleTextEvent(const InputAtom *Inp) {
   // this function checks to see if a letter or a backspace was pressed, if so,
   // either put char to screen or delete it
 
-  switch (Inp->usParam) {
-    case SDLK_BACKSPACE:
+  switch (Inp->getKey()) {
+    case JIK_BACKSPACE:
       if (iStringPos >= 0) {
         if (iStringPos > 0) {
           // decrement iStringPosition

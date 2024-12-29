@@ -60,10 +60,8 @@
 #include "Utils/Message.h"
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
-#include "SDL_timer.h"
+#include "jplatform_input.h"
+#include "jplatform_time.h"
 
 static BOOLEAN gfErrorCatch = FALSE;
 static wchar_t gzErrorCatchString[256] = L"";
@@ -261,7 +259,7 @@ ScreenID LoadSaveScreenHandle() {
   // handle all key input.
   while (DequeueEvent(&DialogEvent)) {
     if (!HandleTextInput(&DialogEvent) &&
-        (DialogEvent.usEvent == KEY_DOWN || DialogEvent.usEvent == KEY_REPEAT)) {
+        (DialogEvent.isKeyDown() || DialogEvent.usEvent == KEY_REPEAT)) {
       HandleMainKeyEvents(&DialogEvent);
     }
   }
@@ -477,18 +475,18 @@ static void RemoveFileDialog() {
 
 static void DrawFileDialog() {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 179, 69, (179 + 281), 261,
-                            Get16BPPColor(FROMRGB(136, 138, 135)));
+                            rgb32_to_rgb565(FROMRGB(136, 138, 135)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 180, 70, (179 + 281), 261,
-                            Get16BPPColor(FROMRGB(24, 61, 81)));
+                            rgb32_to_rgb565(FROMRGB(24, 61, 81)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 180, 70, (179 + 280), 260,
-                            Get16BPPColor(FROMRGB(65, 79, 94)));
+                            rgb32_to_rgb565(FROMRGB(65, 79, 94)));
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, (179 + 4), (69 + 3), (179 + 4 + 240), (69 + 123),
-                            Get16BPPColor(FROMRGB(24, 61, 81)));
+                            rgb32_to_rgb565(FROMRGB(24, 61, 81)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, (179 + 5), (69 + 4), (179 + 4 + 240), (69 + 123),
-                            Get16BPPColor(FROMRGB(136, 138, 135)));
+                            rgb32_to_rgb565(FROMRGB(136, 138, 135)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, (179 + 5), (69 + 4), (179 + 3 + 240), (69 + 122),
-                            Get16BPPColor(FROMRGB(250, 240, 188)));
+                            rgb32_to_rgb565(FROMRGB(250, 240, 188)));
 
   MarkButtonsDirty();
   RenderButtons();
@@ -609,18 +607,18 @@ static void SetTopFileToLetter(uint16_t usLetter) {
 static void HandleMainKeyEvents(InputAtom *pEvent) {
   int32_t iPrevFileShown = iCurrFileShown;
   // Replace Alt-x press with ESC.
-  if (pEvent->usKeyState & ALT_DOWN && pEvent->usParam == 'x') pEvent->usParam = SDLK_ESCAPE;
-  switch (pEvent->usParam) {
-    case SDLK_RETURN:
+  if (pEvent->alt && pEvent->getKey() == 'x') pEvent->key = JIK_ESCAPE;
+  switch (pEvent->getKey()) {
+    case JIK_RETURN:
       if (gfNoFiles && iCurrentAction == ACTION_LOAD_MAP) break;
       iFDlgState = iCurrentAction == ACTION_SAVE_MAP ? DIALOG_SAVE : DIALOG_LOAD;
       break;
 
-    case SDLK_ESCAPE:
+    case JIK_ESCAPE:
       iFDlgState = DIALOG_CANCEL;
       break;
 
-    case SDLK_PAGEUP:
+    case JIK_PAGEUP:
       if (iTopFileShown > 7) {
         iTopFileShown -= 7;
         iCurrFileShown -= 7;
@@ -630,19 +628,19 @@ static void HandleMainKeyEvents(InputAtom *pEvent) {
       }
       break;
 
-    case SDLK_PAGEDOWN:
+    case JIK_PAGEDOWN:
       iTopFileShown += 7;
       iCurrFileShown += 7;
       if (iTopFileShown > iTotalFiles - 7) iTopFileShown = iTotalFiles - 7;
       if (iCurrFileShown >= iTotalFiles) iCurrFileShown = iTotalFiles - 1;
       break;
 
-    case SDLK_UP:
+    case JIK_UP:
       if (iCurrFileShown > 0) iCurrFileShown--;
       if (iTopFileShown > iCurrFileShown) iTopFileShown = iCurrFileShown;
       break;
 
-    case SDLK_DOWN:
+    case JIK_DOWN:
       iCurrFileShown++;
       if (iCurrFileShown >= iTotalFiles)
         iCurrFileShown = iTotalFiles - 1;
@@ -650,25 +648,25 @@ static void HandleMainKeyEvents(InputAtom *pEvent) {
         iTopFileShown++;
       break;
 
-    case SDLK_HOME:
+    case JIK_HOME:
       iTopFileShown = 0;
       iCurrFileShown = 0;
       break;
 
-    case SDLK_END:
+    case JIK_END:
       iTopFileShown = iTotalFiles - 7;
       iCurrFileShown = iTotalFiles - 1;
       break;
 
-    case SDLK_DELETE:
+    case JIK_DELETE:
       iFDlgState = DIALOG_DELETE;
       break;
 
     default:
       // This case handles jumping the file list to display the file with the
       // letter pressed.
-      if (pEvent->usParam >= SDLK_a && pEvent->usParam <= SDLK_z) {
-        SetTopFileToLetter((uint16_t)pEvent->usParam);
+      if (pEvent->getKey() >= 'a' && pEvent->getKey() <= 'z') {
+        SetTopFileToLetter((uint16_t)pEvent->getKey());
       }
       break;
   }
@@ -798,9 +796,9 @@ static ScreenID ProcessFileIO() {
       RemoveMercsInSector();
 
       try {
-        uint32_t const start = SDL_GetTicks();
+        uint32_t const start = JTime_GetTicks();
         LoadWorld(ubNewFilename);
-        fprintf(stderr, "---> %u\n", SDL_GetTicks() - start);
+        fprintf(stderr, "---> %u\n", JTime_GetTicks() - start);
       } catch (...) {  // Want to override crash, so user can do something else.
         EnableUndo();
         SetPendingNewScreen(LOADSAVE_SCREEN);

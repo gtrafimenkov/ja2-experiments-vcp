@@ -175,7 +175,7 @@ MercPopUpBox *PrepareMercPopupBox(MercPopUpBox *box, MercPopUpBackground const u
     // Zero with yellow,
     // Set source transparcenty
     vs->SetTransparency(FROMRGB(255, 255, 0));
-    vs->Fill(Get16BPPColor(FROMRGB(255, 255, 0)));
+    vs->Fill(rgb32_to_rgb565(FROMRGB(255, 255, 0)));
   } else {
     SGPBox const DestRect = {0, 0, usWidth, usHeight};
     BltVideoSurface(vs, box->uiMercTextPopUpBackground, 0, 0, &DestRect);

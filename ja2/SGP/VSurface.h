@@ -9,14 +9,7 @@
 #include "SGP/AutoPtr.h"
 #include "SGP/Buffer.h"
 #include "SGP/Types.h"
-
-struct SDL_Surface;
-
-// XXX GT temporary until implementation is moved to cc file
-int _LockSurface(SDL_Surface *surface);
-void _UnlockSurface(SDL_Surface *surface);
-int _Surface_GetPitch(SDL_Surface *surface);
-void *_Surface_GetPixels(SDL_Surface *surface);
+#include "jplatform_video.h"
 
 #define BACKBUFFER g_back_buffer
 #define FRAME_BUFFER g_frame_buffer
@@ -30,10 +23,10 @@ extern SGPVSurface *g_back_buffer;
 extern SGPVSurfaceAuto *g_frame_buffer;
 extern SGPVSurfaceAuto *g_mouse_buffer;
 
-/** Utility wrapper around SDL_Surface. */
+/** Utility wrapper around struct JSurface. */
 class SGPVSurface {
  public:
-  SGPVSurface(SDL_Surface *);
+  SGPVSurface(struct JSurface *);
 
  protected:
   SGPVSurface(uint16_t w, uint16_t h, uint8_t bpp);
@@ -46,10 +39,10 @@ class SGPVSurface {
   uint8_t BPP() const;
 
   // Set palette, also sets 16BPP palette
-  void SetPalette(const SGPPaletteEntry *src_pal);
+  void SetPalette(const struct JColor *src_pal);
 
   // Get the RGB palette entry values
-  SGPPaletteEntry const *GetPalette() const { return palette_; }
+  struct JColor const *GetPalette() const { return palette_; }
 
   void SetTransparency(COLORVAL);
 
@@ -73,8 +66,8 @@ class SGPVSurface {
                                      SGPBox const *src_rect, SGPBox const *dst_rect);
 
  protected:
-  SDL_Surface *surface_;
-  SGP::Buffer<SGPPaletteEntry> palette_;
+  struct JSurface *surface_;
+  SGP::Buffer<struct JColor> palette_;
 
  public:
   uint16_t *p16BPPPalette;  // A 16BPP palette used for 8->16 blits
@@ -83,25 +76,25 @@ class SGPVSurface {
  private:
   class LockBase {
    public:
-    explicit LockBase(SDL_Surface *const s) : surface_(s) {}
+    explicit LockBase(struct JSurface *const s) : surface_(s) {}
 
     template <typename T>
     T *Buffer() {
-      return static_cast<T *>(_Surface_GetPixels(surface_));
+      return static_cast<T *>(JSurface_GetPixels(surface_));
     }
 
-    uint32_t Pitch() { return _Surface_GetPitch(surface_); }
+    uint32_t Pitch() { return JSurface_Pitch(surface_); }
 
    protected:
-    SDL_Surface *surface_;
+    struct JSurface *surface_;
   };
 
  public:
   class Lock : public LockBase {
    public:
-    explicit Lock(SGPVSurface *const vs) : LockBase(vs->surface_) { _LockSurface(surface_); }
+    explicit Lock(SGPVSurface *const vs) : LockBase(vs->surface_) { JSurface_Lock(surface_); }
 
-    ~Lock() { _UnlockSurface(surface_); }
+    ~Lock() { JSurface_Unlock(surface_); }
   };
 
   class Lockable : public LockBase {
@@ -109,24 +102,24 @@ class SGPVSurface {
     explicit Lockable() : LockBase(0) {}
 
     ~Lockable() {
-      if (surface_) _UnlockSurface(surface_);
+      if (surface_) JSurface_Unlock(surface_);
     }
 
     void Lock(SGPVSurface *const vs) {
-      if (surface_) _UnlockSurface(surface_);
+      if (surface_) JSurface_Unlock(surface_);
       surface_ = vs->surface_;
-      if (surface_) _LockSurface(surface_);
+      if (surface_) JSurface_Lock(surface_);
     }
   };
 };
 
 /**
- * Utility wrapper around SDL_Surface which automatically
- * frees SDL_Surface when the object is destroyed. */
+ * Utility wrapper around struct JSurface which automatically
+ * frees struct JSurface when the object is destroyed. */
 class SGPVSurfaceAuto : public SGPVSurface {
  public:
   SGPVSurfaceAuto(uint16_t w, uint16_t h, uint8_t bpp);
-  SGPVSurfaceAuto(SDL_Surface *);
+  SGPVSurfaceAuto(struct JSurface *);
 
   virtual ~SGPVSurfaceAuto();
 };

@@ -30,8 +30,7 @@
 #include "Utils/MusicControl.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define GIO_TITLE_FONT FONT16ARIAL  // FONT14ARIAL
 #define GIO_TITLE_COLOR FONT_MCOLOR_WHITE
@@ -501,12 +500,12 @@ static void GetGIOScreenUserInput() {
   InputAtom Event;
 
   while (DequeueEvent(&Event)) {
-    if (Event.usEvent == KEY_DOWN) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+    if (Event.isKeyDown()) {
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           gubGameOptionScreenHandler = GIO_CANCEL;
           break;
-        case SDLK_RETURN:
+        case JIK_RETURN:
           gubGameOptionScreenHandler = GIO_EXIT;
           break;
       }

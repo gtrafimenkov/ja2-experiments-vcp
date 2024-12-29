@@ -27,8 +27,7 @@
 #include "TileEngine/SysUtil.h"
 #include "TileEngine/WorldDef.h"
 #include "Utils/FontControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 BOOLEAN gfAniEditMode = FALSE;
 static uint16_t usStartAnim = 0;
@@ -117,7 +116,7 @@ ScreenID AniEditScreenHandle() {
   }
 
   if (DequeueEvent(&InputEvent)) {
-    if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_ESCAPE) {
+    if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_ESCAPE) {
       fFirstTime = TRUE;
 
       gfAniEditMode = FALSE;
@@ -135,13 +134,13 @@ ScreenID AniEditScreenHandle() {
       return (GAME_SCREEN);
     }
 
-    if (InputEvent.usEvent == KEY_UP && InputEvent.usParam == SDLK_SPACE) {
+    if (InputEvent.usEvent == KEY_UP && InputEvent.getKey() == JIK_SPACE) {
       if (!fToggle && !fToggle2) {
         CycleAnimations();
       }
     }
 
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 's')) {
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.getKey() == 's')) {
       if (!fToggle) {
         uint16_t usAnim = 0;
         usOldState = usStartAnim;
@@ -171,7 +170,7 @@ ScreenID AniEditScreenHandle() {
       fToggle = !fToggle;
     }
 
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'l')) {
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.getKey() == 'l')) {
       if (!fToggle2) {
         usOldState = usStartAnim;
 
@@ -183,7 +182,7 @@ ScreenID AniEditScreenHandle() {
       fToggle2 = !fToggle2;
     }
 
-    if (InputEvent.usEvent == KEY_UP && InputEvent.usParam == SDLK_PAGEUP) {
+    if (InputEvent.usEvent == KEY_UP && InputEvent.getKey() == JIK_PAGEUP) {
       if (fOKFiles && fToggle2) {
         ubCurLoadedState++;
 
@@ -195,7 +194,7 @@ ScreenID AniEditScreenHandle() {
       }
     }
 
-    if (InputEvent.usEvent == KEY_UP && InputEvent.usParam == SDLK_PAGEDOWN) {
+    if (InputEvent.usEvent == KEY_UP && InputEvent.getKey() == JIK_PAGEDOWN) {
       if (fOKFiles && fToggle2) {
         ubCurLoadedState--;
 
@@ -207,13 +206,13 @@ ScreenID AniEditScreenHandle() {
       }
     }
 
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'c')) {
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.getKey() == 'c')) {
       // CLEAR!
       usStartAnim = 0;
       EVENT_InitNewSoldierAnim(pSoldier, usStartAnim, 0, TRUE);
     }
 
-    if (InputEvent.usEvent == KEY_UP && InputEvent.usParam == SDLK_RETURN) {
+    if (InputEvent.usEvent == KEY_UP && InputEvent.getKey() == JIK_RETURN) {
       if (ubStartHeight == ANIM_STAND) {
         ubStartHeight = ANIM_CROUCH;
       } else if (ubStartHeight == ANIM_CROUCH) {

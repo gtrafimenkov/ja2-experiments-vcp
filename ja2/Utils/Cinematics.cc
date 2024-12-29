@@ -2,7 +2,6 @@
 // This file contains code derived from the code released under the terms
 // of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
-#include "Macro.h"
 //------------------------------------------------------------------------------
 // Cinematics Module
 //
@@ -12,10 +11,13 @@
 //
 //------------------------------------------------------------------------------
 
+#include "Utils/Cinematics.h"
+
 #include <string.h>
 
 #include "Intro.h"
 #include "Local.h"
+#include "Macro.h"
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/HImage.h"
@@ -24,13 +26,12 @@
 #include "SGP/Types.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
-#include "Utils/Cinematics.h"
 
 struct SMKFLIC {
   HWFILE hFileHandle;
   Smack *SmackerObject;
   char SmackerStatus;
-  SDL_Surface *SmackBuffer;
+  struct JSurface *SmackBuffer;
   uint32_t uiFlags;
   uint32_t uiLeft;
   uint32_t uiTop;
@@ -42,7 +43,6 @@ struct SMKFLIC {
 #define SMK_FLIC_AUTOCLOSE 0x00000008  // Close when done
 
 static SMKFLIC SmkList[4];
-static uint32_t guiSmackPixelFormat = SMACKBUFFER565;
 
 BOOLEAN SmkPollFlics() {
   BOOLEAN fFlicStatus = FALSE;
@@ -59,7 +59,7 @@ BOOLEAN SmkPollFlics() {
     {
       SGPVSurface::Lock l(FRAME_BUFFER);
       SmackToBuffer(smkobj, i->uiLeft, i->uiTop, l.Pitch(), smkobj->Height, smkobj->Width,
-                    l.Buffer<uint16_t>(), guiSmackPixelFormat);
+                    l.Buffer<uint16_t>(), SMACKBUFFER565);
       SmackDoFrame(smkobj);
     }
 
@@ -110,7 +110,6 @@ SMKFLIC *SmkPlayFlic(const char *const filename, const uint32_t left, const uint
 }
 
 static SMKFLIC *SmkGetFreeFlic();
-static void SmkSetupVideo();
 
 static SMKFLIC *SmkOpenFlic(const char *const filename) try {
   SMKFLIC *const sf = SmkGetFreeFlic();
@@ -139,9 +138,6 @@ static SMKFLIC *SmkOpenFlic(const char *const filename) try {
     return NULL;
   }
 
-  // Make sure we have a video surface
-  SmkSetupVideo();
-
   sf->hFileHandle = file.Release();
   sf->uiFlags |= SMK_FLIC_OPEN;
   return sf;
@@ -161,16 +157,4 @@ static SMKFLIC *SmkGetFreeFlic() {
     if (!(i->uiFlags & SMK_FLIC_OPEN)) return i;
   }
   return NULL;
-}
-
-static void SmkSetupVideo() {
-  uint32_t red;
-  uint32_t green;
-  uint32_t blue;
-  GetPrimaryRGBDistributionMasks(&red, &green, &blue);
-  if (red == 0xf800 && green == 0x07e0 && blue == 0x001f) {
-    guiSmackPixelFormat = SMACKBUFFER565;
-  } else {
-    guiSmackPixelFormat = SMACKBUFFER555;
-  }
 }

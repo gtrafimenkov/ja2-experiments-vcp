@@ -42,6 +42,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
+#include "jplatform.h"
 
 #define NUMBER_TRIGGERS 27
 #define PRESSURE_ACTION_ID (NUMBER_TRIGGERS - 1)
@@ -468,9 +469,9 @@ void RenderEditorItemsInfo() {
   // Draw the hilighted and selected items if applicable.
   if (eInfo.pusItemIndex) {
     drawItemWithOutline(min_idx, end_idx, scroll_idx, eInfo.sHilitedItemIndex,
-                        Get16BPPColor(FROMRGB(250, 250, 0)));
+                        rgb32_to_rgb565(FROMRGB(250, 250, 0)));
     drawItemWithOutline(min_idx, end_idx, scroll_idx, eInfo.sSelItemIndex,
-                        Get16BPPColor(FROMRGB(250, 0, 0)));
+                        rgb32_to_rgb565(FROMRGB(250, 0, 0)));
   }
 
   // Draw the numbers of each visible item that currently resides in the world.

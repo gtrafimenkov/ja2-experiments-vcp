@@ -4,6 +4,7 @@
 
 #include "SGP/STCI.h"
 
+#include <cstring>
 #include <stdexcept>
 
 #include "SGP/Buffer.h"
@@ -12,8 +13,7 @@
 #include "SGP/HImage.h"
 #include "SGP/ImgFmt.h"
 #include "SGP/MemMan.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 static SGPImage *STCILoadIndexed(uint16_t contents, HWFILE, STCIHeader const *);
 static SGPImage *STCILoadRGB(uint16_t contents, HWFILE, STCIHeader const *);
@@ -58,26 +58,6 @@ static SGPImage *STCILoadRGB(uint16_t const contents, HWFILE const f,
 
     if (header->ubDepth == 16) {
       // ASSUMPTION: file data is 565 R,G,B
-      if (gusRedMask != (uint16_t)header->RGB.uiRedMask ||
-          gusGreenMask != (uint16_t)header->RGB.uiGreenMask ||
-          gusBlueMask != (uint16_t)header->RGB.uiBlueMask) {
-        // colour distribution of the file is different from hardware!  We have
-        // to change it!
-        DebugMsg(TOPIC_HIMAGE, DBG_LEVEL_3, "Converting to current RGB distribution!");
-        // Convert the image to the current hardware's specifications
-        uint32_t const size = header->usWidth * header->usHeight;
-        uint16_t *const data = (uint16_t *)(uint8_t *)img->pImageData;
-        if (gusRedMask == 0x7C00 && gusGreenMask == 0x03E0 && gusBlueMask == 0x001F) {
-          ConvertRGBDistribution565To555(data, size);
-        } else if (gusRedMask == 0xFC00 && gusGreenMask == 0x03E0 && gusBlueMask == 0x001F) {
-          ConvertRGBDistribution565To655(data, size);
-        } else if (gusRedMask == 0xF800 && gusGreenMask == 0x07C0 && gusBlueMask == 0x003F) {
-          ConvertRGBDistribution565To556(data, size);
-        } else {
-          // take the long route
-          ConvertRGBDistribution565ToAny(data, size);
-        }
-      }
     }
   }
   return img.Release();
@@ -96,7 +76,7 @@ static SGPImage *STCILoadIndexed(uint16_t const contents, HWFILE const f,
     // Read in the palette
     FileRead(f, pSTCIPalette, sizeof(*pSTCIPalette) * 256);
 
-    SGPPaletteEntry *const palette = img->pPalette.Allocate(256);
+    struct JColor *const palette = img->pPalette.Allocate(256);
     for (size_t i = 0; i < 256; i++) {
       palette[i].r = pSTCIPalette[i].ubRed;
       palette[i].g = pSTCIPalette[i].ubGreen;

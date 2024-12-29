@@ -28,8 +28,7 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 struct CRDT_NODE {
   int16_t sPosY;
@@ -287,9 +286,9 @@ static void RenderCreditScreen() {
 static void GetCreditScreenUserInput() {
   InputAtom Event;
   while (DequeueEvent(&Event)) {
-    if (Event.usEvent == KEY_DOWN) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+    if (Event.isKeyDown()) {
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           g_credits_active = FALSE;
           break;
       }

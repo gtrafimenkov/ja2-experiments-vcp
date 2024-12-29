@@ -5,6 +5,7 @@
 #include "JAScreens.h"
 
 #include <algorithm>
+#include <cstring>
 
 #include "Directories.h"
 #include "Editor/EditScreen.h"
@@ -23,8 +24,6 @@
 #include "SGP/Input.h"
 #include "SGP/MouseSystem.h"
 #include "SGP/Random.h"
-#include "SGP/SGP.h"
-#include "SGP/Timer.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
@@ -45,8 +44,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/Utilities.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
+#include "jplatform_time.h"
 
 #define MAX_DEBUG_PAGES 4
 
@@ -114,9 +113,9 @@ ScreenID ErrorScreenHandle() {
 
   // Check for esc
   while (DequeueEvent(&InputEvent)) {
-    if (InputEvent.usEvent == KEY_DOWN) {
-      if (InputEvent.usParam == SDLK_ESCAPE ||
-          (InputEvent.usParam == 'x' && InputEvent.usKeyState & ALT_DOWN)) {  // Exit the program
+    if (InputEvent.isKeyDown()) {
+      if (InputEvent.getKey() == JIK_ESCAPE ||
+          (InputEvent.getKey() == 'x' && InputEvent.alt)) {  // Exit the program
         DebugMsg(TOPIC_GAME, DBG_LEVEL_0, "GameLoop: User pressed ESCape, TERMINATING");
 
         // handle shortcut exit
@@ -162,7 +161,7 @@ ScreenID InitScreenHandle() {
     // ATE: Set to true to reset before going into main screen!
 
     SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);
-    splashDisplayedMoment = GetClock();
+    splashDisplayedMoment = JTime_GetTicks();
     return (INIT_SCREEN);
   }
 
@@ -174,7 +173,7 @@ ScreenID InitScreenHandle() {
   if (ubCurrentScreen == 2) {
     // wait 3 seconds since the splash displayed and then switch
     // to the main menu
-    if ((GetClock() - splashDisplayedMoment) >= 3000) {
+    if ((JTime_GetTicks() - splashDisplayedMoment) >= 3000) {
       InitMainMenu();
       ubCurrentScreen = 3;
     }
@@ -257,13 +256,13 @@ static void CyclePaletteReplacement(SOLDIERTYPE &s, PaletteRepID pal) {
 }
 
 static BOOLEAN PalEditKeyboardHook(InputAtom *pInputEvent) {
-  if (pInputEvent->usEvent != KEY_DOWN) return FALSE;
+  if (!pInputEvent->isKeyDown()) return FALSE;
 
   SOLDIERTYPE *const sel = GetSelectedMan();
   if (sel == NULL) return FALSE;
 
-  switch (pInputEvent->usParam) {
-    case SDLK_ESCAPE:
+  switch (pInputEvent->getKey()) {
+    case JIK_ESCAPE:
       gfExitPalEditScreen = TRUE;
       break;
 
@@ -329,19 +328,19 @@ static void DebugRenderHook() { gDebugRenderOverride[gCurDebugPage](); }
 
 static BOOLEAN DebugKeyboardHook(InputAtom *pInputEvent) {
   if (pInputEvent->usEvent == KEY_UP) {
-    switch (pInputEvent->usParam) {
+    switch (pInputEvent->getKey()) {
       case 'q':
         gfExitDebugScreen = TRUE;
         return TRUE;
 
-      case SDLK_PAGEUP:
+      case JIK_PAGEUP:
         gCurDebugPage++;
         if (gCurDebugPage == MAX_DEBUG_PAGES) gCurDebugPage = 0;
         FreeBackgroundRect(guiBackgroundRect);
         guiBackgroundRect = NO_BGND_RECT;
         break;
 
-      case SDLK_PAGEDOWN:
+      case JIK_PAGEDOWN:
         gCurDebugPage--;
         if (gCurDebugPage < 0) gCurDebugPage = MAX_DEBUG_PAGES - 1;
         FreeBackgroundRect(guiBackgroundRect);
@@ -387,7 +386,7 @@ ScreenID SexScreenHandle() {
   static uint32_t uiTimeOfLastUpdate = 0, uiTime;
 
   // OK, Clear screen and show smily face....
-  FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+  FRAME_BUFFER->Fill(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
   InvalidateScreen();
   // Remove cursor....
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);

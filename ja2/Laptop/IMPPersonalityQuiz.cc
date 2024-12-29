@@ -853,7 +853,7 @@ static void HandleIMPQuizKeyBoard() {
       // HOOK INTO MOUSE HOOKS
 
       /*
-      if( (InputEvent.usEvent == KEY_DOWN ) && ( InputEvent.usParam >= '1' ) &&
+      if( (InputEvent.isKeyDown() ) && ( InputEvent.usParam >= '1' ) &&
       ( InputEvent.usParam <= '9') )
       {
               if( ( uint16_t )( iNumberOfPersonaButtons ) >= InputEvent.usParam -
@@ -880,8 +880,8 @@ static void HandleIMPQuizKeyBoard() {
                       fSkipFrame = TRUE;
               }
       }
-      else if (iCurrentAnswer != -1 && InputEvent.usEvent == KEY_DOWN &&
-      InputEvent.usParam == SDLK_RETURN)
+      else if (iCurrentAnswer != -1 && InputEvent.isKeyDown() &&
+      InputEvent.getKey() == JIK_RETURN)
       {
               // reset all the buttons
               ResetQuizAnswerButtons( );
@@ -908,13 +908,13 @@ static void HandleIMPQuizKeyBoard() {
 
               fSkipFrame = TRUE;
       }
-      else if( ( InputEvent.usEvent == KEY_DOWN ) && ( InputEvent.usParam == '='
+      else if( ( InputEvent.isKeyDown() ) && ( InputEvent.getKey() == '='
       ) )
       {
               MoveAheadAQuestion( );
               fSkipFrame = TRUE;
       }
-      else if( ( InputEvent.usEvent == KEY_DOWN ) && ( InputEvent.usParam == '-'
+      else if( ( InputEvent.isKeyDown() ) && ( InputEvent.getKey() == '-'
       ) )
       {
               MoveBackAQuestion( );
@@ -924,8 +924,7 @@ static void HandleIMPQuizKeyBoard() {
 */
       {
         MouseSystemHook(InputEvent.usEvent, MousePos.iX, MousePos.iY);
-        HandleKeyBoardShortCutsForLapTop(InputEvent.usEvent, InputEvent.usParam,
-                                         InputEvent.usKeyState);
+        HandleKeyBoardShortCutsForLapTop(&InputEvent);
       }
     }
   }

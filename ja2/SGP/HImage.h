@@ -5,6 +5,7 @@
 #ifndef __IMAGE_H
 #define __IMAGE_H
 
+#include "Color.h"
 #include "SGP/AutoPtr.h"
 #include "SGP/Buffer.h"
 #include "SGP/Types.h"
@@ -88,7 +89,7 @@ struct SGPImage {
   uint16_t usHeight;
   uint8_t ubBitDepth;
   uint16_t fFlags;
-  SGP::Buffer<SGPPaletteEntry> pPalette;
+  SGP::Buffer<struct JColor> pPalette;
   SGP::Buffer<uint16_t> pui16BPPPalette;
   SGP::Buffer<uint8_t> pAppData;
   uint32_t uiAppDataSize;
@@ -116,18 +117,9 @@ void GetETRLEImageData(SGPImage const *, ETRLEData *);
 // UTILITY FUNCTIONS
 
 // Used to create a 16BPP Palette from an 8 bit palette, found in himage.c
-uint16_t *Create16BPPPaletteShaded(const SGPPaletteEntry *pPalette, uint32_t rscale,
-                                   uint32_t gscale, uint32_t bscale, BOOLEAN mono);
-uint16_t *Create16BPPPalette(const SGPPaletteEntry *pPalette);
-uint16_t Get16BPPColor(uint32_t RGBValue);
-uint32_t GetRGBColor(uint16_t Value16BPP);
-
-extern uint16_t gusRedMask;
-extern uint16_t gusGreenMask;
-extern uint16_t gusBlueMask;
-extern int16_t gusRedShift;
-extern int16_t gusBlueShift;
-extern int16_t gusGreenShift;
+uint16_t *Create16BPPPaletteShaded(const struct JColor *pPalette, uint32_t rscale, uint32_t gscale,
+                                   uint32_t bscale, BOOLEAN mono);
+uint16_t *Create16BPPPalette(const struct JColor *pPalette);
 
 // used to convert 565 RGB data into different bit-formats
 void ConvertRGBDistribution565To555(uint16_t *p16BPPData, uint32_t uiNumberOfPixels);

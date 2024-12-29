@@ -468,9 +468,9 @@ void DrawEditorInfoBox(const wchar_t *str, Font const font, uint16_t x, uint16_t
   x2 = x + w;
   y2 = y + h;
 
-  usFillColorDark = Get16BPPColor(FROMRGB(24, 61, 81));
-  usFillColorLight = Get16BPPColor(FROMRGB(136, 138, 135));
-  usFillColorBack = Get16BPPColor(FROMRGB(250, 240, 188));
+  usFillColorDark = rgb32_to_rgb565(FROMRGB(24, 61, 81));
+  usFillColorLight = rgb32_to_rgb565(FROMRGB(136, 138, 135));
+  usFillColorBack = rgb32_to_rgb565(FROMRGB(250, 240, 188));
 
   ColorFillVideoSurfaceArea(ButtonDestBuffer, x, y, x2, y2, usFillColorDark);
   ColorFillVideoSurfaceArea(ButtonDestBuffer, x + 1, y + 1, x2, y2, usFillColorLight);
@@ -688,7 +688,7 @@ static void RenderSelectedItemBlownUp() {
   x = screen_x - e.sOffsetX + (40 - e.usWidth) / 2;
   y = screen_y - e.sOffsetY + (20 - e.usHeight) / 2;
   BltVideoObjectOutline(FRAME_BUFFER, &vo, item.ubGraphicNum, x, y,
-                        Get16BPPColor(FROMRGB(0, 140, 170)));
+                        rgb32_to_rgb565(FROMRGB(0, 140, 170)));
 
   // Display the item name above it
   SetFontAttributes(FONT10ARIAL, FONT_YELLOW);

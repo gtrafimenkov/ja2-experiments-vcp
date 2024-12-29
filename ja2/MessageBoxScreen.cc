@@ -31,8 +31,7 @@
 #include "Utils/MercTextBox.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define MSGBOX_DEFAULT_WIDTH 300
 
@@ -516,37 +515,37 @@ ScreenID MessageBoxScreenHandle() {
 
     switch (gMsgBox.usFlags) {
       case MSG_BOX_FLAG_YESNO:
-        switch (InputEvent.usParam) {
+        switch (InputEvent.getKey()) {
           case 'n':
-          case SDLK_ESCAPE:
+          case JIK_ESCAPE:
             gMsgBox.bHandled = MSG_BOX_RETURN_NO;
             break;
           case 'y':
-          case SDLK_RETURN:
+          case JIK_RETURN:
             gMsgBox.bHandled = MSG_BOX_RETURN_YES;
             break;
         }
         break;
 
       case MSG_BOX_FLAG_OK:
-        switch (InputEvent.usParam) {
+        switch (InputEvent.getKey()) {
           case 'o':
-          case SDLK_RETURN:
+          case JIK_RETURN:
             gMsgBox.bHandled = MSG_BOX_RETURN_OK;
             break;
         }
         break;
 
       case MSG_BOX_FLAG_CONTINUESTOP:
-        switch (InputEvent.usParam) {
-          case SDLK_RETURN:
+        switch (InputEvent.getKey()) {
+          case JIK_RETURN:
             gMsgBox.bHandled = MSG_BOX_RETURN_OK;
             break;
         }
         break;
 
       case MSG_BOX_FLAG_FOUR_NUMBERED_BUTTONS:
-        switch (InputEvent.usParam) {
+        switch (InputEvent.getKey()) {
           case '1':
             gMsgBox.bHandled = MSG_BOX_RETURN_1;
             break;

@@ -10,8 +10,7 @@
 #include "SGP/FileMan.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 struct PcxHeader {
   uint8_t ubManufacturer;
@@ -66,7 +65,7 @@ SGPImage *LoadPCXFileToImage(char const *const filename, uint16_t const contents
   }
 
   if (contents & IMAGE_PALETTE) {
-    SGPPaletteEntry *const dst = img->pPalette.Allocate(256);
+    struct JColor *const dst = img->pPalette.Allocate(256);
     for (size_t i = 0; i < 256; ++i) {
       dst[i].r = palette[i * 3 + 0];
       dst[i].g = palette[i * 3 + 1];

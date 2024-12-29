@@ -26,8 +26,7 @@
 #include "Utils/MultiLanguageGraphicUtils.h"
 #include "Utils/MusicControl.h"
 #include "Utils/Text.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 static BOOLEAN gfIntroScreenEntry = TRUE;
 static BOOLEAN gfIntroScreenExit;
@@ -188,11 +187,11 @@ static void GetIntroScreenUserInput() {
     MouseSystemHook(Event.usEvent, MousePos.iX, MousePos.iY);
 
     if (Event.usEvent == KEY_UP) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           PrepareToExitIntroScreen();
           break;
-        case SDLK_SPACE:
+        case JIK_SPACE:
           SmkCloseFlic(gpSmackFlic);
           break;
       }
