@@ -38,8 +38,7 @@
 #include "TileEngine/WorldDef.h"
 #include "Utils/Cursors.h"
 #include "Utils/FontControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define POPUP_ACTIVETYPE_NOT_YET_DETERMINED 0
 #define POPUP_ACTIVETYPE_PERSISTANT 1
@@ -260,14 +259,14 @@ static void RenderPopupMenu() {
 
   // Draw the menu
   ColorFillVideoSurfaceArea(FRAME_BUFFER, p.usLeft, p.usTop, p.usRight, p.usBottom,
-                            Get16BPPColor(FROMRGB(128, 128, 128)));
+                            rgb32_to_rgb565(FROMRGB(128, 128, 128)));
 
   {
     SGPVSurface::Lock l(FRAME_BUFFER);
     uint16_t *const pDestBuf = l.Buffer<uint16_t>();
     uint32_t const pitch = l.Pitch();
     SetClippingRegionAndImageWidth(pitch, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-    uint16_t const line_colour = Get16BPPColor(FROMRGB(64, 64, 64));
+    uint16_t const line_colour = rgb32_to_rgb565(FROMRGB(64, 64, 64));
     RectangleDraw(TRUE, p.usLeft, p.usTop, p.usRight - 1, p.usBottom - 1, line_colour, pDestBuf);
     // Draw a vertical line between each column
     uint16_t x = p.usLeft;
@@ -393,46 +392,44 @@ static void PopupMenuHandle() {
   }
   // Use keyboard input as well.
   while (DequeueEvent(&InputEvent)) {
-    switch (InputEvent.usEvent) {
-      case KEY_DOWN:
-        switch (InputEvent.usParam) {
-          case SDLK_DOWN:
-            gPopup.fUseKeyboardInfoUntilMouseMoves = TRUE;
-            gPopup.usLastMouseX = gusMouseXPos;
-            gPopup.usLastMouseY = gusMouseYPos;
-            gPopup.ubSelectedIndex++;
-            if (gPopup.ubSelectedIndex > gPopup.ubNumEntries) {
-              gPopup.ubSelectedIndex = 1;
-            }
-            break;
+    if (InputEvent.isKeyDown()) {
+      switch (InputEvent.getKey()) {
+        case JIK_DOWN:
+          gPopup.fUseKeyboardInfoUntilMouseMoves = TRUE;
+          gPopup.usLastMouseX = gusMouseXPos;
+          gPopup.usLastMouseY = gusMouseYPos;
+          gPopup.ubSelectedIndex++;
+          if (gPopup.ubSelectedIndex > gPopup.ubNumEntries) {
+            gPopup.ubSelectedIndex = 1;
+          }
+          break;
 
-          case SDLK_UP:
-            gPopup.fUseKeyboardInfoUntilMouseMoves = TRUE;
-            gPopup.usLastMouseX = gusMouseXPos;
-            gPopup.usLastMouseY = gusMouseYPos;
-            if (gPopup.ubSelectedIndex < 2) {
-              gPopup.ubSelectedIndex = gPopup.ubNumEntries;
-            } else {
-              gPopup.ubSelectedIndex--;
-            }
-            break;
+        case JIK_UP:
+          gPopup.fUseKeyboardInfoUntilMouseMoves = TRUE;
+          gPopup.usLastMouseX = gusMouseXPos;
+          gPopup.usLastMouseY = gusMouseYPos;
+          if (gPopup.ubSelectedIndex < 2) {
+            gPopup.ubSelectedIndex = gPopup.ubNumEntries;
+          } else {
+            gPopup.ubSelectedIndex--;
+          }
+          break;
 
-          case SDLK_ESCAPE:
-            gPopup.fActive = FALSE;
-            MSYS_RemoveRegion(&popupRegion);
-            gfRenderWorld = TRUE;
-            gfRenderTaskbar = TRUE;
-            break;
+        case JIK_ESCAPE:
+          gPopup.fActive = FALSE;
+          MSYS_RemoveRegion(&popupRegion);
+          gfRenderWorld = TRUE;
+          gfRenderTaskbar = TRUE;
+          break;
 
-          case SDLK_RETURN:
-            ProcessPopupMenuSelection();
-            gPopup.fActive = FALSE;
-            MSYS_RemoveRegion(&popupRegion);
-            gfRenderWorld = TRUE;
-            gfRenderTaskbar = TRUE;
-            break;
-        }
-        break;
+        case JIK_RETURN:
+          ProcessPopupMenuSelection();
+          gPopup.fActive = FALSE;
+          MSYS_RemoveRegion(&popupRegion);
+          gfRenderWorld = TRUE;
+          gfRenderTaskbar = TRUE;
+          break;
+      }
     }
   }
 }

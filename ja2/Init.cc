@@ -76,10 +76,6 @@ ScreenID InitializeJA2() try {
   // Init tactical engine
   InitTacticalEngine();
 
-  // Init timer system
-  // Moved to the splash screen code.
-  // InitializeJA2Clock( );
-
   // INit shade tables
   BuildShadeTable();
 
@@ -133,7 +129,7 @@ ScreenID InitializeJA2() try {
 void ShutdownJA2() {
   uint32_t uiIndex;
 
-  FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+  FRAME_BUFFER->Fill(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
   InvalidateScreen();
   // Remove cursor....
   SetCurrentCursorFromDatabase(VIDEO_NO_CURSOR);

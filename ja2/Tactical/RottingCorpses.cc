@@ -49,9 +49,8 @@
 #include "Utils/Message.h"
 #include "Utils/SoundControl.h"
 #include "Utils/Utilities.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform_input.h"
+#include "jplatform_video.h"
 
 #define CORPSE_WARNING_MAX 5
 #define CORPSE_WARNING_DIST 5
@@ -546,8 +545,8 @@ static void CreateCorpsePalette(ROTTING_CORPSE *const c) {
                                        ? ANIMSDIR "/camo.COL"
                                        : GetBodyTypePaletteSubstitution(0, c->def.ubBodyType);
 
-  const SGPPaletteEntry *pal;
-  SGPPaletteEntry tmp_pal[256];
+  const struct JColor *pal;
+  struct JColor tmp_pal[256];
   if (!substitution) {
     // Use palette from HVOBJECT, then use substitution for pants, etc
     memcpy(tmp_pal, gpTileCache[c->pAniTile->sCachedTileID].pImagery->vo->Palette(),

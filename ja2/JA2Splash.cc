@@ -17,8 +17,6 @@ uint32_t guiSplashStartTime = 0;
 
 // Simply create videosurface, load image, and draw it to the screen.
 void InitJA2SplashScreen() {
-  InitializeJA2Clock();
-
   if (isEnglishVersion()) {
     ClearMainMenu();
   } else {

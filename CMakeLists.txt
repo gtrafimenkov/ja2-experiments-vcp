@@ -34,7 +34,7 @@ endif()
 add_subdirectory(libs/sdl2 EXCLUDE_FROM_ALL)
 add_subdirectory(libs/googletest)
 
-file(GLOB_RECURSE SRC_FILES ja2/*.cc libs/slog/slog/*.c libs/smacker/libsmacker/*.c)
+file(GLOB_RECURSE SRC_FILES ja2/*.cc ja2/*.c libs/slog/slog/*.c libs/smacker/libsmacker/*.c)
 
 add_executable(ja2vcp ${SRC_FILES})
 target_include_directories(ja2vcp PRIVATE ja2)

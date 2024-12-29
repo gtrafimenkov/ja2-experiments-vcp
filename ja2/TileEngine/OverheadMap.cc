@@ -49,8 +49,8 @@
 #include "TileEngine/WorldDef.h"
 #include "Utils/Cursors.h"
 #include "Utils/FontControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
+#include "jplatform_video.h"
 extern SOLDIERINITNODE *gpSelected;
 
 // OK, these are values that are calculated in InitRenderParams( ) with normal
@@ -349,7 +349,7 @@ void GoIntoOverheadMap() {
 
   // Add shades to persons....
   SGPVObject *const vo = uiPERSONS;
-  SGPPaletteEntry const *const pal = vo->Palette();
+  struct JColor const *const pal = vo->Palette();
   vo->pShades[0] = Create16BPPPaletteShaded(pal, 256, 256, 256, FALSE);
   vo->pShades[1] = Create16BPPPaletteShaded(pal, 310, 310, 310, FALSE);
   vo->pShades[2] = Create16BPPPaletteShaded(pal, 0, 0, 0, FALSE);
@@ -375,15 +375,15 @@ void GoIntoOverheadMap() {
 static void HandleOverheadUI() {
   InputAtom a;
   while (DequeueEvent(&a)) {
-    if (a.usEvent == KEY_DOWN) {
-      switch (a.usParam) {
-        case SDLK_ESCAPE:
-        case SDLK_INSERT:
+    if (a.isKeyDown()) {
+      switch (a.getKey()) {
+        case JIK_ESCAPE:
+        case JIK_INSERT:
           KillOverheadMap();
           break;
 
         case 'x':
-          if (a.usKeyState & ALT_DOWN) {
+          if (a.alt) {
             HandleShortCutExitState();
           }
           break;
@@ -621,7 +621,7 @@ void RenderOverheadMap(int16_t const sStartPointX_M, int16_t const sStartPointY_
 
   // OK, blacken out edges of smaller maps...
   if (gMapInformation.ubRestrictedScrollID != 0) {
-    uint16_t const black = Get16BPPColor(FROMRGB(0, 0, 0));
+    uint16_t const black = rgb32_to_rgb565(FROMRGB(0, 0, 0));
     int16_t sX1;
     int16_t sX2;
     int16_t sY1;
@@ -745,7 +745,7 @@ static void RenderOverheadOverlays() {
           default:
             abort();
         }
-      PixelDraw(FALSE, sX, sY, Get16BPPColor(col), pDestBuf);
+      PixelDraw(FALSE, sX, sY, rgb32_to_rgb565(col), pDestBuf);
       InvalidateRegion(sX, sY, sX + 1, sY + 1);
     }
   }

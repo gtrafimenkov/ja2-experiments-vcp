@@ -2,8 +2,6 @@
 // This file contains code derived from the code released under the terms
 // of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
-#include "SGP/SGP.h"
-
 #include <exception>
 #include <new>
 
@@ -24,16 +22,17 @@
 #include "SGP/MemMan.h"
 #include "SGP/Random.h"
 #include "SGP/SoundMan.h"
-#include "SGP/Timer.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
 #include "SaveLoadGame.h"
+#include "Utils/TimerControl.h"
 #include "gtest/gtest.h"
+#include "jplatform.h"
+#include "jplatform_events.h"
+#include "jplatform_input.h"
+#include "jplatform_time.h"
 #include "slog/slog.h"
-
-#include "SDL.h"
-#include "SDL_keycode.h"
 
 #if defined _WIN32
 #define WIN32_LEAN_AND_MEAN
@@ -75,78 +74,46 @@ static void deinitGameAndExit() {
 
   ShutdownMemoryManager();  // must go last, for MemDebugCounter to work right...
 
-  SDL_Quit();
+  JPlatform_Exit();
 
   exit(0);
 }
 
-/** Request game exit.
- * Call this function if you want to exit the game. */
-void requestGameExit() {
-  SDL_Event event;
-  event.type = SDL_QUIT;
-  SDL_PushEvent(&event);
-}
+static void handleEvent(enum JEventType eventType, struct JEventData *data) {
+  switch (eventType) {
+    case JEVENT_KEYDOWN: {
+      KeyDown(data->keyInput.key, data->keyInput.mod);
+    } break;
+    case JEVENT_KEYUP: {
+      KeyUp(data->keyInput.key, data->keyInput.mod);
+    } break;
+    case JEVENT_TEXTINPUT: {
+      TextInput(data->textInput.text);
+    } break;
+    case JEVENT_MOUSEBUTTONDOWN: {
+      MouseButtonDown(&data->mouseButtonPress);
+    } break;
+    case JEVENT_MOUSEBUTTONUP: {
+      MouseButtonUp(&data->mouseButtonPress);
+    } break;
+    case JEVENT_MOUSEMOTION: {
+      SetSafeMousePosition(data->mouseMotion.x, data->mouseMotion.y);
+    } break;
+    case JEVENT_MOUSEWHEEL: {
+      MouseWheelScroll(&data->mouseWheel);
+    } break;
+    case JEVENT_QUIT: {
+      deinitGameAndExit();
+    } break;
+    case JEVENT_NOTHING: {
+      uint32_t gameCycleMS = JTime_GetTicks();
+      GameLoop();
+      gameCycleMS = JTime_GetTicks() - gameCycleMS;
 
-static void MainLoop() {
-  BOOLEAN s_doGameCycles = TRUE;
-
-  while (true) {
-    // cycle until SDL_Quit is received
-
-    SDL_Event event;
-    if (SDL_PollEvent(&event)) {
-      switch (event.type) {
-        case SDL_APP_WILLENTERBACKGROUND:
-          s_doGameCycles = false;
-          break;
-
-        case SDL_APP_WILLENTERFOREGROUND:
-          s_doGameCycles = true;
-          break;
-
-        case SDL_KEYDOWN:
-          KeyDown(&event.key.keysym);
-          break;
-        case SDL_KEYUP:
-          KeyUp(&event.key.keysym);
-          break;
-        case SDL_TEXTINPUT:
-          TextInput(&event.text);
-          break;
-
-        case SDL_MOUSEBUTTONDOWN:
-          MouseButtonDown(&event.button);
-          break;
-        case SDL_MOUSEBUTTONUP:
-          MouseButtonUp(&event.button);
-          break;
-
-        case SDL_MOUSEMOTION:
-          SetSafeMousePosition(event.motion.x, event.motion.y);
-          break;
-
-        case SDL_MOUSEWHEEL:
-          MouseWheelScroll(&event.wheel);
-          break;
-
-        case SDL_QUIT:
-          deinitGameAndExit();
-          break;
+      if (gameCycleMS < MS_PER_GAME_CYCLE) {
+        JTime_Delay(MS_PER_GAME_CYCLE - gameCycleMS);
       }
-    } else {
-      if (s_doGameCycles) {
-        uint32_t gameCycleMS = GetClock();
-        GameLoop();
-        gameCycleMS = GetClock() - gameCycleMS;
-
-        if (gameCycleMS < MS_PER_GAME_CYCLE) {
-          SDL_Delay(MS_PER_GAME_CYCLE - gameCycleMS);
-        }
-      } else {
-        SDL_WaitEvent(NULL);
-      }
-    }
+    } break;
   }
 }
 
@@ -186,7 +153,7 @@ int main(int argc, char *argv[]) try {
     return RUN_ALL_TESTS();
   }
 
-  SDL_Init(SDL_INIT_VIDEO);
+  JPlatform_Init();
 
   InitializeMemoryManager();
   InitializeFileManager(exeFolder.c_str());
@@ -194,6 +161,7 @@ int main(int argc, char *argv[]) try {
   InitializeVideoObjectManager();
   InitializeVideoSurfaceManager();
   InitGameResources();
+  InitializeJA2Clock();
   InitJA2SplashScreen();
   InitializeFontManager();
   InitializeSoundManager();
@@ -206,7 +174,8 @@ int main(int argc, char *argv[]) try {
     SetIntroType(INTRO_SPLASH);
   }
 
-  MainLoop();
+  JPlatform_MainLoop(handleEvent);
+
   SLOG_Deinit();
   return EXIT_SUCCESS;
 } catch (const std::bad_alloc &) {

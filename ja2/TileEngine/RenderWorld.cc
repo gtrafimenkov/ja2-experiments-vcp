@@ -5,6 +5,7 @@
 #include "TileEngine/RenderWorld.h"
 
 #include <algorithm>
+#include <cstring>
 #include <math.h>
 #include <stdint.h>
 
@@ -43,8 +44,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 uint16_t *gpZBuffer = NULL;
 
@@ -1372,7 +1372,7 @@ static void RenderTiles(RenderTilesFlags const uiFlags, int32_t const iStartPoin
             if (iTempPosY_S < 360) {
               ColorFillVideoSurfaceArea(FRAME_BUFFER, iTempPosX_S, iTempPosY_S, iTempPosX_S + 40,
                                         std::min(iTempPosY_S + 20, 360),
-                                        Get16BPPColor(FROMRGB(0, 0, 0)));
+                                        rgb32_to_rgb565(FROMRGB(0, 0, 0)));
             }
           }
         }
@@ -1434,7 +1434,7 @@ void RenderWorld() {
   // If we are testing renderer, set background to pink!
   if (gTacticalStatus.uiFlags & DEBUGCLIFFS) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, 0, gsVIEWPORT_WINDOW_START_Y, SCREEN_WIDTH,
-                              gsVIEWPORT_WINDOW_END_Y, Get16BPPColor(FROMRGB(0, 255, 0)));
+                              gsVIEWPORT_WINDOW_END_Y, rgb32_to_rgb565(FROMRGB(0, 255, 0)));
     SetRenderFlags(RENDER_FLAG_FULL);
   }
 
@@ -1822,10 +1822,10 @@ void ScrollWorld() {
 
     if (!fIgnoreInput) {
       // Check keys
-      if (IsKeyDown(SDLK_UP)) ScrollFlags |= SCROLL_UP;
-      if (IsKeyDown(SDLK_DOWN)) ScrollFlags |= SCROLL_DOWN;
-      if (IsKeyDown(SDLK_RIGHT)) ScrollFlags |= SCROLL_RIGHT;
-      if (IsKeyDown(SDLK_LEFT)) ScrollFlags |= SCROLL_LEFT;
+      if (IsKeyDown(JIK_UP)) ScrollFlags |= SCROLL_UP;
+      if (IsKeyDown(JIK_DOWN)) ScrollFlags |= SCROLL_DOWN;
+      if (IsKeyDown(JIK_RIGHT)) ScrollFlags |= SCROLL_RIGHT;
+      if (IsKeyDown(JIK_LEFT)) ScrollFlags |= SCROLL_LEFT;
 
       // Do mouse - PUT INTO A TIMER!
       // Put a counter on starting from mouse, if we have not started already!
@@ -1976,13 +1976,13 @@ void InitRenderParams(uint8_t ubRestrictionID) {
   const uint32_t n = NUM_ITEM_CYCLE_COLORS;
   for (uint32_t i = 0; i < n; ++i) {
     const uint32_t l = (i < n / 2 ? i + 1 : n - i) * (250 / (n / 2));
-    us16BPPItemCycleWhiteColors[i] = Get16BPPColor(FROMRGB(l, l, l));
-    us16BPPItemCycleRedColors[i] = Get16BPPColor(FROMRGB(l, 0, 0));
-    us16BPPItemCycleYellowColors[i] = Get16BPPColor(FROMRGB(l, l, 0));
+    us16BPPItemCycleWhiteColors[i] = rgb32_to_rgb565(FROMRGB(l, l, l));
+    us16BPPItemCycleRedColors[i] = rgb32_to_rgb565(FROMRGB(l, 0, 0));
+    us16BPPItemCycleYellowColors[i] = rgb32_to_rgb565(FROMRGB(l, l, 0));
   }
 
-  gusNormalItemOutlineColor = Get16BPPColor(FROMRGB(255, 255, 255));
-  gusYellowItemOutlineColor = Get16BPPColor(FROMRGB(255, 255, 0));
+  gusNormalItemOutlineColor = rgb32_to_rgb565(FROMRGB(255, 255, 255));
+  gusYellowItemOutlineColor = rgb32_to_rgb565(FROMRGB(255, 255, 0));
 }
 
 static void CorrectRenderCenter(int16_t sRenderX, int16_t sRenderY, int16_t *pSNewX,

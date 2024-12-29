@@ -2,7 +2,6 @@
 // This file contains code derived from the code released under the terms
 // of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.
 
-
 #include "SGP/SmackStub.h"
 
 #include <stdio.h>
@@ -11,12 +10,11 @@
 #include "SGP/FileMan.h"
 #include "SGP/SoundMan.h"
 #include "Utils/SoundControl.h"
+#include "jplatform_time.h"
 
 extern "C" {
 #include "libsmacker/smacker.h"
 }
-
-#include "SDL_timer.h"
 
 #define SMKTRACK 0
 
@@ -152,14 +150,14 @@ Smack *SmackOpen(SGPFile *FileHandle, uint32_t Flags, uint32_t ExtraFlag) {
     return NULL;
   }
   smk_first(flickinfo->Smacker);
-  flickinfo->LastTick = SDL_GetTicks();
+  flickinfo->LastTick = JTime_GetTicks();
   return flickinfo;
 }
 
 uint32_t SmackDoFrame(Smack *Smk) {
   uint32_t i = 0;
   // wait for FPS milliseconds
-  uint16_t millisecondspassed = SDL_GetTicks() - Smk->LastTick;
+  uint16_t millisecondspassed = JTime_GetTicks() - Smk->LastTick;
   uint16_t skiptime;
   uint16_t delay, skipframes = 0;
   double framerate = Smk->FramesPerSecond / 1000;
@@ -172,28 +170,28 @@ uint32_t SmackDoFrame(Smack *Smk) {
     skipframes = millisecondspassed / (uint16_t)framerate;
     delay = millisecondspassed % (uint16_t)framerate;
     // bigskiptime:
-    skiptime = SDL_GetTicks();
+    skiptime = JTime_GetTicks();
     millisecondspassed = skiptime - Smk->LastTick;
     while (skipframes > 0) {
       SmackNextFrame(Smk);
       skipframes--;
       i++;
     }
-    skiptime = SDL_GetTicks() - skiptime;
+    skiptime = JTime_GetTicks() - skiptime;
     if (skiptime + delay <= i * framerate) {
       delay = i * (framerate)-skiptime - delay;
     } else {
       delay = 0;
       // need to find a nice way to compensate for lagging video
-      // Smk->LastTick = SDL_GetTicks();
+      // Smk->LastTick = JTime_GetTicks();
       // skipframes = skiptime+delay / (uint16_t)framerate;
       // delay = (skiptime+delay) % (uint16_t)framerate;
       // i=0;
       // goto bigskiptime; // skiptime was big.. so just go on skipping frames
     }
   }
-  SDL_Delay(delay);
-  Smk->LastTick = SDL_GetTicks();
+  JTime_Delay(delay);
+  Smk->LastTick = JTime_GetTicks();
   return 0;
 }
 
@@ -248,27 +246,5 @@ void SmackToBuffer(Smack *Smk, uint32_t Left, uint32_t Top, uint32_t Pitch, uint
     }
   }
 }
-
-// not needed for now...
-/*
-SDL_Surface* SmackBufferOpen(uint32_t BlitType, uint32_t Width, uint32_t Height,
-uint32_t ZoomW, uint32_t ZoomH)
-{
-  SDL_Surface* buffer;
-  buffer = SDL_CreateRGBSurface(BlitType, Width, Height, 16, 0, 0, 0, 0);
-  if ( ! buffer ) {
-    fprintf(stderr, "CreateRGBSurface failed: %s       ", SDL_GetError());
-    exit (1);
-  }
-  return buffer;
-}
-*/
-
-/*
-void SmackBufferClose(SmackBuf* SBuf)
-{
-  free (SBuf);
-}
-*/
 
 uint32_t SmackUseMMX(uint32_t Flag) { return 0; }

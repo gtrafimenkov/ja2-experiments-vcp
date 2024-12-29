@@ -1278,7 +1278,7 @@ static void DrawButtonSelection(GUI_BUTTON const *const btn, bool const selected
     y += AIM_SELECT_LIGHT_OFF_Y;
   }
   uint32_t const fill_colour = selected ? FROMRGB(0, 255, 0) : FROMRGB(0, 0, 0);
-  ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + 8, y + 8, Get16BPPColor(fill_colour));
+  ColorFillVideoSurfaceArea(FRAME_BUFFER, x, y, x + 8, y + 8, rgb32_to_rgb565(fill_colour));
 }
 
 static void DisplaySelectLights() {
@@ -1818,7 +1818,7 @@ static BOOLEAN DisplayBlackBackground(uint8_t ubMaxNumOfLoops) {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y,
                             AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH,
                             AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT,
-                            Get16BPPColor(FROMRGB(0, 0, 0)));
+                            rgb32_to_rgb565(FROMRGB(0, 0, 0)));
   InvalidateRegion(AIM_MEMBER_VIDEO_FACE_X, AIM_MEMBER_VIDEO_FACE_Y,
                    AIM_MEMBER_VIDEO_FACE_X + AIM_MEMBER_VIDEO_FACE_WIDTH,
                    AIM_MEMBER_VIDEO_FACE_Y + AIM_MEMBER_VIDEO_FACE_HEIGHT);

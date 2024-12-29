@@ -75,8 +75,7 @@
 #include "Utils/MusicControl.h"
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 // #include "medical.h"
 #include "Cheats.h"
 #include "GameRes.h"
@@ -920,7 +919,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
 
   // Check realtime input!
   if (((gTacticalStatus.uiFlags & REALTIME) || !(gTacticalStatus.uiFlags & INCOMBAT))) {
-    // if (IsKeyDown(SDLK_CAPSLOCK)) //&& !fShifted)
+    // if (IsKeyDown(JIK_CAPSLOCK)) //&& !fShifted)
     //{
     //	fShifted = TRUE;
     //	if ( gCurrentUIMode != ACTION_MODE && gCurrentUIMode !=
@@ -929,7 +928,7 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
     //		*puiNewEvent = CA_ON_TERRAIN;
     //	}
     //}
-    // if (!(IsKeyDown(SDLK_CAPSLOCK)) && fShifted)
+    // if (!(IsKeyDown(JIK_CAPSLOCK)) && fShifted)
     //{
     //	fShifted = FALSE;
     //	{
@@ -952,25 +951,25 @@ void GetPolledKeyboardInput(UIEventKind *puiNewEvent) {
     }
   }
 
-  if (IsKeyDown(SDLK_DELETE)) {
+  if (IsKeyDown(JIK_DELETE)) {
     DisplayCoverOfSelectedGridNo();
 
     fDeleteDown = TRUE;
   }
 
-  if (!IsKeyDown(SDLK_DELETE) && fDeleteDown) {
+  if (!IsKeyDown(JIK_DELETE) && fDeleteDown) {
     RemoveCoverOfSelectedGridNo();
 
     fDeleteDown = FALSE;
   }
 
-  if (IsKeyDown(SDLK_END)) {
+  if (IsKeyDown(JIK_END)) {
     DisplayGridNoVisibleToSoldierGrid();
 
     fEndDown = TRUE;
   }
 
-  if (!IsKeyDown(SDLK_END) && fEndDown) {
+  if (!IsKeyDown(JIK_END) && fEndDown) {
     RemoveVisibleGridNoAtSelectedGridNo();
 
     fEndDown = FALSE;
@@ -1010,7 +1009,7 @@ static void ToggleMapEdgepoints();
 
 static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
   switch (key) {
-    case SDLK_TAB:
+    case JIK_TAB:
       // Nothing in hand and either not in SM panel, or the matching button is
       // enabled if we are in SM panel
       if (!gpItemPointer &&
@@ -1019,7 +1018,7 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
       }
       break;
 
-    case SDLK_SPACE:
+    case JIK_SPACE:
       // Nothing in hand and either not in SM panel, or the matching button is
       // enabled if we are in SM panel
       if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV) &&
@@ -1044,10 +1043,9 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
 
     case '-':
       // If the display cover or line of sight is being displayed
-      if (IsKeyDown(SDLK_END) || IsKeyDown(SDLK_DELETE)) {
-        if (IsKeyDown(SDLK_DELETE))
-          ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover - 1);
-        if (IsKeyDown(SDLK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS - 1);
+      if (IsKeyDown(JIK_END) || IsKeyDown(JIK_DELETE)) {
+        if (IsKeyDown(JIK_DELETE)) ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover - 1);
+        if (IsKeyDown(JIK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS - 1);
       }
       break;
 
@@ -1072,10 +1070,9 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
 
     case '=':
       // if the display cover or line of sight is being displayed
-      if (IsKeyDown(SDLK_END) || IsKeyDown(SDLK_DELETE)) {
-        if (IsKeyDown(SDLK_DELETE))
-          ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover + 1);
-        if (IsKeyDown(SDLK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS + 1);
+      if (IsKeyDown(JIK_END) || IsKeyDown(JIK_DELETE)) {
+        if (IsKeyDown(JIK_DELETE)) ChangeSizeOfDisplayCover(gGameSettings.ubSizeOfDisplayCover + 1);
+        if (IsKeyDown(JIK_END)) ChangeSizeOfLOS(gGameSettings.ubSizeOfLOS + 1);
       } else if (!(gTacticalStatus.uiFlags & INCOMBAT)) {  // ATE: This key will select everybody in
                                                            // the sector
         FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -1255,11 +1252,11 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
       if (!gpItemPointer) HandleStealthChangeFromUIKeys();
       break;
 
-    case SDLK_INSERT:
+    case JIK_INSERT:
       GoIntoOverheadMap();
       break;
 
-    case SDLK_HOME: {
+    case JIK_HOME: {
       BOOLEAN &cursor3d = gGameSettings.fOptions[TOPTION_3D_CURSOR];
       cursor3d = !cursor3d;
       wchar_t const *const msg =
@@ -1268,7 +1265,7 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
       break;
     }
 
-    case SDLK_END: {
+    case JIK_END: {
       SOLDIERTYPE *const sel = GetSelectedMan();
       if (sel && CheckForMercContMove(sel)) {
         ContinueMercMovement(sel);
@@ -1277,39 +1274,39 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
       break;
     }
 
-    case SDLK_PAGEUP:
+    case JIK_PAGEUP:
       if (guiCurrentScreen != DEBUG_SCREEN) {
         SOLDIERTYPE *const sel = GetSelectedMan();
         if (sel && !gpItemPointer) GotoHigherStance(sel);
       }
       break;
 
-    case SDLK_PAGEDOWN:
+    case JIK_PAGEDOWN:
       if (guiCurrentScreen != DEBUG_SCREEN) {
         SOLDIERTYPE *const sel = GetSelectedMan();
         if (sel && !gpItemPointer) GotoLowerStance(sel);
       }
       break;
 
-    case SDLK_F1:
-    case SDLK_F2:
-    case SDLK_F3:
-    case SDLK_F4:
-    case SDLK_F5:
-    case SDLK_F6: {
-      uint32_t const idx = key - SDLK_F1;
+    case JIK_F1:
+    case JIK_F2:
+    case JIK_F3:
+    case JIK_F4:
+    case JIK_F5:
+    case JIK_F6: {
+      uint32_t const idx = key - JIK_F1;
       HandleSelectMercSlot(idx, true);
       break;
     }
 
-    case SDLK_F11:
+    case JIK_F11:
       if (DEBUG_CHEAT_LEVEL()) {
         gsQdsEnteringGridNo = GetMouseMapPos();
         LeaveTacticalScreen(QUEST_DEBUG_SCREEN);
       }
       break;
 
-    case SDLK_F12:
+    case JIK_F12:
       ClearDisplayedListOfTacticalStrings();
       break;
   }
@@ -1317,7 +1314,7 @@ static void HandleModNone(uint32_t const key, UIEventKind *const new_event) {
 
 static void HandleModShift(uint32_t const key, UIEventKind *const new_event) {
   switch (key) {
-    case SDLK_SPACE:
+    case JIK_SPACE:
       // Nothing in hand and either not in SM panel, or the matching button is
       // enabled if we are in SM panel
       if (!(gTacticalStatus.uiFlags & ENGAGED_IN_CONV) &&
@@ -1344,13 +1341,13 @@ static void HandleModShift(uint32_t const key, UIEventKind *const new_event) {
       }
       break;
 
-    case SDLK_F1:
-    case SDLK_F2:
-    case SDLK_F3:
-    case SDLK_F4:
-    case SDLK_F5:
-    case SDLK_F6: {
-      uint32_t const idx = key - SDLK_F1;
+    case JIK_F1:
+    case JIK_F2:
+    case JIK_F3:
+    case JIK_F4:
+    case JIK_F5:
+    case JIK_F6: {
+      uint32_t const idx = key - JIK_F1;
       HandleSelectMercSlot(idx, false);
       break;
     }
@@ -1440,17 +1437,17 @@ static void HandleModCtrl(uint32_t const key, UIEventKind *const new_event) {
       if (INFORMATION_CHEAT_LEVEL()) ToggleZBuffer();
       break;
 
-    case SDLK_PAGEUP:
+    case JIK_PAGEUP:
       // Try to go up towards ground level
       if (CHEATER_CHEAT_LEVEL()) AttemptToChangeFloorLevel(-1);
       break;
 
-    case SDLK_PAGEDOWN:
+    case JIK_PAGEDOWN:
       // Try to enter a lower underground level
       if (CHEATER_CHEAT_LEVEL()) AttemptToChangeFloorLevel(+1);
       break;
 
-    case SDLK_F12:
+    case JIK_F12:
       ClearTacticalMessageQueue();
       break;
   }
@@ -1677,7 +1674,7 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
       continue;
     }
 
-    if (InputEvent.usEvent == KEY_DOWN) {
+    if (InputEvent.isKeyDown()) {
       if (g_ui_message_overlay != NULL) {
         EndUIMessage();
         continue;
@@ -1698,25 +1695,24 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
     }
 
     /*
-    if( (InputEvent.usEvent == KEY_DOWN )&& ( InputEvent.usParam == ) )
+    if( (InputEvent.isKeyDown() )&& ( InputEvent.usParam == ) )
     {
             HandlePlayerPauseUnPauseOfGame( );
     }
     */
 
-    if (InputEvent.usEvent == KEY_UP && InputEvent.usParam == SDLK_PAUSE &&
+    if (InputEvent.usEvent == KEY_UP && InputEvent.getKey() == JIK_PAUSE &&
         !(gTacticalStatus.uiFlags & ENGAGED_IN_CONV)) {
       // Pause game!
       HandlePlayerPauseUnPauseOfGame();
     }
 
     // FIRST DO KEYS THAT ARE USED EVERYWHERE!
-    if ((InputEvent.usEvent == KEY_DOWN) && (InputEvent.usParam == 'x') &&
-        (InputEvent.usKeyState & ALT_DOWN)) {
+    if ((InputEvent.isKeyDown()) && (InputEvent.getKey() == 'x') && (InputEvent.alt)) {
       HandleShortCutExitState();
     }
 
-    if (InputEvent.usEvent == KEY_UP && InputEvent.usParam == SDLK_ESCAPE) {
+    if (InputEvent.usEvent == KEY_UP && InputEvent.getKey() == JIK_ESCAPE) {
       if (AreInMeanwhile() && gCurrentMeanwhileDef.ubMeanwhileID != INTERROGATION) {
         DeleteTalkingMenu();
         EndMeanwhile();
@@ -1725,8 +1721,7 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
 
     // Break of out IN CONV...
     if (CHEATER_CHEAT_LEVEL()) {
-      if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_RETURN &&
-          InputEvent.usKeyState & ALT_DOWN) {
+      if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_RETURN && InputEvent.alt) {
         if (gTacticalStatus.uiFlags & ENGAGED_IN_CONV) {
           gTacticalStatus.uiFlags &= (~ENGAGED_IN_CONV);
           giNPCReferenceCount = 0;
@@ -1738,8 +1733,7 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
       {
         if (gTacticalStatus.ubCurrentTeam != OUR_TEAM) {
           if (CHEATER_CHEAT_LEVEL()) {
-            if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_RETURN &&
-                InputEvent.usKeyState & ALT_DOWN) {
+            if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_RETURN && InputEvent.alt) {
               // ESCAPE ENEMY'S TURN
               EndAIDeadlock();
 
@@ -1749,17 +1743,16 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
               guiPendingOverrideEvent = LU_ENDUILOCK;
               UIHandleLUIEndLock(NULL);
             }
-            if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_RETURN &&
-                InputEvent.usKeyState & CTRL_DOWN) {
+            if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_RETURN && InputEvent.ctrl) {
               EscapeUILock();
             }
           }
         } else {
-          if (CHEATER_CHEAT_LEVEL() && InputEvent.usEvent == KEY_DOWN &&
-              InputEvent.usParam == SDLK_RETURN && InputEvent.usKeyState & CTRL_DOWN) {
+          if (CHEATER_CHEAT_LEVEL() && InputEvent.isKeyDown() &&
+              InputEvent.getKey() == JIK_RETURN && InputEvent.ctrl) {
             // UNLOCK UI
             EscapeUILock();
-          } else if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_RETURN) {
+          } else if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_RETURN) {
             // Cycle through enemys
             CycleThroughKnownEnemies();
           }
@@ -1797,7 +1790,7 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
     }
 
     // CHECK ESC KEYS HERE....
-    if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_ESCAPE) {
+    if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_ESCAPE) {
       // EscapeUILock( );
 
       // Cancel out of spread burst...
@@ -1836,7 +1829,7 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
     }
 
     // CHECK ESC KEYS HERE....
-    if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_BACKSPACE) {
+    if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_BACKSPACE) {
       StopAnyCurrentlyTalkingSpeech();
     }
 
@@ -1846,8 +1839,8 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
     }
 
     // Check all those we want if enemy's turn
-    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.usParam == 'q')) {
-      if (InputEvent.usKeyState & ALT_DOWN) {
+    if ((InputEvent.usEvent == KEY_UP) && (InputEvent.getKey() == 'q')) {
+      if (InputEvent.alt) {
         if (CHEATER_CHEAT_LEVEL()) {
           static BOOLEAN fShowRoofs = TRUE;
           int32_t x;
@@ -1865,7 +1858,7 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
           SetRenderFlags(RENDER_FLAG_FULL);
         }
 
-      } else if (InputEvent.usKeyState & CTRL_DOWN) {
+      } else if (InputEvent.ctrl) {
       } else {
         if (INFORMATION_CHEAT_LEVEL()) {
           *puiNewEvent = I_SOLDIERDEBUG;
@@ -1873,11 +1866,10 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
       }
     }
 
-    if (InputEvent.usEvent == KEY_DOWN) {
-      uint16_t const mod = InputEvent.usKeyState;
-      uint32_t const key = InputEvent.usParam;
+    if (InputEvent.isKeyDown()) {
+      uint32_t const key = InputEvent.getKey();
 
-      if (mod == CTRL_DOWN) {
+      if (InputEvent.ctrl) {
         if (gubCheatLevel < strlen(getCheatCode())) {
           if (key == getCheatCode()[gubCheatLevel]) {
             if (++gubCheatLevel == strlen(getCheatCode())) {
@@ -1894,27 +1886,20 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
 
       if (gubCheatLevel < strlen(getCheatCode())) RESET_CHEAT_LEVEL();
 
-      switch (mod) {
-        case 0:
-          HandleModNone(key, puiNewEvent);
-          break;
-        case SHIFT_DOWN:
-          HandleModShift(key, puiNewEvent);
-          break;
-        case CTRL_DOWN:
-          HandleModCtrl(key, puiNewEvent);
-          break;
-        case ALT_DOWN:
-          HandleModAlt(key, puiNewEvent);
-          break;
-
-        case CTRL_DOWN | ALT_DOWN:
-          if (key == 'k') {
-            if (CHEATER_CHEAT_LEVEL()) {  // Next shot by anybody is auto kill
-              gfNextShotKills = !gfNextShotKills;
-            }
+      if (InputEvent.ctrl && InputEvent.alt) {
+        if (key == 'k') {
+          if (CHEATER_CHEAT_LEVEL()) {  // Next shot by anybody is auto kill
+            gfNextShotKills = !gfNextShotKills;
           }
-          break;
+        }
+      } else if (InputEvent.shift) {
+        HandleModShift(key, puiNewEvent);
+      } else if (InputEvent.ctrl) {
+        HandleModCtrl(key, puiNewEvent);
+      } else if (InputEvent.alt) {
+        HandleModAlt(key, puiNewEvent);
+      } else {
+        HandleModNone(key, puiNewEvent);
       }
     }
   }
@@ -1923,12 +1908,12 @@ void GetKeyboardInput(UIEventKind *const puiNewEvent) {
 static void HandleTalkingMenuKeys(InputAtom *const pInputEvent, UIEventKind *const puiNewEvent) {
   // CHECK ESC KEYS HERE....
   if (pInputEvent->usEvent == KEY_UP) {
-    if (pInputEvent->usParam == SDLK_ESCAPE) {
+    if (pInputEvent->getKey() == JIK_ESCAPE) {
       // Handle esc in talking menu
       if (HandleTalkingMenuEscape(TRUE, TRUE)) {
         *puiNewEvent = A_CHANGE_TO_MOVE;
       }
-    } else if (pInputEvent->usParam == SDLK_BACKSPACE) {
+    } else if (pInputEvent->getKey() == JIK_BACKSPACE) {
       HandleTalkingMenuBackspace();
     }
   }
@@ -1936,7 +1921,7 @@ static void HandleTalkingMenuKeys(InputAtom *const pInputEvent, UIEventKind *con
 
 static void HandleSectorExitMenuKeys(InputAtom *const pInputEvent, UIEventKind *const puiNewEvent) {
   // CHECK ESC KEYS HERE....
-  if (pInputEvent->usEvent == KEY_UP && pInputEvent->usParam == SDLK_ESCAPE) {
+  if (pInputEvent->usEvent == KEY_UP && pInputEvent->getKey() == JIK_ESCAPE) {
     // Handle esc in talking menu
     RemoveSectorExitMenu(FALSE);
 
@@ -1946,7 +1931,7 @@ static void HandleSectorExitMenuKeys(InputAtom *const pInputEvent, UIEventKind *
 
 static void HandleOpenDoorMenuKeys(InputAtom *const pInputEvent, UIEventKind *const puiNewEvent) {
   // CHECK ESC KEYS HERE....
-  if (pInputEvent->usEvent == KEY_UP && pInputEvent->usParam == SDLK_ESCAPE) {
+  if (pInputEvent->usEvent == KEY_UP && pInputEvent->getKey() == JIK_ESCAPE) {
     // Handle esc in talking menu
     CancelOpenDoorMenu();
     HandleOpenDoorMenu();
@@ -1956,7 +1941,7 @@ static void HandleOpenDoorMenuKeys(InputAtom *const pInputEvent, UIEventKind *co
 
 static void HandleMenuKeys(InputAtom *const pInputEvent, UIEventKind *const puiNewEvent) {
   // CHECK ESC KEYS HERE....
-  if (pInputEvent->usEvent == KEY_UP && pInputEvent->usParam == SDLK_ESCAPE) {
+  if (pInputEvent->usEvent == KEY_UP && pInputEvent->getKey() == JIK_ESCAPE) {
     // Handle esc in talking menu
     CancelMovementMenu();
 
@@ -1966,7 +1951,7 @@ static void HandleMenuKeys(InputAtom *const pInputEvent, UIEventKind *const puiN
 
 static void HandleItemMenuKeys(InputAtom *const pInputEvent, UIEventKind *const puiNewEvent) {
   // CHECK ESC KEYS HERE....
-  if (pInputEvent->usEvent == KEY_UP && pInputEvent->usParam == SDLK_ESCAPE) {
+  if (pInputEvent->usEvent == KEY_UP && pInputEvent->getKey() == JIK_ESCAPE) {
     // Handle esc in talking menu
     RemoveItemPickupMenu();
     *puiNewEvent = A_CHANGE_TO_MOVE;
@@ -2330,7 +2315,7 @@ static void CreatePlayerControlledMonster() {
   MercCreateStruct.sSectorY = gWorldSectorY;
   MercCreateStruct.bSectorZ = gbWorldSectorZ;
   // Note:  only gets called if Alt and/or Ctrl isn't pressed!
-  MercCreateStruct.bBodyType = (IsKeyDown(SDLK_INSERT) ? QUEENMONSTER : ADULTFEMALEMONSTER);
+  MercCreateStruct.bBodyType = (IsKeyDown(JIK_INSERT) ? QUEENMONSTER : ADULTFEMALEMONSTER);
   MercCreateStruct.bTeam = CREATURE_TEAM;
   MercCreateStruct.sInsertionGridNo = usMapPos;
   RandomizeNewSoldierStats(&MercCreateStruct);

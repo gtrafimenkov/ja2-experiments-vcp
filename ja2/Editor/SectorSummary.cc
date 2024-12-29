@@ -49,8 +49,7 @@
 #include "Utils/Text.h"
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define DEVINFO_DIR "../DevInfo"
 
@@ -1353,21 +1352,21 @@ void RenderSummaryWindow() {
     if (gfWorldLoaded && !gfTempFile && gsSectorX) {
       x = MAP_LEFT + (gsSectorX - 1) * 13 + 1;
       y = MAP_TOP + (gsSectorY - 1) * 13 + 1;
-      RectangleDraw(TRUE, x, y, x + 11, y + 11, Get16BPPColor(FROMRGB(50, 50, 200)), pDestBuf);
+      RectangleDraw(TRUE, x, y, x + 11, y + 11, rgb32_to_rgb565(FROMRGB(50, 50, 200)), pDestBuf);
     }
 
     // Render the grid for the sector currently in focus (red).
     if (gsSelSectorX > 0 && !gfTempFile) {
       x = MAP_LEFT + (gsSelSectorX - 1) * 13;
       y = MAP_TOP + (gsSelSectorY - 1) * 13;
-      RectangleDraw(TRUE, x, y, x + 13, y + 13, Get16BPPColor(FROMRGB(200, 50, 50)), pDestBuf);
+      RectangleDraw(TRUE, x, y, x + 13, y + 13, rgb32_to_rgb565(FROMRGB(200, 50, 50)), pDestBuf);
     }
 
     // Render the grid for the sector if the mouse is over it (yellow).
     if (gsHiSectorX > 0) {
       x = MAP_LEFT + (gsHiSectorX - 1) * 13 - 1;
       y = MAP_TOP + (gsHiSectorY - 1) * 13 - 1;
-      RectangleDraw(TRUE, x, y, x + 15, y + 15, Get16BPPColor(FROMRGB(200, 200, 50)), pDestBuf);
+      RectangleDraw(TRUE, x, y, x + 15, y + 15, rgb32_to_rgb565(FROMRGB(200, 200, 50)), pDestBuf);
     }
   }
   // Check to see if the user clicked on one of the hot spot mode change areas.
@@ -1570,24 +1569,24 @@ static void RegenerateSummaryInfoForAllOutdatedMaps();
 
 BOOLEAN HandleSummaryInput(InputAtom *pEvent) {
   if (!gfSummaryWindowActive) return FALSE;
-  if ((!HandleTextInput(pEvent) && pEvent->usEvent == KEY_DOWN) || pEvent->usEvent == KEY_REPEAT) {
-    switch (pEvent->usParam) {
-      case SDLK_ESCAPE:
+  if ((!HandleTextInput(pEvent) && pEvent->isKeyDown()) || pEvent->usEvent == KEY_REPEAT) {
+    switch (pEvent->getKey()) {
+      case JIK_ESCAPE:
         if (!gfWorldLoaded) {
           DestroySummaryWindow();
-          pEvent->usParam = 'x';
-          pEvent->usKeyState |= ALT_DOWN;
+          pEvent->key = 'x';
+          pEvent->alt = true;
           gfOverheadMapDirty = TRUE;
           return FALSE;
         }
-      case SDLK_RETURN:
+      case JIK_RETURN:
         if (GetActiveFieldID() == 1)
           SelectNextField();
         else if (gfWorldLoaded)
           DestroySummaryWindow();
         break;
 
-      case SDLK_y:
+      case 'y':
         if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
           gfRenderSummary = TRUE;
           RegenerateSummaryInfoForAllOutdatedMaps();
@@ -1599,7 +1598,7 @@ BOOLEAN HandleSummaryInput(InputAtom *pEvent) {
         }
         break;
 
-      case SDLK_n:
+      case 'n':
         if (gusNumEntriesWithOutdatedOrNoSummaryInfo && !gfOutdatedDenied) {
           gfOutdatedDenied = TRUE;
           gfRenderSummary = TRUE;
@@ -1610,34 +1609,34 @@ BOOLEAN HandleSummaryInput(InputAtom *pEvent) {
         }
         break;
       case 'x':
-        if (pEvent->usKeyState & ALT_DOWN) {
+        if (pEvent->alt) {
           DestroySummaryWindow();
           return FALSE;
         }
         break;
 
-      case SDLK_RIGHT:
+      case JIK_RIGHT:
         gfRenderSummary = TRUE;
         if (!gsSelSectorY) gsSelSectorY = 1;
         gsSelSectorX++;
         if (gsSelSectorX > 16) gsSelSectorX = 1;
         break;
 
-      case SDLK_LEFT:
+      case JIK_LEFT:
         gfRenderSummary = TRUE;
         if (!gsSelSectorY) gsSelSectorY = 1;
         gsSelSectorX--;
         if (gsSelSectorX < 1) gsSelSectorX = 16;
         break;
 
-      case SDLK_UP:
+      case JIK_UP:
         gfRenderSummary = TRUE;
         if (!gsSelSectorX) gsSelSectorX = 1;
         gsSelSectorY--;
         if (gsSelSectorY < 1) gsSelSectorY = 16;
         break;
 
-      case SDLK_DOWN:
+      case JIK_DOWN:
         gfRenderSummary = TRUE;
         if (!gsSelSectorX) gsSelSectorX = 1;
         gsSelSectorY++;
@@ -1645,8 +1644,8 @@ BOOLEAN HandleSummaryInput(InputAtom *pEvent) {
         break;
     }
   } else if (pEvent->usEvent == KEY_UP) {  // for releasing modes requiring persistant state keys
-    switch (pEvent->usParam) {
-      case SDLK_F5:
+    switch (pEvent->getKey()) {
+      case JIK_F5:
         ReleaseSummaryWindow();
         break;
     }

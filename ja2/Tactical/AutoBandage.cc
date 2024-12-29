@@ -42,8 +42,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Message.h"
 #include "Utils/Text.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 // max number of merc faces per row in autobandage box
 #define NUMBER_MERC_FACES_AUTOBANDAGE_BOX 4
@@ -213,8 +212,8 @@ BOOLEAN HandleAutoBandage() {
 
     while (DequeueEvent(&InputEvent)) {
       if (InputEvent.usEvent == KEY_UP) {
-        if ((InputEvent.usParam == SDLK_ESCAPE && !fAutoBandageComplete) ||
-            ((InputEvent.usParam == SDLK_RETURN || InputEvent.usParam == SDLK_SPACE) &&
+        if ((InputEvent.getKey() == JIK_ESCAPE && !fAutoBandageComplete) ||
+            ((InputEvent.getKey() == JIK_RETURN || InputEvent.getKey() == JIK_SPACE) &&
              fAutoBandageComplete)) {
           AutoBandage(FALSE);
         }
@@ -779,37 +778,37 @@ static BOOLEAN RenderSoldierSmallFaceForAutoBandagePanel(int32_t iIndex, int16_t
   // yellow one for bleeding
   iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bLifeMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 107, 57)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 181, 115)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(222, 181, 115)));
 
   // pink one for bandaged.
   iStartY += 27 * pSoldier->bBleeding / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(156, 57, 57)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(222, 132, 132)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(222, 132, 132)));
 
   // red one for actual health
   iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bLife / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 36, iStartY, sCurrentXPosition + 37,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(107, 8, 8)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 37, iStartY, sCurrentXPosition + 38,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(206, 0, 0)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(206, 0, 0)));
 
   // BREATH BAR
   iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bBreathMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 39, iStartY, sCurrentXPosition + 40,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 132)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 40, iStartY, sCurrentXPosition + 41,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 8, 107)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(8, 8, 107)));
 
   // MORALE BAR
   iStartY = sCurrentYPosition + 29 - 27 * pSoldier->bMorale / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 42, iStartY, sCurrentXPosition + 43,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 156, 8)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, sCurrentXPosition + 43, iStartY, sCurrentXPosition + 44,
-                            sCurrentYPosition + 29, Get16BPPColor(FROMRGB(8, 107, 8)));
+                            sCurrentYPosition + 29, rgb32_to_rgb565(FROMRGB(8, 107, 8)));
 
   return (TRUE);
 }

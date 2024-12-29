@@ -1063,34 +1063,34 @@ static void DrawShippingSpeedLights(uint8_t ubSelected) {
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[0], gShippingSpeedAreas[1],
                               gShippingSpeedAreas[0] + SHIPPING_SPEED_LIGHT_WIDTH,
                               gShippingSpeedAreas[1] + SHIPPING_SPEED_LIGHT_HEIGHT,
-                              Get16BPPColor(FROMRGB(0, 255, 0)));
+                              rgb32_to_rgb565(FROMRGB(0, 255, 0)));
   else
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[0], gShippingSpeedAreas[1],
                               gShippingSpeedAreas[0] + SHIPPING_SPEED_LIGHT_WIDTH,
                               gShippingSpeedAreas[1] + SHIPPING_SPEED_LIGHT_HEIGHT,
-                              Get16BPPColor(FROMRGB(0, 0, 0)));
+                              rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   if (ubSelected == 1)
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[2], gShippingSpeedAreas[3],
                               gShippingSpeedAreas[2] + SHIPPING_SPEED_LIGHT_WIDTH,
                               gShippingSpeedAreas[3] + SHIPPING_SPEED_LIGHT_HEIGHT,
-                              Get16BPPColor(FROMRGB(0, 255, 0)));
+                              rgb32_to_rgb565(FROMRGB(0, 255, 0)));
   else
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[2], gShippingSpeedAreas[3],
                               gShippingSpeedAreas[2] + SHIPPING_SPEED_LIGHT_WIDTH,
                               gShippingSpeedAreas[3] + SHIPPING_SPEED_LIGHT_HEIGHT,
-                              Get16BPPColor(FROMRGB(0, 0, 0)));
+                              rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   if (ubSelected == 2)
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[4], gShippingSpeedAreas[5],
                               gShippingSpeedAreas[4] + SHIPPING_SPEED_LIGHT_WIDTH,
                               gShippingSpeedAreas[5] + SHIPPING_SPEED_LIGHT_HEIGHT,
-                              Get16BPPColor(FROMRGB(0, 255, 0)));
+                              rgb32_to_rgb565(FROMRGB(0, 255, 0)));
   else
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gShippingSpeedAreas[4], gShippingSpeedAreas[5],
                               gShippingSpeedAreas[4] + SHIPPING_SPEED_LIGHT_WIDTH,
                               gShippingSpeedAreas[5] + SHIPPING_SPEED_LIGHT_HEIGHT,
-                              Get16BPPColor(FROMRGB(0, 0, 0)));
+                              rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   InvalidateRegion(585, 218, 594, 287);
 }
@@ -1225,7 +1225,7 @@ static void CreateDestroyBobbyRDropDown(uint8_t ubDropDownAction) {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SHIPPING_LOC_AREA_L_X,
                                 BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_L_X + 175,
                                 BOBBYR_SHIPPING_LOC_AREA_T_Y + BOBBYR_DROP_DOWN_HEIGHT,
-                                Get16BPPColor(FROMRGB(0, 0, 0)));
+                                rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
       if (gbSelectedCity == -1)
         DrawTextToScreen(BobbyROrderFormText[BOBBYR_SELECT_DEST],
@@ -1259,7 +1259,7 @@ static void CreateDestroyBobbyRDropDown(uint8_t ubDropDownAction) {
                                 BOBBYR_CITY_START_LOCATION_Y,
                                 BOBBYR_CITY_START_LOCATION_X + BOBBYR_DROP_DOWN_WIDTH,
                                 BOBBYR_CITY_START_LOCATION_Y + BOBBYR_SCROLL_AREA_HEIGHT,
-                                Get16BPPColor(FROMRGB(0, 0, 0)));
+                                rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
       //
       // Place the border around the background
@@ -1311,7 +1311,7 @@ static void CreateDestroyBobbyRDropDown(uint8_t ubDropDownAction) {
       ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SCROLL_AREA_X, BOBBYR_SCROLL_AREA_Y,
                                 BOBBYR_SCROLL_AREA_X + BOBBYR_SCROLL_AREA_WIDTH,
                                 BOBBYR_SCROLL_AREA_Y + BOBBYR_SCROLL_AREA_HEIGHT,
-                                Get16BPPColor(FROMRGB(0, 0, 0)));
+                                rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
       // blt right bar of scroll area
       usPosX = 0;
@@ -1423,7 +1423,7 @@ static void DrawSelectedCity(uint8_t ubCityNumber) {
   // display the name in the list
   ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_CITY_START_LOCATION_X + 4, usPosY + 4,
                             BOBBYR_CITY_START_LOCATION_X + BOBBYR_DROP_DOWN_WIDTH - 4,
-                            usPosY + usFontHeight + 6, Get16BPPColor(FROMRGB(200, 169, 87)));
+                            usPosY + usFontHeight + 6, rgb32_to_rgb565(FROMRGB(200, 169, 87)));
 
   SetFontShadow(NO_SHADOW);
   const wchar_t *city = (pDeliveryLocationStrings[ubCityNumber == 255 ? 0 : ubCityNumber]);
@@ -1449,7 +1449,7 @@ static void DisplayShippingLocationCity() {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SHIPPING_LOC_AREA_L_X,
                             BOBBYR_SHIPPING_LOC_AREA_T_Y, BOBBYR_SHIPPING_LOC_AREA_L_X + 175,
                             BOBBYR_SHIPPING_LOC_AREA_T_Y + BOBBYR_DROP_DOWN_HEIGHT,
-                            Get16BPPColor(FROMRGB(0, 0, 0)));
+                            rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   // if there is no city selected
   const wchar_t *dest = (gbSelectedCity == -1 ? BobbyROrderFormText[BOBBYR_SELECT_DEST]
@@ -1647,7 +1647,7 @@ static void DrawGoldRectangle(int8_t bCityNum) {
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, BOBBYR_SCROLL_AREA_X, usPosY,
                             BOBBYR_SCROLL_AREA_X + usWidth, usPosY + usHeight,
-                            Get16BPPColor(FROMRGB(186, 165, 68)));
+                            rgb32_to_rgb565(FROMRGB(186, 165, 68)));
 
   // display the line
   SGPVSurface::Lock l(FRAME_BUFFER);
@@ -1655,16 +1655,16 @@ static void DrawGoldRectangle(int8_t bCityNum) {
   SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
   // draw the gold highlite line on the top and left
-  LineDraw(FALSE, usPosX, usPosY, usPosX + usWidth, usPosY, Get16BPPColor(FROMRGB(235, 222, 171)),
+  LineDraw(FALSE, usPosX, usPosY, usPosX + usWidth, usPosY, rgb32_to_rgb565(FROMRGB(235, 222, 171)),
            pDestBuf);
-  LineDraw(FALSE, usPosX, usPosY, usPosX, usPosY + usHeight, Get16BPPColor(FROMRGB(235, 222, 171)),
-           pDestBuf);
+  LineDraw(FALSE, usPosX, usPosY, usPosX, usPosY + usHeight,
+           rgb32_to_rgb565(FROMRGB(235, 222, 171)), pDestBuf);
 
   // draw the shadow line on the bottom and right
   LineDraw(FALSE, usPosX, usPosY + usHeight, usPosX + usWidth, usPosY + usHeight,
-           Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
+           rgb32_to_rgb565(FROMRGB(65, 49, 6)), pDestBuf);
   LineDraw(FALSE, usPosX + usWidth, usPosY, usPosX + usWidth, usPosY + usHeight,
-           Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
+           rgb32_to_rgb565(FROMRGB(65, 49, 6)), pDestBuf);
 }
 
 static uint32_t CalcPackageTotalWeight();

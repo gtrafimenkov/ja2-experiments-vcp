@@ -47,9 +47,8 @@
 #include "Utils/FontControl.h"
 #include "Utils/SoundControl.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform_input.h"
+#include "jplatform_video.h"
 
 // Defines
 #define NUM_FACE_SLOTS 50
@@ -175,7 +174,7 @@ FACETYPE &InitFace(const ProfileID id, SOLDIERTYPE *const s, const uint32_t uiIn
   f.uiVideoObject = vo;
 
   // Set palette
-  SGPPaletteEntry pal[256];
+  struct JColor pal[256];
   // Build a grayscale palette! (for testing different looks)
   for (uint32_t i = 0; i < 256; ++i) {
     pal[i].r = 255;
@@ -183,7 +182,7 @@ FACETYPE &InitFace(const ProfileID id, SOLDIERTYPE *const s, const uint32_t uiIn
     pal[i].b = 255;
   }
 
-  const SGPPaletteEntry *const vo_pal = vo->Palette();
+  const struct JColor *const vo_pal = vo->Palette();
   vo->pShades[FLASH_PORTRAIT_NOSHADE] = Create16BPPPaletteShaded(vo_pal, 255, 255, 255, FALSE);
   vo->pShades[FLASH_PORTRAIT_STARTSHADE] = Create16BPPPaletteShaded(pal, 255, 255, 255, FALSE);
   vo->pShades[FLASH_PORTRAIT_ENDSHADE] = Create16BPPPaletteShaded(vo_pal, 250, 25, 25, TRUE);
@@ -483,7 +482,7 @@ static void DrawFaceRect(FACETYPE const &f, SGPVSurface *const buffer, const int
   SetClippingRegionAndImageWidth(uiDestPitchBYTES, x - 2, y - 1, f.usFaceWidth + 4,
                                  f.usFaceHeight + 4);
 
-  const uint16_t usLineColor = Get16BPPColor(colour);
+  const uint16_t usLineColor = rgb32_to_rgb565(colour);
   RectangleDraw(TRUE, x - 2, y - 1, x + f.usFaceWidth + 1, y + f.usFaceHeight, usLineColor,
                 l.Buffer<uint16_t>());
 
@@ -708,7 +707,7 @@ static void HandleRenderFaceAdjustments(FACETYPE &f, BOOLEAN const fDisplayBuffe
         SGPVSurface::Lock l(uiRenderBuffer);
         SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-        const uint16_t usLineColor = Get16BPPColor(FROMRGB(105, 8, 9));
+        const uint16_t usLineColor = rgb32_to_rgb565(FROMRGB(105, 8, 9));
         RectangleDraw(TRUE, sX1, sY1, sX2, sY2, usLineColor, l.Buffer<uint16_t>());
       }
 

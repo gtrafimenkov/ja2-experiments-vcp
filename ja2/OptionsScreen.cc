@@ -43,8 +43,7 @@
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define OPT_MAIN_FONT FONT12ARIAL
 #define OPT_MAIN_COLOR OPT_BUTTON_ON_COLOR     // FONT_MCOLOR_WHITE
@@ -507,14 +506,14 @@ static void GetOptionsScreenUserInput() {
   while (DequeueEvent(&Event)) {
     MouseSystemHook(Event.usEvent, MousePos.iX, MousePos.iY);
 
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_DOWN) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+    if (!HandleTextInput(&Event) && Event.isKeyDown()) {
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           SetOptionsExitScreen(guiPreviousOptionScreen);
           break;
 
         // Enter the save game screen
-        case SDLK_s:
+        case 's':
           // if the save game button isnt disabled
           if (guiOptGotoSaveGameBtn->Enabled()) {
             SetOptionsExitScreen(SAVE_LOAD_SCREEN);
@@ -523,7 +522,7 @@ static void GetOptionsScreenUserInput() {
           break;
 
         // Enter the Load game screen
-        case SDLK_l:
+        case 'l':
           SetOptionsExitScreen(SAVE_LOAD_SCREEN);
           gfSaveGame = FALSE;
           break;

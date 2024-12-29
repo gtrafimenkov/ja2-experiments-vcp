@@ -5,12 +5,9 @@
 #ifndef __INPUT_
 #define __INPUT_
 
+#include "InputAtom.h"
 #include "SGP/Types.h"
-
-struct SDL_MouseButtonEvent;
-struct SDL_MouseWheelEvent;
-struct SDL_Keysym;
-struct SDL_TextInputEvent;
+#include "jplatform_input.h"
 
 #define KEY_DOWN 0x0001
 #define KEY_UP 0x0002
@@ -36,22 +33,15 @@ struct SDL_TextInputEvent;
 #define BUTTON_REPEAT_TIMEOUT 250
 #define BUTTON_REPEAT_TIME 50
 
-struct InputAtom {
-  uint16_t usKeyState;
-  uint16_t usEvent;
-  uint32_t usParam;
-  wchar_t Char;
-};
-
 extern BOOLEAN DequeueEvent(InputAtom *Event);
 
-void MouseButtonDown(const SDL_MouseButtonEvent *);
-void MouseButtonUp(const SDL_MouseButtonEvent *);
-void MouseWheelScroll(const SDL_MouseWheelEvent *);
+void MouseButtonDown(const struct JEvent_MouseButtonPress *e);
+void MouseButtonUp(const struct JEvent_MouseButtonPress *e);
+void MouseWheelScroll(const struct JEvent_MouseWheel *e);
 
-void KeyDown(const SDL_Keysym *);
-void KeyUp(const SDL_Keysym *);
-void TextInput(const SDL_TextInputEvent *);
+void KeyDown(JInput_VirtualKey key, JInput_KeyMod mod);
+void KeyUp(JInput_VirtualKey key, JInput_KeyMod mod);
+void TextInput(const char *text);
 
 extern void GetMousePos(SGPPoint *Point);
 
@@ -59,7 +49,7 @@ extern BOOLEAN DequeueSpecificEvent(InputAtom *Event, uint32_t uiMaskFlags);
 
 extern void RestrictMouseToXYXY(uint16_t usX1, uint16_t usY1, uint16_t usX2, uint16_t usY2);
 void RestrictMouseCursor(const SGPRect *pRectangle);
-extern void SetSafeMousePosition(int x, int y);
+void SetSafeMousePosition(int32_t x, int32_t y);
 extern void FreeMouseCursor();
 extern BOOLEAN IsCursorRestricted();
 extern void GetRestrictedClipCursor(SGPRect *pRectangle);
@@ -74,7 +64,7 @@ extern uint16_t gusMouseYPos;       // y position of the mouse on screen
 extern BOOLEAN gfLeftButtonState;   // TRUE = Pressed, FALSE = Not Pressed
 extern BOOLEAN gfRightButtonState;  // TRUE = Pressed, FALSE = Not Pressed
 
-BOOLEAN IsKeyDown(int a);
+BOOLEAN IsKeyDown(JInput_VirtualKey key);
 #define _LeftButtonDown gfLeftButtonState
 #define _RightButtonDown gfRightButtonState
 

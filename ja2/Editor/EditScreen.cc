@@ -43,7 +43,6 @@
 #include "SGP/Input.h"
 #include "SGP/Line.h"
 #include "SGP/Random.h"
-#include "SGP/SGP.h"
 #include "SGP/Shading.h"
 #include "SGP/VObject.h"
 #include "SGP/VObjectBlitters.h"
@@ -86,9 +85,8 @@
 #include "Utils/MusicControl.h"
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform.h"
+#include "jplatform_input.h"
 
 static BOOLEAN gfCorruptMap = FALSE;
 static BOOLEAN gfCorruptSchedules = FALSE;
@@ -186,13 +184,13 @@ void EditScreenInit() {
 
   // Set the editor colors.
   // gusEditorTaskbarColor = 9581;
-  // gusEditorTaskbarColor =		Get16BPPColor( FROMRGB(  72,  88, 104 )
-  // ); gusEditorTaskbarHiColor = Get16BPPColor( FROMRGB( 136, 138, 135 ) );
-  // gusEditorTaskbarLoColor = Get16BPPColor( FROMRGB(  24,  61,  81 ) );
+  // gusEditorTaskbarColor =		rgb32_to_rgb565( FROMRGB(  72,  88, 104 )
+  // ); gusEditorTaskbarHiColor = rgb32_to_rgb565( FROMRGB( 136, 138, 135 ) );
+  // gusEditorTaskbarLoColor = rgb32_to_rgb565( FROMRGB(  24,  61,  81 ) );
 
-  gusEditorTaskbarColor = Get16BPPColor(FROMRGB(65, 79, 94));
-  gusEditorTaskbarHiColor = Get16BPPColor(FROMRGB(122, 124, 121));
-  gusEditorTaskbarLoColor = Get16BPPColor(FROMRGB(22, 55, 73));
+  gusEditorTaskbarColor = rgb32_to_rgb565(FROMRGB(65, 79, 94));
+  gusEditorTaskbarHiColor = rgb32_to_rgb565(FROMRGB(122, 124, 121));
+  gusEditorTaskbarLoColor = rgb32_to_rgb565(FROMRGB(22, 55, 73));
 
   InitClipboard();
 
@@ -1122,20 +1120,20 @@ static void HandleKeyboardShortcuts() {
   static BOOLEAN fShowTrees = TRUE;
   while (DequeueEvent(&EditorInputEvent)) {
     if (!HandleSummaryInput(&EditorInputEvent) && !HandleTextInput(&EditorInputEvent) &&
-        EditorInputEvent.usEvent == KEY_DOWN) {
+        EditorInputEvent.isKeyDown()) {
       if (gfGotoGridNoUI) {
-        switch (EditorInputEvent.usParam) {
-          case SDLK_ESCAPE:
+        switch (EditorInputEvent.getKey()) {
+          case JIK_ESCAPE:
             SetInputFieldStringWith16BitString(0, L"");
             RemoveGotoGridNoUI();
             break;
 
-          case SDLK_RETURN:
+          case JIK_RETURN:
             RemoveGotoGridNoUI();
             break;
 
           case 'x':
-            if (EditorInputEvent.usKeyState & ALT_DOWN) {
+            if (EditorInputEvent.alt) {
               SetInputFieldStringWith16BitString(0, L"");
               RemoveGotoGridNoUI();
               iCurrentAction = ACTION_QUIT_GAME;
@@ -1143,8 +1141,8 @@ static void HandleKeyboardShortcuts() {
             break;
         }
       } else
-        switch (EditorInputEvent.usParam) {
-          case SDLK_HOME:
+        switch (EditorInputEvent.getKey()) {
+          case JIK_HOME:
             gfFakeLights ^= TRUE;
             if (gfFakeLights) {
               gusSavedLightLevel = gusLightLevel;
@@ -1158,7 +1156,7 @@ static void HandleKeyboardShortcuts() {
             LightSpriteRenderAll();
             break;
 
-          case SDLK_SPACE:
+          case JIK_SPACE:
             if (iCurrentTaskbar == TASK_MERCS)
               IndicateSelectedMerc(SELECT_NEXT_MERC);
             else if (iCurrentTaskbar == TASK_ITEMS)
@@ -1169,7 +1167,7 @@ static void HandleKeyboardShortcuts() {
               LightSpriteRenderAll();
             break;
 
-          case SDLK_INSERT:
+          case JIK_INSERT:
             if (iDrawMode == DRAW_MODE_GROUND) {
               iDrawMode += DRAW_MODE_FILL_AREA;
               ClickEditorButton(TERRAIN_FILL_AREA);
@@ -1181,7 +1179,7 @@ static void HandleKeyboardShortcuts() {
             }
             break;
 
-          case SDLK_RETURN:
+          case JIK_RETURN:
             if (gfEditingDoor) {
               ExtractAndUpdateDoorInfo();
               KillDoorEditing();
@@ -1195,11 +1193,11 @@ static void HandleKeyboardShortcuts() {
               ExecuteItemStatsCmd(ITEMSTATS_APPLY);
             break;
 
-          case SDLK_BACKSPACE:
+          case JIK_BACKSPACE:
             iCurrentAction = ACTION_UNDO;
             break;
 
-          case SDLK_DELETE:
+          case JIK_DELETE:
             if (iCurrentTaskbar == TASK_ITEMS)
               DeleteSelectedItem();
             else if (g_selected_merc != NULL) {
@@ -1213,7 +1211,7 @@ static void HandleKeyboardShortcuts() {
               iCurrentAction = ACTION_QUICK_ERASE;
             break;
 
-          case SDLK_ESCAPE:
+          case JIK_ESCAPE:
             if (InOverheadMap()) {
               KillOverheadMap();
             }
@@ -1233,17 +1231,17 @@ static void HandleKeyboardShortcuts() {
             break;
 
           // Select next/prev terrain tile to draw with.
-          case SDLK_LEFT:
-            if (!(EditorInputEvent.usKeyState & SHIFT_DOWN)) break;
+          case JIK_LEFT:
+            if (!(EditorInputEvent.shift)) break;
             CurrentPaste -= (gfShowTerrainTileButtons && CurrentPaste > 0) ? 1 : 0;
             break;
 
-          case SDLK_RIGHT:
-            if (!(EditorInputEvent.usKeyState & SHIFT_DOWN)) break;
+          case JIK_RIGHT:
+            if (!(EditorInputEvent.shift)) break;
             CurrentPaste += (gfShowTerrainTileButtons && CurrentPaste < 8) ? 1 : 0;
             break;
 
-          case SDLK_PAGEUP:
+          case JIK_PAGEUP:
             if (iCurrentTaskbar == TASK_MERCS && !fBuildingShowRoofs) {
               gfRoofPlacement = TRUE;
               fBuildingShowRoofs = TRUE;
@@ -1273,7 +1271,7 @@ static void HandleKeyboardShortcuts() {
             gfRenderDrawingMode = TRUE;
             break;
 
-          case SDLK_PAGEDOWN:
+          case JIK_PAGEDOWN:
             if (iCurrentTaskbar == TASK_MERCS && fBuildingShowRoofs) {
               gfRoofPlacement = FALSE;
               fBuildingShowRoofs = FALSE;
@@ -1303,40 +1301,40 @@ static void HandleKeyboardShortcuts() {
             gfRenderDrawingMode = TRUE;
             break;
 
-          case SDLK_F1:
+          case JIK_F1:
             gfRenderWorld = TRUE;
             gfRenderTaskbar = TRUE;
             break;
 
-          case SDLK_F2:
-            if (EditorInputEvent.usKeyState & ALT_DOWN) {
+          case JIK_F2:
+            if (EditorInputEvent.alt) {
               ReloadMap();
             }
             break;
 
-          case SDLK_F3:
-            if (EditorInputEvent.usKeyState & CTRL_DOWN) {
+          case JIK_F3:
+            if (EditorInputEvent.ctrl) {
               ReplaceObsoleteRoads();
               MarkWorldDirty();
             }
             break;
 
-          case SDLK_F4:
+          case JIK_F4:
             MusicPlay(giMusicID);
             ScreenMsg(FONT_YELLOW, MSG_DEBUG, L"%ls", szMusicList[giMusicID]);
             giMusicID++;
             if (giMusicID >= NUM_MUSIC) giMusicID = 0;
             break;
 
-          case SDLK_F5:
+          case JIK_F5:
             UpdateLastActionBeforeLeaving();
             CreateSummaryWindow();
             break;
 
-          case SDLK_F6:
+          case JIK_F6:
             break;
 
-          case SDLK_F7:
+          case JIK_F7:
             if (gfBasement) {
               int32_t i;
               uint16_t usRoofIndex, usRoofType;
@@ -1359,24 +1357,24 @@ static void HandleKeyboardShortcuts() {
             }
             break;
 
-          case SDLK_F8:
+          case JIK_F8:
             SmoothAllTerrainWorld();
             break;
 
-          case SDLK_F9:
+          case JIK_F9:
             break;
 
-          case SDLK_F10:
+          case JIK_F10:
             CreateMessageBox(L"Are you sure you wish to remove all lights?");
             gfRemoveLightsPending = TRUE;
             break;
 
-          case SDLK_F11:
+          case JIK_F11:
             CreateMessageBox(L"Are you sure you wish to reverse the schedules?");
             gfScheduleReversalPending = TRUE;
             break;
 
-          case SDLK_F12:
+          case JIK_F12:
             CreateMessageBox(L"Are you sure you wish to clear all of the schedules?");
             gfScheduleClearPending = TRUE;
             break;
@@ -1417,10 +1415,10 @@ static void HandleKeyboardShortcuts() {
                 iCurrentAction = ACTION_ERASE_WAYPOINT;
               else
                 iCurrentAction = ACTION_SET_WAYPOINT;
-              iActionParam = EditorInputEvent.usParam - '0';
+              iActionParam = EditorInputEvent.getKey() - '0';
             } else {
               iCurrentAction = ACTION_SET_FNAME;
-              iActionParam = EditorInputEvent.usParam - '0';
+              iActionParam = EditorInputEvent.getKey() - '0';
             }
             break;
 
@@ -1446,7 +1444,7 @@ static void HandleKeyboardShortcuts() {
             TerrainTileDrawMode = TERRAIN_TILES_BRETS_STRANGEMODE;
             break;
           case 'c':
-            if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == TASK_MERCS) {
+            if (EditorInputEvent.ctrl && iCurrentTaskbar == TASK_MERCS) {
               iCurrentAction = ACTION_COPY_MERC_PLACEMENT;
             }
             break;
@@ -1505,7 +1503,7 @@ static void HandleKeyboardShortcuts() {
             EnableFPSOverlay(gbFPSDisplay);
             break;
           case 'g':  // ground
-            if (EditorInputEvent.usKeyState & CTRL_DOWN) {
+            if (EditorInputEvent.ctrl) {
               CreateGotoGridNoUI();
             } else {
               if (iCurrentTaskbar != TASK_TERRAIN) {
@@ -1533,7 +1531,7 @@ static void HandleKeyboardShortcuts() {
             break;
 
           case 'l':
-            if (EditorInputEvent.usKeyState & CTRL_DOWN) {
+            if (EditorInputEvent.ctrl) {
               UpdateLastActionBeforeLeaving();
               iCurrentAction = ACTION_LOAD_MAP;
               break;
@@ -1573,13 +1571,13 @@ static void HandleKeyboardShortcuts() {
             iEditorToolbarState = TBAR_MODE_DRAW_OSTRUCTS1;
             break;
           case 's':
-            if (EditorInputEvent.usKeyState & CTRL_DOWN) {
+            if (EditorInputEvent.ctrl) {
               iCurrentAction = ACTION_SAVE_MAP;
             }
             break;
 
-          case SDLK_t:  // Trees
-            if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
+          case 't':  // Trees
+            if (EditorInputEvent.shift) {
               if (fShowTrees) {
                 ScreenMsg(FONT_MCOLOR_LTYELLOW, MSG_INTERFACE, L"Removing Treetops");
                 WorldHideTrees();
@@ -1611,13 +1609,13 @@ static void HandleKeyboardShortcuts() {
             UpdateWallsView();
             break;
           case 'v':
-            if (EditorInputEvent.usKeyState & CTRL_DOWN && iCurrentTaskbar == TASK_MERCS) {
+            if (EditorInputEvent.ctrl && iCurrentTaskbar == TASK_MERCS) {
               iCurrentAction = ACTION_PASTE_MERC_PLACEMENT;
             }
             break;
 
           case 'x':
-            if (EditorInputEvent.usKeyState & ALT_DOWN) {
+            if (EditorInputEvent.alt) {
               if (InOverheadMap()) KillOverheadMap();
               if (gfEditingDoor) KillDoorEditing();
               iCurrentAction = ACTION_QUIT_GAME;
@@ -1687,7 +1685,7 @@ static ScreenID PerformSelectedAction() {
       break;
 
     case ACTION_QUIT_GAME:
-      requestGameExit();
+      JPlatform_RequestExit();
     case ACTION_EXIT_EDITOR:
       if (EditModeShutdown()) {
         iPrevJA2ToolbarState = iEditorToolbarState;
@@ -1963,7 +1961,7 @@ static ScreenID PerformSelectedAction() {
       break;
 
     case ACTION_SHADE_UP:
-      if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
+      if (EditorInputEvent.shift) {
         gShadePercent += (float).05;
       } else {
         gShadePercent += (float).01;
@@ -1976,7 +1974,7 @@ static ScreenID PerformSelectedAction() {
       break;
 
     case ACTION_SHADE_DWN:
-      if (EditorInputEvent.usKeyState & SHIFT_DOWN) {
+      if (EditorInputEvent.shift) {
         gShadePercent -= (float).05;
       } else {
         gShadePercent -= (float).01;
@@ -2113,8 +2111,9 @@ static ScreenID WaitForHelpScreenResponse() {
   InputAtom DummyEvent;
   BOOLEAN fLeaveScreen;
 
-  ColorFillVideoSurfaceArea(FRAME_BUFFER, 50, 50, 590, 310, Get16BPPColor(FROMRGB(136, 138, 135)));
-  ColorFillVideoSurfaceArea(FRAME_BUFFER, 51, 51, 590, 310, Get16BPPColor(FROMRGB(24, 61, 81)));
+  ColorFillVideoSurfaceArea(FRAME_BUFFER, 50, 50, 590, 310,
+                            rgb32_to_rgb565(FROMRGB(136, 138, 135)));
+  ColorFillVideoSurfaceArea(FRAME_BUFFER, 51, 51, 590, 310, rgb32_to_rgb565(FROMRGB(24, 61, 81)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, 51, 51, 589, 309, GetGenericButtonFillColor());
 
   SetFont(gp12PointFont1);
@@ -2185,12 +2184,12 @@ static ScreenID WaitForHelpScreenResponse() {
   fLeaveScreen = FALSE;
 
   while (DequeueEvent(&DummyEvent)) {
-    if (DummyEvent.usEvent == KEY_DOWN) {
-      switch (DummyEvent.usParam) {
-        case SDLK_SPACE:
-        case SDLK_ESCAPE:
-        case SDLK_RETURN:
-        case SDLK_F1:
+    if (DummyEvent.isKeyDown()) {
+      switch (DummyEvent.getKey()) {
+        case JIK_SPACE:
+        case JIK_ESCAPE:
+        case JIK_RETURN:
+        case JIK_F1:
           fLeaveScreen = TRUE;
           break;
       }
@@ -2216,21 +2215,21 @@ static ScreenID WaitForSelectionWindowResponse() {
   InputAtom DummyEvent;
 
   while (DequeueEvent(&DummyEvent)) {
-    if (DummyEvent.usEvent == KEY_DOWN) {
-      switch (DummyEvent.usParam) {
-        case SDLK_SPACE:
+    if (DummyEvent.isKeyDown()) {
+      switch (DummyEvent.getKey()) {
+        case JIK_SPACE:
           ClearSelectionList();
           break;
-        case SDLK_DOWN:
+        case JIK_DOWN:
           ScrollSelWinDown();
           break;
-        case SDLK_UP:
+        case JIK_UP:
           ScrollSelWinUp();
           break;
 
-        case SDLK_ESCAPE:
+        case JIK_ESCAPE:
           RestoreSelectionList();
-        case SDLK_RETURN:
+        case JIK_RETURN:
           fAllDone = TRUE;
           break;
       }

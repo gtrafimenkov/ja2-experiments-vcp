@@ -4,6 +4,8 @@
 
 #include "Utils/MapUtility.h"
 
+#include <cstring>
+
 #include "Directories.h"
 #include "Editor/LoadScreen.h"
 #include "Local.h"
@@ -14,7 +16,6 @@
 #include "SGP/Input.h"
 #include "SGP/Line.h"
 #include "SGP/MemMan.h"
-#include "SGP/SGP.h"
 #include "SGP/VObject.h"
 #include "SGP/VObjectBlitters.h"
 #include "SGP/VSurface.h"
@@ -29,9 +30,9 @@
 #include "Utils/FontControl.h"
 #include "Utils/Quantize.h"
 #include "Utils/STIConvert.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform.h"
+#include "jplatform_input.h"
+#include "jplatform_video.h"
 
 #define MINIMAP_X_SIZE 88
 #define MINIMAP_Y_SIZE 44
@@ -49,7 +50,7 @@ static SGPVSurface *gi8BitMiniMap;
 // radarmaps.
 
 ScreenID MapUtilScreenHandle() {
-  static SGPPaletteEntry *p24BitValues = NULL;
+  static struct JColor *p24BitValues = NULL;
   static int16_t fNewMap = TRUE;
   InputAtom InputEvent;
   static FDLG_LIST *FListNode;
@@ -66,12 +67,12 @@ ScreenID MapUtilScreenHandle() {
 
   float dX, dY, dStartX, dStartY;
   int32_t iX, iY, iSubX1, iSubY1, iSubX2, iSubY2, iWindowX, iWindowY, iCount;
-  SGPPaletteEntry pPalette[256];
+  struct JColor pPalette[256];
 
   sDest16BPPColor = -1;
   bAvR = bAvG = bAvB = 0;
 
-  FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+  FRAME_BUFFER->Fill(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   if (fNewMap) {
     fNewMap = FALSE;
@@ -92,7 +93,7 @@ ScreenID MapUtilScreenHandle() {
     FListNode = FileList;
 
     // Allocate 24 bit Surface
-    p24BitValues = MALLOCN(SGPPaletteEntry, MINIMAP_X_SIZE * MINIMAP_Y_SIZE);
+    p24BitValues = MALLOCN(struct JColor, MINIMAP_X_SIZE * MINIMAP_Y_SIZE);
 
     // Allocate 8-bit surface
     gi8BitMiniMap = AddVideoSurface(88, 44, 8);
@@ -100,7 +101,7 @@ ScreenID MapUtilScreenHandle() {
 
   // OK, we are here, now loop through files
   if (sCurFile == sFiles || FListNode == NULL) {
-    requestGameExit();
+    JPlatform_RequestExit();
     return (MAPUTILITY_SCREEN);
   }
 
@@ -176,7 +177,7 @@ ScreenID MapUtilScreenHandle() {
             if (0 <= iWindowX && iWindowX < SCREEN_WIDTH && 0 <= iWindowY && iWindowY < 320) {
               s16BPPSrc = pSrcBuf[(iWindowY * (uiSrcPitchBYTES / 2)) + iWindowX];
 
-              uiRGBColor = GetRGBColor(s16BPPSrc);
+              uiRGBColor = rgb565_to_rgb32(s16BPPSrc);
 
               bR += SGPGetRValue(uiRGBColor);
               bG += SGPGetGValue(uiRGBColor);
@@ -193,13 +194,13 @@ ScreenID MapUtilScreenHandle() {
           bAvG = bG / (uint8_t)iCount;
           bAvB = bB / (uint8_t)iCount;
 
-          sDest16BPPColor = Get16BPPColor(FROMRGB(bAvR, bAvG, bAvB));
+          sDest16BPPColor = rgb32_to_rgb565(FROMRGB(bAvR, bAvG, bAvB));
         }
 
         // Write into dest!
         pDestBuf[(iY * (uiDestPitchBYTES / 2)) + iX] = sDest16BPPColor;
 
-        SGPPaletteEntry *const dst = &p24BitValues[iY * (uiDestPitchBYTES / 2) + iX];
+        struct JColor *const dst = &p24BitValues[iY * (uiDestPitchBYTES / 2) + iX];
         dst->r = bAvR;
         dst->g = bAvG;
         dst->b = bAvB;
@@ -239,7 +240,7 @@ ScreenID MapUtilScreenHandle() {
         SetClippingRegionAndImageWidth(uiDestPitchBYTES, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
         for (cnt = 0; cnt < 256; cnt++) {
-          usLineColor = Get16BPPColor(FROMRGB(pPalette[cnt].r, pPalette[cnt].g, pPalette[cnt].b));
+          usLineColor = rgb32_to_rgb565(FROMRGB(pPalette[cnt].r, pPalette[cnt].g, pPalette[cnt].b));
           RectangleDraw(TRUE, sX, sY, sX, sY + 10, usLineColor, pDestBuf);
           sX++;
           RectangleDraw(TRUE, sX, sY, sX, sY + 10, usLineColor, pDestBuf);
@@ -267,8 +268,8 @@ ScreenID MapUtilScreenHandle() {
   InvalidateScreen();
 
   while (DequeueEvent(&InputEvent)) {
-    if (InputEvent.usEvent == KEY_DOWN && InputEvent.usParam == SDLK_ESCAPE) {  // Exit the program
-      requestGameExit();
+    if (InputEvent.isKeyDown() && InputEvent.getKey() == JIK_ESCAPE) {  // Exit the program
+      JPlatform_RequestExit();
     }
   }
 

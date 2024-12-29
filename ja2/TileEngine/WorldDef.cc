@@ -67,8 +67,7 @@
 #include "TileEngine/WorldMan.h"
 #include "Utils/AnimatedProgressBar.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 #define SET_MOVEMENTCOST(a, b, c, d) \
   ((gubWorldMovementCosts[a][b][c] < d) ? (gubWorldMovementCosts[a][b][c] = d) : 0);
@@ -1572,7 +1571,7 @@ BOOLEAN EvaluateWorld(const char *const pSector, const uint8_t ubLevel) try {
     // skip number of light palette entries
     uint8_t n_light_colours;
     FileRead(f, &n_light_colours, sizeof(n_light_colours));
-    FileSeek(f, sizeof(SGPPaletteEntry) * n_light_colours, FILE_SEEK_FROM_CURRENT);
+    FileSeek(f, sizeof(struct JColor) * n_light_colours, FILE_SEEK_FROM_CURRENT);
 
     // get number of lights
     FileRead(f, &pSummary->usNumLights, sizeof(pSummary->usNumLights));
@@ -2598,7 +2597,7 @@ static void SaveMapLights(HWFILE hfile) {
   // Save the current light colors!
   const uint8_t ubNumColors = 1;
   FileWrite(hfile, &ubNumColors, 1);
-  const SGPPaletteEntry *LColor = LightGetColor();
+  const struct JColor *LColor = LightGetColor();
   FileWrite(hfile, LColor, sizeof(*LColor));
 
   // count number of non-merc lights.
@@ -2615,7 +2614,7 @@ static void SaveMapLights(HWFILE hfile) {
 }
 
 static void LoadMapLights(HWFILE const f) {
-  SGPPaletteEntry LColors[3];
+  struct JColor LColors[3];
   uint8_t ubNumColors;
   uint16_t usNumLights;
 

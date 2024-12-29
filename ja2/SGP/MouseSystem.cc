@@ -18,7 +18,6 @@
 #include "SGP/Input.h"
 #include "SGP/Line.h"
 #include "SGP/MemMan.h"
-#include "SGP/Timer.h"
 #include "SGP/Types.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
@@ -26,6 +25,7 @@
 #include "ScreenIDs.h"
 #include "TileEngine/RenderDirty.h"
 #include "Utils/FontControl.h"
+#include "jplatform_time.h"
 
 // Kris:	Nov 31, 1999 -- Added support for double clicking
 //
@@ -373,7 +373,7 @@ static void MSYS_UpdateMouseRegion() {
             // Kris: Nov 31, 1999 -- Added support for double click events.
             // This is where double clicks are checked and passed down.
             if (ButtonReason == MSYS_CALLBACK_REASON_LBUTTON_DWN) {
-              uint32_t uiCurrTime = GetClock();
+              uint32_t uiCurrTime = JTime_GetTicks();
               if (gpRegionLastLButtonDown == cur && gpRegionLastLButtonUp == cur &&
                   uiCurrTime <= guiRegionLastLButtonDownTime + MSYS_DOUBLECLICK_DELAY) {
                 /* Sequential left click on same button within the maximum time
@@ -387,10 +387,10 @@ static void MSYS_UpdateMouseRegion() {
                 /* First click, record time and region pointer (to check if 2nd
                  * click detected later) */
                 gpRegionLastLButtonDown = cur;
-                guiRegionLastLButtonDownTime = GetClock();
+                guiRegionLastLButtonDownTime = JTime_GetTicks();
               }
             } else if (ButtonReason == MSYS_CALLBACK_REASON_LBUTTON_UP) {
-              uint32_t uiCurrTime = GetClock();
+              uint32_t uiCurrTime = JTime_GetTicks();
               if (gpRegionLastLButtonDown == cur &&
                   uiCurrTime <= guiRegionLastLButtonDownTime + MSYS_DOUBLECLICK_DELAY) {
                 /* Double click is Left down, then left up, then left down.  We
@@ -593,9 +593,9 @@ static void DisplayFastHelp(MOUSE_REGION *const r) {
       SGPVSurface::Lock l(FRAME_BUFFER);
       uint16_t *const buf = l.Buffer<uint16_t>();
       SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-      RectangleDraw(TRUE, x + 1, y + 1, x + w - 1, y + h - 1, Get16BPPColor(FROMRGB(65, 57, 15)),
+      RectangleDraw(TRUE, x + 1, y + 1, x + w - 1, y + h - 1, rgb32_to_rgb565(FROMRGB(65, 57, 15)),
                     buf);
-      RectangleDraw(TRUE, x, y, x + w - 2, y + h - 2, Get16BPPColor(FROMRGB(227, 198, 88)), buf);
+      RectangleDraw(TRUE, x, y, x + w - 2, y + h - 2, rgb32_to_rgb565(FROMRGB(227, 198, 88)), buf);
     }
     FRAME_BUFFER->ShadowRect(x + 2, y + 2, x + w - 3, y + h - 3);
     FRAME_BUFFER->ShadowRect(x + 2, y + 2, x + w - 3, y + h - 3);
@@ -676,7 +676,7 @@ void RenderFastHelp() {
 
   if (!gfRenderHilights) return;
 
-  uint32_t const current_clock = GetClock();
+  uint32_t const current_clock = JTime_GetTicks();
   uint32_t const time_delta = current_clock - last_clock;
   last_clock = current_clock;
 

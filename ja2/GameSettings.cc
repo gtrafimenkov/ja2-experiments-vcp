@@ -16,7 +16,6 @@
 #include "SGP/LibraryDataBase.h"
 #include "SGP/LoadSaveData.h"
 #include "SGP/Random.h"
-#include "SGP/SGP.h"
 #include "SGP/Types.h"
 #include "SaveLoadGame.h"
 #include "SaveLoadScreen.h"
@@ -31,6 +30,7 @@
 #include "Utils/MusicControl.h"
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
+#include "jplatform.h"
 
 #define GAME_SETTINGS_FILE "../Ja2.set"
 
@@ -193,7 +193,7 @@ void CDromEjectionErrorMessageBoxCallBack(MessageBoxReturnValue const bExitValue
     }
 
     // quit the game
-    requestGameExit();
+    JPlatform_RequestExit();
   }
 }
 

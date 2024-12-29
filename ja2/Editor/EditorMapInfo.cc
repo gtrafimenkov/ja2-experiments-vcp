@@ -9,6 +9,7 @@
 #include <string.h>
 #include <wchar.h>
 
+#include "Color.h"
 #include "Editor/EditScreen.h"
 #include "Editor/EditSys.h"
 #include "Editor/EditorDefines.h"
@@ -43,13 +44,11 @@
 #include "TileEngine/SysUtil.h"
 #include "Utils/FontControl.h"
 #include "Utils/TextInput.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 int8_t gbDefaultLightType = PRIMETIME_LIGHT;
 
-SGPPaletteEntry gEditorLightColor;
+struct JColor gEditorLightColor;
 
 BOOLEAN gfEditorForceShadeTableRebuild = FALSE;
 

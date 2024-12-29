@@ -6,6 +6,7 @@
 
 #include <stdexcept>
 
+#include "Color.h"
 #include "GameSettings.h"
 #include "JAScreens.h"
 #include "Macro.h"
@@ -38,8 +39,7 @@
 #include "Utils/FontControl.h"
 #include "Utils/Message.h"
 #include "Utils/MusicControl.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 // GAME BALANCING DEFINITIONS FOR CREATURE SPREADING
 // Hopefully, adjusting these following definitions will ease the balancing of

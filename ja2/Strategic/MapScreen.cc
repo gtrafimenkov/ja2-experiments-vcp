@@ -101,8 +101,7 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #ifdef JA2TESTVERSION
 #include "Map_Information.h"
@@ -297,7 +296,7 @@ enum MapEvent {
 
 static inline uint16_t GlowColor(uint32_t i) {
   Assert(i <= 10);
-  return Get16BPPColor(FROMRGB(25 * i, 0, 0));
+  return rgb32_to_rgb565(FROMRGB(25 * i, 0, 0));
 }
 
 static const SGPPoint gMapSortButtons[MAX_SORT_METHODS] = {{12, 125},  {68, 125},  {124, 125},
@@ -1501,8 +1500,8 @@ ScreenID MapScreenHandle() try {
     // create merc remove box
     CreateMercRemoveAssignBox();
 
-    guiSAVEBUFFER->Fill(Get16BPPColor(RGB_NEAR_BLACK));
-    FRAME_BUFFER->Fill(Get16BPPColor(RGB_NEAR_BLACK));
+    guiSAVEBUFFER->Fill(rgb32_to_rgb565(RGB_NEAR_BLACK));
+    FRAME_BUFFER->Fill(rgb32_to_rgb565(RGB_NEAR_BLACK));
 
     if (gpCurrentTalkingFace != NULL) {
       ContinueDialogue(gpCurrentTalkingFace->soldier, FALSE);
@@ -2011,7 +2010,7 @@ static void RenderMapCursorsIndexesAnims() {
       }
 
       // draw WHITE highlight rectangle
-      RenderMapHighlight(gsHighlightSectorX, gsHighlightSectorY, Get16BPPColor(RGB_WHITE), FALSE);
+      RenderMapHighlight(gsHighlightSectorX, gsHighlightSectorY, rgb32_to_rgb565(RGB_WHITE), FALSE);
 
       sPrevHighlightedMapX = gsHighlightSectorX;
       sPrevHighlightedMapY = gsHighlightSectorY;
@@ -2052,10 +2051,10 @@ static void RenderMapCursorsIndexesAnims() {
 
     if (!fSelectedSectorHighlighted || fFlashCursorIsYellow) {
       // draw YELLOW highlight rectangle
-      usCursorColor = Get16BPPColor(RGB_YELLOW);
+      usCursorColor = rgb32_to_rgb565(RGB_YELLOW);
     } else {
       // draw WHITE highlight rectangle
-      usCursorColor = Get16BPPColor(RGB_WHITE);
+      usCursorColor = rgb32_to_rgb565(RGB_WHITE);
 
       // index letters will also be white instead of yellow so that they flash
       // in synch with the cursor
@@ -2552,64 +2551,64 @@ static void SelectAllCharactersInSquad(int8_t bSquadNumber);
 
 static void HandleModNone(uint32_t const key, MapEvent &new_event) {
   switch (key) {
-    case SDLK_ESCAPE:
+    case JIK_ESCAPE:
       if (HandleKeyESC()) return;
       break;
 
-    case SDLK_PAUSE:
+    case JIK_PAUSE:
       HandlePlayerPauseUnPauseOfGame();
       break;
 
-    case SDLK_LEFT:
+    case JIK_LEFT:
       GoToPrevCharacterInList();
       break;
-    case SDLK_RIGHT:
+    case JIK_RIGHT:
       GoToNextCharacterInList();
       break;
 
-    case SDLK_UP:
+    case JIK_UP:
       MapScreenMsgScrollUp(1);
       break;
-    case SDLK_DOWN:
+    case JIK_DOWN:
       MapScreenMsgScrollDown(1);
       break;
 
-    case SDLK_PAGEUP:
+    case JIK_PAGEUP:
       MapScreenMsgScrollUp(MAX_MESSAGES_ON_MAP_BOTTOM);
       break;
-    case SDLK_PAGEDOWN:
+    case JIK_PAGEDOWN:
       MapScreenMsgScrollDown(MAX_MESSAGES_ON_MAP_BOTTOM);
       break;
 
-    case SDLK_HOME:
+    case JIK_HOME:
       ChangeCurrentMapscreenMessageIndex(0);
       break;
-    case SDLK_END:
+    case JIK_END:
       MoveToEndOfMapScreenMessageList();
       break;
 
-    case SDLK_INSERT:
+    case JIK_INSERT:
       GoUpOneLevelInMap();
       break;
-    case SDLK_DELETE:
+    case JIK_DELETE:
       GoDownOneLevelInMap();
       break;
 
-    case SDLK_RETURN:
+    case JIK_RETURN:
       RequestToggleMercInventoryPanel();
       break;
 
-    case SDLK_BACKSPACE:
+    case JIK_BACKSPACE:
       StopAnyCurrentlyTalkingSpeech();
       break;
 
-    case SDLK_F1:
-    case SDLK_F2:
-    case SDLK_F3:
-    case SDLK_F4:
-    case SDLK_F5:
-    case SDLK_F6:
-      ChangeCharacterListSortMethod(key - SDLK_F1);
+    case JIK_F1:
+    case JIK_F2:
+    case JIK_F3:
+    case JIK_F4:
+    case JIK_F5:
+    case JIK_F6:
+      ChangeCharacterListSortMethod(key - JIK_F1);
       break;
 
     case '+':
@@ -2622,7 +2621,7 @@ static void HandleModNone(uint32_t const key, MapEvent &new_event) {
       if (!CommonTimeCompressionChecks()) RequestDecreaseInTimeCompression();
       break;
 
-    case SDLK_SPACE:
+    case JIK_SPACE:
       if (fShowUpdateBox) {  // Restart time compression
         EndUpdateBox(TRUE);
       } else {  // Toggle time compression
@@ -2640,7 +2639,7 @@ static void HandleModNone(uint32_t const key, MapEvent &new_event) {
     case '7':
     case '8':
     case '9': {  // Select all characters in squad 1-10
-      uint32_t const squad_no = (key - SDLK_0 + 9) % 10U;
+      uint32_t const squad_no = (key - '0' + 9) % 10U;
       SelectAllCharactersInSquad(squad_no);
       break;
     }
@@ -2729,7 +2728,7 @@ static void HandleModShift(uint32_t const key) {
     case '7':
     case '8':
     case '9': {  // Select all characters in squad 11-20
-      uint32_t const squad_no = 10 + (key - SDLK_0 + 9) % 10U;
+      uint32_t const squad_no = 10 + (key - '0' + 9) % 10U;
       SelectAllCharactersInSquad(squad_no);
       break;
     }
@@ -2834,7 +2833,7 @@ static void GetMapKeyboardInput(MapEvent &new_event) {
     GetMousePos(&MousePos);
     MouseSystemHook(InputEvent.usEvent, MousePos.iX, MousePos.iY);
 
-    if (InputEvent.usEvent == KEY_DOWN) {
+    if (InputEvent.isKeyDown()) {
       // if game is paused because of player, unpause with any key
       if (gfPauseDueToPlayerGamePause) {
         HandlePlayerPauseUnPauseOfGame();
@@ -2846,41 +2845,35 @@ static void GetMapKeyboardInput(MapEvent &new_event) {
         ShutDownUserDefineHelpTextRegions();
       }
 
-      uint32_t const key = InputEvent.usParam;
-      switch (InputEvent.usKeyState) {
-        case 0:
-          HandleModNone(key, new_event);
-          break;
-        case SHIFT_DOWN:
-          HandleModShift(key);
-          break;
-        case CTRL_DOWN:
-          HandleModCtrl(key);
-          break;
-        case ALT_DOWN:
-          HandleModAlt(key);
-          break;
+      if (InputEvent.shift) {
+        HandleModShift(InputEvent.getKey());
+      } else if (InputEvent.ctrl) {
+        HandleModCtrl(InputEvent.getKey());
+      } else if (InputEvent.alt) {
+        HandleModAlt(InputEvent.getKey());
+      } else {
+        HandleModNone(InputEvent.getKey(), new_event);
       }
     } else if (InputEvent.usEvent == KEY_REPEAT) {
-      switch (InputEvent.usParam) {
-        case SDLK_LEFT:
+      switch (InputEvent.getKey()) {
+        case JIK_LEFT:
           GoToPrevCharacterInList();
           break;
-        case SDLK_RIGHT:
+        case JIK_RIGHT:
           GoToNextCharacterInList();
           break;
 
-        case SDLK_UP:
+        case JIK_UP:
           MapScreenMsgScrollUp(1);
           break;
-        case SDLK_DOWN:
+        case JIK_DOWN:
           MapScreenMsgScrollDown(1);
           break;
 
-        case SDLK_PAGEUP:
+        case JIK_PAGEUP:
           MapScreenMsgScrollUp(MAX_MESSAGES_ON_MAP_BOTTOM);
           break;
-        case SDLK_PAGEDOWN:
+        case JIK_PAGEDOWN:
           MapScreenMsgScrollDown(MAX_MESSAGES_ON_MAP_BOTTOM);
           break;
       }

@@ -16,7 +16,6 @@
 #include "SGP/CursorControl.h"
 #include "SGP/English.h"
 #include "SGP/Input.h"
-#include "SGP/SGP.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
@@ -30,6 +29,8 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
+#include "jplatform.h"
+#include "jplatform_input.h"
 
 // #define TESTFOREIGNFONTS
 
@@ -138,7 +139,7 @@ static void HandleMainMenuScreen() {
   switch (gbHandledMainMenu) {
     case QUIT:
       gfMainMenuScreenExit = TRUE;
-      requestGameExit();
+      JPlatform_RequestExit();
       break;
 
     case LOAD_GAME:
@@ -215,12 +216,7 @@ static void HandleMainMenuInput() {
   InputAtom InputEvent;
   while (DequeueEvent(&InputEvent)) {
     if (InputEvent.usEvent == KEY_UP) {
-      switch (InputEvent.usParam) {
-          /*
-                                          case SDLK_ESCAPE: gbHandledMainMenu =
-             QUIT; break;
-          */
-
+      switch (InputEvent.getKey()) {
         case 'c':
           if (IsKeyDown(ALT)) gfLoadGameUponEntry = TRUE;
           gbHandledMainMenu = LOAD_GAME;

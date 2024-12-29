@@ -71,9 +71,8 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/Utilities.h"
-
-#include "SDL_keycode.h"
-#include "SDL_pixels.h"
+#include "jplatform_input.h"
+#include "jplatform_video.h"
 
 #if defined JA2BETAVERSION
 #include "Strategic_AI.h"
@@ -4002,9 +4001,9 @@ static const uint8_t gOrangeGlowG[] = {
 
 };
 
-static uint16_t *CreateEnemyGlow16BPPPalette(const SGPPaletteEntry *pPalette, uint32_t rscale,
+static uint16_t *CreateEnemyGlow16BPPPalette(const struct JColor *pPalette, uint32_t rscale,
                                              uint32_t gscale);
-static uint16_t *CreateEnemyGreyGlow16BPPPalette(const SGPPaletteEntry *pPalette, uint32_t rscale,
+static uint16_t *CreateEnemyGreyGlow16BPPPalette(const struct JColor *pPalette, uint32_t rscale,
                                                  uint32_t gscale);
 
 void CreateSoldierPalettes(SOLDIERTYPE &s) {
@@ -4014,10 +4013,10 @@ void CreateSoldierPalettes(SOLDIERTYPE &s) {
     throw std::runtime_error("Palette creation failed, soldier has invalid animation");
   }
 
-  SGPPaletteEntry tmp_pal[256];
+  struct JColor tmp_pal[256];
   memset(tmp_pal, 0, sizeof(*tmp_pal) * 256);
 
-  SGPPaletteEntry const *pal;
+  struct JColor const *pal;
   char const *const substitution = GetBodyTypePaletteSubstitution(&s, s.ubBodyType);
   if (!substitution) {
     // ATE: here we want to use the breath cycle for the palette.....
@@ -4259,7 +4258,7 @@ void SetSoldierAniSpeed(SOLDIERTYPE *pSoldier) {
 
   AdjustAniSpeed(pSoldier);
 
-  if (IsKeyDown(SDLK_SPACE)) {
+  if (IsKeyDown(JIK_SPACE)) {
     // pSoldier->sAniDelay = 1000;
   }
 }
@@ -4306,7 +4305,7 @@ void LoadPaletteData() {
     // # entries
     FileRead(hFile, &gpPalRep[cnt].ubPaletteSize, sizeof(gpPalRep[cnt].ubPaletteSize));
 
-    SGPPaletteEntry *const Pal = MALLOCN(SGPPaletteEntry, gpPalRep[cnt].ubPaletteSize);
+    struct JColor *const Pal = MALLOCN(struct JColor, gpPalRep[cnt].ubPaletteSize);
     gpPalRep[cnt].rgb = Pal;
 
     for (cnt2 = 0; cnt2 < gpPalRep[cnt].ubPaletteSize; cnt2++) {
@@ -4317,7 +4316,7 @@ void LoadPaletteData() {
   }
 }
 
-void SetPaletteReplacement(SGPPaletteEntry *const p8BPPPalette, PaletteRepID aPalRep) {
+void SetPaletteReplacement(struct JColor *const p8BPPPalette, PaletteRepID aPalRep) {
   uint32_t cnt2;
   uint8_t ubType;
 
@@ -6444,7 +6443,7 @@ void ReLoadSoldierAnimationDueToHandItemChange(SOLDIERTYPE *const s, uint16_t co
   }
 }
 
-static uint16_t *CreateEnemyGlow16BPPPalette(const SGPPaletteEntry *pPalette, uint32_t rscale,
+static uint16_t *CreateEnemyGlow16BPPPalette(const struct JColor *pPalette, uint32_t rscale,
                                              uint32_t gscale) {
   Assert(pPalette != NULL);
 
@@ -6454,12 +6453,12 @@ static uint16_t *CreateEnemyGlow16BPPPalette(const SGPPaletteEntry *pPalette, ui
     uint8_t r = std::max((uint8_t)rscale, pPalette[cnt].r);
     uint8_t g = std::max((uint8_t)gscale, pPalette[cnt].g);
     uint8_t b = pPalette[cnt].b;
-    p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
+    p16BPPPalette[cnt] = rgb32_to_rgb565(FROMRGB(r, g, b));
   }
   return p16BPPPalette;
 }
 
-static uint16_t *CreateEnemyGreyGlow16BPPPalette(const SGPPaletteEntry *pPalette, uint32_t rscale,
+static uint16_t *CreateEnemyGreyGlow16BPPPalette(const struct JColor *pPalette, uint32_t rscale,
                                                  uint32_t gscale) {
   Assert(pPalette != NULL);
 
@@ -6477,7 +6476,7 @@ static uint16_t *CreateEnemyGreyGlow16BPPPalette(const SGPPaletteEntry *pPalette
     uint8_t r = std::min((uint8_t)rmod, (uint8_t)255);
     uint8_t g = std::min((uint8_t)gmod, (uint8_t)255);
     uint8_t b = std::min((uint8_t)bmod, (uint8_t)255);
-    p16BPPPalette[cnt] = Get16BPPColor(FROMRGB(r, g, b));
+    p16BPPPalette[cnt] = rgb32_to_rgb565(FROMRGB(r, g, b));
   }
   return p16BPPPalette;
 }

@@ -5,15 +5,15 @@
 #ifndef __SOLDER_CONTROL_H
 #define __SOLDER_CONTROL_H
 
-// Kris:  November 10, 1997
-// Please don't change this value from 10.  It will invalidate all of the maps
-// and soldiers.
-#define MAXPATROLGRIDS 10  // *** THIS IS A DUPLICATION - MUST BE MOVED !
-
 #include "JA2Types.h"
 #include "Tactical/AnimationCache.h"
 #include "Tactical/ItemTypes.h"
 #include "Tactical/OverheadTypes.h"
+
+// Kris:  November 10, 1997
+// Please don't change this value from 10.  It will invalidate all of the maps
+// and soldiers.
+#define MAXPATROLGRIDS 10  // *** THIS IS A DUPLICATION - MUST BE MOVED !
 
 // ANDREW: these are defines for OKDestanation usage - please move to approprite
 // file
@@ -831,7 +831,7 @@ struct PaletteReplacementType {
   uint8_t ubType;
   PaletteRepID ID;
   uint8_t ubPaletteSize;
-  SGPPaletteEntry *rgb;
+  struct JColor *rgb;
 };
 
 // VARIABLES FOR PALETTE REPLACEMENTS FOR HAIR, ETC
@@ -910,7 +910,7 @@ void ReviveSoldier(SOLDIERTYPE *pSoldier);
 // Palette functions for soldiers
 void CreateSoldierPalettes(SOLDIERTYPE &);
 uint8_t GetPaletteRepIndexFromID(const PaletteRepID pal_rep);
-void SetPaletteReplacement(SGPPaletteEntry *, PaletteRepID);
+void SetPaletteReplacement(struct JColor *, PaletteRepID);
 void LoadPaletteData();
 void DeletePaletteData();
 

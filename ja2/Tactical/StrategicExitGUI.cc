@@ -43,8 +43,7 @@
 #include "Utils/MercTextBox.h"
 #include "Utils/PopUpBox.h"
 #include "Utils/Text.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 BOOLEAN gfInSectorExitMenu = FALSE;
 
@@ -546,12 +545,12 @@ void RenderSectorExitMenu() {
 
   InputAtom Event;
   while (DequeueEvent(&Event)) {
-    if (Event.usEvent == KEY_DOWN) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+    if (Event.isKeyDown()) {
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           RemoveSectorExitMenu(FALSE);
           return;
-        case SDLK_RETURN:
+        case JIK_RETURN:
           RemoveSectorExitMenu(TRUE);
           return;
       }

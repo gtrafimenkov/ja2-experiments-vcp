@@ -6,10 +6,10 @@
 
 #include "SGP/Debug.h"
 #include "SGP/HImage.h"
-#include "SGP/Timer.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
+#include "jplatform_time.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -47,7 +47,7 @@ static void BltToMouseCursorFromVObjectWithOutline(HVOBJECT hVObject,
   int16_t const sXPos = (gsCurMouseWidth - pTrav.usWidth) / 2 - pTrav.sOffsetX;
   int16_t const sYPos = (gsCurMouseHeight - pTrav.usHeight) / 2 - pTrav.sOffsetY;
   BltVideoObjectOutline(MOUSE_BUFFER, hVObject, usVideoObjectSubIndex, sXPos, sYPos,
-                        Get16BPPColor(FROMRGB(0, 255, 0)));
+                        rgb32_to_rgb565(FROMRGB(0, 255, 0)));
 }
 
 // THESE TWO PARAMETERS MUST POINT TO STATIC OR GLOBAL DATA, NOT AUTOMATIC
@@ -208,7 +208,7 @@ BOOLEAN SetCurrentCursorFromDatabase(uint32_t uiCursorIndex) {
       if (uiCursorIndex != guiOldSetCursor) {
         // OK, check if we are a delay cursor...
         if (pCurData->bFlags & DELAY_START_CURSOR) {
-          guiDelayTimer = GetClock();
+          guiDelayTimer = JTime_GetTicks();
         }
       }
 
@@ -216,7 +216,7 @@ BOOLEAN SetCurrentCursorFromDatabase(uint32_t uiCursorIndex) {
 
       // Olny update if delay timer has elapsed...
       if (pCurData->bFlags & DELAY_START_CURSOR) {
-        if (GetClock() - guiDelayTimer < 1000) {
+        if (JTime_GetTicks() - guiDelayTimer < 1000) {
           SetMouseCursorProperties(0, 0, 0, 0);
           return TRUE;
         }

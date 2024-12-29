@@ -37,8 +37,7 @@
 #include "Utils/Text.h"
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #ifdef JA2BETAVERSION
 #include "Debug.h"
@@ -867,50 +866,50 @@ static void GetHelpScreenUserInput() {
     MouseSystemHook(Event.usEvent, MousePos.iX, MousePos.iY);
 
     if (!HandleTextInput(&Event) && Event.usEvent == KEY_UP) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           PrepareToExitHelpScreen();
           break;
 
-        case SDLK_DOWN:
+        case JIK_DOWN:
           ChangeTopLineInTextBufferByAmount(1);
           break;
-        case SDLK_UP:
+        case JIK_UP:
           ChangeTopLineInTextBufferByAmount(-1);
           break;
 
-        case SDLK_PAGEUP: {
+        case JIK_PAGEUP: {
           ChangeTopLineInTextBufferByAmount(-(HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
         } break;
 
-        case SDLK_PAGEDOWN: {
+        case JIK_PAGEDOWN: {
           ChangeTopLineInTextBufferByAmount((HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
         } break;
 
-        case SDLK_LEFT:
+        case JIK_LEFT:
           ChangeToHelpScreenSubPage((int8_t)(gHelpScreen.bCurrentHelpScreenActiveSubPage - 1));
           break;
 
-        case SDLK_RIGHT:
+        case JIK_RIGHT:
           ChangeToHelpScreenSubPage((int8_t)(gHelpScreen.bCurrentHelpScreenActiveSubPage + 1));
           break;
       }
     }
 
     if (!HandleTextInput(&Event) && Event.usEvent == KEY_REPEAT) {
-      switch (Event.usParam) {
-        case SDLK_DOWN:
+      switch (Event.getKey()) {
+        case JIK_DOWN:
           ChangeTopLineInTextBufferByAmount(1);
           break;
-        case SDLK_UP:
+        case JIK_UP:
           ChangeTopLineInTextBufferByAmount(-1);
           break;
 
-        case SDLK_PAGEUP: {
+        case JIK_PAGEUP: {
           ChangeTopLineInTextBufferByAmount(-(HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
         } break;
 
-        case SDLK_PAGEDOWN: {
+        case JIK_PAGEDOWN: {
           ChangeTopLineInTextBufferByAmount((HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER - 1));
         } break;
       }
@@ -1838,7 +1837,7 @@ static void DisplayHelpScreenTextBufferScrollBox() {
         HLP_SCRN__MAX_NUMBER_DISPLAYED_LINES_IN_BUFFER)) {
     ColorFillVideoSurfaceArea(
         FRAME_BUFFER, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA,
-        iTopPosScrollBox + iSizeOfBox - 1, Get16BPPColor(FROMRGB(227, 198, 88)));
+        iTopPosScrollBox + iSizeOfBox - 1, rgb32_to_rgb565(FROMRGB(227, 198, 88)));
 
     // display the line
     SGPVSurface::Lock l(FRAME_BUFFER);
@@ -1848,17 +1847,17 @@ static void DisplayHelpScreenTextBufferScrollBox() {
 
     // draw the gold highlite line on the top and left
     LineDraw(FALSE, usPosX, iTopPosScrollBox, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA,
-             iTopPosScrollBox, Get16BPPColor(FROMRGB(235, 222, 171)), pDestBuf);
+             iTopPosScrollBox, rgb32_to_rgb565(FROMRGB(235, 222, 171)), pDestBuf);
     LineDraw(FALSE, usPosX, iTopPosScrollBox, usPosX, iTopPosScrollBox + iSizeOfBox - 1,
-             Get16BPPColor(FROMRGB(235, 222, 171)), pDestBuf);
+             rgb32_to_rgb565(FROMRGB(235, 222, 171)), pDestBuf);
 
     // draw the shadow line on the bottom and right
     LineDraw(FALSE, usPosX, iTopPosScrollBox + iSizeOfBox - 1,
              usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1,
-             Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
+             rgb32_to_rgb565(FROMRGB(65, 49, 6)), pDestBuf);
     LineDraw(FALSE, usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox,
              usPosX + HLP_SCRN__WIDTH_OF_SCROLL_AREA, iTopPosScrollBox + iSizeOfBox - 1,
-             Get16BPPColor(FROMRGB(65, 49, 6)), pDestBuf);
+             rgb32_to_rgb565(FROMRGB(65, 49, 6)), pDestBuf);
   }
 }
 

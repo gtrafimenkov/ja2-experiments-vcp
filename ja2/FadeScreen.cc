@@ -130,7 +130,7 @@ static void BeginFade(ScreenID const uiExitScreen, int8_t const bFadeValue, int8
       gfFadeInVideo = FALSE;
 
       BltVideoSurface(guiSAVEBUFFER, FRAME_BUFFER, 0, 0, NULL);
-      FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+      FRAME_BUFFER->Fill(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
       break;
 
     case FADE_OUT_REALFADE:
@@ -189,7 +189,7 @@ ScreenID FadeScreenHandle() {
     if (gsFadeCount > gsFadeLimit) {
       switch (gbFadeType) {
         case FADE_OUT_REALFADE:
-          FRAME_BUFFER->Fill(Get16BPPColor(FROMRGB(0, 0, 0)));
+          FRAME_BUFFER->Fill(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
           break;
       }
 

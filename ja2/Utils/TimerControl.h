@@ -7,10 +7,6 @@
 
 #include "SGP/Types.h"
 
-#ifndef CALLBACKTIMER
-#define CALLBACKTIMER
-#endif
-
 typedef void (*CUSTOMIZABLE_TIMER_CALLBACK)();
 
 // TIMER DEFINES
@@ -54,7 +50,7 @@ extern int32_t giTimerTeamTurnUpdate;
 void InitializeJA2Clock();
 void ShutdownJA2Clock();
 
-#define GetJA2Clock() guiBaseJA2Clock
+uint32_t GetJA2Clock();
 
 void PauseTime(BOOLEAN fPaused);
 
@@ -66,14 +62,6 @@ void CheckCustomizableTimer();
 extern uint32_t guiBaseJA2Clock;
 extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 
-// MACROS
-//																CHeck
-// if new counter < 0
-//| set to 0 |
-// Decrement
-
-#ifdef CALLBACKTIMER
-
 #define UPDATECOUNTER(c)                                                \
   ((giTimerCounters[c] - BASETIMESLICE) < 0) ? (giTimerCounters[c] = 0) \
                                              : (giTimerCounters[c] -= BASETIMESLICE)
@@ -83,28 +71,9 @@ extern CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback;
 #define UPDATETIMECOUNTER(c) ((c - BASETIMESLICE) < 0) ? (c = 0) : (c -= BASETIMESLICE)
 #define RESETTIMECOUNTER(c, d) (c = d)
 
-#ifdef BOUNDS_CHECKER
-#define TIMECOUNTERDONE(c, d) true
-#else
 #define TIMECOUNTERDONE(c, d) (c == 0)
-#endif
 
-#define SYNCTIMECOUNTER() (void)0
 #define ZEROTIMECOUNTER(c) (c = 0)
-
-#else
-
-#define UPDATECOUNTER(c)
-#define RESETCOUNTER(c) (giTimerCounters[c] = giClockTimer)
-#define COUNTERDONE(c) \
-  (((giClockTimer = GetJA2Clock()) - giTimerCounters[c]) > giTimerIntervals[c]) ? TRUE : FALSE
-
-#define UPDATETIMECOUNTER(c)
-#define RESETTIMECOUNTER(c, d) (c = giClockTimer)
-#define TIMECOUNTERDONE(c, d) (giClockTimer - c > d)
-#define SYNCTIMECOUNTER() (giClockTimer = GetJA2Clock())
-
-#endif
 
 /* whenever guiBaseJA2Clock changes, we must reset all the timer variables that
  * use it as a reference */

@@ -22,7 +22,6 @@
 #include "SGP/HImage.h"
 #include "SGP/Line.h"
 #include "SGP/Random.h"
-#include "SGP/SGP.h"
 #include "SGP/Types.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
@@ -52,8 +51,8 @@
 #include "Utils/Text.h"
 #include "Utils/TextInput.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform.h"
+#include "jplatform_input.h"
 
 // #ifdef JA2BETAVERSION
 
@@ -468,7 +467,7 @@ void QuestDebugScreenInit() {
   // Set so next time we come in, we can set up
   gfQuestDebugEntry = TRUE;
 
-  gusQuestDebugBlue = Get16BPPColor(FROMRGB(65, 79, 94));
+  gusQuestDebugBlue = rgb32_to_rgb565(FROMRGB(65, 79, 94));
 
   // Initialize which facts are at the top of the list
   gusFactAtTopOfList = 0;
@@ -1020,9 +1019,9 @@ static void GetUserInput() {
   uint8_t ubPanelMercShouldUse = WhichPanelShouldTalkingMercUse();
 
   while (DequeueEvent(&Event)) {
-    if (!HandleTextInput(&Event) && Event.usEvent == KEY_DOWN) {
-      switch (Event.usParam) {
-        case SDLK_ESCAPE:
+    if (!HandleTextInput(&Event) && Event.isKeyDown()) {
+      switch (Event.getKey()) {
+        case JIK_ESCAPE:
           gubTextEntryAction = QD_DROP_DOWN_CANCEL;
 
           gpActiveListBox->ubCurScrollBoxAction = QD_DROP_DOWN_DESTROY;
@@ -1034,11 +1033,11 @@ static void GetUserInput() {
 
           break;
 
-        case SDLK_SPACE:
+        case JIK_SPACE:
           if (giSelectedMercCurrentQuote != -1) SetTalkingMercPauseState(!gfPauseTalkingMercPopup);
           break;
 
-        case SDLK_LEFT:
+        case JIK_LEFT:
           if (giSelectedMercCurrentQuote != -1) {
             ShutupaYoFace(GetQDSFace(ubPanelMercShouldUse));
 
@@ -1052,7 +1051,7 @@ static void GetUserInput() {
           }
           break;
 
-        case SDLK_RIGHT:
+        case JIK_RIGHT:
           if (giSelectedMercCurrentQuote != -1) {
             ShutupaYoFace(GetQDSFace(ubPanelMercShouldUse));
 
@@ -1064,18 +1063,18 @@ static void GetUserInput() {
           }
           break;
 
-        case SDLK_F11:
+        case JIK_F11:
           gfQuestDebugExit = TRUE;
           break;
 
         case 'x':
-          if (Event.usKeyState & ALT_DOWN) {
+          if (Event.alt) {
             gfQuestDebugExit = TRUE;
-            requestGameExit();
+            JPlatform_RequestExit();
           }
           break;
 
-        case SDLK_RETURN:
+        case JIK_RETURN:
           if (gfTextEntryActive)
             gubTextEntryAction = QD_DROP_DOWN_DESTROY;
           else if (gfInDropDownBox) {
@@ -1084,27 +1083,27 @@ static void GetUserInput() {
 
           break;
 
-        case SDLK_PAGEDOWN:
+        case JIK_PAGEDOWN:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox(
                 (int16_t)(gpActiveListBox->sCurSelectedItem + QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
-        case SDLK_PAGEUP:
+        case JIK_PAGEUP:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox(
                 (int16_t)(gpActiveListBox->sCurSelectedItem - QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
-        case SDLK_DOWN:
+        case JIK_DOWN:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox((int16_t)(gpActiveListBox->sCurSelectedItem + 1));
           }
           break;
 
-        case SDLK_UP:
+        case JIK_UP:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox((int16_t)(gpActiveListBox->sCurSelectedItem - 1));
           }
@@ -1123,34 +1122,34 @@ static void GetUserInput() {
     }
 
     else if (Event.usEvent == KEY_REPEAT) {
-      switch (Event.usParam) {
-        case SDLK_PAGEDOWN:
+      switch (Event.getKey()) {
+        case JIK_PAGEDOWN:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox(
                 (int16_t)(gpActiveListBox->sCurSelectedItem + QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
-        case SDLK_PAGEUP:
+        case JIK_PAGEUP:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox(
                 (int16_t)(gpActiveListBox->sCurSelectedItem - QUEST_DBS_MAX_DISPLAYED_ENTRIES));
           }
           break;
 
-        case SDLK_DOWN:
+        case JIK_DOWN:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox((int16_t)(gpActiveListBox->sCurSelectedItem + 1));
           }
           break;
 
-        case SDLK_UP:
+        case JIK_UP:
           if (gfInDropDownBox) {
             IncrementActiveDropDownBox((int16_t)(gpActiveListBox->sCurSelectedItem - 1));
           }
           break;
 
-        case SDLK_LEFT:
+        case JIK_LEFT:
           if (giSelectedMercCurrentQuote != -1) {
             ShutupaYoFace(GetQDSFace(ubPanelMercShouldUse));
 
@@ -1164,7 +1163,7 @@ static void GetUserInput() {
           }
           break;
 
-        case SDLK_RIGHT:
+        case JIK_RIGHT:
           if (giSelectedMercCurrentQuote != -1) {
             DisplayQDSCurrentlyQuoteNum();
 
@@ -1194,19 +1193,19 @@ static void DisplaySectionLine() {
 
   // draw the line in b/n the first and second section
   SetClippingRegionAndImageWidth(l.Pitch(), 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)),
+  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, rgb32_to_rgb565(FROMRGB(255, 255, 255)),
            pDestBuf);
 
   // draw the line in b/n the second and third section
   usStartX = usEndX = QUEST_DBS_FIRST_SECTION_WIDTH + QUEST_DBS_SECOND_SECTION_WIDTH;
-  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)),
+  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, rgb32_to_rgb565(FROMRGB(255, 255, 255)),
            pDestBuf);
 
   // draw the horizopntal line under the title
   usStartX = 0;
   usEndX = SCREEN_WIDTH - 1;
   usStartY = usEndY = 75;
-  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, Get16BPPColor(FROMRGB(255, 255, 255)),
+  LineDraw(FALSE, usStartX, usStartY, usEndX, usEndY, rgb32_to_rgb565(FROMRGB(255, 255, 255)),
            pDestBuf);
 }
 
@@ -1562,7 +1561,7 @@ static void DisplaySelectedListBox() {
   // clear the background
   ColorFillVideoSurfaceArea(
       FRAME_BUFFER, usPosX, usPosY - 1, usPosX + gpActiveListBox->usScrollWidth,
-      usPosY + gpActiveListBox->usScrollHeight, Get16BPPColor(FROMRGB(45, 59, 74)));
+      usPosY + gpActiveListBox->usScrollHeight, rgb32_to_rgb565(FROMRGB(45, 59, 74)));
 
   // Display the selected list box's display function
   (*(gpActiveListBox->DisplayFunction))();
@@ -1574,7 +1573,7 @@ static void DisplaySelectedListBox() {
 
   ColorFillVideoSurfaceArea(
       FRAME_BUFFER, usPosX, usPosY - 1, usPosX + gpActiveListBox->usScrollBarWidth,
-      usPosY + gpActiveListBox->usScrollHeight, Get16BPPColor(FROMRGB(192, 192, 192)));
+      usPosY + gpActiveListBox->usScrollHeight, rgb32_to_rgb565(FROMRGB(192, 192, 192)));
 
   // display the up and down arrows
   // top arrow
@@ -1635,7 +1634,7 @@ static void DisplaySelectedNPC() {
     // display the name in the list
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gpActiveListBox->usScrollPosX, usPosY - 1,
                               gpActiveListBox->usScrollPosX + gpActiveListBox->usScrollWidth,
-                              usPosY + usFontHeight - 1, Get16BPPColor(FROMRGB(255, 255, 255)));
+                              usPosY + usFontHeight - 1, rgb32_to_rgb565(FROMRGB(255, 255, 255)));
 
     SetFontShadow(NO_SHADOW);
 
@@ -1698,7 +1697,7 @@ static void DisplaySelectedItem() {
     // display the name in the list
     ColorFillVideoSurfaceArea(FRAME_BUFFER, gpActiveListBox->usScrollPosX, usPosY - 1,
                               gpActiveListBox->usScrollPosX + gpActiveListBox->usScrollWidth,
-                              usPosY + usFontHeight - 1, Get16BPPColor(FROMRGB(255, 255, 255)));
+                              usPosY + usFontHeight - 1, rgb32_to_rgb565(FROMRGB(255, 255, 255)));
 
     SetFontShadow(NO_SHADOW);
 
@@ -1803,7 +1802,7 @@ static void DrawQdsScrollRectangle() {
   gpActiveListBox->usScrollBoxEndY = usPosY + usHeight;
 
   ColorFillVideoSurfaceArea(FRAME_BUFFER, usPosX, usPosY, usPosX + usWidth - 1, usPosY + usHeight,
-                            Get16BPPColor(FROMRGB(130, 132, 128)));
+                            rgb32_to_rgb565(FROMRGB(130, 132, 128)));
 
   // display the line
   SGPVSurface::Lock l(FRAME_BUFFER);
@@ -1812,15 +1811,15 @@ static void DrawQdsScrollRectangle() {
 
   // draw the gold highlite line on the top and left
   LineDraw(FALSE, usPosX, usPosY, usPosX + usWidth - 1, usPosY,
-           Get16BPPColor(FROMRGB(255, 255, 255)), pDestBuf);
-  LineDraw(FALSE, usPosX, usPosY, usPosX, usPosY + usHeight, Get16BPPColor(FROMRGB(255, 255, 255)),
-           pDestBuf);
+           rgb32_to_rgb565(FROMRGB(255, 255, 255)), pDestBuf);
+  LineDraw(FALSE, usPosX, usPosY, usPosX, usPosY + usHeight,
+           rgb32_to_rgb565(FROMRGB(255, 255, 255)), pDestBuf);
 
   // draw the shadow line on the bottom and right
   LineDraw(FALSE, usPosX, usPosY + usHeight, usPosX + usWidth - 1, usPosY + usHeight,
-           Get16BPPColor(FROMRGB(112, 110, 112)), pDestBuf);
+           rgb32_to_rgb565(FROMRGB(112, 110, 112)), pDestBuf);
   LineDraw(FALSE, usPosX + usWidth - 1, usPosY, usPosX + usWidth - 1, usPosY + usHeight,
-           Get16BPPColor(FROMRGB(112, 110, 112)), pDestBuf);
+           rgb32_to_rgb565(FROMRGB(112, 110, 112)), pDestBuf);
 }
 
 static void ScrollArrowsRegionCallBack(MOUSE_REGION *pRegion, int32_t iReason) {
@@ -2213,7 +2212,7 @@ static void CreateDestroyDisplayTextEntryBox(uint8_t ubAction, const wchar_t *pS
       // Display the text entry box frame
       ColorFillVideoSurfaceArea(
           FRAME_BUFFER, QUEST_DBS_TEB_X, QUEST_DBS_TEB_Y, QUEST_DBS_TEB_X + QUEST_DBS_TEB_WIDTH,
-          QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT, Get16BPPColor(FROMRGB(45, 59, 74)));
+          QUEST_DBS_TEB_Y + QUEST_DBS_TEB_HEIGHT, rgb32_to_rgb565(FROMRGB(45, 59, 74)));
 
       // Display the text box caption
       DisplayWrappedString(QUEST_DBS_TEB_X + 10, QUEST_DBS_TEB_Y + 10, QUEST_DBS_TEB_WIDTH - 20, 2,
@@ -2294,11 +2293,11 @@ static void InitQuestDebugTextInputBoxes() {
 
   InitTextInputMode();
   SetTextInputFont(FONT12ARIAL);
-  Set16BPPTextFieldColor(Get16BPPColor(FROMRGB(255, 255, 255)));
-  SetBevelColors(Get16BPPColor(FROMRGB(136, 138, 135)), Get16BPPColor(FROMRGB(24, 61, 81)));
+  Set16BPPTextFieldColor(rgb32_to_rgb565(FROMRGB(255, 255, 255)));
+  SetBevelColors(rgb32_to_rgb565(FROMRGB(136, 138, 135)), rgb32_to_rgb565(FROMRGB(24, 61, 81)));
   SetTextInputRegularColors(2, FONT_WHITE);
   SetTextInputHilitedColors(FONT_WHITE, 2, 141);
-  SetCursorColor(Get16BPPColor(FROMRGB(0, 0, 0)));
+  SetCursorColor(rgb32_to_rgb565(FROMRGB(0, 0, 0)));
 
   swprintf(sTemp, lengthof(sTemp), L"%d", gsQdsEnteringGridNo);
 
@@ -2454,7 +2453,7 @@ static void CreateDestroyDisplayNPCInventoryPopup(uint8_t ubAction) {
                                   QUEST_DBS_NPC_INV_POPUP_Y,
                                   QUEST_DBS_NPC_INV_POPUP_X + QUEST_DBS_NPC_INV_POPUP_WIDTH,
                                   QUEST_DBS_NPC_INV_POPUP_Y + QUEST_DBS_NPC_INV_POPUP_HEIGHT,
-                                  Get16BPPColor(FROMRGB(45, 59, 74)));
+                                  rgb32_to_rgb565(FROMRGB(45, 59, 74)));
 
         // Dispaly the NPC inve title
         DrawTextToScreen(QuestDebugText[QUEST_DBS_NPC_INVENTORY], QUEST_DBS_NPC_INV_POPUP_X,
@@ -2911,7 +2910,7 @@ static void DisplayQDSCurrentlyQuoteNum() {
   ColorFillVideoSurfaceArea(FRAME_BUFFER, QDS_CURRENT_QUOTE_NUM_BOX_X, QDS_CURRENT_QUOTE_NUM_BOX_Y,
                             QDS_CURRENT_QUOTE_NUM_BOX_X + QDS_CURRENT_QUOTE_NUM_BOX_WIDTH,
                             QDS_CURRENT_QUOTE_NUM_BOX_Y + QDS_CURRENT_QUOTE_NUM_BOX_HEIGHT,
-                            Get16BPPColor(FROMRGB(32, 41, 53)));
+                            rgb32_to_rgb565(FROMRGB(32, 41, 53)));
 
   swprintf(zTemp, lengthof(zTemp), L"'%ls' is currently saying quote #%d",
            gMercProfiles[gTalkingMercSoldier->ubProfile].zNickname, giSelectedMercCurrentQuote - 1);

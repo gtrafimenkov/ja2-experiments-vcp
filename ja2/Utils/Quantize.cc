@@ -9,8 +9,7 @@
 #include "Macro.h"
 #include "SGP/HImage.h"
 #include "SGP/MemMan.h"
-
-#include "SDL_pixels.h"
+#include "jplatform_video.h"
 
 #define COLOUR_BITS 6
 #define MAX_COLOURS 255
@@ -96,19 +95,19 @@ static void ReduceTree() {
   g_leaf_count -= nChildren - 1;
 }
 
-static NODE *ProcessImage(const SGPPaletteEntry *pData, const int iWidth, const int iHeight) {
+static NODE *ProcessImage(const struct JColor *pData, const int iWidth, const int iHeight) {
   NODE *tree = NULL;
   for (size_t i = iWidth * iHeight; i != 0; --i) {
-    SGPPaletteEntry const &c = *pData++;
+    struct JColor const &c = *pData++;
     AddColor(&tree, c.r, c.g, c.b, 0);
     while (g_leaf_count > MAX_COLOURS) ReduceTree();
   }
   return tree;
 }
 
-static size_t GetPaletteColors(const NODE *const pTree, SGPPaletteEntry *const prgb, size_t index) {
+static size_t GetPaletteColors(const NODE *const pTree, struct JColor *const prgb, size_t index) {
   if (pTree->bIsLeaf) {
-    SGPPaletteEntry *const dst = &prgb[index++];
+    struct JColor *const dst = &prgb[index++];
     dst->r = pTree->nRedSum / pTree->nPixelCount;
     dst->g = pTree->nGreenSum / pTree->nPixelCount;
     dst->b = pTree->nBlueSum / pTree->nPixelCount;
@@ -130,16 +129,16 @@ static void DeleteTree(NODE *const node) {
   free(node);
 }
 
-static void MapPalette(uint8_t *const pDest, const SGPPaletteEntry *const pSrc,
-                       const int16_t sWidth, const int16_t sHeight, const int16_t sNumColors,
-                       const SGPPaletteEntry *pTable) {
+static void MapPalette(uint8_t *const pDest, const struct JColor *const pSrc, const int16_t sWidth,
+                       const int16_t sHeight, const int16_t sNumColors,
+                       const struct JColor *pTable) {
   for (size_t i = sWidth * sHeight; i != 0; --i) {
     // For each palette entry, find closest
     int32_t best = 0;
     uint32_t lowest_dist = 9999999;
     for (int32_t cnt = 0; cnt < sNumColors; ++cnt) {
-      const SGPPaletteEntry *const a = &pSrc[i];
-      const SGPPaletteEntry *const b = &pTable[cnt];
+      const struct JColor *const a = &pSrc[i];
+      const struct JColor *const b = &pTable[cnt];
       const int32_t dr = a->r - b->r;
       const int32_t dg = a->g - b->g;
       const int32_t db = a->b - b->b;
@@ -156,8 +155,8 @@ static void MapPalette(uint8_t *const pDest, const SGPPaletteEntry *const pSrc,
   }
 }
 
-void QuantizeImage(uint8_t *const pDest, const SGPPaletteEntry *const pSrc, const int16_t sWidth,
-                   const int16_t sHeight, SGPPaletteEntry *const pPalette) {
+void QuantizeImage(uint8_t *const pDest, const struct JColor *const pSrc, const int16_t sWidth,
+                   const int16_t sHeight, struct JColor *const pPalette) {
   // First create palette
   g_leaf_count = 0;
   FOR_EACH(NODE *, i, g_reducible_nodes) *i = 0;

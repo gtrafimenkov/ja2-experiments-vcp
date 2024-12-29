@@ -48,8 +48,7 @@
 #include "Utils/Message.h"
 #include "Utils/Text.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 struct MERCPLACEMENT {
   SOLDIERTYPE *pSoldier;
@@ -227,8 +226,8 @@ void InitTacticalPlacementGUI() {
 
 static void DrawBar(SGPVSurface *const buf, int32_t const x, int32_t const y, int32_t const h,
                     uint32_t const colour1, uint32_t const colour2) {
-  ColorFillVideoSurfaceArea(buf, x, y - h, x + 1, y, Get16BPPColor(colour1));
-  ColorFillVideoSurfaceArea(buf, x + 1, y - h, x + 2, y, Get16BPPColor(colour2));
+  ColorFillVideoSurfaceArea(buf, x, y - h, x + 1, y, rgb32_to_rgb565(colour1));
+  ColorFillVideoSurfaceArea(buf, x + 1, y - h, x + 2, y, rgb32_to_rgb565(colour2));
 }
 
 static void RenderTacticalPlacementGUI() {
@@ -298,8 +297,8 @@ static void RenderTacticalPlacementGUI() {
 
     uint16_t const hatch_colour =
         DayTime() ? 0 :  // 6AM to 9PM is black
-            Get16BPPColor(FROMRGB(63, 31,
-                                  31));  // 9PM to 6AM is gray (black is too dark to distinguish)
+            rgb32_to_rgb565(FROMRGB(63, 31,
+                                    31));  // 9PM to 6AM is gray (black is too dark to distinguish)
     SGPRect clip = {4, 4, 636, 320};
     if (gbCursorMercID == -1) {
       if (gfNorth) clip.iTop = 30;
@@ -394,9 +393,9 @@ void TacticalPlacementHandle() {
   }
 
   while (DequeueEvent(&InputEvent)) {
-    if (InputEvent.usEvent == KEY_DOWN) {
-      switch (InputEvent.usParam) {
-        case SDLK_RETURN:
+    if (InputEvent.isKeyDown()) {
+      switch (InputEvent.getKey()) {
+        case JIK_RETURN:
           if (iTPButtons[DONE_BUTTON]->Enabled()) {
             KillTacticalPlacementGUI();
           }
@@ -411,7 +410,7 @@ void TacticalPlacementHandle() {
           SpreadPlacementsCallback(iTPButtons[SPREAD_BUTTON], MSYS_CALLBACK_REASON_LBUTTON_UP);
           break;
         case 'x':
-          if (InputEvent.usKeyState & ALT_DOWN) {
+          if (InputEvent.alt) {
             HandleShortCutExitState();
           }
           break;

@@ -197,14 +197,14 @@ static BOOLEAN RenderItemInPoolSlot(int32_t iCurrentSlot, int32_t iFirstSlotOnPa
   SetFontDestBuffer(guiSAVEBUFFER);
   const SGPBox *const item_box = &g_sector_inv_item_box;
   const uint16_t outline = fMapInventoryItemCompatable[iCurrentSlot]
-                               ? Get16BPPColor(FROMRGB(255, 255, 255))
+                               ? rgb32_to_rgb565(FROMRGB(255, 255, 255))
                                : SGP_TRANSPARENT;
   INVRenderItem(guiSAVEBUFFER, NULL, item->o, dx + item_box->x, dy + item_box->y, item_box->w,
                 item_box->h, DIRTYLEVEL2, 0, outline);
 
   // draw bar for condition
-  const uint16_t col0 = Get16BPPColor(DESC_STATUS_BAR);
-  const uint16_t col1 = Get16BPPColor(DESC_STATUS_BAR_SHADOW);
+  const uint16_t col0 = rgb32_to_rgb565(DESC_STATUS_BAR);
+  const uint16_t col1 = rgb32_to_rgb565(DESC_STATUS_BAR_SHADOW);
   const SGPBox *const bar_box = &g_sector_inv_bar_box;
   DrawItemUIBarEx(item->o, 0, dx + bar_box->x, dy + bar_box->y + bar_box->h - 1, bar_box->h, col0,
                   col1, guiSAVEBUFFER);

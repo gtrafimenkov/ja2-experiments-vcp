@@ -23,7 +23,7 @@ void GoToWebPage(int32_t iPageId);
 void WebPageTileBackground(uint8_t ubNumX, uint8_t ubNumY, uint16_t usWidth, uint16_t usHeight,
                            const SGPVObject *background);
 void BlitTitleBarIcons();
-void HandleKeyBoardShortCutsForLapTop(uint16_t usEvent, uint32_t usParam, uint16_t usKeyState);
+void HandleKeyBoardShortCutsForLapTop(struct InputAtom *in);
 void RenderWWWProgramTitleBar();
 void DisplayProgramBoundingBox(BOOLEAN fMarkButtons);
 void DoLapTopSystemMessageBox(wchar_t const *zString, ScreenID uiExitScreen, MessageBoxFlags,

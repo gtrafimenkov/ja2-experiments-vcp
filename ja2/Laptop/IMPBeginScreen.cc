@@ -5,6 +5,7 @@
 #include "Laptop/IMPBeginScreen.h"
 
 #include <string.h>
+#include <wchar.h>
 
 #include "Directories.h"
 #include "Laptop/CharProfile.h"
@@ -36,8 +37,7 @@
 #include "Utils/Text.h"
 #include "Utils/TextInput.h"
 #include "Utils/TimerControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 #define FULL_NAME_CURSOR_Y LAPTOP_SCREEN_WEB_UL_Y + 138
 #define NICK_NAME_CURSOR_Y LAPTOP_SCREEN_WEB_UL_Y + 195
@@ -308,8 +308,8 @@ static void BtnIMPBeginScreenDoneCallback(GUI_BUTTON *btn, int32_t reason) {
 
 static void EnterKey(InputAtom const &a, wchar_t *const buf, uint32_t const buf_len,
                      uint32_t &pos_char, uint32_t const max_w, uint32_t &pos_cursor) {
-  switch (a.usParam) {
-    case SDLK_BACKSPACE:  // Delete char left of cursor
+  switch (a.getKey()) {
+    case JIK_BACKSPACE:  // Delete char left of cursor
     {
       if (pos_char == 0) break;
       wchar_t const c = buf[--pos_char];
@@ -360,8 +360,8 @@ static void GetPlayerKeyBoardInputForIMPBeginScreen() {
   // handle input events
   while (DequeueEvent(&InputEvent)) {
     if (!HandleTextInput(&InputEvent) && (InputEvent.usEvent != KEY_UP)) {
-      switch (InputEvent.usParam) {
-        case SDLK_RETURN:
+      switch (InputEvent.getKey()) {
+        case JIK_RETURN:
           // check to see if gender was highlighted..if so, select it
           if (FEMALE_GENDER_SELECT == ubTextEnterMode) {
             bGenderFlag = IMP_FEMALE;
@@ -374,7 +374,7 @@ static void GetPlayerKeyBoardInputForIMPBeginScreen() {
           fNewCharInString = TRUE;
           break;
 
-        case SDLK_SPACE:
+        case JIK_SPACE:
           // handle space bar
           if (FEMALE_GENDER_SELECT == ubTextEnterMode) {
             bGenderFlag = IMP_FEMALE;
@@ -388,13 +388,13 @@ static void GetPlayerKeyBoardInputForIMPBeginScreen() {
           fNewCharInString = TRUE;
           break;
 
-        case SDLK_ESCAPE:
+        case JIK_ESCAPE:
           HandleLapTopESCKey();
           break;
 
-        case SDLK_TAB:
+        case JIK_TAB:
           // tab hit, increment to next selection box
-          if (InputEvent.usKeyState & SHIFT_DOWN) {
+          if (InputEvent.shift) {
             DecrementTextEnterMode();
           } else {
             IncrementTextEnterMode();
@@ -429,7 +429,7 @@ static uint16_t CurrentGlowColour() {
     uiBaseTime = GetJA2Clock();
   }
 
-  return Get16BPPColor(GlowColorsList[iCurrentState]);
+  return rgb32_to_rgb565(GlowColorsList[iCurrentState]);
 }
 
 static void DisplayNameStringCursor(int32_t x, int32_t y) {

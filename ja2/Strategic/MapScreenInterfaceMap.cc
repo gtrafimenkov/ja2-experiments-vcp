@@ -55,6 +55,7 @@
 #include "Utils/Message.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "jplatform_video.h"
 
 // zoom x and y coords for map scrolling
 int32_t iZoomX = 0;
@@ -1031,7 +1032,7 @@ static void ShadeMapElemZoomIn(const int16_t sMapX, const int16_t sMapY, int32_t
 void InitializePalettesForMap() {
   SGP::AutoPtr<SGPVSurfaceAuto> uiTempMap(AddVideoSurfaceFromFile(INTERFACEDIR "/b_map.pcx"));
 
-  SGPPaletteEntry const *const pal = uiTempMap->GetPalette();
+  struct JColor const *const pal = uiTempMap->GetPalette();
 
   pMapLTRedPalette = Create16BPPPaletteShaded(pal, 400, 0, 0, TRUE);
   pMapDKRedPalette = Create16BPPPaletteShaded(pal, 200, 0, 0, TRUE);
@@ -3063,7 +3064,7 @@ static void BlitTownGridMarkers() {
   ClipBlitsToMapViewRegionForRectangleAndABit(pitch);
 
   // Go through list of towns and place on screen
-  uint16_t const color = Get16BPPColor(FROMRGB(100, 100, 100));
+  uint16_t const color = rgb32_to_rgb565(FROMRGB(100, 100, 100));
   FOR_EACH_TOWN_SECTOR(i) {
     // skip Orta/Tixa until found
     switch (i->town) {
@@ -3120,7 +3121,7 @@ static void BlitMineGridMarkers() {
 
   ClipBlitsToMapViewRegionForRectangleAndABit(pitch);
 
-  uint16_t const color = Get16BPPColor(FROMRGB(100, 100, 100));
+  uint16_t const color = rgb32_to_rgb565(FROMRGB(100, 100, 100));
   FOR_EACH(MINE_LOCATION_TYPE const, i, gMineLocation) {
     int16_t x;
     int16_t y;
@@ -3895,7 +3896,7 @@ static void HideExistenceOfUndergroundMapSector(uint8_t ubSectorX, uint8_t ubSec
 
 static void ShadeSubLevelsNotVisited() {
   // Obtain the 16-bit version of the same color used in the mine STIs
-  gusUndergroundNearBlack = Get16BPPColor(FROMRGB(2, 2, 0));
+  gusUndergroundNearBlack = rgb32_to_rgb565(FROMRGB(2, 2, 0));
 
   // Run through all (real & possible) underground sectors
   for (UNDERGROUND_SECTORINFO const *i = gpUndergroundSectorInfoHead; i; i = i->next) {
@@ -4122,7 +4123,7 @@ static void ShowSAMSitesOnStrategicMap() {
 }
 
 static void BlitSAMGridMarkers() {
-  uint16_t const colour = Get16BPPColor(FROMRGB(100, 100, 100));
+  uint16_t const colour = rgb32_to_rgb565(FROMRGB(100, 100, 100));
 
   SGPVSurface::Lock l(guiSAVEBUFFER);
   uint32_t const uiDestPitchBYTES = l.Pitch();

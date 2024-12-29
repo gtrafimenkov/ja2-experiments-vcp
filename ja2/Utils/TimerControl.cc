@@ -4,7 +4,6 @@
 
 #include "Utils/TimerControl.h"
 
-#include <SDL.h>
 #include <stdexcept>
 
 #include "Macro.h"
@@ -14,6 +13,7 @@
 #include "Tactical/Overhead.h"
 #include "Tactical/SoldierControl.h"
 #include "TileEngine/WorldDef.h"
+#include "jplatform_time.h"
 
 int32_t giClockTimer = -1;
 int32_t giTimerDiag = 0;
@@ -57,7 +57,7 @@ int32_t giTimerTeamTurnUpdate = 0;
 CUSTOMIZABLE_TIMER_CALLBACK gpCustomizableTimerCallback = 0;
 
 // Clock Callback event ID
-static SDL_TimerID g_timer;
+static JTime_TimerID g_timer;
 
 extern uint32_t guiCompressionStringBaseTime;
 extern int32_t giFlashHighlightedItemBaseTime;
@@ -89,7 +89,6 @@ static uint32_t TimeProc(uint32_t const interval, void *) {
       UPDATETIMECOUNTER(giTimerCustomizable);
     }
 
-#ifndef BOUNDS_CHECKER
     if (fInMapMode) {
       // IN Mapscreen, loop through player's team
       FOR_EACH_IN_TEAM(s, OUR_TEAM) {
@@ -110,31 +109,21 @@ static uint32_t TimeProc(uint32_t const interval, void *) {
         UPDATETIMECOUNTER(s->PanelAnimateCounter);
       }
     }
-#endif
   }
 
   return interval;
 }
 
 void InitializeJA2Clock() {
-#ifdef CALLBACKTIMER
-  SDL_InitSubSystem(SDL_INIT_TIMER);
-
-  // Init timer delays
   for (int32_t i = 0; i != NUMTIMERS; ++i) {
     giTimerCounters[i] = giTimerIntervals[i];
   }
 
-  g_timer = SDL_AddTimer(BASETIMESLICE, TimeProc, 0);
+  g_timer = JTime_AddTimer(BASETIMESLICE, TimeProc, 0);
   if (!g_timer) throw std::runtime_error("Could not create timer callback");
-#endif
 }
 
-void ShutdownJA2Clock() {
-#ifdef CALLBACKTIMER
-  SDL_RemoveTimer(g_timer);
-#endif
-}
+void ShutdownJA2Clock() { JTime_RemoveTimer(g_timer); }
 
 void PauseTime(BOOLEAN const fPaused) { gfPauseClock = fPaused; }
 
@@ -178,3 +167,5 @@ void ResetJA2ClockGlobalTimers() {
   guiFlashCursorBaseTime = now;
   giPotCharPathBaseTime = now;
 }
+
+uint32_t GetJA2Clock() { return guiBaseJA2Clock; }

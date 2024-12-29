@@ -4,23 +4,26 @@
 
 #include "SGP/Input.h"
 
+#include <map>
+
 #include "Local.h"
 #include "Macro.h"
 #include "SGP/English.h"
 #include "SGP/MemMan.h"
-#include "SGP/Timer.h"
 #include "SGP/Types.h"
 #include "SGP/UTF8String.h"
 #include "SGP/Video.h"
+#include "jplatform_events.h"
+#include "jplatform_input.h"
+#include "jplatform_time.h"
+#include "jplatform_video.h"
 
-#include "SDL_events.h"
-#include "SDL_keycode.h"
+extern struct JVideoState *g_videoState;
 
-// The gfKeyState table is used to track which of the keys is up or down at any
+// The pressedKeys table is used to track which of the keys is up or down at any
 // one time. This is used while polling the interface.
+static std::map<JInput_VirtualKey, bool> pressedKeys;  // true = Pressed, false = Not Pressed
 
-BOOLEAN
-gfKeyState[SDL_SCANCODE_TO_KEYCODE(SDL_NUM_SCANCODES)];  // TRUE = Pressed, FALSE = Not Pressed
 static BOOLEAN fCursorWasClipped = FALSE;
 static SGPRect gCursorClipRect;
 
@@ -54,17 +57,16 @@ static void QueueMouseEvent(uint16_t ubInputEvent) {
   gusTailIndex = (gusTailIndex + 1) % lengthof(gEventQueue);
 }
 
-static void QueueKeyEvent(uint16_t ubInputEvent, SDL_Keycode Key, SDL_Keymod Mod, wchar_t Char) {
+static void QueueKeyEvent(uint16_t ubInputEvent, JInput_VirtualKey key, JInput_KeyMod mod,
+                          wchar_t Char) {
   // Can we queue up one more event, if not, the event is lost forever
   if (gusQueueCount == lengthof(gEventQueue)) return;
 
-  uint16_t ModifierState = 0;
-  if (Mod & KMOD_SHIFT) ModifierState |= SHIFT_DOWN;
-  if (Mod & KMOD_CTRL) ModifierState |= CTRL_DOWN;
-  if (Mod & KMOD_ALT) ModifierState |= ALT_DOWN;
-  gEventQueue[gusTailIndex].usKeyState = ModifierState;
+  gEventQueue[gusTailIndex].shift = mod.shift;
+  gEventQueue[gusTailIndex].ctrl = mod.ctrl;
+  gEventQueue[gusTailIndex].alt = mod.alt;
   gEventQueue[gusTailIndex].usEvent = ubInputEvent;
-  gEventQueue[gusTailIndex].usParam = Key;
+  gEventQueue[gusTailIndex].key = key;
   gEventQueue[gusTailIndex].Char = Char;
 
   gusQueueCount++;
@@ -72,7 +74,7 @@ static void QueueKeyEvent(uint16_t ubInputEvent, SDL_Keycode Key, SDL_Keymod Mod
   gusTailIndex = (gusTailIndex + 1) % lengthof(gEventQueue);
 }
 
-void SetSafeMousePosition(int x, int y) {
+void SetSafeMousePosition(int32_t x, int32_t y) {
   if (x < 0) x = 0;
   if (y < 0) y = 0;
   if (x > SCREEN_WIDTH) x = SCREEN_WIDTH;
@@ -107,221 +109,174 @@ BOOLEAN DequeueEvent(InputAtom *Event) {
   return TRUE;
 }
 
-static void UpdateMousePos(const SDL_MouseButtonEvent *BtnEv) {
-  SetSafeMousePosition(BtnEv->x, BtnEv->y);
-}
+void MouseButtonDown(const struct JEvent_MouseButtonPress *e) {
+  SetSafeMousePosition(e->x, e->y);
+  if (e->left) {
+    guiLeftButtonRepeatTimer = JTime_GetTicks() + BUTTON_REPEAT_TIMEOUT;
+    gfLeftButtonState = TRUE;
+    QueueMouseEvent(LEFT_BUTTON_DOWN);
+  }
 
-#if defined(WITH_MAEMO) || defined __APPLE__
-static BOOLEAN g_down_right;
-#endif
-
-void MouseButtonDown(const SDL_MouseButtonEvent *BtnEv) {
-  UpdateMousePos(BtnEv);
-  switch (BtnEv->button) {
-    case SDL_BUTTON_LEFT: {
-#if defined WITH_MAEMO
-      /* If the menu button (mapped to F4) is pressed, then treat the event as
-       * right click */
-      const Uint8 *const key_state = SDL_GetKeyboardState(NULL);
-      g_down_right = key_state[SDL_SCANCODE_F4];
-      if (g_down_right) goto right_button;
-#endif
-#if defined(__APPLE__)
-      const Uint8 *const key_state = SDL_GetKeyboardState(NULL);
-      g_down_right = key_state[SDL_SCANCODE_LGUI] || key_state[SDL_SCANCODE_RGUI];
-      if (g_down_right) goto right_button;
-#endif
-      guiLeftButtonRepeatTimer = GetClock() + BUTTON_REPEAT_TIMEOUT;
-      gfLeftButtonState = TRUE;
-      QueueMouseEvent(LEFT_BUTTON_DOWN);
-      break;
-    }
-
-    case SDL_BUTTON_RIGHT:
-#if defined(WITH_MAEMO) || defined(__APPLE__)
-    right_button:
-#endif
-      guiRightButtonRepeatTimer = GetClock() + BUTTON_REPEAT_TIMEOUT;
-      gfRightButtonState = TRUE;
-      QueueMouseEvent(RIGHT_BUTTON_DOWN);
-      break;
+  if (e->right) {
+    guiRightButtonRepeatTimer = JTime_GetTicks() + BUTTON_REPEAT_TIMEOUT;
+    gfRightButtonState = TRUE;
+    QueueMouseEvent(RIGHT_BUTTON_DOWN);
   }
 }
 
-void MouseButtonUp(const SDL_MouseButtonEvent *BtnEv) {
-  UpdateMousePos(BtnEv);
-  switch (BtnEv->button) {
-    case SDL_BUTTON_LEFT: {
-#if defined(WITH_MAEMO) || defined(__APPLE__)
-      if (g_down_right) goto right_button;
-#endif
-      guiLeftButtonRepeatTimer = 0;
-      gfLeftButtonState = FALSE;
-      QueueMouseEvent(LEFT_BUTTON_UP);
-      uint32_t uiTimer = GetClock();
-      if (uiTimer - guiSingleClickTimer < DBL_CLK_TIME) {
-        QueueMouseEvent(LEFT_BUTTON_DBL_CLK);
-      } else {
-        guiSingleClickTimer = uiTimer;
-      }
-      break;
+void MouseButtonUp(const struct JEvent_MouseButtonPress *e) {
+  SetSafeMousePosition(e->x, e->y);
+  if (e->left) {
+    guiLeftButtonRepeatTimer = 0;
+    gfLeftButtonState = FALSE;
+    QueueMouseEvent(LEFT_BUTTON_UP);
+    uint32_t uiTimer = JTime_GetTicks();
+    if (uiTimer - guiSingleClickTimer < DBL_CLK_TIME) {
+      QueueMouseEvent(LEFT_BUTTON_DBL_CLK);
+    } else {
+      guiSingleClickTimer = uiTimer;
     }
+  }
 
-    case SDL_BUTTON_RIGHT:
-#if defined WITH_MAEMO || defined(__APPLE__)
-    right_button:
-#endif
-      guiRightButtonRepeatTimer = 0;
-      gfRightButtonState = FALSE;
-      QueueMouseEvent(RIGHT_BUTTON_UP);
-      break;
+  if (e->right) {
+    guiRightButtonRepeatTimer = 0;
+    gfRightButtonState = FALSE;
+    QueueMouseEvent(RIGHT_BUTTON_UP);
   }
 }
 
-void MouseWheelScroll(const SDL_MouseWheelEvent *WheelEv) {
-  if (WheelEv->y > 0) {
+void MouseWheelScroll(const struct JEvent_MouseWheel *e) {
+  if (e->y > 0) {
     QueueMouseEvent(MOUSE_WHEEL_UP);
   } else {
     QueueMouseEvent(MOUSE_WHEEL_DOWN);
   }
 }
 
-static void KeyChange(SDL_Keysym const *const key_sym, bool const pressed) {
-  SDL_Keycode key = key_sym->sym;
-  SDL_Keymod const mod = (SDL_Keymod)key_sym->mod;
-  bool const num = mod & KMOD_NUM;
+static void KeyChange(JInput_VirtualKey key, JInput_KeyMod mod, bool const pressed) {
   switch (key) {
-#if defined WITH_MAEMO
-    /* Use the menu button (mapped to F4) as modifier for right click */
-    case SDLK_F4:
-      return;
-#endif
-
-    case SDLK_KP_0:
-      key = num ? SDLK_0 : SDLK_INSERT;
+    case JIK_KP_0:
+      key = mod.num ? '0' : JIK_INSERT;
       break;
-    case SDLK_KP_1:
-      key = num ? SDLK_1 : SDLK_END;
+    case JIK_KP_1:
+      key = mod.num ? '1' : JIK_END;
       break;
-    case SDLK_KP_2:
-      key = num ? SDLK_2 : SDLK_DOWN;
+    case JIK_KP_2:
+      key = mod.num ? '2' : JIK_DOWN;
       break;
-    case SDLK_KP_3:
-      key = num ? SDLK_3 : SDLK_PAGEDOWN;
+    case JIK_KP_3:
+      key = mod.num ? '3' : JIK_PAGEDOWN;
       break;
-    case SDLK_KP_4:
-      key = num ? SDLK_4 : SDLK_LEFT;
+    case JIK_KP_4:
+      key = mod.num ? '4' : JIK_LEFT;
       break;
-    case SDLK_KP_5:
-      if (!num) return;
-      key = SDLK_5;
+    case JIK_KP_5:
+      if (!mod.num) return;
+      key = '5';
       break;
-    case SDLK_KP_6:
-      key = num ? SDLK_6 : SDLK_RIGHT;
+    case JIK_KP_6:
+      key = mod.num ? '6' : JIK_RIGHT;
       break;
-    case SDLK_KP_7:
-      key = num ? SDLK_7 : SDLK_HOME;
+    case JIK_KP_7:
+      key = mod.num ? '7' : JIK_HOME;
       break;
-    case SDLK_KP_8:
-      key = num ? SDLK_8 : SDLK_UP;
+    case JIK_KP_8:
+      key = mod.num ? '8' : JIK_UP;
       break;
-    case SDLK_KP_9:
-      key = num ? SDLK_9 : SDLK_PAGEUP;
+    case JIK_KP_9:
+      key = mod.num ? '9' : JIK_PAGEUP;
       break;
-    case SDLK_KP_PERIOD:
-      key = num ? SDLK_PERIOD : SDLK_DELETE;
+    case JIK_KP_PERIOD:
+      key = mod.num ? '.' : JIK_DELETE;
       break;
-    case SDLK_KP_DIVIDE:
-      key = SDLK_SLASH;
+    case JIK_KP_DIVIDE:
+      key = '/';
       break;
-    case SDLK_KP_MULTIPLY:
-      key = SDLK_ASTERISK;
+    case JIK_KP_MULTIPLY:
+      key = '*';
       break;
-    case SDLK_KP_MINUS:
-      key = SDLK_MINUS;
+    case JIK_KP_MINUS:
+      key = '-';
       break;
-    case SDLK_KP_PLUS:
-      key = SDLK_PLUS;
+    case JIK_KP_PLUS:
+      key = '+';
       break;
-    case SDLK_KP_ENTER:
-      key = SDLK_RETURN;
-      break;
-
-    default:
-      if (key >= lengthof(gfKeyState)) return;
+    case JIK_KP_ENTER:
+      key = JIK_RETURN;
       break;
   }
 
   uint32_t event_type;
-  BOOLEAN &key_state = gfKeyState[key];
+  bool keyPressed = IsKeyDown(key);
   if (pressed) {
-    event_type = key_state ? KEY_REPEAT : KEY_DOWN;
+    // key down
+    event_type = keyPressed ? KEY_REPEAT : KEY_DOWN;
   } else {
-    if (!key_state) return;
+    // key up
+    if (!keyPressed) return;
     event_type = KEY_UP;
   }
-  key_state = pressed;
+  pressedKeys[key] = pressed;
 
   QueueKeyEvent(event_type, key, mod, '\0');
 }
 
-void KeyDown(const SDL_Keysym *KeySym) {
-  switch (KeySym->sym) {
-    case SDLK_LSHIFT:
-    case SDLK_RSHIFT:
-      gfKeyState[SHIFT] = TRUE;
+void KeyDown(JInput_VirtualKey key, JInput_KeyMod mod) {
+  switch (key) {
+    case JIK_LSHIFT:
+    case JIK_RSHIFT:
+      pressedKeys[SHIFT] = true;
       break;
 
-    case SDLK_LCTRL:
-    case SDLK_RCTRL:
-      gfKeyState[CTRL] = TRUE;
+    case JIK_LCTRL:
+    case JIK_RCTRL:
+      pressedKeys[CTRL] = true;
       break;
 
-    case SDLK_LALT:
-    case SDLK_RALT:
-      gfKeyState[ALT] = TRUE;
+    case JIK_LALT:
+    case JIK_RALT:
+      pressedKeys[ALT] = true;
       break;
 
-    case SDLK_PRINTSCREEN:
-    case SDLK_SCROLLLOCK:
+    case JIK_PRINTSCREEN:
+    case JIK_SCROLLLOCK:
       break;
 
     default:
-      KeyChange(KeySym, true);
+      KeyChange(key, mod, true);
       break;
   }
 }
 
-void KeyUp(const SDL_Keysym *KeySym) {
-  switch (KeySym->sym) {
-    case SDLK_LSHIFT:
-    case SDLK_RSHIFT:
-      gfKeyState[SHIFT] = FALSE;
+void KeyUp(JInput_VirtualKey key, JInput_KeyMod mod) {
+  switch (key) {
+    case JIK_LSHIFT:
+    case JIK_RSHIFT:
+      pressedKeys[SHIFT] = false;
       break;
 
-    case SDLK_LCTRL:
-    case SDLK_RCTRL:
-      gfKeyState[CTRL] = FALSE;
+    case JIK_LCTRL:
+    case JIK_RCTRL:
+      pressedKeys[CTRL] = false;
       break;
 
-    case SDLK_LALT:
-    case SDLK_RALT:
-      gfKeyState[ALT] = FALSE;
+    case JIK_LALT:
+    case JIK_RALT:
+      pressedKeys[ALT] = false;
       break;
 
-    case SDLK_PRINTSCREEN:
-      if (KeySym->mod & KMOD_CTRL)
+    case JIK_PRINTSCREEN:
+      if (mod.ctrl)
         VideoCaptureToggle();
       else
         PrintScreen();
       break;
 
-    case SDLK_SCROLLLOCK:
-      SDL_SetWindowGrab(GAME_WINDOW,
-                        SDL_GetWindowGrab(GAME_WINDOW) == SDL_FALSE ? SDL_TRUE : SDL_FALSE);
+    case JIK_SCROLLLOCK:
+      JVideo_ToggleMouseGrab(g_videoState);
       break;
 
-    case SDLK_RETURN:
+    case JIK_RETURN:
       if (IsKeyDown(ALT)) {
         VideoToggleFullScreen();
         break;
@@ -329,14 +284,15 @@ void KeyUp(const SDL_Keysym *KeySym) {
       /* FALLTHROUGH */
 
     default:
-      KeyChange(KeySym, false);
+      KeyChange(key, mod, false);
       break;
   }
 }
 
-void TextInput(const SDL_TextInputEvent *TextEv) {
-  UTF8String utf8String = UTF8String(TextEv->text);
-  QueueKeyEvent(TEXT_INPUT, SDLK_UNKNOWN, KMOD_NONE, utf8String.getUTF16()[0]);
+void TextInput(const char *text) {
+  UTF8String utf8String = UTF8String(text);
+  struct JInput_KeyMod mod = {};
+  QueueKeyEvent(TEXT_INPUT, JIK_UNKNOWN, mod, utf8String.getUTF16()[0]);
 }
 
 void GetMousePos(SGPPoint *Point) {
@@ -396,27 +352,7 @@ void GetRestrictedClipCursor(SGPRect *pRectangle) {
 BOOLEAN IsCursorRestricted() { return fCursorWasClipped; }
 
 void SimulateMouseMovement(uint32_t uiNewXPos, uint32_t uiNewYPos) {
-  int windowWidth, windowHeight;
-  SDL_GetWindowSize(GAME_WINDOW, &windowWidth, &windowHeight);
-
-  double windowWidthD = windowWidth;
-  double windowHeightD = windowHeight;
-  double screenWidthD = SCREEN_WIDTH;
-  double screenHeightD = SCREEN_HEIGHT;
-
-  double scaleFactorX = windowWidthD / screenWidthD;
-  double scaleFactorY = windowHeightD / screenHeightD;
-  double scaleFactor = windowWidth > windowHeight ? scaleFactorY : scaleFactorX;
-
-  double scaledWindowWidth = scaleFactor * screenWidthD;
-  double scaledWindowHeight = scaleFactor * screenHeightD;
-
-  double paddingX = (windowWidthD - scaledWindowWidth) / 2.0;
-  double paddingY = (windowHeight - scaledWindowHeight) / 2.0;
-  int windowPositionX = paddingX + (double)uiNewXPos * scaledWindowWidth / screenWidthD;
-  int windowPositionY = paddingY + (double)uiNewYPos * scaledWindowHeight / screenHeightD;
-
-  SDL_WarpMouseInWindow(GAME_WINDOW, windowPositionX, windowPositionY);
+  JVideo_SimulateMouseMovement(g_videoState, uiNewXPos, uiNewYPos);
 }
 
 void DequeueAllKeyBoardEvents() {
@@ -436,7 +372,7 @@ void DequeueAllKeyBoardEvents() {
 }
 
 static void HandleSingleClicksAndButtonRepeats() {
-  uint32_t uiTimer = GetClock();
+  uint32_t uiTimer = JTime_GetTicks();
 
   // Is there a LEFT mouse button repeat
   if (gfLeftButtonState) {
@@ -459,4 +395,6 @@ static void HandleSingleClicksAndButtonRepeats() {
   }
 }
 
-BOOLEAN IsKeyDown(int a) { return gfKeyState[a]; }
+BOOLEAN IsKeyDown(JInput_VirtualKey key) {
+  return pressedKeys.count(key) > 0 ? pressedKeys[key] : false;
+}

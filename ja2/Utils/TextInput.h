@@ -146,7 +146,7 @@ void SetCursorColor(uint16_t usCursorColor);
 // format: while( DequeueEvent(&Event) )
 //{
 //	if(	!HandleTextInput( &Event ) && (your conditions...ex:
-// Event.usEvent == KEY_DOWN ) )
+// Event.isKeyDown() ) )
 //  {
 //		switch( Event.usParam )
 //		{

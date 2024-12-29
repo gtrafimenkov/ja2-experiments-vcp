@@ -31,18 +31,27 @@ def find_substring_and_include_text(src_dir, extensions, substring, include_text
 
 
 def main():
+    # find_substring_and_include_text(
+    #     "ja2",
+    #     [".h", ".cc"],
+    #     " ",
+    #     "// This is not free software.\n// This file contains code derived from the code released under the terms\n// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.\n\n",
+    # )
+    # find_substring_and_include_text(
+    #     "rustlib",
+    #     [".rs"],
+    #     " ",
+    #     "// This is not free software.\n// This file may contain code derived from the code released under the terms\n// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.\n\n",
+    # )
+
     find_substring_and_include_text(
         "ja2",
         [".h", ".cc"],
-        " ",
-        "// This is not free software.\n// This file contains code derived from the code released under the terms\n// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.\n\n",
+        "struct JColor",
+        '#include "uiplatform.h"\n',
     )
-    find_substring_and_include_text(
-        "rustlib",
-        [".rs"],
-        " ",
-        "// This is not free software.\n// This file may contain code derived from the code released under the terms\n// of Strategy First Inc. Source Code License Agreement. See SFI-SCLA.txt.\n\n",
-    )
+
+    pass
 
 
 if __name__ == "__main__":

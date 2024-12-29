@@ -24,7 +24,6 @@
 #include "SGP/Input.h"
 #include "SGP/MouseSystem.h"
 #include "SGP/Random.h"
-#include "SGP/Timer.h"
 #include "SGP/VObject.h"
 #include "SGP/VSurface.h"
 #include "SGP/Video.h"
@@ -63,6 +62,7 @@
 #include "Utils/SoundControl.h"
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
+#include "jplatform_time.h"
 
 extern BOOLEAN gfDelayAutoResolveStart;
 
@@ -534,7 +534,7 @@ static void DoTransitionFromMapscreenToPreBattleInterface() {
 
   uiTimeRange = 1000;
   iPercentage = 0;
-  uiStartTime = GetClock();
+  uiStartTime = JTime_GetTicks();
 
   GetScreenXYFromMapXY(gubPBSectorX, gubPBSectorY, &sStartLeft, &sStartTop);
   sStartLeft += MAP_GRID_X / 2;
@@ -575,7 +575,7 @@ static void DoTransitionFromMapscreenToPreBattleInterface() {
 
   SGPBox const PBIRect = {0, 0, 261, 359};
   while (iPercentage < 100) {
-    uiCurrTime = GetClock();
+    uiCurrTime = JTime_GetTicks();
     iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
     iPercentage = std::min(iPercentage, 100);
 

@@ -55,7 +55,7 @@ void SmackClose(Smack *Smk);
 void SmackToBuffer(Smack *Smk, uint32_t Left, uint32_t Top, uint32_t Pitch, uint32_t DestHeight,
                    uint32_t DestWidth, void *Buf, uint32_t Flags);
 
-// SDL_Surface* SmackBufferOpen(uint32_t BlitType, uint32_t Width, uint32_t Height,
+// struct JSurface* SmackBufferOpen(uint32_t BlitType, uint32_t Width, uint32_t Height,
 // uint32_t ZoomW, uint32_t ZoomH); void SmackBufferClose(SmackBuf* SBuf);
 
 uint32_t SmackUseMMX(uint32_t Flag);

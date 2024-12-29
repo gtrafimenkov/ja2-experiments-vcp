@@ -4,7 +4,6 @@
 
 #include "SGP/SoundMan.h"
 
-#include <SDL.h>
 #include <algorithm>
 #include <assert.h>
 #include <string.h>
@@ -14,7 +13,8 @@
 #include "SGP/Debug.h"
 #include "SGP/FileMan.h"
 #include "SGP/Random.h"
-#include "SGP/Timer.h"
+#include "jplatform_audio.h"
+#include "jplatform_time.h"
 
 // Uncomment this to disable the startup of sound hardware
 // #define SOUND_DISABLE
@@ -114,7 +114,19 @@ static SOUNDTAG pSoundList[SOUND_MAX_CHANNELS];
 void SoundEnableSound(BOOLEAN fEnable) { gfEnableStartup = fEnable; }
 
 static void SoundInitCache();
-static BOOLEAN SoundInitHardware();
+static void SoundCallback(void *userdata, uint8_t *stream, int len);
+
+static JAudio_DeviceID g_audioDevice;
+
+static bool SoundInitHardware() {
+  g_audioDevice = JAudio_Open(SoundCallback);
+  if (g_audioDevice == 0) {
+    return false;
+  }
+  memset(pSoundList, 0, sizeof(pSoundList));
+  JAudio_PauseAudio(g_audioDevice, false);
+  return true;
+}
 
 void InitializeSoundManager() {
   if (fSoundSystemInit) ShutdownSoundManager();
@@ -276,7 +288,7 @@ uint32_t SoundPlayRandom(const char *pFilename, uint32_t time_min, uint32_t time
   s->uiPanMax = pan_max;
   s->uiMaxInstances = max_instances;
 
-  s->uiTimeNext = GetClock() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
+  s->uiTimeNext = JTime_GetTicks() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
 
   return (uint32_t)(s - pSampleList);
 }
@@ -306,7 +318,7 @@ BOOLEAN SoundStop(uint32_t uiSoundID) {
 void SoundStopAll() {
   if (!fSoundSystemInit) return;
 
-  SDL_PauseAudio(1);
+  JAudio_PauseAudio(g_audioDevice, true);
   FOR_EACH(SOUNDTAG, i, pSoundList) {
     if (SoundStopChannel(i)) {
       assert(i->pSample->uiInstances != 0);
@@ -316,7 +328,7 @@ void SoundStopAll() {
       i->State = CHANNEL_FREE;
     }
   }
-  SDL_PauseAudio(0);
+  JAudio_PauseAudio(g_audioDevice, false);
 }
 
 BOOLEAN SoundSetVolume(uint32_t uiSoundID, uint32_t uiVolume) {
@@ -361,7 +373,7 @@ void SoundServiceRandom() {
  *
  * Returns: TRUE if a the sample should be played. */
 static BOOLEAN SoundRandomShouldPlay(const SAMPLETAG *s) {
-  return s->uiFlags & SAMPLE_RANDOM && s->uiTimeNext <= GetClock() &&
+  return s->uiFlags & SAMPLE_RANDOM && s->uiTimeNext <= JTime_GetTicks() &&
          s->uiInstances < s->uiMaxInstances;
 }
 
@@ -379,7 +391,7 @@ static uint32_t SoundStartRandom(SAMPLETAG *s) {
   const uint32_t uiSoundID = SoundStartSample(s, channel, volume, pan, 1, NULL, NULL);
   if (uiSoundID == SOUND_ERROR) return NO_SAMPLE;
 
-  s->uiTimeNext = GetClock() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
+  s->uiTimeNext = JTime_GetTicks() + s->uiTimeMin + Random(s->uiTimeMax - s->uiTimeMin);
   return uiSoundID;
 }
 
@@ -424,7 +436,7 @@ uint32_t SoundGetPosition(uint32_t uiSoundID) {
   const SOUNDTAG *const channel = SoundGetChannelByID(uiSoundID);
   if (channel == NULL) return 0;
 
-  const uint32_t now = GetClock();
+  const uint32_t now = JTime_GetTicks();
   return now - channel->uiTimeStamp;
 }
 
@@ -786,8 +798,8 @@ static SOUNDTAG *SoundGetChannelByID(uint32_t uiSoundID) {
   return NULL;
 }
 
-static void SoundCallback(void *userdata, Uint8 *stream, int len) {
-  SDL_memset(stream, 0, len);
+static void SoundCallback(void *userdata, uint8_t *stream, int len) {
+  memset(stream, 0, len);
 
   uint16_t *Stream = (uint16_t *)stream;
 
@@ -862,25 +874,7 @@ static void SoundCallback(void *userdata, Uint8 *stream, int len) {
   }
 }
 
-static BOOLEAN SoundInitHardware() {
-  SDL_InitSubSystem(SDL_INIT_AUDIO);
-
-  SDL_AudioSpec spec;
-  spec.freq = 22050;
-  spec.format = AUDIO_S16SYS;
-  spec.channels = 2;
-  spec.samples = 1024;
-  spec.callback = SoundCallback;
-  spec.userdata = NULL;
-
-  if (SDL_OpenAudio(&spec, NULL) != 0) return FALSE;
-
-  memset(pSoundList, 0, sizeof(pSoundList));
-  SDL_PauseAudio(0);
-  return TRUE;
-}
-
-static void SoundShutdownHardware() { SDL_QuitSubSystem(SDL_INIT_AUDIO); }
+static void SoundShutdownHardware() {}
 
 /* Finds an unused sound channel in the channel list.
  *
@@ -917,7 +911,7 @@ static uint32_t SoundStartSample(SAMPLETAG *sample, SOUNDTAG *channel, uint32_t 
   uint32_t uiSoundID = SoundGetUniqueID();
   channel->uiSoundID = uiSoundID;
   channel->pSample = sample;
-  channel->uiTimeStamp = GetClock();
+  channel->uiTimeStamp = JTime_GetTicks();
   channel->pos = 0;
   channel->State = CHANNEL_PLAY;
 
@@ -966,7 +960,7 @@ static uint32_t SoundStartStream(const char *pFilename, SOUNDTAG *channel, uint3
   channel->EOSCallback = end_callback;
   channel->pCallbackData = data;
 
-  channel->uiTimeStamp = GetClock();
+  channel->uiTimeStamp = JTime_GetTicks();
   channel->uiFadeVolume = SoundGetVolumeIndex(uiChannel);
 
   return uiSoundID;

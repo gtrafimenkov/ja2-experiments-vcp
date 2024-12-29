@@ -12,8 +12,7 @@
 #include "SGP/Input.h"
 #include "SGP/Video.h"
 #include "Utils/FontControl.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
 
 GUIButtonRef iMsgBoxBgrnd;
 GUIButtonRef iMsgBoxOk;
@@ -60,16 +59,16 @@ BOOLEAN MessageBoxHandled() {
   InputAtom DummyEvent;
 
   while (DequeueEvent(&DummyEvent)) {
-    if (DummyEvent.usEvent == KEY_DOWN) {
-      switch (DummyEvent.usParam) {
-        case SDLK_RETURN:
-        case SDLK_y:
+    if (DummyEvent.isKeyDown()) {
+      switch (DummyEvent.getKey()) {
+        case JIK_RETURN:
+        case 'y':
           gubMessageBoxStatus = MESSAGEBOX_DONE;
           gfMessageBoxResult = TRUE;
           break;
 
-        case SDLK_ESCAPE:
-        case SDLK_n:
+        case JIK_ESCAPE:
+        case 'n':
           gubMessageBoxStatus = MESSAGEBOX_DONE;
           gfMessageBoxResult = FALSE;
           break;

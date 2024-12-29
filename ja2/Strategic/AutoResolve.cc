@@ -27,7 +27,6 @@
 #include "SGP/MemMan.h"
 #include "SGP/MouseSystem.h"
 #include "SGP/Random.h"
-#include "SGP/Timer.h"
 #include "SGP/Types.h"
 #include "SGP/VObject.h"
 #include "SGP/VObjectBlitters.h"
@@ -75,8 +74,9 @@
 #include "Utils/Text.h"
 #include "Utils/TimerControl.h"
 #include "Utils/WordWrap.h"
-
-#include "SDL_keycode.h"
+#include "jplatform_input.h"
+#include "jplatform_time.h"
+#include "jplatform_video.h"
 
 #ifdef JA2BETAVERSION
 #include "Cheats.h"
@@ -403,7 +403,7 @@ static void DoTransitionFromPreBattleInterfaceToAutoResolve() {
 
   uiTimeRange = 1000;
   iPercentage = 0;
-  uiStartTime = GetClock();
+  uiStartTime = JTime_GetTicks();
 
   int32_t const x = gpAR->rect.x;
   int32_t const y = gpAR->rect.y;
@@ -430,7 +430,7 @@ static void DoTransitionFromPreBattleInterfaceToAutoResolve() {
 
   PlayJA2SampleFromFile(SOUNDSDIR "/laptop power up (8-11).wav", HIGHVOLUME, 1, MIDDLEPAN);
   while (iPercentage < 100) {
-    uiCurrTime = GetClock();
+    uiCurrTime = JTime_GetTicks();
     iPercentage = (uiCurrTime - uiStartTime) * 100 / uiTimeRange;
     iPercentage = std::min(iPercentage, 100);
 
@@ -809,33 +809,33 @@ static void RenderSoldierCellBars(SOLDIERCELL *pCell) {
   // yellow one for bleeding
   iStartY = pCell->yp + 29 - 25 * pCell->pSoldier->bLifeMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 37, iStartY, pCell->xp + 38, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(107, 107, 57)));
+                            rgb32_to_rgb565(FROMRGB(107, 107, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 38, iStartY, pCell->xp + 39, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(222, 181, 115)));
+                            rgb32_to_rgb565(FROMRGB(222, 181, 115)));
   // pink one for bandaged.
   iStartY += 25 * pCell->pSoldier->bBleeding / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 37, iStartY, pCell->xp + 38, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(156, 57, 57)));
+                            rgb32_to_rgb565(FROMRGB(156, 57, 57)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 38, iStartY, pCell->xp + 39, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(222, 132, 132)));
+                            rgb32_to_rgb565(FROMRGB(222, 132, 132)));
   // red one for actual health
   iStartY = pCell->yp + 29 - 25 * pCell->pSoldier->bLife / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 37, iStartY, pCell->xp + 38, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(107, 8, 8)));
+                            rgb32_to_rgb565(FROMRGB(107, 8, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 38, iStartY, pCell->xp + 39, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(206, 0, 0)));
+                            rgb32_to_rgb565(FROMRGB(206, 0, 0)));
   // BREATH BAR
   iStartY = pCell->yp + 29 - 25 * pCell->pSoldier->bBreathMax / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 41, iStartY, pCell->xp + 42, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(8, 8, 132)));
+                            rgb32_to_rgb565(FROMRGB(8, 8, 132)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 42, iStartY, pCell->xp + 43, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(8, 8, 107)));
+                            rgb32_to_rgb565(FROMRGB(8, 8, 107)));
   // MORALE BAR
   iStartY = pCell->yp + 29 - 25 * pCell->pSoldier->bMorale / 100;
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 45, iStartY, pCell->xp + 46, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(8, 156, 8)));
+                            rgb32_to_rgb565(FROMRGB(8, 156, 8)));
   ColorFillVideoSurfaceArea(FRAME_BUFFER, pCell->xp + 46, iStartY, pCell->xp + 47, pCell->yp + 29,
-                            Get16BPPColor(FROMRGB(8, 107, 8)));
+                            rgb32_to_rgb565(FROMRGB(8, 107, 8)));
 }
 
 static void BuildInterfaceBuffer() {
@@ -1421,7 +1421,7 @@ static void CreateAutoResolveInterface() {
   // Load the generic faces for civs and enemies
   SGPVObject *const faces = AddVideoObjectFromFile(INTERFACEDIR "/smfaces.sti");
   ar->iFaces = faces;
-  SGPPaletteEntry const *const pal = faces->Palette();
+  struct JColor const *const pal = faces->Palette();
   faces->pShades[0] = Create16BPPPaletteShaded(pal, 255, 255, 255, FALSE);
   faces->pShades[1] = Create16BPPPaletteShaded(pal, 250, 25, 25, TRUE);
 
@@ -1433,7 +1433,7 @@ static void CreateAutoResolveInterface() {
     // Load the face
     SGPVObject *const face = Load65Portrait(GetProfile(cell->pSoldier->ubProfile));
     cell->uiVObjectID = face;
-    SGPPaletteEntry const *const pal = face->Palette();
+    struct JColor const *const pal = face->Palette();
     face->pShades[0] = Create16BPPPaletteShaded(pal, 255, 255, 255, FALSE);
     face->pShades[1] = Create16BPPPaletteShaded(pal, 250, 25, 25, TRUE);
   }
@@ -2200,9 +2200,9 @@ static void HandleAutoResolveInput() {
   InputAtom InputEvent;
   BOOLEAN fResetAutoResolve = FALSE;
   while (DequeueEvent(&InputEvent)) {
-    if (InputEvent.usEvent == KEY_DOWN || InputEvent.usEvent == KEY_REPEAT) {
-      switch (InputEvent.usParam) {
-        case SDLK_SPACE:
+    if (InputEvent.isKeyDown() || InputEvent.usEvent == KEY_REPEAT) {
+      switch (InputEvent.getKey()) {
+        case JIK_SPACE:
           DepressAutoButton(gpAR->fPaused ? PLAY_BUTTON : PAUSE_BUTTON);
           break;
 
