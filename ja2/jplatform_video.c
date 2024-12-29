@@ -1,5 +1,7 @@
 #include "jplatform_video.h"
 
+#include <string.h>
+
 #include "SDL.h"
 #include "SDL_hints.h"
 #include "SDL_render.h"
